@@ -1,0 +1,4800 @@
+[
+  {
+    "_id": "bXEtz7ApxK37KyJik",
+    "title": "[ACX Linkpost] A Modest Proposal for Republicans",
+    "slug": "acx-linkpost-a-modest-proposal-for-republicans",
+    "pageUrl": "https://www.lesswrong.com/posts/bXEtz7ApxK37KyJik/acx-linkpost-a-modest-proposal-for-republicans",
+    "postedAt": "2021-04-30T18:43:17.252Z",
+    "baseScore": 9,
+    "voteCount": 5,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": "https://astralcodexten.substack.com/p/a-modest-proposal-for-republicans",
+    "user": {
+      "username": "mike_hawke",
+      "slug": "mike_hawke",
+      "displayName": "mike_hawke"
+    }
+  },
+  {
+    "_id": "FNqgoSg6cEKf5i6Bt",
+    "title": "Review of \"Why AI is Harder Than We Think\"",
+    "slug": "review-of-why-ai-is-harder-than-we-think",
+    "pageUrl": "https://www.lesswrong.com/posts/FNqgoSg6cEKf5i6Bt/review-of-why-ai-is-harder-than-we-think",
+    "postedAt": "2021-04-30T18:14:34.855Z",
+    "baseScore": 40,
+    "voteCount": 16,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "electroswing",
+      "slug": "electroswing",
+      "displayName": "electroswing"
+    }
+  },
+  {
+    "_id": "GtMTskQyZvaLFbjXF",
+    "title": "Mindfulness as debugging",
+    "slug": "mindfulness-as-debugging",
+    "pageUrl": "https://www.lesswrong.com/posts/GtMTskQyZvaLFbjXF/mindfulness-as-debugging",
+    "postedAt": "2021-04-30T16:59:12.834Z",
+    "baseScore": 21,
+    "voteCount": 12,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "pchvykov",
+      "slug": "pchvykov",
+      "displayName": "pchvykov"
+    }
+  },
+  {
+    "_id": "fsS4tC8eTB8eALnSQ",
+    "title": "Moral Privilege",
+    "slug": "moral-privilege",
+    "pageUrl": "https://www.lesswrong.com/posts/fsS4tC8eTB8eALnSQ/moral-privilege",
+    "postedAt": "2021-04-30T14:54:38.434Z",
+    "baseScore": 13,
+    "voteCount": 12,
+    "commentCount": 21,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ACrackedPot",
+      "slug": "acrackedpot",
+      "displayName": "ACrackedPot"
+    }
+  },
+  {
+    "_id": "p59pJxyxJXqFsKADw",
+    "title": "[Letter] Advice for High School #2",
+    "slug": "letter-advice-for-high-school-2",
+    "pageUrl": "https://www.lesswrong.com/posts/p59pJxyxJXqFsKADw/letter-advice-for-high-school-2",
+    "postedAt": "2021-04-30T08:42:34.511Z",
+    "baseScore": 38,
+    "voteCount": 25,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "ygyYciZF3rmcwbh6x",
+    "title": "When's the best time to get the 2nd dose of Pfizer Vaccine?",
+    "slug": "when-s-the-best-time-to-get-the-2nd-dose-of-pfizer-vaccine",
+    "pageUrl": "https://www.lesswrong.com/posts/ygyYciZF3rmcwbh6x/when-s-the-best-time-to-get-the-2nd-dose-of-pfizer-vaccine",
+    "postedAt": "2021-04-30T05:11:27.936Z",
+    "baseScore": 5,
+    "voteCount": 1,
+    "commentCount": 3,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "capybaralet",
+      "slug": "david-scott-krueger-formerly-capybaralet",
+      "displayName": "David Scott Krueger (formerly: capybaralet)"
+    }
+  },
+  {
+    "_id": "huwN8uu9rW7deCzan",
+    "title": "On silence",
+    "slug": "on-silence",
+    "pageUrl": "https://www.lesswrong.com/posts/huwN8uu9rW7deCzan/on-silence",
+    "postedAt": "2021-04-30T03:15:23.009Z",
+    "baseScore": 48,
+    "voteCount": 26,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": "https://aaronbergman.substack.com/p/on-silence",
+    "user": {
+      "username": "aaronb50",
+      "slug": "aaronb50",
+      "displayName": "Aaron Bergman"
+    }
+  },
+  {
+    "_id": "MNbxw5LfmkJaLHZLJ",
+    "title": "How do you solicit feedback effectively?",
+    "slug": "how-do-you-solicit-feedback-effectively",
+    "pageUrl": "https://www.lesswrong.com/posts/MNbxw5LfmkJaLHZLJ/how-do-you-solicit-feedback-effectively",
+    "postedAt": "2021-04-30T00:16:07.211Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 1,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "raj-thimmiah",
+      "slug": "raj-thimmiah",
+      "displayName": "Raj Thimmiah"
+    }
+  },
+  {
+    "_id": "TPan9sQFuPP6jgEJo",
+    "title": "Low-stakes alignment",
+    "slug": "low-stakes-alignment",
+    "pageUrl": "https://www.lesswrong.com/posts/TPan9sQFuPP6jgEJo/low-stakes-alignment",
+    "postedAt": "2021-04-30T00:10:06.163Z",
+    "baseScore": 88,
+    "voteCount": 34,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "paulfchristiano",
+      "slug": "paulfchristiano",
+      "displayName": "paulfchristiano"
+    }
+  },
+  {
+    "_id": "eEcwkGB9jj2z7aiJ8",
+    "title": "Why \"is evidence for\" is a symmetric relation",
+    "slug": "why-is-evidence-for-is-a-symmetric-relation",
+    "pageUrl": "https://www.lesswrong.com/posts/eEcwkGB9jj2z7aiJ8/why-is-evidence-for-is-a-symmetric-relation",
+    "postedAt": "2021-04-29T21:26:18.096Z",
+    "baseScore": 0,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://raginrayguns.tumblr.com/post/641509398629564416/if-a-hypothesis-h-makes-evidence-e-more-likely",
+    "user": {
+      "username": "alex_hhr",
+      "slug": "alex_hhr",
+      "displayName": "alex_hhr"
+    }
+  },
+  {
+    "_id": "SafkCxnBereRF5GRX",
+    "title": "Where do LessWrong rationalists debate?",
+    "slug": "where-do-lesswrong-rationalists-debate",
+    "pageUrl": "https://www.lesswrong.com/posts/SafkCxnBereRF5GRX/where-do-lesswrong-rationalists-debate",
+    "postedAt": "2021-04-29T21:23:55.597Z",
+    "baseScore": 44,
+    "voteCount": 17,
+    "commentCount": 14,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Viliam",
+      "slug": "viliam",
+      "displayName": "Viliam"
+    }
+  },
+  {
+    "_id": "rQaDYb5bvfQouNfQW",
+    "title": "Scott Alexander 2021 predictions: calibration and updating exercise",
+    "slug": "scott-alexander-2021-predictions-calibration-and-updating",
+    "pageUrl": "https://www.lesswrong.com/posts/rQaDYb5bvfQouNfQW/scott-alexander-2021-predictions-calibration-and-updating",
+    "postedAt": "2021-04-29T19:15:39.463Z",
+    "baseScore": 19,
+    "voteCount": 7,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobbBB",
+      "slug": "robbbb",
+      "displayName": "Rob Bensinger"
+    }
+  },
+  {
+    "_id": "3jdcjwjpeqyFZkk9M",
+    "title": "We need a career path for invention",
+    "slug": "we-need-a-career-path-for-invention",
+    "pageUrl": "https://www.lesswrong.com/posts/3jdcjwjpeqyFZkk9M/we-need-a-career-path-for-invention",
+    "postedAt": "2021-04-29T18:11:23.058Z",
+    "baseScore": 52,
+    "voteCount": 32,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": "https://rootsofprogress.org/a-career-path-for-invention",
+    "user": {
+      "username": "jasoncrawford",
+      "slug": "jasoncrawford",
+      "displayName": "jasoncrawford"
+    }
+  },
+  {
+    "_id": "oAJ7Pd2PiBHT2cQ3p",
+    "title": "25 Min Talk on MetaEthical.AI with Questions from Stuart Armstrong",
+    "slug": "25-min-talk-on-metaethical-ai-with-questions-from-stuart",
+    "pageUrl": "https://www.lesswrong.com/posts/oAJ7Pd2PiBHT2cQ3p/25-min-talk-on-metaethical-ai-with-questions-from-stuart",
+    "postedAt": "2021-04-29T15:38:06.855Z",
+    "baseScore": 21,
+    "voteCount": 8,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "June Ku",
+      "slug": "june-ku",
+      "displayName": "June Ku"
+    }
+  },
+  {
+    "_id": "ZBnboH4CmsAZTJS3i",
+    "title": "On Chesterton's Fence",
+    "slug": "on-chesterton-s-fence-1",
+    "pageUrl": "https://www.lesswrong.com/posts/ZBnboH4CmsAZTJS3i/on-chesterton-s-fence-1",
+    "postedAt": "2021-04-29T14:56:33.747Z",
+    "baseScore": 3,
+    "voteCount": 9,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "sustrik",
+      "slug": "sustrik",
+      "displayName": "Martin Sustrik"
+    }
+  },
+  {
+    "_id": "objuCrQbgBwfRPBFt",
+    "title": "Covid 4/29: Vaccination Slowdown",
+    "slug": "covid-4-29-vaccination-slowdown",
+    "pageUrl": "https://www.lesswrong.com/posts/objuCrQbgBwfRPBFt/covid-4-29-vaccination-slowdown",
+    "postedAt": "2021-04-29T13:50:01.010Z",
+    "baseScore": 55,
+    "voteCount": 30,
+    "commentCount": 19,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "HduCjmXTBD4xYTegv",
+    "title": "Draft report on existential risk from power-seeking AI",
+    "slug": "draft-report-on-existential-risk-from-power-seeking-ai",
+    "pageUrl": "https://www.lesswrong.com/posts/HduCjmXTBD4xYTegv/draft-report-on-existential-risk-from-power-seeking-ai",
+    "postedAt": "2021-04-28T21:41:19.684Z",
+    "baseScore": 85,
+    "voteCount": 27,
+    "commentCount": 23,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "joekc",
+      "slug": "joe-carlsmith",
+      "displayName": "Joe Carlsmith"
+    }
+  },
+  {
+    "_id": "N7j4xHkyjKbimmF6A",
+    "title": "Notes on Robert McIntyre’s Brain Preservation Talk at the Long Now Foundation",
+    "slug": "notes-on-robert-mcintyre-s-brain-preservation-talk-at-the-1",
+    "pageUrl": "https://www.lesswrong.com/posts/N7j4xHkyjKbimmF6A/notes-on-robert-mcintyre-s-brain-preservation-talk-at-the-1",
+    "postedAt": "2021-04-28T20:47:41.325Z",
+    "baseScore": 14,
+    "voteCount": 5,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "JohnGreer",
+      "slug": "johngreer",
+      "displayName": "JohnGreer"
+    }
+  },
+  {
+    "_id": "7qhtuQLCCvmwCPfXK",
+    "title": "AMA: Paul Christiano, alignment researcher",
+    "slug": "ama-paul-christiano-alignment-researcher",
+    "pageUrl": "https://www.lesswrong.com/posts/7qhtuQLCCvmwCPfXK/ama-paul-christiano-alignment-researcher",
+    "postedAt": "2021-04-28T18:55:39.707Z",
+    "baseScore": 117,
+    "voteCount": 42,
+    "commentCount": 197,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "paulfchristiano",
+      "slug": "paulfchristiano",
+      "displayName": "paulfchristiano"
+    }
+  },
+  {
+    "_id": "PsBi8ZwJvgu83cCys",
+    "title": "Is sitting in the sun much better than sitting in the shade? ",
+    "slug": "is-sitting-in-the-sun-much-better-than-sitting-in-the-shade",
+    "pageUrl": "https://www.lesswrong.com/posts/PsBi8ZwJvgu83cCys/is-sitting-in-the-sun-much-better-than-sitting-in-the-shade",
+    "postedAt": "2021-04-28T18:48:48.622Z",
+    "baseScore": 16,
+    "voteCount": 7,
+    "commentCount": 5,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "just_browsing",
+      "slug": "just_browsing",
+      "displayName": "just_browsing"
+    }
+  },
+  {
+    "_id": "H79dxa7XXMBhwqZLm",
+    "title": "[AN #148]: Analyzing generalization across more axes than just accuracy or loss",
+    "slug": "an-148-analyzing-generalization-across-more-axes-than-just",
+    "pageUrl": "https://www.lesswrong.com/posts/H79dxa7XXMBhwqZLm/an-148-analyzing-generalization-across-more-axes-than-just",
+    "postedAt": "2021-04-28T18:30:03.066Z",
+    "baseScore": 24,
+    "voteCount": 6,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "76qcHmxD8dxxRmrEd",
+    "title": "Facebook is Simulacra Level 3, Andreessen is Level 4",
+    "slug": "facebook-is-simulacra-level-3-andreessen-is-level-4",
+    "pageUrl": "https://www.lesswrong.com/posts/76qcHmxD8dxxRmrEd/facebook-is-simulacra-level-3-andreessen-is-level-4",
+    "postedAt": "2021-04-28T17:38:03.981Z",
+    "baseScore": 52,
+    "voteCount": 32,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Benito",
+      "slug": "benito",
+      "displayName": "Ben Pace"
+    }
+  },
+  {
+    "_id": "j5wHXuLPwhdKqH5GM",
+    "title": "When Should the Fire Alarm Go Off: A model for optimal thresholds",
+    "slug": "when-should-the-fire-alarm-go-off-a-model-for-optimal",
+    "pageUrl": "https://www.lesswrong.com/posts/j5wHXuLPwhdKqH5GM/when-should-the-fire-alarm-go-off-a-model-for-optimal",
+    "postedAt": "2021-04-28T12:27:20.031Z",
+    "baseScore": 40,
+    "voteCount": 15,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "https://peterbarnett.org/2021/04/28/optimal-thresholds/",
+    "user": {
+      "username": "peterbarnett",
+      "slug": "peterbarnett",
+      "displayName": "peterbarnett"
+    }
+  },
+  {
+    "_id": "Cn5eJdnoA2wAqoLbh",
+    "title": "Better air is the easiest way not to die",
+    "slug": "better-air-is-the-easiest-way-not-to-die",
+    "pageUrl": "https://www.lesswrong.com/posts/Cn5eJdnoA2wAqoLbh/better-air-is-the-easiest-way-not-to-die",
+    "postedAt": "2021-04-28T10:24:37.344Z",
+    "baseScore": 24,
+    "voteCount": 19,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "https://dynomight.net/air/",
+    "user": {
+      "username": "digital_carver",
+      "slug": "digital_carver",
+      "displayName": "digital_carver"
+    }
+  },
+  {
+    "_id": "y6fxStfPNiWujrwP9",
+    "title": "Naming and pointer thickness",
+    "slug": "naming-and-pointer-thickness",
+    "pageUrl": "https://www.lesswrong.com/posts/y6fxStfPNiWujrwP9/naming-and-pointer-thickness",
+    "postedAt": "2021-04-28T06:35:08.865Z",
+    "baseScore": 22,
+    "voteCount": 12,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "adamzerner",
+      "slug": "adamzerner",
+      "displayName": "Adam Zerner"
+    }
+  },
+  {
+    "_id": "NW9bGtvBsCBKpwKL4",
+    "title": "Talkers and doers",
+    "slug": "talkers-and-doers",
+    "pageUrl": "https://www.lesswrong.com/posts/NW9bGtvBsCBKpwKL4/talkers-and-doers",
+    "postedAt": "2021-04-28T04:26:28.269Z",
+    "baseScore": -1,
+    "voteCount": 8,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "amir-gamil",
+      "slug": "amir-bolous",
+      "displayName": "Amir Bolous"
+    }
+  },
+  {
+    "_id": "EtuqD2sXCR3AcgodK",
+    "title": "A casual intro to Geometric Algebra",
+    "slug": "a-casual-intro-to-geometric-algebra",
+    "pageUrl": "https://www.lesswrong.com/posts/EtuqD2sXCR3AcgodK/a-casual-intro-to-geometric-algebra",
+    "postedAt": "2021-04-28T00:00:46.221Z",
+    "baseScore": 24,
+    "voteCount": 10,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Orfeas",
+      "slug": "orfeas",
+      "displayName": "Orfeas"
+    }
+  },
+  {
+    "_id": "4cLKYXvxKFgCHgeju",
+    "title": "Faerie Ring meet #2: At Gather.Town",
+    "slug": "faerie-ring-meet-2-at-gather-town",
+    "pageUrl": "https://www.lesswrong.com/events/4cLKYXvxKFgCHgeju/faerie-ring-meet-2-at-gather-town",
+    "postedAt": "2021-04-27T23:17:28.654Z",
+    "baseScore": 15,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "hamnox",
+      "slug": "hamnox",
+      "displayName": "hamnox"
+    }
+  },
+  {
+    "_id": "mk4jxXj6QgvwcXJtF",
+    "title": "Rationality Cardinality",
+    "slug": "rationality-cardinality-1",
+    "pageUrl": "https://www.lesswrong.com/posts/mk4jxXj6QgvwcXJtF/rationality-cardinality-1",
+    "postedAt": "2021-04-27T22:27:27.412Z",
+    "baseScore": 57,
+    "voteCount": 20,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "jimrandomh",
+      "slug": "jimrandomh",
+      "displayName": "jimrandomh"
+    }
+  },
+  {
+    "_id": "8HWGXhnCfAPgJYa9D",
+    "title": "Pitfalls of the agent model",
+    "slug": "pitfalls-of-the-agent-model",
+    "pageUrl": "https://www.lesswrong.com/posts/8HWGXhnCfAPgJYa9D/pitfalls-of-the-agent-model",
+    "postedAt": "2021-04-27T22:19:30.031Z",
+    "baseScore": 26,
+    "voteCount": 12,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexflint",
+      "slug": "alexflint",
+      "displayName": "Alex Flint"
+    }
+  },
+  {
+    "_id": "GsLZZXZcRQnYTfPby",
+    "title": "Covid-19 in India: Why didn't it happen earlier?",
+    "slug": "covid-19-in-india-why-didn-t-it-happen-earlier",
+    "pageUrl": "https://www.lesswrong.com/posts/GsLZZXZcRQnYTfPby/covid-19-in-india-why-didn-t-it-happen-earlier",
+    "postedAt": "2021-04-27T19:13:00.798Z",
+    "baseScore": 14,
+    "voteCount": 8,
+    "commentCount": 5,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Sherrinford",
+      "slug": "sherrinford",
+      "displayName": "Sherrinford"
+    }
+  },
+  {
+    "_id": "APkbWoZg3apFgKz3c",
+    "title": "Jaan Tallinn's 2020 Philanthropy Overview",
+    "slug": "jaan-tallinn-s-2020-philanthropy-overview",
+    "pageUrl": "https://www.lesswrong.com/posts/APkbWoZg3apFgKz3c/jaan-tallinn-s-2020-philanthropy-overview",
+    "postedAt": "2021-04-27T16:22:08.120Z",
+    "baseScore": 113,
+    "voteCount": 33,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "https://jaan.online/philanthropy/#2020-results-success",
+    "user": {
+      "username": "jaan",
+      "slug": "jaan",
+      "displayName": "jaan"
+    }
+  },
+  {
+    "_id": "sAmkpdmfDMCohXiBX",
+    "title": "Scott Alexander 2021 Predictions: Market Prices",
+    "slug": "scott-alexander-2021-predictions-market-prices",
+    "pageUrl": "https://www.lesswrong.com/posts/sAmkpdmfDMCohXiBX/scott-alexander-2021-predictions-market-prices",
+    "postedAt": "2021-04-27T14:03:10.995Z",
+    "baseScore": 51,
+    "voteCount": 18,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "SimonM",
+      "slug": "simonm",
+      "displayName": "SimonM"
+    }
+  },
+  {
+    "_id": "HWPSbfXswKrjQbXpB",
+    "title": "Modern Monetary Theory for Dummies",
+    "slug": "modern-monetary-theory-for-dummies",
+    "pageUrl": "https://www.lesswrong.com/posts/HWPSbfXswKrjQbXpB/modern-monetary-theory-for-dummies",
+    "postedAt": "2021-04-27T13:11:53.108Z",
+    "baseScore": 7,
+    "voteCount": 6,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "theflowerpot",
+      "slug": "theflowerpot",
+      "displayName": "theflowerpot"
+    }
+  },
+  {
+    "_id": "FwACDKo63QbXibxrG",
+    "title": "Can you improve IQ by practicing IQ tests?",
+    "slug": "can-you-improve-iq-by-practicing-iq-tests",
+    "pageUrl": "https://www.lesswrong.com/posts/FwACDKo63QbXibxrG/can-you-improve-iq-by-practicing-iq-tests",
+    "postedAt": "2021-04-27T11:28:56.688Z",
+    "baseScore": 8,
+    "voteCount": 8,
+    "commentCount": 43,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "ForensicOceanography",
+      "slug": "forensicoceanography",
+      "displayName": "ForensicOceanography"
+    }
+  },
+  {
+    "_id": "LBNjeGaJZw7QdybMw",
+    "title": "Agents Over Cartesian World Models",
+    "slug": "agents-over-cartesian-world-models",
+    "pageUrl": "https://www.lesswrong.com/posts/LBNjeGaJZw7QdybMw/agents-over-cartesian-world-models",
+    "postedAt": "2021-04-27T02:06:57.386Z",
+    "baseScore": 67,
+    "voteCount": 23,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mark-xu",
+      "slug": "mark-xu",
+      "displayName": "Mark Xu"
+    }
+  },
+  {
+    "_id": "DT4tGyopMnKwCxpwL",
+    "title": "What topics are on Dath Ilan's civics exam?",
+    "slug": "what-topics-are-on-dath-ilan-s-civics-exam",
+    "pageUrl": "https://www.lesswrong.com/posts/DT4tGyopMnKwCxpwL/what-topics-are-on-dath-ilan-s-civics-exam",
+    "postedAt": "2021-04-27T00:59:04.749Z",
+    "baseScore": 55,
+    "voteCount": 15,
+    "commentCount": 38,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "jimrandomh",
+      "slug": "jimrandomh",
+      "displayName": "jimrandomh"
+    }
+  },
+  {
+    "_id": "Cpy23aBzx3hnjKbnt",
+    "title": "Scott Alexander 2021 Predictions: Buy/Sell/Hold",
+    "slug": "scott-alexander-2021-predictions-buy-sell-hold",
+    "pageUrl": "https://www.lesswrong.com/posts/Cpy23aBzx3hnjKbnt/scott-alexander-2021-predictions-buy-sell-hold",
+    "postedAt": "2021-04-27T00:40:01.309Z",
+    "baseScore": 42,
+    "voteCount": 14,
+    "commentCount": 39,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "3ejHFgQihLG4L6WQf",
+    "title": "Announcing the Alignment Research Center",
+    "slug": "announcing-the-alignment-research-center",
+    "pageUrl": "https://www.lesswrong.com/posts/3ejHFgQihLG4L6WQf/announcing-the-alignment-research-center",
+    "postedAt": "2021-04-26T23:30:02.685Z",
+    "baseScore": 178,
+    "voteCount": 70,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "paulfchristiano",
+      "slug": "paulfchristiano",
+      "displayName": "paulfchristiano"
+    }
+  },
+  {
+    "_id": "NEa3puQB23FyiifnW",
+    "title": "[Linkpost] Treacherous turns in the wild",
+    "slug": "linkpost-treacherous-turns-in-the-wild",
+    "pageUrl": "https://www.lesswrong.com/posts/NEa3puQB23FyiifnW/linkpost-treacherous-turns-in-the-wild",
+    "postedAt": "2021-04-26T22:51:44.362Z",
+    "baseScore": 31,
+    "voteCount": 14,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": "http://lukemuehlhauser.com/treacherous-turns-in-the-wild/",
+    "user": {
+      "username": "mark-xu",
+      "slug": "mark-xu",
+      "displayName": "Mark Xu"
+    }
+  },
+  {
+    "_id": "kdwk5aHNjM53PZFKL",
+    "title": "FAQ: Advice for AI Alignment Researchers",
+    "slug": "faq-advice-for-ai-alignment-researchers",
+    "pageUrl": "https://www.lesswrong.com/posts/kdwk5aHNjM53PZFKL/faq-advice-for-ai-alignment-researchers",
+    "postedAt": "2021-04-26T18:59:52.589Z",
+    "baseScore": 67,
+    "voteCount": 27,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://rohinshah.com/faq-career-advice-for-ai-alignment-researchers/",
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "WYPyyWpFb33gjkBbq",
+    "title": "Spoiler-Free Reviews: Monster Slayers, Dream Quest and Loop Hero",
+    "slug": "spoiler-free-reviews-monster-slayers-dream-quest-and-loop",
+    "pageUrl": "https://www.lesswrong.com/posts/WYPyyWpFb33gjkBbq/spoiler-free-reviews-monster-slayers-dream-quest-and-loop",
+    "postedAt": "2021-04-26T15:00:01.515Z",
+    "baseScore": 16,
+    "voteCount": 7,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "yJdkLYojs3kjsiScA",
+    "title": "Bayesian and Frequentists Approaches to Statistical Analysis",
+    "slug": "bayesian-and-frequentists-approaches-to-statistical-analysis",
+    "pageUrl": "https://www.lesswrong.com/posts/yJdkLYojs3kjsiScA/bayesian-and-frequentists-approaches-to-statistical-analysis",
+    "postedAt": "2021-04-26T00:18:00.668Z",
+    "baseScore": 4,
+    "voteCount": 2,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "christopher-clark",
+      "slug": "christopher-clark",
+      "displayName": "Christopher Clark"
+    }
+  },
+  {
+    "_id": "2QuAcx8XQw7rrXzGC",
+    "title": "Beware over-use of the agent model",
+    "slug": "beware-over-use-of-the-agent-model",
+    "pageUrl": "https://www.lesswrong.com/posts/2QuAcx8XQw7rrXzGC/beware-over-use-of-the-agent-model",
+    "postedAt": "2021-04-25T22:19:06.132Z",
+    "baseScore": 28,
+    "voteCount": 10,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexflint",
+      "slug": "alexflint",
+      "displayName": "Alex Flint"
+    }
+  },
+  {
+    "_id": "2E4kC55eJcYKJjbPC",
+    "title": "\"Who I am\" is an axiom. ",
+    "slug": "who-i-am-is-an-axiom",
+    "pageUrl": "https://www.lesswrong.com/posts/2E4kC55eJcYKJjbPC/who-i-am-is-an-axiom",
+    "postedAt": "2021-04-25T21:59:10.566Z",
+    "baseScore": 7,
+    "voteCount": 6,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "dadadarren",
+      "slug": "dadadarren",
+      "displayName": "dadadarren"
+    }
+  },
+  {
+    "_id": "uoArM8ftbJzmHoEfe",
+    "title": "Would robots care about Meaning and Relating?",
+    "slug": "would-robots-care-about-meaning-and-relating",
+    "pageUrl": "https://www.lesswrong.com/posts/uoArM8ftbJzmHoEfe/would-robots-care-about-meaning-and-relating",
+    "postedAt": "2021-04-25T21:17:15.575Z",
+    "baseScore": 39,
+    "voteCount": 18,
+    "commentCount": 33,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "AtgZzk8pgonjcHYuW",
+    "title": "For mRNA vaccines, is (short-term) efficacy really higher after the second dose?",
+    "slug": "for-mrna-vaccines-is-short-term-efficacy-really-higher-after",
+    "pageUrl": "https://www.lesswrong.com/posts/AtgZzk8pgonjcHYuW/for-mrna-vaccines-is-short-term-efficacy-really-higher-after",
+    "postedAt": "2021-04-25T20:21:59.349Z",
+    "baseScore": 27,
+    "voteCount": 14,
+    "commentCount": 13,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "samuel-marks",
+      "slug": "sam-marks",
+      "displayName": "Sam Marks"
+    }
+  },
+  {
+    "_id": "yx2noy2aPKMHjvf6T",
+    "title": "Is there a good software solution for mathematical questions?",
+    "slug": "is-there-a-good-software-solution-for-mathematical-questions",
+    "pageUrl": "https://www.lesswrong.com/posts/yx2noy2aPKMHjvf6T/is-there-a-good-software-solution-for-mathematical-questions",
+    "postedAt": "2021-04-25T18:03:09.594Z",
+    "baseScore": 9,
+    "voteCount": 3,
+    "commentCount": 7,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "ChristianKl",
+      "slug": "christiankl",
+      "displayName": "ChristianKl"
+    }
+  },
+  {
+    "_id": "ymJsrc87otxWNuypK",
+    "title": "[May – weekly] Focusmate: identity preservation",
+    "slug": "may-weekly-focusmate-identity-preservation",
+    "pageUrl": "https://www.lesswrong.com/events/ymJsrc87otxWNuypK/may-weekly-focusmate-identity-preservation",
+    "postedAt": "2021-04-25T17:58:28.897Z",
+    "baseScore": 6,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MathieuRoy",
+      "slug": "mathieuroy",
+      "displayName": "Mati_Roy"
+    }
+  },
+  {
+    "_id": "4wEvv9fe8Zt6TpnPw",
+    "title": "The Fall of Rome, III: Progress Did Not Exist",
+    "slug": "the-fall-of-rome-iii-progress-did-not-exist",
+    "pageUrl": "https://www.lesswrong.com/posts/4wEvv9fe8Zt6TpnPw/the-fall-of-rome-iii-progress-did-not-exist",
+    "postedAt": "2021-04-25T05:54:44.406Z",
+    "baseScore": 30,
+    "voteCount": 19,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "LukeOnline",
+      "slug": "lukeonline",
+      "displayName": "LukeOnline"
+    }
+  },
+  {
+    "_id": "FydkHzvfMqkfcWTcx",
+    "title": "Best empirical evidence on better than SP500 investment returns?",
+    "slug": "best-empirical-evidence-on-better-than-sp500-investment",
+    "pageUrl": "https://www.lesswrong.com/posts/FydkHzvfMqkfcWTcx/best-empirical-evidence-on-better-than-sp500-investment",
+    "postedAt": "2021-04-25T05:13:43.613Z",
+    "baseScore": 12,
+    "voteCount": 8,
+    "commentCount": 23,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "bluefalcon",
+      "slug": "bluefalcon",
+      "displayName": "bluefalcon"
+    }
+  },
+  {
+    "_id": "zHBGCaW8Z9zXD8pke",
+    "title": "Malicious non-state actors and AI safety",
+    "slug": "malicious-non-state-actors-and-ai-safety",
+    "pageUrl": "https://www.lesswrong.com/posts/zHBGCaW8Z9zXD8pke/malicious-non-state-actors-and-ai-safety",
+    "postedAt": "2021-04-25T03:21:31.098Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 14,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "keti",
+      "slug": "keti-1",
+      "displayName": "keti"
+    }
+  },
+  {
+    "_id": "GPyjobcqnNqYjnqXy",
+    "title": "Estimating COVID cases & deaths in India over the coming months",
+    "slug": "estimating-covid-cases-and-deaths-in-india-over-the-coming",
+    "pageUrl": "https://www.lesswrong.com/posts/GPyjobcqnNqYjnqXy/estimating-covid-cases-and-deaths-in-india-over-the-coming",
+    "postedAt": "2021-04-24T21:35:21.267Z",
+    "baseScore": 33,
+    "voteCount": 11,
+    "commentCount": 8,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "GeneSmith",
+      "slug": "genesmith",
+      "displayName": "GeneSmith"
+    }
+  },
+  {
+    "_id": "onpj9XKwhmLTaukad",
+    "title": "Identity in What You Are Not",
+    "slug": "identity-in-what-you-are-not",
+    "pageUrl": "https://www.lesswrong.com/posts/onpj9XKwhmLTaukad/identity-in-what-you-are-not",
+    "postedAt": "2021-04-24T20:11:49.480Z",
+    "baseScore": 11,
+    "voteCount": 4,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "gworley",
+      "slug": "gordon-seidoh-worley",
+      "displayName": "Gordon Seidoh Worley"
+    }
+  },
+  {
+    "_id": "Jo2LWuuGEGHHfGZCM",
+    "title": "Naturalism and AI alignment",
+    "slug": "naturalism-and-ai-alignment",
+    "pageUrl": "https://www.lesswrong.com/posts/Jo2LWuuGEGHHfGZCM/naturalism-and-ai-alignment",
+    "postedAt": "2021-04-24T16:16:16.389Z",
+    "baseScore": 5,
+    "voteCount": 8,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Michele Campolo",
+      "slug": "michele-campolo",
+      "displayName": "Michele Campolo"
+    }
+  },
+  {
+    "_id": "FjbwBbwzy9Cred6Gg",
+    "title": "Paper review: A Cryptographic Solution to a Game Theoretic Problem",
+    "slug": "paper-review-a-cryptographic-solution-to-a-game-theoretic",
+    "pageUrl": "https://www.lesswrong.com/posts/FjbwBbwzy9Cred6Gg/paper-review-a-cryptographic-solution-to-a-game-theoretic",
+    "postedAt": "2021-04-24T11:54:20.015Z",
+    "baseScore": 23,
+    "voteCount": 12,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "victorsintnicolaas",
+      "slug": "victorsintnicolaas",
+      "displayName": "victorsintnicolaas"
+    }
+  },
+  {
+    "_id": "WREZReEiCbwJhvzvc",
+    "title": "Election results in Central Europe match some pre-WW1 borders",
+    "slug": "election-results-in-central-europe-match-some-pre-ww1",
+    "pageUrl": "https://www.lesswrong.com/posts/WREZReEiCbwJhvzvc/election-results-in-central-europe-match-some-pre-ww1",
+    "postedAt": "2021-04-24T06:24:16.207Z",
+    "baseScore": 19,
+    "voteCount": 14,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ForensicOceanography",
+      "slug": "forensicoceanography",
+      "displayName": "ForensicOceanography"
+    }
+  },
+  {
+    "_id": "pdcjhzwdQucKEF76B",
+    "title": "How to test tiny skills?",
+    "slug": "how-to-test-tiny-skills",
+    "pageUrl": "https://www.lesswrong.com/posts/pdcjhzwdQucKEF76B/how-to-test-tiny-skills",
+    "postedAt": "2021-04-24T05:02:45.347Z",
+    "baseScore": 5,
+    "voteCount": 2,
+    "commentCount": 6,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "NicholasKross",
+      "slug": "nicholas-kross",
+      "displayName": "Nicholas Kross"
+    }
+  },
+  {
+    "_id": "XBw3m5SXts2cfck3N",
+    "title": "Apps / tools for combatting sleep procrastination?",
+    "slug": "apps-tools-for-combatting-sleep-procrastination",
+    "pageUrl": "https://www.lesswrong.com/posts/XBw3m5SXts2cfck3N/apps-tools-for-combatting-sleep-procrastination",
+    "postedAt": "2021-04-24T01:40:44.010Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 3,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "iamef",
+      "slug": "emily-fan",
+      "displayName": "emily.fan"
+    }
+  },
+  {
+    "_id": "s9tMdqEbwryCoqow9",
+    "title": "Vaccination and House Rules",
+    "slug": "vaccination-and-house-rules",
+    "pageUrl": "https://www.lesswrong.com/posts/s9tMdqEbwryCoqow9/vaccination-and-house-rules",
+    "postedAt": "2021-04-24T01:00:03.030Z",
+    "baseScore": 33,
+    "voteCount": 8,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "jkaufman",
+      "slug": "jkaufman",
+      "displayName": "jefftk"
+    }
+  },
+  {
+    "_id": "4E4zbHSmyuhkqgJmm",
+    "title": "Let's Rename Ourselves The \"Metacognitive Movement\"",
+    "slug": "let-s-rename-ourselves-the-metacognitive-movement",
+    "pageUrl": "https://www.lesswrong.com/posts/4E4zbHSmyuhkqgJmm/let-s-rename-ourselves-the-metacognitive-movement",
+    "postedAt": "2021-04-23T21:06:58.422Z",
+    "baseScore": 52,
+    "voteCount": 46,
+    "commentCount": 47,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AllAmericanBreakfast",
+      "slug": "directedevolution",
+      "displayName": "DirectedEvolution"
+    }
+  },
+  {
+    "_id": "kvLPC5YWgSujcHSkY",
+    "title": "How to Play a Support Role in Research Conversations",
+    "slug": "how-to-play-a-support-role-in-research-conversations",
+    "pageUrl": "https://www.lesswrong.com/posts/kvLPC5YWgSujcHSkY/how-to-play-a-support-role-in-research-conversations",
+    "postedAt": "2021-04-23T20:57:50.075Z",
+    "baseScore": 105,
+    "voteCount": 55,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "johnswentworth",
+      "slug": "johnswentworth",
+      "displayName": "johnswentworth"
+    }
+  },
+  {
+    "_id": "Kkn6GrjTNNjSQBLPi",
+    "title": "The Fall of Rome, II: Energy Problems?",
+    "slug": "the-fall-of-rome-ii-energy-problems",
+    "pageUrl": "https://www.lesswrong.com/posts/Kkn6GrjTNNjSQBLPi/the-fall-of-rome-ii-energy-problems",
+    "postedAt": "2021-04-23T17:58:23.877Z",
+    "baseScore": 29,
+    "voteCount": 17,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "LukeOnline",
+      "slug": "lukeonline",
+      "displayName": "LukeOnline"
+    }
+  },
+  {
+    "_id": "DuhFd5upZk5p7RoMX",
+    "title": "The Fall of Rome: Why It's Relevant, And Why We're Mistaken",
+    "slug": "the-fall-of-rome-why-it-s-relevant-and-why-we-re-mistaken",
+    "pageUrl": "https://www.lesswrong.com/posts/DuhFd5upZk5p7RoMX/the-fall-of-rome-why-it-s-relevant-and-why-we-re-mistaken",
+    "postedAt": "2021-04-23T12:15:44.902Z",
+    "baseScore": 40,
+    "voteCount": 37,
+    "commentCount": 33,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "LukeOnline",
+      "slug": "lukeonline",
+      "displayName": "LukeOnline"
+    }
+  },
+  {
+    "_id": "Zd5Bsra7ar2pa3bwS",
+    "title": "Probability theory and logical induction as lenses",
+    "slug": "probability-theory-and-logical-induction-as-lenses",
+    "pageUrl": "https://www.lesswrong.com/posts/Zd5Bsra7ar2pa3bwS/probability-theory-and-logical-induction-as-lenses",
+    "postedAt": "2021-04-23T02:41:25.414Z",
+    "baseScore": 43,
+    "voteCount": 13,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexflint",
+      "slug": "alexflint",
+      "displayName": "Alex Flint"
+    }
+  },
+  {
+    "_id": "jCzZBgDkYYNqteH2j",
+    "title": "Is there anything that can stop AGI development in the near term?",
+    "slug": "is-there-anything-that-can-stop-agi-development-in-the-near",
+    "pageUrl": "https://www.lesswrong.com/posts/jCzZBgDkYYNqteH2j/is-there-anything-that-can-stop-agi-development-in-the-near",
+    "postedAt": "2021-04-22T20:37:41.163Z",
+    "baseScore": 5,
+    "voteCount": 5,
+    "commentCount": 5,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Wulky Wilkinsen",
+      "slug": "wulky-wilkinsen",
+      "displayName": "Wulky Wilkinsen"
+    }
+  },
+  {
+    "_id": "k2CoMf6jo6PP27LjZ",
+    "title": "PrinciplesYou - Seems to be a new personality assessment tool",
+    "slug": "principlesyou-seems-to-be-a-new-personality-assessment-tool",
+    "pageUrl": "https://www.lesswrong.com/posts/k2CoMf6jo6PP27LjZ/principlesyou-seems-to-be-a-new-personality-assessment-tool",
+    "postedAt": "2021-04-22T19:20:46.384Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "jmh",
+      "slug": "jmh",
+      "displayName": "jmh"
+    }
+  },
+  {
+    "_id": "nEzGJutAFFpjJXWmT",
+    "title": "Have an idea for an interactive learning module? Consider applying for a ClearerThinking.org micro grant!",
+    "slug": "have-an-idea-for-an-interactive-learning-module-consider",
+    "pageUrl": "https://www.lesswrong.com/posts/nEzGJutAFFpjJXWmT/have-an-idea-for-an-interactive-learning-module-consider",
+    "postedAt": "2021-04-22T18:13:44.050Z",
+    "baseScore": 21,
+    "voteCount": 6,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "spencerg",
+      "slug": "spencerg",
+      "displayName": "spencerg"
+    }
+  },
+  {
+    "_id": "93n3WCkzB3HdNajjD",
+    "title": "Two Designs",
+    "slug": "two-designs",
+    "pageUrl": "https://www.lesswrong.com/posts/93n3WCkzB3HdNajjD/two-designs",
+    "postedAt": "2021-04-22T16:32:26.425Z",
+    "baseScore": 31,
+    "voteCount": 7,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "SatvikBeri",
+      "slug": "satvikberi",
+      "displayName": "SatvikBeri"
+    }
+  },
+  {
+    "_id": "4PTstS4Kt5hBMJTRL",
+    "title": "Covid 4/22: Crisis in India",
+    "slug": "covid-4-22-crisis-in-india",
+    "pageUrl": "https://www.lesswrong.com/posts/4PTstS4Kt5hBMJTRL/covid-4-22-crisis-in-india",
+    "postedAt": "2021-04-22T13:40:01.676Z",
+    "baseScore": 100,
+    "voteCount": 47,
+    "commentCount": 25,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "5sX7d3yknifXqEu8u",
+    "title": "Löb's theorem simply shows that Peano arithmetic cannot prove its own soundness",
+    "slug": "loeb-s-theorem-simply-shows-that-peano-arithmetic-cannot",
+    "pageUrl": "https://www.lesswrong.com/posts/5sX7d3yknifXqEu8u/loeb-s-theorem-simply-shows-that-peano-arithmetic-cannot",
+    "postedAt": "2021-04-22T09:17:07.096Z",
+    "baseScore": 5,
+    "voteCount": 5,
+    "commentCount": 15,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rhaps0dy",
+      "slug": "rhaps0dy",
+      "displayName": "Adrià Garriga-alonso"
+    }
+  },
+  {
+    "_id": "gsvo7bJtidjviQMta",
+    "title": "Faerie Ring: A Small Gather.Town Call",
+    "slug": "faerie-ring-a-small-gather-town-call",
+    "pageUrl": "https://www.lesswrong.com/events/gsvo7bJtidjviQMta/faerie-ring-a-small-gather-town-call",
+    "postedAt": "2021-04-22T06:02:58.618Z",
+    "baseScore": 6,
+    "voteCount": 1,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "hamnox",
+      "slug": "hamnox",
+      "displayName": "hamnox"
+    }
+  },
+  {
+    "_id": "76cReK4Mix3zKCWNT",
+    "title": "NTK/GP Models of Neural Nets Can't Learn Features",
+    "slug": "ntk-gp-models-of-neural-nets-can-t-learn-features",
+    "pageUrl": "https://www.lesswrong.com/posts/76cReK4Mix3zKCWNT/ntk-gp-models-of-neural-nets-can-t-learn-features",
+    "postedAt": "2021-04-22T03:01:43.973Z",
+    "baseScore": 33,
+    "voteCount": 14,
+    "commentCount": 33,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "interstice",
+      "slug": "interstice",
+      "displayName": "interstice"
+    }
+  },
+  {
+    "_id": "Ewxdp7zGiwvdEK3Cy",
+    "title": "What books are for: a response to \"Why books don't work.\"",
+    "slug": "what-books-are-for-a-response-to-why-books-don-t-work",
+    "pageUrl": "https://www.lesswrong.com/posts/Ewxdp7zGiwvdEK3Cy/what-books-are-for-a-response-to-why-books-don-t-work",
+    "postedAt": "2021-04-21T23:18:09.393Z",
+    "baseScore": 35,
+    "voteCount": 25,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": "https://aaronbergman.substack.com/p/what-books-are-for",
+    "user": {
+      "username": "aaronb50",
+      "slug": "aaronb50",
+      "displayName": "Aaron Bergman"
+    }
+  },
+  {
+    "_id": "eNDB2F8CdktderNyR",
+    "title": "Faerie Rings",
+    "slug": "faerie-rings",
+    "pageUrl": "https://www.lesswrong.com/posts/eNDB2F8CdktderNyR/faerie-rings",
+    "postedAt": "2021-04-21T21:47:33.581Z",
+    "baseScore": 15,
+    "voteCount": 8,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "hamnox",
+      "slug": "hamnox",
+      "displayName": "hamnox"
+    }
+  },
+  {
+    "_id": "FkvKewpBcXoccdmHe",
+    "title": "In Defence of Spock",
+    "slug": "in-defence-of-spock",
+    "pageUrl": "https://www.lesswrong.com/posts/FkvKewpBcXoccdmHe/in-defence-of-spock",
+    "postedAt": "2021-04-21T21:34:04.206Z",
+    "baseScore": 37,
+    "voteCount": 31,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "zac-hatfield-dodds",
+      "slug": "zac-hatfield-dodds",
+      "displayName": "Zac Hatfield-Dodds"
+    }
+  },
+  {
+    "_id": "PrCMP3PaMBvDYsKui",
+    "title": "A Crackpot Physics: Time, Special Relativity, and Why Bother?",
+    "slug": "a-crackpot-physics-time-special-relativity-and-why-bother",
+    "pageUrl": "https://www.lesswrong.com/posts/PrCMP3PaMBvDYsKui/a-crackpot-physics-time-special-relativity-and-why-bother",
+    "postedAt": "2021-04-21T20:17:45.614Z",
+    "baseScore": -3,
+    "voteCount": 4,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ACrackedPot",
+      "slug": "acrackedpot",
+      "displayName": "ACrackedPot"
+    }
+  },
+  {
+    "_id": "zFwie6AoPyqGmMSsc",
+    "title": "[AN #147]: An overview of the interpretability landscape",
+    "slug": "an-147-an-overview-of-the-interpretability-landscape",
+    "pageUrl": "https://www.lesswrong.com/posts/zFwie6AoPyqGmMSsc/an-147-an-overview-of-the-interpretability-landscape",
+    "postedAt": "2021-04-21T17:10:04.433Z",
+    "baseScore": 14,
+    "voteCount": 5,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "EA4Txiuo5Ce2b7iBd",
+    "title": "Where are intentions to be found?",
+    "slug": "where-are-intentions-to-be-found",
+    "pageUrl": "https://www.lesswrong.com/posts/EA4Txiuo5Ce2b7iBd/where-are-intentions-to-be-found",
+    "postedAt": "2021-04-21T00:51:50.957Z",
+    "baseScore": 44,
+    "voteCount": 10,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexflint",
+      "slug": "alexflint",
+      "displayName": "Alex Flint"
+    }
+  },
+  {
+    "_id": "ksE75dxtro3mDk44K",
+    "title": "Why don't we vaccinate people against smallpox any more?",
+    "slug": "why-don-t-we-vaccinate-people-against-smallpox-any-more",
+    "pageUrl": "https://www.lesswrong.com/posts/ksE75dxtro3mDk44K/why-don-t-we-vaccinate-people-against-smallpox-any-more",
+    "postedAt": "2021-04-21T00:08:31.593Z",
+    "baseScore": 14,
+    "voteCount": 8,
+    "commentCount": 7,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "c4B45PGxCgY7CEMXr",
+    "title": "What am I fighting for? ",
+    "slug": "what-am-i-fighting-for",
+    "pageUrl": "https://www.lesswrong.com/posts/c4B45PGxCgY7CEMXr/what-am-i-fighting-for",
+    "postedAt": "2021-04-20T23:27:26.416Z",
+    "baseScore": 12,
+    "voteCount": 7,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "quinn-dougherty",
+      "slug": "quinn-dougherty",
+      "displayName": "Quinn"
+    }
+  },
+  {
+    "_id": "wpbpvjZCK3JhzpR2D",
+    "title": "Gradations of Inner Alignment Obstacles",
+    "slug": "gradations-of-inner-alignment-obstacles",
+    "pageUrl": "https://www.lesswrong.com/posts/wpbpvjZCK3JhzpR2D/gradations-of-inner-alignment-obstacles",
+    "postedAt": "2021-04-20T22:18:18.394Z",
+    "baseScore": 84,
+    "voteCount": 23,
+    "commentCount": 22,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "ReB7yoF22GuerNfhH",
+    "title": "Thiel on secrets and indefiniteness",
+    "slug": "thiel-on-secrets-and-indefiniteness",
+    "pageUrl": "https://www.lesswrong.com/posts/ReB7yoF22GuerNfhH/thiel-on-secrets-and-indefiniteness",
+    "postedAt": "2021-04-20T21:59:35.792Z",
+    "baseScore": 60,
+    "voteCount": 24,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobbBB",
+      "slug": "robbbb",
+      "displayName": "Rob Bensinger"
+    }
+  },
+  {
+    "_id": "di5H2QryrsJsziNvr",
+    "title": "Why “put down your phone and go outside” is Bad Advice. ",
+    "slug": "why-put-down-your-phone-and-go-outside-is-bad-advice",
+    "pageUrl": "https://www.lesswrong.com/posts/di5H2QryrsJsziNvr/why-put-down-your-phone-and-go-outside-is-bad-advice",
+    "postedAt": "2021-04-20T19:05:11.424Z",
+    "baseScore": 12,
+    "voteCount": 12,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "madi_hexa",
+      "slug": "madi_hexa",
+      "displayName": "madilynHex"
+    }
+  },
+  {
+    "_id": "8n5cgfEmsyHmEGe9L",
+    "title": "Hard vs Soft in fields as attitudes towards model collision",
+    "slug": "hard-vs-soft-in-fields-as-attitudes-towards-model-collision",
+    "pageUrl": "https://www.lesswrong.com/posts/8n5cgfEmsyHmEGe9L/hard-vs-soft-in-fields-as-attitudes-towards-model-collision",
+    "postedAt": "2021-04-20T18:57:51.401Z",
+    "baseScore": 13,
+    "voteCount": 6,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jemist",
+      "slug": "j-bostock",
+      "displayName": "J Bostock"
+    }
+  },
+  {
+    "_id": "xkD2ToMRRDDhAbBoj",
+    "title": "Young kids catching COVID: how much to worry?",
+    "slug": "young-kids-catching-covid-how-much-to-worry",
+    "pageUrl": "https://www.lesswrong.com/posts/xkD2ToMRRDDhAbBoj/young-kids-catching-covid-how-much-to-worry",
+    "postedAt": "2021-04-20T18:03:32.499Z",
+    "baseScore": 55,
+    "voteCount": 25,
+    "commentCount": 22,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "steve2152",
+      "slug": "steve2152",
+      "displayName": "Steven Byrnes"
+    }
+  },
+  {
+    "_id": "tRqKMdPdGjeAcjKNK",
+    "title": "SMBC about Eliezer",
+    "slug": "smbc-about-eliezer",
+    "pageUrl": "https://www.lesswrong.com/posts/tRqKMdPdGjeAcjKNK/smbc-about-eliezer",
+    "postedAt": "2021-04-20T17:28:15.402Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "IrenicTruth",
+      "slug": "irenictruth",
+      "displayName": "IrenicTruth"
+    }
+  },
+  {
+    "_id": "uW2Kf9oKJLqYyXzQY",
+    "title": "A Crackpot Physics: Issues",
+    "slug": "a-crackpot-physics-issues",
+    "pageUrl": "https://www.lesswrong.com/posts/uW2Kf9oKJLqYyXzQY/a-crackpot-physics-issues",
+    "postedAt": "2021-04-20T17:07:52.150Z",
+    "baseScore": -1,
+    "voteCount": 5,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ACrackedPot",
+      "slug": "acrackedpot",
+      "displayName": "ACrackedPot"
+    }
+  },
+  {
+    "_id": "RikvDhDdLJcdpEfGq",
+    "title": "Types of generalism",
+    "slug": "types-of-generalism",
+    "pageUrl": "https://www.lesswrong.com/posts/RikvDhDdLJcdpEfGq/types-of-generalism",
+    "postedAt": "2021-04-20T08:22:49.569Z",
+    "baseScore": 24,
+    "voteCount": 10,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Nora_Ammann",
+      "slug": "nora_ammann",
+      "displayName": "Nora_Ammann"
+    }
+  },
+  {
+    "_id": "EjgMWPDTBXqX5mqAg",
+    "title": "Does an app/group for personal forecasting exist?",
+    "slug": "does-an-app-group-for-personal-forecasting-exist",
+    "pageUrl": "https://www.lesswrong.com/posts/EjgMWPDTBXqX5mqAg/does-an-app-group-for-personal-forecasting-exist",
+    "postedAt": "2021-04-20T05:04:01.418Z",
+    "baseScore": 19,
+    "voteCount": 7,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "AllAmericanBreakfast",
+      "slug": "directedevolution",
+      "displayName": "DirectedEvolution"
+    }
+  },
+  {
+    "_id": "vHR64sZESzqn8vc37",
+    "title": "[Letter] Advice for High School #1",
+    "slug": "letter-advice-for-high-school-1",
+    "pageUrl": "https://www.lesswrong.com/posts/vHR64sZESzqn8vc37/letter-advice-for-high-school-1",
+    "postedAt": "2021-04-20T04:09:16.606Z",
+    "baseScore": 93,
+    "voteCount": 60,
+    "commentCount": 28,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "5AoLQsRL8eShLApN9",
+    "title": "Iterated Trust Kickstarters",
+    "slug": "iterated-trust-kickstarters-1",
+    "pageUrl": "https://www.lesswrong.com/posts/5AoLQsRL8eShLApN9/iterated-trust-kickstarters-1",
+    "postedAt": "2021-04-20T03:18:01.849Z",
+    "baseScore": 74,
+    "voteCount": 28,
+    "commentCount": 19,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "ucjfY46L6qyXefvBT",
+    "title": "Quick examination of miles per micromort for US drivers, with adjustments for safety-increasing behavior",
+    "slug": "quick-examination-of-miles-per-micromort-for-us-drivers-with",
+    "pageUrl": "https://www.lesswrong.com/posts/ucjfY46L6qyXefvBT/quick-examination-of-miles-per-micromort-for-us-drivers-with",
+    "postedAt": "2021-04-19T23:19:36.163Z",
+    "baseScore": 44,
+    "voteCount": 20,
+    "commentCount": 15,
+    "meta": false,
+    "question": false,
+    "url": "https://docs.google.com/spreadsheets/d/1F0CmumTbASFwki665tuN5YFriXeqi23WjY5RqjYbczA/edit?usp=sharing",
+    "user": {
+      "username": "joshjacobson",
+      "slug": "joshjacobson",
+      "displayName": "Josh Jacobson"
+    }
+  },
+  {
+    "_id": "yyD5mQogGew4sJSs3",
+    "title": "How can we increase the frequency of rare insights?",
+    "slug": "how-can-we-increase-the-frequency-of-rare-insights",
+    "pageUrl": "https://www.lesswrong.com/posts/yyD5mQogGew4sJSs3/how-can-we-increase-the-frequency-of-rare-insights",
+    "postedAt": "2021-04-19T22:54:03.154Z",
+    "baseScore": 19,
+    "voteCount": 7,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MichaelDickens",
+      "slug": "michaeldickens",
+      "displayName": "MichaelDickens"
+    }
+  },
+  {
+    "_id": "JdYy8Ycatcktmh99x",
+    "title": "Wanted: Research Assistant for The Roots of Progress",
+    "slug": "wanted-research-assistant-for-the-roots-of-progress",
+    "pageUrl": "https://www.lesswrong.com/posts/JdYy8Ycatcktmh99x/wanted-research-assistant-for-the-roots-of-progress",
+    "postedAt": "2021-04-19T19:03:14.432Z",
+    "baseScore": 31,
+    "voteCount": 9,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": "https://rootsofprogress.org/wanted-research-assistant",
+    "user": {
+      "username": "jasoncrawford",
+      "slug": "jasoncrawford",
+      "displayName": "jasoncrawford"
+    }
+  },
+  {
+    "_id": "yK8mKmMQ73TuzgCv6",
+    "title": "You Can Now Embed Flashcard Quizzes in Your LessWrong posts!",
+    "slug": "you-can-now-embed-flashcard-quizzes-in-your-lesswrong-posts",
+    "pageUrl": "https://www.lesswrong.com/posts/yK8mKmMQ73TuzgCv6/you-can-now-embed-flashcard-quizzes-in-your-lesswrong-posts",
+    "postedAt": "2021-04-19T13:44:41.014Z",
+    "baseScore": 58,
+    "voteCount": 34,
+    "commentCount": 25,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "spencerg",
+      "slug": "spencerg",
+      "displayName": "spencerg"
+    }
+  },
+  {
+    "_id": "8KGivZgB8ixykBBGs",
+    "title": "D&D.Sci April 2021 Evaluation and Ruleset",
+    "slug": "d-and-d-sci-april-2021-evaluation-and-ruleset",
+    "pageUrl": "https://www.lesswrong.com/posts/8KGivZgB8ixykBBGs/d-and-d-sci-april-2021-evaluation-and-ruleset",
+    "postedAt": "2021-04-19T13:26:58.278Z",
+    "baseScore": 48,
+    "voteCount": 21,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abstractapplic",
+      "slug": "abstractapplic",
+      "displayName": "abstractapplic"
+    }
+  },
+  {
+    "_id": "PjNesjrEoCMy3Buef",
+    "title": "Parameter count of ML systems through time?",
+    "slug": "parameter-count-of-ml-systems-through-time",
+    "pageUrl": "https://www.lesswrong.com/posts/PjNesjrEoCMy3Buef/parameter-count-of-ml-systems-through-time",
+    "postedAt": "2021-04-19T12:54:26.504Z",
+    "baseScore": 31,
+    "voteCount": 15,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Jsevillamol",
+      "slug": "jsevillamol",
+      "displayName": "Jsevillamol"
+    }
+  },
+  {
+    "_id": "i3dZgA3XgyCFpYZFW",
+    "title": "Problems of evil",
+    "slug": "problems-of-evil",
+    "pageUrl": "https://www.lesswrong.com/posts/i3dZgA3XgyCFpYZFW/problems-of-evil",
+    "postedAt": "2021-04-19T08:06:42.895Z",
+    "baseScore": 29,
+    "voteCount": 26,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "joekc",
+      "slug": "joe-carlsmith",
+      "displayName": "Joe Carlsmith"
+    }
+  },
+  {
+    "_id": "LLQCaGevdjEeJSKiJ",
+    "title": "the fat baker principle",
+    "slug": "the-fat-baker-principle",
+    "pageUrl": "https://www.lesswrong.com/posts/LLQCaGevdjEeJSKiJ/the-fat-baker-principle",
+    "postedAt": "2021-04-19T07:58:05.376Z",
+    "baseScore": -6,
+    "voteCount": 10,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "faint reminder",
+      "slug": "faint-reminder",
+      "displayName": "faint reminder"
+    }
+  },
+  {
+    "_id": "sk8nBn3rnNtKJvrnE",
+    "title": "Bellman's Curse on Advice",
+    "slug": "bellman-s-curse-on-advice",
+    "pageUrl": "https://www.lesswrong.com/posts/sk8nBn3rnNtKJvrnE/bellman-s-curse-on-advice",
+    "postedAt": "2021-04-19T02:30:34.588Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "nibnalin",
+      "slug": "nibnalin",
+      "displayName": "nibnalin"
+    }
+  },
+  {
+    "_id": "xtRWoLtCved77vqbg",
+    "title": "Are there good classes (or just articles) on blog writing?",
+    "slug": "are-there-good-classes-or-just-articles-on-blog-writing",
+    "pageUrl": "https://www.lesswrong.com/posts/xtRWoLtCved77vqbg/are-there-good-classes-or-just-articles-on-blog-writing",
+    "postedAt": "2021-04-19T01:10:21.368Z",
+    "baseScore": 14,
+    "voteCount": 6,
+    "commentCount": 12,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "korin43",
+      "slug": "brendan-long",
+      "displayName": "Brendan Long"
+    }
+  },
+  {
+    "_id": "i9p5KWNWcthccsxqm",
+    "title": "Updating the Lottery Ticket Hypothesis",
+    "slug": "updating-the-lottery-ticket-hypothesis",
+    "pageUrl": "https://www.lesswrong.com/posts/i9p5KWNWcthccsxqm/updating-the-lottery-ticket-hypothesis",
+    "postedAt": "2021-04-18T21:45:05.898Z",
+    "baseScore": 73,
+    "voteCount": 28,
+    "commentCount": 41,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "johnswentworth",
+      "slug": "johnswentworth",
+      "displayName": "johnswentworth"
+    }
+  },
+  {
+    "_id": "wGfswz45GsMysvGQM",
+    "title": "Anger",
+    "slug": "anger",
+    "pageUrl": "https://www.lesswrong.com/posts/wGfswz45GsMysvGQM/anger",
+    "postedAt": "2021-04-18T16:14:08.309Z",
+    "baseScore": 38,
+    "voteCount": 45,
+    "commentCount": 23,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "HLaitbKRaJRxGyigA",
+    "title": "Rising rents and appropriate responses",
+    "slug": "rising-rents-and-appropriate-responses",
+    "pageUrl": "https://www.lesswrong.com/posts/HLaitbKRaJRxGyigA/rising-rents-and-appropriate-responses",
+    "postedAt": "2021-04-18T14:05:35.485Z",
+    "baseScore": 10,
+    "voteCount": 10,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "dominicq",
+      "slug": "dominicq",
+      "displayName": "dominicq"
+    }
+  },
+  {
+    "_id": "uM93uLLENoqNGczqk",
+    "title": "The hour I first alieved",
+    "slug": "the-hour-i-first-alieved",
+    "pageUrl": "https://www.lesswrong.com/posts/uM93uLLENoqNGczqk/the-hour-i-first-alieved",
+    "postedAt": "2021-04-17T17:02:01.733Z",
+    "baseScore": 5,
+    "voteCount": 4,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://matejsuchy.substack.com/p/i-hour-i-first-alieved",
+    "user": {
+      "username": "matejsuchy",
+      "slug": "matejsuchy",
+      "displayName": "matejsuchy"
+    }
+  },
+  {
+    "_id": "5BwADJo44dvLQ4csS",
+    "title": "Defining \"optimizer\"",
+    "slug": "defining-optimizer",
+    "pageUrl": "https://www.lesswrong.com/posts/5BwADJo44dvLQ4csS/defining-optimizer",
+    "postedAt": "2021-04-17T15:38:00.352Z",
+    "baseScore": 9,
+    "voteCount": 6,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Chantiel",
+      "slug": "chantiel",
+      "displayName": "Chantiel"
+    }
+  },
+  {
+    "_id": "qumSpRdjjdzBGTqJE",
+    "title": "Book review and policy discussion: diversity and complexity",
+    "slug": "book-review-and-policy-discussion-diversity-and-complexity",
+    "pageUrl": "https://www.lesswrong.com/posts/qumSpRdjjdzBGTqJE/book-review-and-policy-discussion-diversity-and-complexity",
+    "postedAt": "2021-04-17T11:36:38.789Z",
+    "baseScore": 11,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "victorsintnicolaas",
+      "slug": "victorsintnicolaas",
+      "displayName": "victorsintnicolaas"
+    }
+  },
+  {
+    "_id": "c9xzramv9TxFSJpiH",
+    "title": "How long should I delay my second shot?",
+    "slug": "how-long-should-i-delay-my-second-shot",
+    "pageUrl": "https://www.lesswrong.com/posts/c9xzramv9TxFSJpiH/how-long-should-i-delay-my-second-shot",
+    "postedAt": "2021-04-17T08:51:19.677Z",
+    "baseScore": 8,
+    "voteCount": 5,
+    "commentCount": 10,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "purge",
+      "slug": "purge",
+      "displayName": "purge"
+    }
+  },
+  {
+    "_id": "RDnmBxqfus69qtHSj",
+    "title": "Networks of Meaning",
+    "slug": "networks-of-meaning",
+    "pageUrl": "https://www.lesswrong.com/posts/RDnmBxqfus69qtHSj/networks-of-meaning",
+    "postedAt": "2021-04-17T07:30:16.012Z",
+    "baseScore": 21,
+    "voteCount": 9,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": "https://www.erichgrunewald.com/posts/networks-of-meaning/",
+    "user": {
+      "username": "Erich_Grunewald",
+      "slug": "erich_grunewald",
+      "displayName": "Erich_Grunewald"
+    }
+  },
+  {
+    "_id": "9Scz9EAWbPapYCawt",
+    "title": "Are there any good ways to place a bet on RadicalXChange and/or related ideas/mechanisms taking off in a big way?  e.g. is there something to invest $$$ in? ",
+    "slug": "are-there-any-good-ways-to-place-a-bet-on-radicalxchange-and",
+    "pageUrl": "https://www.lesswrong.com/posts/9Scz9EAWbPapYCawt/are-there-any-good-ways-to-place-a-bet-on-radicalxchange-and",
+    "postedAt": "2021-04-17T06:58:42.414Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "capybaralet",
+      "slug": "david-scott-krueger-formerly-capybaralet",
+      "displayName": "David Scott Krueger (formerly: capybaralet)"
+    }
+  },
+  {
+    "_id": "PnA2JATMQ6FwYfRrR",
+    "title": "Alex Flint on \"A software engineer's perspective on logical induction\"",
+    "slug": "alex-flint-on-a-software-engineer-s-perspective-on-logical",
+    "pageUrl": "https://www.lesswrong.com/events/PnA2JATMQ6FwYfRrR/alex-flint-on-a-software-engineer-s-perspective-on-logical",
+    "postedAt": "2021-04-17T06:56:10.952Z",
+    "baseScore": 21,
+    "voteCount": 4,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "z2kn8LRzrySkfbPvx",
+    "title": "All is fair in love and war, on Zero-sum games in life",
+    "slug": "all-is-fair-in-love-and-war-on-zero-sum-games-in-life",
+    "pageUrl": "https://www.lesswrong.com/posts/z2kn8LRzrySkfbPvx/all-is-fair-in-love-and-war-on-zero-sum-games-in-life",
+    "postedAt": "2021-04-17T02:11:06.664Z",
+    "baseScore": -6,
+    "voteCount": 13,
+    "commentCount": 22,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Ratios",
+      "slug": "ratios",
+      "displayName": "Ratios"
+    }
+  },
+  {
+    "_id": "KuuafiWtxG6mMtmPa",
+    "title": "On Sleep Procrastination: Going To Bed At A Reasonable Hour",
+    "slug": "on-sleep-procrastination-going-to-bed-at-a-reasonable-hour",
+    "pageUrl": "https://www.lesswrong.com/posts/KuuafiWtxG6mMtmPa/on-sleep-procrastination-going-to-bed-at-a-reasonable-hour",
+    "postedAt": "2021-04-17T02:10:59.172Z",
+    "baseScore": 22,
+    "voteCount": 14,
+    "commentCount": 22,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "iamef",
+      "slug": "emily-fan",
+      "displayName": "emily.fan"
+    }
+  },
+  {
+    "_id": "vefk9vHqxkiEkJgBH",
+    "title": "What does vaccine effectiveness as a function of time look like?",
+    "slug": "what-does-vaccine-effectiveness-as-a-function-of-time-look",
+    "pageUrl": "https://www.lesswrong.com/posts/vefk9vHqxkiEkJgBH/what-does-vaccine-effectiveness-as-a-function-of-time-look",
+    "postedAt": "2021-04-17T00:36:20.366Z",
+    "baseScore": 18,
+    "voteCount": 6,
+    "commentCount": 8,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "capybaralet",
+      "slug": "david-scott-krueger-formerly-capybaralet",
+      "displayName": "David Scott Krueger (formerly: capybaralet)"
+    }
+  },
+  {
+    "_id": "M6ozR9CihyDNighnP",
+    "title": "Could degoogling be a practice run for something more important?",
+    "slug": "could-degoogling-be-a-practice-run-for-something-more",
+    "pageUrl": "https://www.lesswrong.com/posts/M6ozR9CihyDNighnP/could-degoogling-be-a-practice-run-for-something-more",
+    "postedAt": "2021-04-17T00:03:42.790Z",
+    "baseScore": 15,
+    "voteCount": 7,
+    "commentCount": 5,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "quinn-dougherty",
+      "slug": "quinn-dougherty",
+      "displayName": "Quinn"
+    }
+  },
+  {
+    "_id": "7EupfLrZ63pbdyb9J",
+    "title": "Superrational Agents Kelly Bet Influence!",
+    "slug": "superrational-agents-kelly-bet-influence",
+    "pageUrl": "https://www.lesswrong.com/posts/7EupfLrZ63pbdyb9J/superrational-agents-kelly-bet-influence",
+    "postedAt": "2021-04-16T22:08:18.201Z",
+    "baseScore": 47,
+    "voteCount": 21,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "rE9Nvj38A64kH2nC8",
+    "title": "Most Analogies Are Wrong",
+    "slug": "most-analogies-are-wrong",
+    "pageUrl": "https://www.lesswrong.com/posts/rE9Nvj38A64kH2nC8/most-analogies-are-wrong",
+    "postedAt": "2021-04-16T19:53:41.940Z",
+    "baseScore": 8,
+    "voteCount": 8,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jemist",
+      "slug": "j-bostock",
+      "displayName": "J Bostock"
+    }
+  },
+  {
+    "_id": "ggDKTaBtZDSdSdsxf",
+    "title": "The Scout Mindset - read-along",
+    "slug": "the-scout-mindset-read-along",
+    "pageUrl": "https://www.lesswrong.com/posts/ggDKTaBtZDSdSdsxf/the-scout-mindset-read-along",
+    "postedAt": "2021-04-16T19:43:02.554Z",
+    "baseScore": 42,
+    "voteCount": 15,
+    "commentCount": 44,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "weft",
+      "slug": "weft",
+      "displayName": "weft"
+    }
+  },
+  {
+    "_id": "ThvvCE2HsLohJYd7b",
+    "title": "Why has nuclear power been a flop?",
+    "slug": "why-has-nuclear-power-been-a-flop",
+    "pageUrl": "https://www.lesswrong.com/posts/ThvvCE2HsLohJYd7b/why-has-nuclear-power-been-a-flop",
+    "postedAt": "2021-04-16T16:49:15.789Z",
+    "baseScore": 149,
+    "voteCount": 89,
+    "commentCount": 50,
+    "meta": false,
+    "question": false,
+    "url": "https://rootsofprogress.org/devanney-on-the-nuclear-flop",
+    "user": {
+      "username": "jasoncrawford",
+      "slug": "jasoncrawford",
+      "displayName": "jasoncrawford"
+    }
+  },
+  {
+    "_id": "Q6h9ratmJpBKSexYS",
+    "title": "Prophetic Hazard",
+    "slug": "prophetic-hazard",
+    "pageUrl": "https://www.lesswrong.com/posts/Q6h9ratmJpBKSexYS/prophetic-hazard",
+    "postedAt": "2021-04-16T10:09:14.745Z",
+    "baseScore": -1,
+    "voteCount": 9,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "onur",
+      "slug": "onur",
+      "displayName": "onur"
+    }
+  },
+  {
+    "_id": "gp6wMm3NFX6QiCmYT",
+    "title": "What are some interesting examples of risks measured in micromorts?",
+    "slug": "what-are-some-interesting-examples-of-risks-measured-in",
+    "pageUrl": "https://www.lesswrong.com/posts/gp6wMm3NFX6QiCmYT/what-are-some-interesting-examples-of-risks-measured-in",
+    "postedAt": "2021-04-16T05:25:01.594Z",
+    "baseScore": 5,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "skybrian",
+      "slug": "skybrian",
+      "displayName": "skybrian"
+    }
+  },
+  {
+    "_id": "RdpHtWbnSHgJmGgSt",
+    "title": "Does anyone know this webpage about Machine Learning?",
+    "slug": "does-anyone-know-this-webpage-about-machine-learning",
+    "pageUrl": "https://www.lesswrong.com/posts/RdpHtWbnSHgJmGgSt/does-anyone-know-this-webpage-about-machine-learning",
+    "postedAt": "2021-04-16T01:03:43.804Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 2,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "adrian-arellano-davin",
+      "slug": "mukashi",
+      "displayName": "mukashi"
+    }
+  },
+  {
+    "_id": "YcJGevhGB9zY96kk8",
+    "title": "Place-Based Programming - Part 2 - Functions",
+    "slug": "place-based-programming-part-2-functions",
+    "pageUrl": "https://www.lesswrong.com/posts/YcJGevhGB9zY96kk8/place-based-programming-part-2-functions",
+    "postedAt": "2021-04-16T00:25:27.515Z",
+    "baseScore": 14,
+    "voteCount": 5,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "E8RffE2XcodFFd7vo",
+    "title": "[ACX Linkpost] Prospectus on Próspera",
+    "slug": "acx-linkpost-prospectus-on-prospera",
+    "pageUrl": "https://www.lesswrong.com/posts/E8RffE2XcodFFd7vo/acx-linkpost-prospectus-on-prospera",
+    "postedAt": "2021-04-15T22:48:00.545Z",
+    "baseScore": 39,
+    "voteCount": 13,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "https://astralcodexten.substack.com/p/prospectus-on-prospera",
+    "user": {
+      "username": "mike_hawke",
+      "slug": "mike_hawke",
+      "displayName": "mike_hawke"
+    }
+  },
+  {
+    "_id": "FEmE9LRyoB4r94kSC",
+    "title": "The National Dashboard and Human Progress",
+    "slug": "the-national-dashboard-and-human-progress",
+    "pageUrl": "https://www.lesswrong.com/posts/FEmE9LRyoB4r94kSC/the-national-dashboard-and-human-progress",
+    "postedAt": "2021-04-15T19:21:59.879Z",
+    "baseScore": 6,
+    "voteCount": 4,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "https://max2c.com/national-dashboard-and-human-progress/",
+    "user": {
+      "username": "maxa",
+      "slug": "maxa",
+      "displayName": "maxa"
+    }
+  },
+  {
+    "_id": "drWkuDCqtPubEtfAF",
+    "title": "Old post/writing on optimization daemons?",
+    "slug": "old-post-writing-on-optimization-daemons",
+    "pageUrl": "https://www.lesswrong.com/posts/drWkuDCqtPubEtfAF/old-post-writing-on-optimization-daemons",
+    "postedAt": "2021-04-15T18:00:17.923Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 2,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "jbkjr",
+      "slug": "jbkjr",
+      "displayName": "jbkjr"
+    }
+  },
+  {
+    "_id": "f6oWbqxEwktfPrKJw",
+    "title": "Computing Natural Abstractions: Linear Approximation",
+    "slug": "computing-natural-abstractions-linear-approximation",
+    "pageUrl": "https://www.lesswrong.com/posts/f6oWbqxEwktfPrKJw/computing-natural-abstractions-linear-approximation",
+    "postedAt": "2021-04-15T17:47:10.422Z",
+    "baseScore": 41,
+    "voteCount": 16,
+    "commentCount": 22,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "johnswentworth",
+      "slug": "johnswentworth",
+      "displayName": "johnswentworth"
+    }
+  },
+  {
+    "_id": "6EKhDknBpEcpgKhc2",
+    "title": "How & when to write a business plan",
+    "slug": "how-and-when-to-write-a-business-plan",
+    "pageUrl": "https://www.lesswrong.com/posts/6EKhDknBpEcpgKhc2/how-and-when-to-write-a-business-plan",
+    "postedAt": "2021-04-15T15:45:50.288Z",
+    "baseScore": 13,
+    "voteCount": 8,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "bfinn",
+      "slug": "bfinn",
+      "displayName": "bfinn"
+    }
+  },
+  {
+    "_id": "8o5Cae5FEDke6jp3P",
+    "title": "Andrés Gómez Emilsson at the AstralCodexTen Online Meetup",
+    "slug": "andres-gomez-emilsson-at-the-astralcodexten-online-meetup",
+    "pageUrl": "https://www.lesswrong.com/events/8o5Cae5FEDke6jp3P/andres-gomez-emilsson-at-the-astralcodexten-online-meetup",
+    "postedAt": "2021-04-15T15:36:13.669Z",
+    "baseScore": 8,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "JoshuaFox",
+      "slug": "joshuafox",
+      "displayName": "JoshuaFox"
+    }
+  },
+  {
+    "_id": "GQLmPpf9Wava6BTXJ",
+    "title": "The irrelevance of test scores is greatly exaggerated",
+    "slug": "the-irrelevance-of-test-scores-is-greatly-exaggerated",
+    "pageUrl": "https://www.lesswrong.com/posts/GQLmPpf9Wava6BTXJ/the-irrelevance-of-test-scores-is-greatly-exaggerated",
+    "postedAt": "2021-04-15T14:15:29.046Z",
+    "baseScore": 111,
+    "voteCount": 58,
+    "commentCount": 13,
+    "meta": false,
+    "question": false,
+    "url": "https://dynomight.net/are-tests-irrelevant/",
+    "user": {
+      "username": "dynomight",
+      "slug": "dynomight",
+      "displayName": "dynomight"
+    }
+  },
+  {
+    "_id": "EhkNxABhyHKoci8Ga",
+    "title": "Covid 4/15: Are We Seriously Doing This Again",
+    "slug": "covid-4-15-are-we-seriously-doing-this-again",
+    "pageUrl": "https://www.lesswrong.com/posts/EhkNxABhyHKoci8Ga/covid-4-15-are-we-seriously-doing-this-again",
+    "postedAt": "2021-04-15T13:00:01.288Z",
+    "baseScore": 82,
+    "voteCount": 53,
+    "commentCount": 37,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "zv4s9SLuGfZAGKQTn",
+    "title": "Are there opportunities for small investors unavailable to big ones?",
+    "slug": "are-there-opportunities-for-small-investors-unavailable-to",
+    "pageUrl": "https://www.lesswrong.com/posts/zv4s9SLuGfZAGKQTn/are-there-opportunities-for-small-investors-unavailable-to",
+    "postedAt": "2021-04-15T09:13:22.481Z",
+    "baseScore": 26,
+    "voteCount": 16,
+    "commentCount": 26,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AllAmericanBreakfast",
+      "slug": "directedevolution",
+      "displayName": "DirectedEvolution"
+    }
+  },
+  {
+    "_id": "3CxbpKnpN4BHrwoXn",
+    "title": "Hell is wasted on the evil",
+    "slug": "hell-is-wasted-on-the-evil",
+    "pageUrl": "https://www.lesswrong.com/posts/3CxbpKnpN4BHrwoXn/hell-is-wasted-on-the-evil",
+    "postedAt": "2021-04-15T08:52:01.466Z",
+    "baseScore": 73,
+    "voteCount": 54,
+    "commentCount": 20,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "YNJnEixegRHpzqqQ4",
+    "title": "Training the YouTube Algorithm",
+    "slug": "training-the-youtube-algorithm",
+    "pageUrl": "https://www.lesswrong.com/posts/YNJnEixegRHpzqqQ4/training-the-youtube-algorithm",
+    "postedAt": "2021-04-15T06:37:58.145Z",
+    "baseScore": 32,
+    "voteCount": 20,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "yTEouYSdCtyKepPmW",
+    "title": "Psyched out",
+    "slug": "psyched-out",
+    "pageUrl": "https://www.lesswrong.com/posts/yTEouYSdCtyKepPmW/psyched-out",
+    "postedAt": "2021-04-15T04:45:14.104Z",
+    "baseScore": 3,
+    "voteCount": 4,
+    "commentCount": 8,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "josh-smith-brennan",
+      "slug": "josh-smith-brennan",
+      "displayName": "Josh Smith-Brennan"
+    }
+  },
+  {
+    "_id": "7YZmB8HZ7tkj3Hqv6",
+    "title": "Placebo effect report: chiropractic adjustment",
+    "slug": "placebo-effect-report-chiropractic-adjustment",
+    "pageUrl": "https://www.lesswrong.com/posts/7YZmB8HZ7tkj3Hqv6/placebo-effect-report-chiropractic-adjustment",
+    "postedAt": "2021-04-15T02:50:11.893Z",
+    "baseScore": 15,
+    "voteCount": 9,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "supposedlyfun",
+      "slug": "supposedlyfun",
+      "displayName": "supposedlyfun"
+    }
+  },
+  {
+    "_id": "M5PdzAH7Ck4FjuXwJ",
+    "title": "The secret of Wikipedia's success",
+    "slug": "the-secret-of-wikipedia-s-success",
+    "pageUrl": "https://www.lesswrong.com/posts/M5PdzAH7Ck4FjuXwJ/the-secret-of-wikipedia-s-success",
+    "postedAt": "2021-04-14T22:18:52.871Z",
+    "baseScore": 68,
+    "voteCount": 46,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": "https://aaronbergman.substack.com/p/the-secret-of-wikipedias-success",
+    "user": {
+      "username": "aaronb50",
+      "slug": "aaronb50",
+      "displayName": "Aaron Bergman"
+    }
+  },
+  {
+    "_id": "s3Jdo8qyuaxMARffE",
+    "title": "Place-Based Programming - Part 1 - Places",
+    "slug": "place-based-programming-part-1-places",
+    "pageUrl": "https://www.lesswrong.com/posts/s3Jdo8qyuaxMARffE/place-based-programming-part-1-places",
+    "postedAt": "2021-04-14T22:18:15.184Z",
+    "baseScore": 32,
+    "voteCount": 16,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "wxe8xTL9f5yBBSej6",
+    "title": "The consequentialist case for social conservatism, or “Against Cultural Superstimuli”",
+    "slug": "the-consequentialist-case-for-social-conservatism-or-against",
+    "pageUrl": "https://www.lesswrong.com/posts/wxe8xTL9f5yBBSej6/the-consequentialist-case-for-social-conservatism-or-against",
+    "postedAt": "2021-04-14T21:50:25.794Z",
+    "baseScore": 28,
+    "voteCount": 39,
+    "commentCount": 50,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Sophronius",
+      "slug": "sophronius",
+      "displayName": "Sophronius"
+    }
+  },
+  {
+    "_id": "AwxBGFy59DYDk4ooe",
+    "title": "[AN #146]: Plausible stories of how we might fail to avert an existential catastrophe",
+    "slug": "an-146-plausible-stories-of-how-we-might-fail-to-avert-an",
+    "pageUrl": "https://www.lesswrong.com/posts/AwxBGFy59DYDk4ooe/an-146-plausible-stories-of-how-we-might-fail-to-avert-an",
+    "postedAt": "2021-04-14T17:30:03.535Z",
+    "baseScore": 23,
+    "voteCount": 6,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "oLoLqmWYXgTyyiuXM",
+    "title": "What weird beliefs do you have? ",
+    "slug": "what-weird-beliefs-do-you-have",
+    "pageUrl": "https://www.lesswrong.com/posts/oLoLqmWYXgTyyiuXM/what-weird-beliefs-do-you-have",
+    "postedAt": "2021-04-14T10:29:16.322Z",
+    "baseScore": 16,
+    "voteCount": 13,
+    "commentCount": 77,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Dumbledore's Army",
+      "slug": "dumbledore-s-army",
+      "displayName": "Dumbledore's Army"
+    }
+  },
+  {
+    "_id": "eFegYXqskuxKmfYmn",
+    "title": "An Exercise in Rational Cooperation and Communication: Let's Play Hanabi",
+    "slug": "an-exercise-in-rational-cooperation-and-communication-let-s",
+    "pageUrl": "https://www.lesswrong.com/posts/eFegYXqskuxKmfYmn/an-exercise-in-rational-cooperation-and-communication-let-s",
+    "postedAt": "2021-04-14T08:36:07.846Z",
+    "baseScore": 14,
+    "voteCount": 11,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ejacob",
+      "slug": "ejacob",
+      "displayName": "ejacob"
+    }
+  },
+  {
+    "_id": "4thPHxgBCvteQjLv6",
+    "title": "Against \"Context-Free Integrity\"",
+    "slug": "against-context-free-integrity",
+    "pageUrl": "https://www.lesswrong.com/posts/4thPHxgBCvteQjLv6/against-context-free-integrity",
+    "postedAt": "2021-04-14T08:20:44.368Z",
+    "baseScore": 62,
+    "voteCount": 34,
+    "commentCount": 28,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Benito",
+      "slug": "benito",
+      "displayName": "Ben Pace"
+    }
+  },
+  {
+    "_id": "uA7rNDBBDo2yPNxw5",
+    "title": "Auctioning Off the Top Slot in Your Reading List",
+    "slug": "auctioning-off-the-top-slot-in-your-reading-list",
+    "pageUrl": "https://www.lesswrong.com/posts/uA7rNDBBDo2yPNxw5/auctioning-off-the-top-slot-in-your-reading-list",
+    "postedAt": "2021-04-14T07:11:07.881Z",
+    "baseScore": 22,
+    "voteCount": 14,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mike_hawke",
+      "slug": "mike_hawke",
+      "displayName": "mike_hawke"
+    }
+  },
+  {
+    "_id": "Rjrq6xPoavgC4JznB",
+    "title": "Intermittent Distillations #2",
+    "slug": "intermittent-distillations-2",
+    "pageUrl": "https://www.lesswrong.com/posts/Rjrq6xPoavgC4JznB/intermittent-distillations-2",
+    "postedAt": "2021-04-14T06:47:16.356Z",
+    "baseScore": 32,
+    "voteCount": 9,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mark-xu",
+      "slug": "mark-xu",
+      "displayName": "Mark Xu"
+    }
+  },
+  {
+    "_id": "FQqXxWHyZ5AaYiZvt",
+    "title": "What if AGI is near?",
+    "slug": "what-if-agi-is-near",
+    "pageUrl": "https://www.lesswrong.com/posts/FQqXxWHyZ5AaYiZvt/what-if-agi-is-near",
+    "postedAt": "2021-04-14T00:05:44.337Z",
+    "baseScore": 11,
+    "voteCount": 12,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Wulky Wilkinsen",
+      "slug": "wulky-wilkinsen",
+      "displayName": "Wulky Wilkinsen"
+    }
+  },
+  {
+    "_id": "63BsSJm65Ke3cpffG",
+    "title": "The Case for Extreme Vaccine Effectiveness",
+    "slug": "the-case-for-extreme-vaccine-effectiveness",
+    "pageUrl": "https://www.lesswrong.com/posts/63BsSJm65Ke3cpffG/the-case-for-extreme-vaccine-effectiveness",
+    "postedAt": "2021-04-13T21:08:39.470Z",
+    "baseScore": 142,
+    "voteCount": 54,
+    "commentCount": 37,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Ruby",
+      "slug": "ruby",
+      "displayName": "Ruby"
+    }
+  },
+  {
+    "_id": "dFdisLDWWNEfosMx4",
+    "title": "Modified bases in mRNA vaccines against Covid-19",
+    "slug": "modified-bases-in-mrna-vaccines-against-covid-19",
+    "pageUrl": "https://www.lesswrong.com/posts/dFdisLDWWNEfosMx4/modified-bases-in-mrna-vaccines-against-covid-19",
+    "postedAt": "2021-04-13T13:00:53.523Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "barbarabrezna@gmail.com",
+      "slug": "barbarabrezna-gmail-com",
+      "displayName": "BB6"
+    }
+  },
+  {
+    "_id": "FmAfAuuJjD5bfo9fD",
+    "title": "How do you deal with decision paralysis?",
+    "slug": "how-do-you-deal-with-decision-paralysis",
+    "pageUrl": "https://www.lesswrong.com/posts/FmAfAuuJjD5bfo9fD/how-do-you-deal-with-decision-paralysis",
+    "postedAt": "2021-04-13T06:01:10.274Z",
+    "baseScore": 4,
+    "voteCount": 3,
+    "commentCount": 3,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "raj-thimmiah",
+      "slug": "raj-thimmiah",
+      "displayName": "Raj Thimmiah"
+    }
+  },
+  {
+    "_id": "KeXgCayxbfjAHG8x9",
+    "title": "Wanting to Succeed on Every Metric Presented",
+    "slug": "wanting-to-succeed-on-every-metric-presented",
+    "pageUrl": "https://www.lesswrong.com/posts/KeXgCayxbfjAHG8x9/wanting-to-succeed-on-every-metric-presented",
+    "postedAt": "2021-04-12T20:43:01.240Z",
+    "baseScore": 72,
+    "voteCount": 42,
+    "commentCount": 25,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "elriggs",
+      "slug": "elriggs",
+      "displayName": "Logan Riggs"
+    }
+  },
+  {
+    "_id": "xzaAWFJ4CkLci2Qcr",
+    "title": "Using Flashcards for Deliberate Practice",
+    "slug": "using-flashcards-for-deliberate-practice",
+    "pageUrl": "https://www.lesswrong.com/posts/xzaAWFJ4CkLci2Qcr/using-flashcards-for-deliberate-practice",
+    "postedAt": "2021-04-12T19:07:24.063Z",
+    "baseScore": 23,
+    "voteCount": 13,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AllAmericanBreakfast",
+      "slug": "directedevolution",
+      "displayName": "DirectedEvolution"
+    }
+  },
+  {
+    "_id": "KMShMF7Wx8PqWch7Z",
+    "title": "How long would you wait to get Moderna/Pfizer vs J&J?",
+    "slug": "how-long-would-you-wait-to-get-moderna-pfizer-vs-j-and-j",
+    "pageUrl": "https://www.lesswrong.com/posts/KMShMF7Wx8PqWch7Z/how-long-would-you-wait-to-get-moderna-pfizer-vs-j-and-j",
+    "postedAt": "2021-04-12T18:23:49.135Z",
+    "baseScore": 25,
+    "voteCount": 10,
+    "commentCount": 9,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Sameerishere",
+      "slug": "sameerishere",
+      "displayName": "Sameerishere"
+    }
+  },
+  {
+    "_id": "S3LKfRtYxhjXyWHgN",
+    "title": "D&D.Sci April 2021: Voyages of the Gray Swan",
+    "slug": "d-and-d-sci-april-2021-voyages-of-the-gray-swan",
+    "pageUrl": "https://www.lesswrong.com/posts/S3LKfRtYxhjXyWHgN/d-and-d-sci-april-2021-voyages-of-the-gray-swan",
+    "postedAt": "2021-04-12T18:23:11.674Z",
+    "baseScore": 53,
+    "voteCount": 26,
+    "commentCount": 35,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abstractapplic",
+      "slug": "abstractapplic",
+      "displayName": "abstractapplic"
+    }
+  },
+  {
+    "_id": "8hTuxqXTo8wQ8Ymuv",
+    "title": "Post-COVID Integration Rituals",
+    "slug": "post-covid-integration-rituals",
+    "pageUrl": "https://www.lesswrong.com/posts/8hTuxqXTo8wQ8Ymuv/post-covid-integration-rituals",
+    "postedAt": "2021-04-12T16:54:53.557Z",
+    "baseScore": 43,
+    "voteCount": 16,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Unreal",
+      "slug": "unreal",
+      "displayName": "Unreal"
+    }
+  },
+  {
+    "_id": "FHtA2uEBpecdRturb",
+    "title": "A New Center? [Politics] [Wishful Thinking]",
+    "slug": "a-new-center-politics-wishful-thinking",
+    "pageUrl": "https://www.lesswrong.com/posts/FHtA2uEBpecdRturb/a-new-center-politics-wishful-thinking",
+    "postedAt": "2021-04-12T15:19:35.430Z",
+    "baseScore": 62,
+    "voteCount": 20,
+    "commentCount": 36,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "69YbiY6tjnWPrrLXv",
+    "title": "On Falsifying the Simulation Hypothesis (or Embracing its Predictions)",
+    "slug": "on-falsifying-the-simulation-hypothesis-or-embracing-its",
+    "pageUrl": "https://www.lesswrong.com/posts/69YbiY6tjnWPrrLXv/on-falsifying-the-simulation-hypothesis-or-embracing-its",
+    "postedAt": "2021-04-12T00:12:12.838Z",
+    "baseScore": 8,
+    "voteCount": 6,
+    "commentCount": 17,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lorenzo-rex",
+      "slug": "lorepieri",
+      "displayName": "lorepieri"
+    }
+  },
+  {
+    "_id": "aGxBbQNuahNrv7wxP",
+    "title": "\"Taking your environment as object\" vs \"Being subject to your environment\"",
+    "slug": "taking-your-environment-as-object-vs-being-subject-to-your",
+    "pageUrl": "https://www.lesswrong.com/posts/aGxBbQNuahNrv7wxP/taking-your-environment-as-object-vs-being-subject-to-your",
+    "postedAt": "2021-04-11T22:47:04.978Z",
+    "baseScore": 87,
+    "voteCount": 35,
+    "commentCount": 17,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Benito",
+      "slug": "benito",
+      "displayName": "Ben Pace"
+    }
+  },
+  {
+    "_id": "u87dQgFhBmLiaKp5G",
+    "title": "Bayes' theorem, plausible deniability, and smiley faces",
+    "slug": "bayes-theorem-plausible-deniability-and-smiley-faces",
+    "pageUrl": "https://www.lesswrong.com/posts/u87dQgFhBmLiaKp5G/bayes-theorem-plausible-deniability-and-smiley-faces",
+    "postedAt": "2021-04-11T20:41:10.324Z",
+    "baseScore": 24,
+    "voteCount": 9,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "adamzerner",
+      "slug": "adamzerner",
+      "displayName": "Adam Zerner"
+    }
+  },
+  {
+    "_id": "KnyRw87iPRg4ti8GP",
+    "title": "People Will Listen",
+    "slug": "people-will-listen",
+    "pageUrl": "https://www.lesswrong.com/posts/KnyRw87iPRg4ti8GP/people-will-listen",
+    "postedAt": "2021-04-11T16:51:10.467Z",
+    "baseScore": 85,
+    "voteCount": 54,
+    "commentCount": 36,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "deluks917",
+      "slug": "deluks917",
+      "displayName": "sapphire"
+    }
+  },
+  {
+    "_id": "himFR9qASNADB2LCe",
+    "title": "[LINK] Luck, Skill, and Improving at Games",
+    "slug": "link-luck-skill-and-improving-at-games",
+    "pageUrl": "https://www.lesswrong.com/posts/himFR9qASNADB2LCe/link-luck-skill-and-improving-at-games",
+    "postedAt": "2021-04-11T14:35:59.602Z",
+    "baseScore": 13,
+    "voteCount": 4,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": "https://towernumbernine.com/blog/luck-skill-and-improving-at-games",
+    "user": {
+      "username": "Davis_Kingsley",
+      "slug": "davis_kingsley",
+      "displayName": "Davis_Kingsley"
+    }
+  },
+  {
+    "_id": "aet4oE5uEDPGZmGJ6",
+    "title": "Ben Goertzel's \"Kinds of Minds\"",
+    "slug": "ben-goertzel-s-kinds-of-minds",
+    "pageUrl": "https://www.lesswrong.com/posts/aet4oE5uEDPGZmGJ6/ben-goertzel-s-kinds-of-minds",
+    "postedAt": "2021-04-11T12:41:16.550Z",
+    "baseScore": 12,
+    "voteCount": 4,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "JoshuaFox",
+      "slug": "joshuafox",
+      "displayName": "JoshuaFox"
+    }
+  },
+  {
+    "_id": "CSZnj2YNMKGfsMbZA",
+    "title": "Specializing in Problems We Don't Understand",
+    "slug": "specializing-in-problems-we-don-t-understand",
+    "pageUrl": "https://www.lesswrong.com/posts/CSZnj2YNMKGfsMbZA/specializing-in-problems-we-don-t-understand",
+    "postedAt": "2021-04-10T22:40:40.690Z",
+    "baseScore": 181,
+    "voteCount": 94,
+    "commentCount": 29,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "johnswentworth",
+      "slug": "johnswentworth",
+      "displayName": "johnswentworth"
+    }
+  },
+  {
+    "_id": "3YnEoFcZCB7B5uShA",
+    "title": "Recently I bought a new laptop",
+    "slug": "recently-i-bought-a-new-laptop",
+    "pageUrl": "https://www.lesswrong.com/posts/3YnEoFcZCB7B5uShA/recently-i-bought-a-new-laptop",
+    "postedAt": "2021-04-10T20:29:45.685Z",
+    "baseScore": 31,
+    "voteCount": 20,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "tetraspace-grouping",
+      "slug": "tetraspace-grouping",
+      "displayName": "Tetraspace"
+    }
+  },
+  {
+    "_id": "X9Rk4rXSMnKfYLq5r",
+    "title": "A Brief Review of Current and Near-Future Methods of Genetic Engineering",
+    "slug": "a-brief-review-of-current-and-near-future-methods-of-genetic",
+    "pageUrl": "https://www.lesswrong.com/posts/X9Rk4rXSMnKfYLq5r/a-brief-review-of-current-and-near-future-methods-of-genetic",
+    "postedAt": "2021-04-10T19:16:01.169Z",
+    "baseScore": 82,
+    "voteCount": 28,
+    "commentCount": 33,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "GeneSmith",
+      "slug": "genesmith",
+      "displayName": "GeneSmith"
+    }
+  },
+  {
+    "_id": "dctQomzeH3Et7WwHg",
+    "title": "A DIY cryptocurrency hardware wallet for free",
+    "slug": "a-diy-cryptocurrency-hardware-wallet-for-free",
+    "pageUrl": "https://www.lesswrong.com/posts/dctQomzeH3Et7WwHg/a-diy-cryptocurrency-hardware-wallet-for-free",
+    "postedAt": "2021-04-10T17:36:53.123Z",
+    "baseScore": 6,
+    "voteCount": 4,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "jorges",
+      "slug": "jorges",
+      "displayName": "jorges"
+    }
+  },
+  {
+    "_id": "pjAwATdrwTcyDQNkA",
+    "title": "[Recruiting for a Discord Server] AI Forecasting & Threat Modeling Workshop",
+    "slug": "recruiting-for-a-discord-server-ai-forecasting-and-threat",
+    "pageUrl": "https://www.lesswrong.com/posts/pjAwATdrwTcyDQNkA/recruiting-for-a-discord-server-ai-forecasting-and-threat",
+    "postedAt": "2021-04-10T16:15:07.420Z",
+    "baseScore": 6,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://docs.google.com/forms/d/e/1FAIpQLSdB-uW_d0Nc_EKSwemIugq5jQASrNV8kLwmNnwPBXScalreRA/viewform?usp=sf_link",
+    "user": {
+      "username": "quinn-dougherty",
+      "slug": "quinn-dougherty",
+      "displayName": "Quinn"
+    }
+  },
+  {
+    "_id": "Ym7JR4TgXTyawZTgH",
+    "title": "Forcing Yourself is Self Harm, or Don't Goodhart Yourself",
+    "slug": "forcing-yourself-is-self-harm-or-don-t-goodhart-yourself",
+    "pageUrl": "https://www.lesswrong.com/posts/Ym7JR4TgXTyawZTgH/forcing-yourself-is-self-harm-or-don-t-goodhart-yourself",
+    "postedAt": "2021-04-10T15:19:42.130Z",
+    "baseScore": 32,
+    "voteCount": 16,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "gworley",
+      "slug": "gordon-seidoh-worley",
+      "displayName": "Gordon Seidoh Worley"
+    }
+  },
+  {
+    "_id": "c9FmsNH6xYKp4WyDM",
+    "title": "Rediscovery, the Mind's Curare",
+    "slug": "rediscovery-the-mind-s-curare",
+    "pageUrl": "https://www.lesswrong.com/posts/c9FmsNH6xYKp4WyDM/rediscovery-the-mind-s-curare",
+    "postedAt": "2021-04-10T07:42:11.348Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": "https://www.erichgrunewald.com/posts/rediscovery-the-minds-curare/",
+    "user": {
+      "username": "Erich_Grunewald",
+      "slug": "erich_grunewald",
+      "displayName": "Erich_Grunewald"
+    }
+  },
+  {
+    "_id": "WKzGhKbtJAXntXEdB",
+    "title": "Sometimes, it can take a while to notice confusion",
+    "slug": "sometimes-it-can-take-a-while-to-notice-confusion",
+    "pageUrl": "https://www.lesswrong.com/posts/WKzGhKbtJAXntXEdB/sometimes-it-can-take-a-while-to-notice-confusion",
+    "postedAt": "2021-04-10T03:24:43.623Z",
+    "baseScore": 27,
+    "voteCount": 13,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "jean-nassar",
+      "slug": "masasin",
+      "displayName": "masasin"
+    }
+  },
+  {
+    "_id": "vvf53bbgTM4uWFAuW",
+    "title": "Convict Conditioning Book Review",
+    "slug": "convict-conditioning-book-review",
+    "pageUrl": "https://www.lesswrong.com/posts/vvf53bbgTM4uWFAuW/convict-conditioning-book-review",
+    "postedAt": "2021-04-09T22:10:58.939Z",
+    "baseScore": 40,
+    "voteCount": 16,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Borasko",
+      "slug": "borasko",
+      "displayName": "Borasko"
+    }
+  },
+  {
+    "_id": "iNGXKB8iExpcLvu55",
+    "title": "Identifiability Problem for Superrational Decision Theories",
+    "slug": "identifiability-problem-for-superrational-decision-theories",
+    "pageUrl": "https://www.lesswrong.com/posts/iNGXKB8iExpcLvu55/identifiability-problem-for-superrational-decision-theories",
+    "postedAt": "2021-04-09T20:33:33.374Z",
+    "baseScore": 17,
+    "voteCount": 5,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Bunthut",
+      "slug": "bunthut",
+      "displayName": "Bunthut"
+    }
+  },
+  {
+    "_id": "GEPX7jgLMB8vR2qaK",
+    "title": "Opinions on Interpretable Machine Learning and 70 Summaries of Recent Papers",
+    "slug": "opinions-on-interpretable-machine-learning-and-70-summaries",
+    "pageUrl": "https://www.lesswrong.com/posts/GEPX7jgLMB8vR2qaK/opinions-on-interpretable-machine-learning-and-70-summaries",
+    "postedAt": "2021-04-09T19:19:42.826Z",
+    "baseScore": 141,
+    "voteCount": 48,
+    "commentCount": 17,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "yXfka98pZXAmXiyDp",
+    "title": "My Current Take on Counterfactuals",
+    "slug": "my-current-take-on-counterfactuals",
+    "pageUrl": "https://www.lesswrong.com/posts/yXfka98pZXAmXiyDp/my-current-take-on-counterfactuals",
+    "postedAt": "2021-04-09T17:51:06.528Z",
+    "baseScore": 54,
+    "voteCount": 18,
+    "commentCount": 57,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "bER8yqrmHatrES9nR",
+    "title": "[AN #145]: Our three year anniversary!",
+    "slug": "an-145-our-three-year-anniversary",
+    "pageUrl": "https://www.lesswrong.com/posts/bER8yqrmHatrES9nR/an-145-our-three-year-anniversary",
+    "postedAt": "2021-04-09T17:48:21.841Z",
+    "baseScore": 19,
+    "voteCount": 6,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "k3J3sYgmjMmpkzbbc",
+    "title": "Why unriggable *almost* implies uninfluenceable",
+    "slug": "why-unriggable-almost-implies-uninfluenceable",
+    "pageUrl": "https://www.lesswrong.com/posts/k3J3sYgmjMmpkzbbc/why-unriggable-almost-implies-uninfluenceable",
+    "postedAt": "2021-04-09T17:07:07.016Z",
+    "baseScore": 11,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "Gt28KKEX9xjDYmoAL",
+    "title": "Covid 4/9: Another Vaccine Passport Objection",
+    "slug": "covid-4-9-another-vaccine-passport-objection",
+    "pageUrl": "https://www.lesswrong.com/posts/Gt28KKEX9xjDYmoAL/covid-4-9-another-vaccine-passport-objection",
+    "postedAt": "2021-04-09T14:50:01.628Z",
+    "baseScore": 54,
+    "voteCount": 28,
+    "commentCount": 34,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "rgpAWJwuiFKq6Gbwy",
+    "title": "Beliefs as emotional strategies",
+    "slug": "beliefs-as-emotional-strategies",
+    "pageUrl": "https://www.lesswrong.com/posts/rgpAWJwuiFKq6Gbwy/beliefs-as-emotional-strategies",
+    "postedAt": "2021-04-09T14:28:16.590Z",
+    "baseScore": 75,
+    "voteCount": 41,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Kaj_Sotala",
+      "slug": "kaj_sotala",
+      "displayName": "Kaj_Sotala"
+    }
+  },
+  {
+    "_id": "4yDZgN7dvyzKEMYkg",
+    "title": "Highlights from The Autobiography of Andrew Carnegie",
+    "slug": "highlights-from-the-autobiography-of-andrew-carnegie",
+    "pageUrl": "https://www.lesswrong.com/posts/4yDZgN7dvyzKEMYkg/highlights-from-the-autobiography-of-andrew-carnegie",
+    "postedAt": "2021-04-08T22:03:19.231Z",
+    "baseScore": 92,
+    "voteCount": 45,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "https://rootsofprogress.org/andrew-carnegie-autobiography",
+    "user": {
+      "username": "jasoncrawford",
+      "slug": "jasoncrawford",
+      "displayName": "jasoncrawford"
+    }
+  },
+  {
+    "_id": "xLes6tbJFiQRitotx",
+    "title": "Air Quality and Cognition",
+    "slug": "air-quality-and-cognition",
+    "pageUrl": "https://www.lesswrong.com/posts/xLes6tbJFiQRitotx/air-quality-and-cognition",
+    "postedAt": "2021-04-08T21:42:54.870Z",
+    "baseScore": 29,
+    "voteCount": 11,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "chw",
+      "slug": "chw",
+      "displayName": "chw"
+    }
+  },
+  {
+    "_id": "q3KqwaGPze3Lfa625",
+    "title": "A System For Evolving Increasingly General Artificial Intelligence From Current Technologies",
+    "slug": "a-system-for-evolving-increasingly-general-artificial",
+    "pageUrl": "https://www.lesswrong.com/posts/q3KqwaGPze3Lfa625/a-system-for-evolving-increasingly-general-artificial",
+    "postedAt": "2021-04-08T21:37:32.837Z",
+    "baseScore": 1,
+    "voteCount": 5,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Tsang Chung Shu",
+      "slug": "tsang-chung-shu-1",
+      "displayName": "Tsang Chung Shu"
+    }
+  },
+  {
+    "_id": "behyPgMWFhXpKi73P",
+    "title": "AXRP Episode 6 - Debate and Imitative Generalization with Beth Barnes",
+    "slug": "axrp-episode-6-debate-and-imitative-generalization-with-beth",
+    "pageUrl": "https://www.lesswrong.com/posts/behyPgMWFhXpKi73P/axrp-episode-6-debate-and-imitative-generalization-with-beth",
+    "postedAt": "2021-04-08T21:20:12.891Z",
+    "baseScore": 26,
+    "voteCount": 8,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "DanielFilan",
+      "slug": "danielfilan",
+      "displayName": "DanielFilan"
+    }
+  },
+  {
+    "_id": "ujt8MzsdZDaJXX7op",
+    "title": "Aging: A Surprisingly Tractable Problem",
+    "slug": "aging-a-surprisingly-tractable-problem",
+    "pageUrl": "https://www.lesswrong.com/events/ujt8MzsdZDaJXX7op/aging-a-surprisingly-tractable-problem",
+    "postedAt": "2021-04-08T19:25:42.287Z",
+    "baseScore": 11,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "quinn-dougherty",
+      "slug": "quinn-dougherty",
+      "displayName": "Quinn"
+    }
+  },
+  {
+    "_id": "kxFgXQrwfMWGWQ2Cr",
+    "title": "Homeostatic Bruce",
+    "slug": "homeostatic-bruce",
+    "pageUrl": "https://www.lesswrong.com/posts/kxFgXQrwfMWGWQ2Cr/homeostatic-bruce",
+    "postedAt": "2021-04-08T19:13:05.723Z",
+    "baseScore": 13,
+    "voteCount": 11,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": "https://matejsuchy.substack.com/p/homeostatic-bruce",
+    "user": {
+      "username": "matejsuchy",
+      "slug": "matejsuchy",
+      "displayName": "matejsuchy"
+    }
+  },
+  {
+    "_id": "2SrzejmaxnwJBNkFE",
+    "title": "A possible preference algorithm",
+    "slug": "a-possible-preference-algorithm",
+    "pageUrl": "https://www.lesswrong.com/posts/2SrzejmaxnwJBNkFE/a-possible-preference-algorithm",
+    "postedAt": "2021-04-08T18:25:25.855Z",
+    "baseScore": 22,
+    "voteCount": 4,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "4wa9XGnJHB3apPqoq",
+    "title": "If you don't design for extrapolation, you'll extrapolate poorly - possibly fatally",
+    "slug": "if-you-don-t-design-for-extrapolation-you-ll-extrapolate",
+    "pageUrl": "https://www.lesswrong.com/posts/4wa9XGnJHB3apPqoq/if-you-don-t-design-for-extrapolation-you-ll-extrapolate",
+    "postedAt": "2021-04-08T18:10:52.420Z",
+    "baseScore": 17,
+    "voteCount": 6,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "DofEifuavGkjv3Kub",
+    "title": "Insights from \"All of Statistics\": Statistical Inference",
+    "slug": "insights-from-all-of-statistics-statistical-inference",
+    "pageUrl": "https://www.lesswrong.com/posts/DofEifuavGkjv3Kub/insights-from-all-of-statistics-statistical-inference",
+    "postedAt": "2021-04-08T17:49:16.270Z",
+    "baseScore": 8,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "sil-ver",
+      "slug": "sil-ver",
+      "displayName": "Rafael Harth"
+    }
+  },
+  {
+    "_id": "Hwgwr667JaQbm9pfJ",
+    "title": "Insights from \"All of Statistics\": Probability",
+    "slug": "insights-from-all-of-statistics-probability",
+    "pageUrl": "https://www.lesswrong.com/posts/Hwgwr667JaQbm9pfJ/insights-from-all-of-statistics-probability",
+    "postedAt": "2021-04-08T17:48:10.972Z",
+    "baseScore": 7,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "sil-ver",
+      "slug": "sil-ver",
+      "displayName": "Rafael Harth"
+    }
+  },
+  {
+    "_id": "hWX2A7Afkbh7QCw4h",
+    "title": "The Japanese Quiz: a Thought Experiment of Statistical Epistemology",
+    "slug": "the-japanese-quiz-a-thought-experiment-of-statistical",
+    "pageUrl": "https://www.lesswrong.com/posts/hWX2A7Afkbh7QCw4h/the-japanese-quiz-a-thought-experiment-of-statistical",
+    "postedAt": "2021-04-08T17:37:14.653Z",
+    "baseScore": 11,
+    "voteCount": 7,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "DanB",
+      "slug": "danb",
+      "displayName": "DanB"
+    }
+  },
+  {
+    "_id": "Gfw7JMdKirxeSPiAk",
+    "title": "Solving the whole AGI control problem, version 0.0001",
+    "slug": "solving-the-whole-agi-control-problem-version-0-0001",
+    "pageUrl": "https://www.lesswrong.com/posts/Gfw7JMdKirxeSPiAk/solving-the-whole-agi-control-problem-version-0-0001",
+    "postedAt": "2021-04-08T15:14:07.685Z",
+    "baseScore": 63,
+    "voteCount": 31,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "steve2152",
+      "slug": "steve2152",
+      "displayName": "Steven Byrnes"
+    }
+  },
+  {
+    "_id": "SczWFri74NCL4erJm",
+    "title": "How should I behave ≥14 days after my first mRNA vaccine dose but before my second dose?",
+    "slug": "how-should-i-behave-14-days-after-my-first-mrna-vaccine-dose",
+    "pageUrl": "https://www.lesswrong.com/posts/SczWFri74NCL4erJm/how-should-i-behave-14-days-after-my-first-mrna-vaccine-dose",
+    "postedAt": "2021-04-08T06:24:28.213Z",
+    "baseScore": 8,
+    "voteCount": 4,
+    "commentCount": 3,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "dsj",
+      "slug": "dsj",
+      "displayName": "dsj"
+    }
+  },
+  {
+    "_id": "u5oowdDkKqEuCEBgk",
+    "title": "Is there any plausible mechanisms for why taking an mRNA vaccine might be undesirable for a young healthy adult?",
+    "slug": "is-there-any-plausible-mechanisms-for-why-taking-an-mrna",
+    "pageUrl": "https://www.lesswrong.com/posts/u5oowdDkKqEuCEBgk/is-there-any-plausible-mechanisms-for-why-taking-an-mrna",
+    "postedAt": "2021-04-08T01:18:42.434Z",
+    "baseScore": 28,
+    "voteCount": 14,
+    "commentCount": 11,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "MathieuRoy",
+      "slug": "mathieuroy",
+      "displayName": "Mati_Roy"
+    }
+  },
+  {
+    "_id": "wtzEWNPQaTBJsoEXK",
+    "title": "Notes on Perseverance",
+    "slug": "notes-on-perseverance",
+    "pageUrl": "https://www.lesswrong.com/posts/wtzEWNPQaTBJsoEXK/notes-on-perseverance",
+    "postedAt": "2021-04-08T00:01:36.105Z",
+    "baseScore": 10,
+    "voteCount": 4,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "David_Gross",
+      "slug": "david-gross",
+      "displayName": "David Gross"
+    }
+  },
+  {
+    "_id": "HD2BPw7h3XqX6PNnc",
+    "title": "Open and Welcome Thread - April 2021",
+    "slug": "open-and-welcome-thread-april-2021-1",
+    "pageUrl": "https://www.lesswrong.com/posts/HD2BPw7h3XqX6PNnc/open-and-welcome-thread-april-2021-1",
+    "postedAt": "2021-04-07T21:15:11.800Z",
+    "baseScore": 13,
+    "voteCount": 3,
+    "commentCount": 52,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "AyNHoTWWAJ5eb99ji",
+    "title": "Another (outer) alignment failure story",
+    "slug": "another-outer-alignment-failure-story",
+    "pageUrl": "https://www.lesswrong.com/posts/AyNHoTWWAJ5eb99ji/another-outer-alignment-failure-story",
+    "postedAt": "2021-04-07T20:12:32.043Z",
+    "baseScore": 249,
+    "voteCount": 123,
+    "commentCount": 38,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "paulfchristiano",
+      "slug": "paulfchristiano",
+      "displayName": "paulfchristiano"
+    }
+  },
+  {
+    "_id": "j7kyt6sHEjukRND8B",
+    "title": "Which counterfactuals should an AI follow?",
+    "slug": "which-counterfactuals-should-an-ai-follow",
+    "pageUrl": "https://www.lesswrong.com/posts/j7kyt6sHEjukRND8B/which-counterfactuals-should-an-ai-follow",
+    "postedAt": "2021-04-07T16:47:42.505Z",
+    "baseScore": 19,
+    "voteCount": 5,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "gtro6ZJnLZKmczEvv",
+    "title": "If my previous research is wrong, what are my options ?",
+    "slug": "if-my-previous-research-is-wrong-what-are-my-options",
+    "pageUrl": "https://www.lesswrong.com/posts/gtro6ZJnLZKmczEvv/if-my-previous-research-is-wrong-what-are-my-options",
+    "postedAt": "2021-04-07T16:44:28.156Z",
+    "baseScore": 50,
+    "voteCount": 23,
+    "commentCount": 9,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "barbarabrezna@gmail.com",
+      "slug": "barbarabrezna-gmail-com",
+      "displayName": "BB6"
+    }
+  },
+  {
+    "_id": "L7yHdqRiHKd3FhQ7B",
+    "title": "Alignment Newsletter Three Year Retrospective",
+    "slug": "alignment-newsletter-three-year-retrospective",
+    "pageUrl": "https://www.lesswrong.com/posts/L7yHdqRiHKd3FhQ7B/alignment-newsletter-three-year-retrospective",
+    "postedAt": "2021-04-07T14:39:42.977Z",
+    "baseScore": 55,
+    "voteCount": 23,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "MmyxLLLd8TCyt9Q4H",
+    "title": "2020 predictions - Politics, Econ, Tech",
+    "slug": "2020-predictions-politics-econ-tech",
+    "pageUrl": "https://www.lesswrong.com/posts/MmyxLLLd8TCyt9Q4H/2020-predictions-politics-econ-tech",
+    "postedAt": "2021-04-07T14:10:40.338Z",
+    "baseScore": 8,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Bucky",
+      "slug": "bucky",
+      "displayName": "Bucky"
+    }
+  },
+  {
+    "_id": "KDQcFTuxfHRvqAAg2",
+    "title": "Compounding Incumbent Advantage",
+    "slug": "compounding-incumbent-advantage",
+    "pageUrl": "https://www.lesswrong.com/posts/KDQcFTuxfHRvqAAg2/compounding-incumbent-advantage",
+    "postedAt": "2021-04-07T13:40:31.193Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": "https://www.inoue.today/p/compounding-incumbent-advantage",
+    "user": {
+      "username": "adaminoue",
+      "slug": "adaminoue",
+      "displayName": "adaminoue"
+    }
+  },
+  {
+    "_id": "prcmGg9DfiZ9QovL3",
+    "title": "I Trained a Neural Network to Play Helltaker",
+    "slug": "i-trained-a-neural-network-to-play-helltaker",
+    "pageUrl": "https://www.lesswrong.com/posts/prcmGg9DfiZ9QovL3/i-trained-a-neural-network-to-play-helltaker",
+    "postedAt": "2021-04-07T08:24:27.982Z",
+    "baseScore": 34,
+    "voteCount": 17,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "ioGf4LHid42mCK3SK",
+    "title": "Vim",
+    "slug": "vim",
+    "pageUrl": "https://www.lesswrong.com/posts/ioGf4LHid42mCK3SK/vim",
+    "postedAt": "2021-04-07T06:35:59.268Z",
+    "baseScore": 48,
+    "voteCount": 25,
+    "commentCount": 57,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "RDD6dbd2xXudJLxYd",
+    "title": "Curious Inquiry and Rigorous Training",
+    "slug": "curious-inquiry-and-rigorous-training",
+    "pageUrl": "https://www.lesswrong.com/posts/RDD6dbd2xXudJLxYd/curious-inquiry-and-rigorous-training",
+    "postedAt": "2021-04-06T22:38:41.125Z",
+    "baseScore": 20,
+    "voteCount": 10,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AllAmericanBreakfast",
+      "slug": "directedevolution",
+      "displayName": "DirectedEvolution"
+    }
+  },
+  {
+    "_id": "tAsjD3A7pXo9p93zA",
+    "title": "IQcaptcha enters beta",
+    "slug": "iqcaptcha-enters-beta",
+    "pageUrl": "https://www.lesswrong.com/posts/tAsjD3A7pXo9p93zA/iqcaptcha-enters-beta",
+    "postedAt": "2021-04-06T21:28:46.898Z",
+    "baseScore": -1,
+    "voteCount": 14,
+    "commentCount": 15,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ballerburg9005",
+      "slug": "ballerburg9005",
+      "displayName": "ballerburg9005"
+    }
+  },
+  {
+    "_id": "cy3BhHrGinZCp3LXE",
+    "title": "Testing The Natural Abstraction Hypothesis: Project Intro",
+    "slug": "testing-the-natural-abstraction-hypothesis-project-intro",
+    "pageUrl": "https://www.lesswrong.com/posts/cy3BhHrGinZCp3LXE/testing-the-natural-abstraction-hypothesis-project-intro",
+    "postedAt": "2021-04-06T21:24:43.135Z",
+    "baseScore": 168,
+    "voteCount": 69,
+    "commentCount": 41,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "johnswentworth",
+      "slug": "johnswentworth",
+      "displayName": "johnswentworth"
+    }
+  },
+  {
+    "_id": "p9CSjcCoLqFptogjW",
+    "title": "AI oracles on blockchain",
+    "slug": "ai-oracles-on-blockchain-1",
+    "pageUrl": "https://www.lesswrong.com/posts/p9CSjcCoLqFptogjW/ai-oracles-on-blockchain-1",
+    "postedAt": "2021-04-06T20:13:29.567Z",
+    "baseScore": 5,
+    "voteCount": 6,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Caravaggio",
+      "slug": "caravaggio",
+      "displayName": "Caravaggio"
+    }
+  },
+  {
+    "_id": "tt7WtqiEyEiLmAecZ",
+    "title": "What will GPT-4 be incapable of?",
+    "slug": "what-will-gpt-4-be-incapable-of",
+    "pageUrl": "https://www.lesswrong.com/posts/tt7WtqiEyEiLmAecZ/what-will-gpt-4-be-incapable-of",
+    "postedAt": "2021-04-06T19:57:57.127Z",
+    "baseScore": 34,
+    "voteCount": 13,
+    "commentCount": 33,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "mtrazzi",
+      "slug": "mtrazzi",
+      "displayName": "Michaël Trazzi"
+    }
+  },
+  {
+    "_id": "vpvLqinp4FoigqvKy",
+    "title": "Reflective Bayesianism",
+    "slug": "reflective-bayesianism",
+    "pageUrl": "https://www.lesswrong.com/posts/vpvLqinp4FoigqvKy/reflective-bayesianism",
+    "postedAt": "2021-04-06T19:48:43.917Z",
+    "baseScore": 62,
+    "voteCount": 18,
+    "commentCount": 27,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "YtisDHHhpxEh4e7zr",
+    "title": "Don't Sell Your Soul",
+    "slug": "don-t-sell-your-soul",
+    "pageUrl": "https://www.lesswrong.com/posts/YtisDHHhpxEh4e7zr/don-t-sell-your-soul",
+    "postedAt": "2021-04-06T19:02:55.391Z",
+    "baseScore": 72,
+    "voteCount": 50,
+    "commentCount": 43,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "2JxyKXgyqzovNDvnE",
+    "title": "Monastery and Throne",
+    "slug": "monastery-and-throne",
+    "pageUrl": "https://www.lesswrong.com/posts/2JxyKXgyqzovNDvnE/monastery-and-throne",
+    "postedAt": "2021-04-06T19:00:52.623Z",
+    "baseScore": 117,
+    "voteCount": 49,
+    "commentCount": 42,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "B6WefmeyaST7Puddz",
+    "title": "There Is No Control System For COVID",
+    "slug": "there-is-no-control-system-for-covid",
+    "pageUrl": "https://www.lesswrong.com/posts/B6WefmeyaST7Puddz/there-is-no-control-system-for-covid",
+    "postedAt": "2021-04-06T17:16:04.171Z",
+    "baseScore": 35,
+    "voteCount": 11,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mike-harris-1",
+      "slug": "mike-harris-1",
+      "displayName": "Mike Harris"
+    }
+  },
+  {
+    "_id": "Eu8r7sbhmCnznBC93",
+    "title": "The Accord",
+    "slug": "the-accord",
+    "pageUrl": "https://www.lesswrong.com/posts/Eu8r7sbhmCnznBC93/the-accord",
+    "postedAt": "2021-04-06T15:44:28.797Z",
+    "baseScore": 23,
+    "voteCount": 14,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "timothy-underwood-1",
+      "slug": "timothy-underwood-1",
+      "displayName": "Timothy Underwood"
+    }
+  },
+  {
+    "_id": "auvZyvvJ2AQ3creAq",
+    "title": "March 2021 gwern.net newsletter",
+    "slug": "march-2021-gwern-net-newsletter",
+    "pageUrl": "https://www.lesswrong.com/posts/auvZyvvJ2AQ3creAq/march-2021-gwern-net-newsletter",
+    "postedAt": "2021-04-06T14:06:20.198Z",
+    "baseScore": 16,
+    "voteCount": 4,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://www.gwern.net/newsletter/2021/03",
+    "user": {
+      "username": "gwern",
+      "slug": "gwern",
+      "displayName": "gwern"
+    }
+  },
+  {
+    "_id": "z6ixGWc2kK2zFzim2",
+    "title": "Preventing overcharging by prosecutors",
+    "slug": "preventing-overcharging-by-prosecutors",
+    "pageUrl": "https://www.lesswrong.com/posts/z6ixGWc2kK2zFzim2/preventing-overcharging-by-prosecutors",
+    "postedAt": "2021-04-06T11:13:50.893Z",
+    "baseScore": 29,
+    "voteCount": 20,
+    "commentCount": 35,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ChristianKl",
+      "slug": "christiankl",
+      "displayName": "ChristianKl"
+    }
+  },
+  {
+    "_id": "vkRpyPCBTx3jpeuzk",
+    "title": "Our compressed perception",
+    "slug": "our-compressed-perception",
+    "pageUrl": "https://www.lesswrong.com/posts/vkRpyPCBTx3jpeuzk/our-compressed-perception",
+    "postedAt": "2021-04-06T11:01:11.244Z",
+    "baseScore": 12,
+    "voteCount": 7,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "pchvykov",
+      "slug": "pchvykov",
+      "displayName": "pchvykov"
+    }
+  },
+  {
+    "_id": "GS5P7LLLbSSExb3Sk",
+    "title": "The Many Faces of Infra-Beliefs",
+    "slug": "the-many-faces-of-infra-beliefs",
+    "pageUrl": "https://www.lesswrong.com/posts/GS5P7LLLbSSExb3Sk/the-many-faces-of-infra-beliefs",
+    "postedAt": "2021-04-06T10:43:53.227Z",
+    "baseScore": 30,
+    "voteCount": 6,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Diffractor",
+      "slug": "diffractor",
+      "displayName": "Diffractor"
+    }
+  },
+  {
+    "_id": "e7j5beecrLuNJ7y2s",
+    "title": "Is there a mu-like term that means something like \"why is this any of my business?\"",
+    "slug": "is-there-a-mu-like-term-that-means-something-like-why-is",
+    "pageUrl": "https://www.lesswrong.com/posts/e7j5beecrLuNJ7y2s/is-there-a-mu-like-term-that-means-something-like-why-is",
+    "postedAt": "2021-04-06T07:47:20.516Z",
+    "baseScore": 5,
+    "voteCount": 4,
+    "commentCount": 12,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "CraigMichael",
+      "slug": "craigmichael",
+      "displayName": "CraigMichael"
+    }
+  },
+  {
+    "_id": "CdvcGQsJ2qme9EJAe",
+    "title": "An Introduction to A Crackpot Physics",
+    "slug": "an-introduction-to-a-crackpot-physics",
+    "pageUrl": "https://www.lesswrong.com/posts/CdvcGQsJ2qme9EJAe/an-introduction-to-a-crackpot-physics",
+    "postedAt": "2021-04-05T23:59:12.888Z",
+    "baseScore": -4,
+    "voteCount": 4,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ACrackedPot",
+      "slug": "acrackedpot",
+      "displayName": "ACrackedPot"
+    }
+  },
+  {
+    "_id": "gvA4j8pGYG4xtaTkw",
+    "title": "I'm from a parallel Earth with much higher coordination: AMA",
+    "slug": "i-m-from-a-parallel-earth-with-much-higher-coordination-ama",
+    "pageUrl": "https://www.lesswrong.com/posts/gvA4j8pGYG4xtaTkw/i-m-from-a-parallel-earth-with-much-higher-coordination-ama",
+    "postedAt": "2021-04-05T22:09:24.033Z",
+    "baseScore": 173,
+    "voteCount": 85,
+    "commentCount": 35,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Benito",
+      "slug": "benito",
+      "displayName": "Ben Pace"
+    }
+  },
+  {
+    "_id": "BBvcAPDM9u6bYMMqi",
+    "title": "Risk Budgets vs. Basic Decision Theory",
+    "slug": "risk-budgets-vs-basic-decision-theory",
+    "pageUrl": "https://www.lesswrong.com/posts/BBvcAPDM9u6bYMMqi/risk-budgets-vs-basic-decision-theory",
+    "postedAt": "2021-04-05T21:55:51.278Z",
+    "baseScore": 11,
+    "voteCount": 2,
+    "commentCount": 8,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "vlad-firoiu",
+      "slug": "vlad-firoiu",
+      "displayName": "Vlad Firoiu"
+    }
+  },
+  {
+    "_id": "6aRANeq89z4n7Kxz4",
+    "title": "Historical Examples of Opposition to Technological Progress",
+    "slug": "historical-examples-of-opposition-to-technological-progress",
+    "pageUrl": "https://www.lesswrong.com/posts/6aRANeq89z4n7Kxz4/historical-examples-of-opposition-to-technological-progress",
+    "postedAt": "2021-04-05T21:26:43.687Z",
+    "baseScore": 18,
+    "voteCount": 8,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "chw",
+      "slug": "chw",
+      "displayName": "chw"
+    }
+  },
+  {
+    "_id": "ZioFt5rGEhtve2Sy5",
+    "title": "Noise Pollution and Cognition",
+    "slug": "noise-pollution-and-cognition",
+    "pageUrl": "https://www.lesswrong.com/posts/ZioFt5rGEhtve2Sy5/noise-pollution-and-cognition",
+    "postedAt": "2021-04-05T21:26:43.619Z",
+    "baseScore": 9,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "chw",
+      "slug": "chw",
+      "displayName": "chw"
+    }
+  },
+  {
+    "_id": "83uPffdQH6wRmKriC",
+    "title": "Averting suffering with sentience throttlers (proposal) ",
+    "slug": "averting-suffering-with-sentience-throttlers-proposal",
+    "pageUrl": "https://www.lesswrong.com/posts/83uPffdQH6wRmKriC/averting-suffering-with-sentience-throttlers-proposal",
+    "postedAt": "2021-04-05T10:54:09.755Z",
+    "baseScore": 8,
+    "voteCount": 5,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "quinn-dougherty",
+      "slug": "quinn-dougherty",
+      "displayName": "Quinn"
+    }
+  },
+  {
+    "_id": "iEWBhAJFbJXWhyXad",
+    "title": "Ranked Choice Voting is Arbitrarily Bad",
+    "slug": "ranked-choice-voting-is-arbitrarily-bad",
+    "pageUrl": "https://www.lesswrong.com/posts/iEWBhAJFbJXWhyXad/ranked-choice-voting-is-arbitrarily-bad",
+    "postedAt": "2021-04-05T06:44:51.142Z",
+    "baseScore": 10,
+    "voteCount": 19,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "kohaku-none",
+      "slug": "applieddivinitystudies",
+      "displayName": "AppliedDivinityStudies"
+    }
+  },
+  {
+    "_id": "5cnAAoFaSfjhiFGtY",
+    "title": "The innocent gene",
+    "slug": "the-innocent-gene",
+    "pageUrl": "https://www.lesswrong.com/posts/5cnAAoFaSfjhiFGtY/the-innocent-gene",
+    "postedAt": "2021-04-05T03:31:29.782Z",
+    "baseScore": 39,
+    "voteCount": 18,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "joekc",
+      "slug": "joe-carlsmith",
+      "displayName": "Joe Carlsmith"
+    }
+  },
+  {
+    "_id": "K7vBhLZdL9xw9SpFW",
+    "title": "Open & Welcome Thread – April 2021",
+    "slug": "open-and-welcome-thread-april-2021",
+    "pageUrl": "https://www.lesswrong.com/posts/K7vBhLZdL9xw9SpFW/open-and-welcome-thread-april-2021",
+    "postedAt": "2021-04-04T19:25:09.049Z",
+    "baseScore": 8,
+    "voteCount": 5,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "niplav",
+      "slug": "niplav",
+      "displayName": "niplav"
+    }
+  },
+  {
+    "_id": "zHpyokkJQEZfyvtCr",
+    "title": "What do you think would be the best investment policy for a cryonics trust?",
+    "slug": "what-do-you-think-would-be-the-best-investment-policy-for-a",
+    "pageUrl": "https://www.lesswrong.com/posts/zHpyokkJQEZfyvtCr/what-do-you-think-would-be-the-best-investment-policy-for-a",
+    "postedAt": "2021-04-04T19:20:22.705Z",
+    "baseScore": 14,
+    "voteCount": 7,
+    "commentCount": 6,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "MathieuRoy",
+      "slug": "mathieuroy",
+      "displayName": "Mati_Roy"
+    }
+  },
+  {
+    "_id": "nGExy2RtLi3YuitxC",
+    "title": "About Me: Background and Biases",
+    "slug": "about-me-background-and-biases",
+    "pageUrl": "https://www.lesswrong.com/posts/nGExy2RtLi3YuitxC/about-me-background-and-biases",
+    "postedAt": "2021-04-04T14:19:31.220Z",
+    "baseScore": 19,
+    "voteCount": 7,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "gabriel-holmes",
+      "slug": "tkpwaeub",
+      "displayName": "tkpwaeub"
+    }
+  },
+  {
+    "_id": "38TMQyntWjb2dhzWL",
+    "title": "What if we could use the theory of Mechanism Design from Game Theory as a medium achieve AI Alignment?",
+    "slug": "what-if-we-could-use-the-theory-of-mechanism-design-from",
+    "pageUrl": "https://www.lesswrong.com/posts/38TMQyntWjb2dhzWL/what-if-we-could-use-the-theory-of-mechanism-design-from",
+    "postedAt": "2021-04-04T12:56:05.263Z",
+    "baseScore": 4,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "farari7",
+      "slug": "farari7",
+      "displayName": "farari7"
+    }
+  },
+  {
+    "_id": "2j7mtf58Zr9XehjxP",
+    "title": "How do scaling laws work for fine-tuning?",
+    "slug": "how-do-scaling-laws-work-for-fine-tuning",
+    "pageUrl": "https://www.lesswrong.com/posts/2j7mtf58Zr9XehjxP/how-do-scaling-laws-work-for-fine-tuning",
+    "postedAt": "2021-04-04T12:18:34.559Z",
+    "baseScore": 24,
+    "voteCount": 6,
+    "commentCount": 10,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "daniel-kokotajlo",
+      "slug": "daniel-kokotajlo",
+      "displayName": "Daniel Kokotajlo"
+    }
+  },
+  {
+    "_id": "grkgfcexKB9LYMcFH",
+    "title": "By which mechanism does immunity favor new Covid variants?",
+    "slug": "by-which-mechanism-does-immunity-favor-new-covid-variants",
+    "pageUrl": "https://www.lesswrong.com/posts/grkgfcexKB9LYMcFH/by-which-mechanism-does-immunity-favor-new-covid-variants",
+    "postedAt": "2021-04-04T10:24:20.691Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 5,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "anorangic",
+      "slug": "anorangic",
+      "displayName": "anorangicc"
+    }
+  },
+  {
+    "_id": "LuzekfX96Zgf2qMPJ",
+    "title": "A Cruciverbalist’s Introduction to Bayesian reasoning",
+    "slug": "a-cruciverbalist-s-introduction-to-bayesian-reasoning",
+    "pageUrl": "https://www.lesswrong.com/posts/LuzekfX96Zgf2qMPJ/a-cruciverbalist-s-introduction-to-bayesian-reasoning",
+    "postedAt": "2021-04-04T08:50:07.729Z",
+    "baseScore": 11,
+    "voteCount": 4,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Davidmanheim",
+      "slug": "davidmanheim",
+      "displayName": "Davidmanheim"
+    }
+  },
+  {
+    "_id": "yXHcqrCpiHC5tDuEc",
+    "title": "Tales from Prediction Markets",
+    "slug": "tales-from-prediction-markets",
+    "pageUrl": "https://www.lesswrong.com/posts/yXHcqrCpiHC5tDuEc/tales-from-prediction-markets",
+    "postedAt": "2021-04-03T23:38:22.728Z",
+    "baseScore": 128,
+    "voteCount": 72,
+    "commentCount": 15,
+    "meta": false,
+    "question": false,
+    "url": "https://misinfounderload.substack.com/p/tales-from-prediction-markets",
+    "user": {
+      "username": "ike",
+      "slug": "ike",
+      "displayName": "ike"
+    }
+  },
+  {
+    "_id": "NAiot4tXNomsZJcjs",
+    "title": "An exploration of exploitation bias",
+    "slug": "an-exploration-of-exploitation-bias",
+    "pageUrl": "https://www.lesswrong.com/posts/NAiot4tXNomsZJcjs/an-exploration-of-exploitation-bias",
+    "postedAt": "2021-04-03T23:03:22.773Z",
+    "baseScore": 16,
+    "voteCount": 7,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://ericneyman.wordpress.com/2020/07/05/an-exploration-of-exploitation-bias/",
+    "user": {
+      "username": "UnexpectedValues",
+      "slug": "unexpectedvalues",
+      "displayName": "Eric Neyman"
+    }
+  },
+  {
+    "_id": "5XDRYgNAzfzfqfr3h",
+    "title": "What are all these children doing in my ponds?",
+    "slug": "what-are-all-these-children-doing-in-my-ponds",
+    "pageUrl": "https://www.lesswrong.com/posts/5XDRYgNAzfzfqfr3h/what-are-all-these-children-doing-in-my-ponds",
+    "postedAt": "2021-04-03T20:16:58.994Z",
+    "baseScore": 84,
+    "voteCount": 61,
+    "commentCount": 15,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "dominicq",
+      "slug": "dominicq",
+      "displayName": "dominicq"
+    }
+  },
+  {
+    "_id": "LEgpsHHzSem8okPgj",
+    "title": "The Holy Algorithm",
+    "slug": "the-holy-algorithm",
+    "pageUrl": "https://www.lesswrong.com/posts/LEgpsHHzSem8okPgj/the-holy-algorithm",
+    "postedAt": "2021-04-03T18:09:53.117Z",
+    "baseScore": 7,
+    "voteCount": 4,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "https://www.telescopic-turnip.net/hogwash/the-holy-algorithm/",
+    "user": {
+      "username": "Elmer of Malmesbury",
+      "slug": "elmer-of-malmesbury",
+      "displayName": "Malmesbury"
+    }
+  },
+  {
+    "_id": "tBtM6vb5ykawPfRi8",
+    "title": "Would a post about optimizing physical attractiveness be fitting for this forum?",
+    "slug": "would-a-post-about-optimizing-physical-attractiveness-be",
+    "pageUrl": "https://www.lesswrong.com/posts/tBtM6vb5ykawPfRi8/would-a-post-about-optimizing-physical-attractiveness-be",
+    "postedAt": "2021-04-03T16:19:49.403Z",
+    "baseScore": 15,
+    "voteCount": 12,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "TemporaryPseudonym",
+      "slug": "temporarypseudonym",
+      "displayName": "TemporaryPseudonym"
+    }
+  },
+  {
+    "_id": "7NCcvzF3NqrWTxEFz",
+    "title": "Forcing yourself to keep your identity small is self-harm",
+    "slug": "forcing-yourself-to-keep-your-identity-small-is-self-harm",
+    "pageUrl": "https://www.lesswrong.com/posts/7NCcvzF3NqrWTxEFz/forcing-yourself-to-keep-your-identity-small-is-self-harm",
+    "postedAt": "2021-04-03T14:03:06.469Z",
+    "baseScore": 40,
+    "voteCount": 36,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "gworley",
+      "slug": "gordon-seidoh-worley",
+      "displayName": "Gordon Seidoh Worley"
+    }
+  },
+  {
+    "_id": "josSvCNbYthxwi7cM",
+    "title": "Moral Golems",
+    "slug": "moral-golems",
+    "pageUrl": "https://www.lesswrong.com/posts/josSvCNbYthxwi7cM/moral-golems",
+    "postedAt": "2021-04-03T10:12:59.152Z",
+    "baseScore": 8,
+    "voteCount": 6,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://www.erichgrunewald.com/posts/moral-golems/",
+    "user": {
+      "username": "Erich_Grunewald",
+      "slug": "erich_grunewald",
+      "displayName": "Erich_Grunewald"
+    }
+  },
+  {
+    "_id": "3qMyp4nWGd3bnCSBj",
+    "title": "People are gathering 2 million USD to save a kid with a rare disease. I feel weird about it. Why?",
+    "slug": "people-are-gathering-2-million-usd-to-save-a-kid-with-a-rare",
+    "pageUrl": "https://www.lesswrong.com/posts/3qMyp4nWGd3bnCSBj/people-are-gathering-2-million-usd-to-save-a-kid-with-a-rare",
+    "postedAt": "2021-04-02T23:00:47.345Z",
+    "baseScore": 9,
+    "voteCount": 4,
+    "commentCount": 7,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "hookdump",
+      "slug": "hookdump",
+      "displayName": "hookdump"
+    }
+  },
+  {
+    "_id": "JZZENevaLzLLeC3zn",
+    "title": "Predictive Coding has been Unified with Backpropagation",
+    "slug": "predictive-coding-has-been-unified-with-backpropagation",
+    "pageUrl": "https://www.lesswrong.com/posts/JZZENevaLzLLeC3zn/predictive-coding-has-been-unified-with-backpropagation",
+    "postedAt": "2021-04-02T21:42:12.937Z",
+    "baseScore": 181,
+    "voteCount": 112,
+    "commentCount": 51,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "lsusr",
+      "slug": "lsusr",
+      "displayName": "lsusr"
+    }
+  },
+  {
+    "_id": "TFBf9sNThyuXYe48j",
+    "title": "In plain English - in what ways are Bayes' Rule and Popperian falsificationism conflicting epistemologies?",
+    "slug": "in-plain-english-in-what-ways-are-bayes-rule-and-popperian",
+    "pageUrl": "https://www.lesswrong.com/posts/TFBf9sNThyuXYe48j/in-plain-english-in-what-ways-are-bayes-rule-and-popperian",
+    "postedAt": "2021-04-02T21:21:23.865Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 14,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Sandro P.",
+      "slug": "sandro-p",
+      "displayName": "Sandro P."
+    }
+  },
+  {
+    "_id": "pba68kdmmHrp9oHGG",
+    "title": "Phylactery Decision Theory",
+    "slug": "phylactery-decision-theory",
+    "pageUrl": "https://www.lesswrong.com/posts/pba68kdmmHrp9oHGG/phylactery-decision-theory",
+    "postedAt": "2021-04-02T20:55:45.786Z",
+    "baseScore": 14,
+    "voteCount": 6,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Bunthut",
+      "slug": "bunthut",
+      "displayName": "Bunthut"
+    }
+  },
+  {
+    "_id": "a8Z74oZWHrkCjrren",
+    "title": "Affordances",
+    "slug": "affordances",
+    "pageUrl": "https://www.lesswrong.com/posts/a8Z74oZWHrkCjrren/affordances",
+    "postedAt": "2021-04-02T20:53:35.639Z",
+    "baseScore": 58,
+    "voteCount": 25,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "abramdemski",
+      "slug": "abramdemski",
+      "displayName": "abramdemski"
+    }
+  },
+  {
+    "_id": "wydAtj6FkPDHkdtzS",
+    "title": "My take on Michael Littman on \"The HCI of HAI\"",
+    "slug": "my-take-on-michael-littman-on-the-hci-of-hai",
+    "pageUrl": "https://www.lesswrong.com/posts/wydAtj6FkPDHkdtzS/my-take-on-michael-littman-on-the-hci-of-hai",
+    "postedAt": "2021-04-02T19:51:44.327Z",
+    "baseScore": 59,
+    "voteCount": 20,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexflint",
+      "slug": "alexflint",
+      "displayName": "Alex Flint"
+    }
+  },
+  {
+    "_id": "ypySHD723fMu9YywE",
+    "title": "Analyzing Multiplayer Games using IMPACT",
+    "slug": "analyzing-multiplayer-games-using-impact",
+    "pageUrl": "https://www.lesswrong.com/posts/ypySHD723fMu9YywE/analyzing-multiplayer-games-using-impact",
+    "postedAt": "2021-04-02T19:10:06.381Z",
+    "baseScore": 10,
+    "voteCount": 5,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "midco",
+      "slug": "midco",
+      "displayName": "midco"
+    }
+  },
+  {
+    "_id": "L5Tf34FXA6weiGwEz",
+    "title": "Learning Russian Roulette",
+    "slug": "learning-russian-roulette",
+    "pageUrl": "https://www.lesswrong.com/posts/L5Tf34FXA6weiGwEz/learning-russian-roulette",
+    "postedAt": "2021-04-02T18:56:26.582Z",
+    "baseScore": 24,
+    "voteCount": 13,
+    "commentCount": 38,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Bunthut",
+      "slug": "bunthut",
+      "displayName": "Bunthut"
+    }
+  },
+  {
+    "_id": "by5NkEoSC4gvo9bQ2",
+    "title": "[AN #144]: How language models can also be finetuned for non-language tasks",
+    "slug": "an-144-how-language-models-can-also-be-finetuned-for-non",
+    "pageUrl": "https://www.lesswrong.com/posts/by5NkEoSC4gvo9bQ2/an-144-how-language-models-can-also-be-finetuned-for-non",
+    "postedAt": "2021-04-02T17:20:04.230Z",
+    "baseScore": 19,
+    "voteCount": 8,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rohinmshah",
+      "slug": "rohinmshah",
+      "displayName": "Rohin Shah"
+    }
+  },
+  {
+    "_id": "Cf2xxC3Yx9g6w7yXN",
+    "title": "Notes from \"Don't Shoot the Dog\"",
+    "slug": "notes-from-don-t-shoot-the-dog",
+    "pageUrl": "https://www.lesswrong.com/posts/Cf2xxC3Yx9g6w7yXN/notes-from-don-t-shoot-the-dog",
+    "postedAt": "2021-04-02T16:34:46.170Z",
+    "baseScore": 255,
+    "voteCount": 134,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "juliawise",
+      "slug": "juliawise",
+      "displayName": "juliawise"
+    }
+  },
+  {
+    "_id": "GthhzjHDjxrBH5jah",
+    "title": "2012 Robin Hanson comment on “Intelligence Explosion: Evidence and Import”",
+    "slug": "2012-robin-hanson-comment-on-intelligence-explosion-evidence",
+    "pageUrl": "https://www.lesswrong.com/posts/GthhzjHDjxrBH5jah/2012-robin-hanson-comment-on-intelligence-explosion-evidence",
+    "postedAt": "2021-04-02T16:26:51.725Z",
+    "baseScore": 28,
+    "voteCount": 8,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobbBB",
+      "slug": "robbbb",
+      "displayName": "Rob Bensinger"
+    }
+  },
+  {
+    "_id": "KfLA9fCGDArmwQKds",
+    "title": "On Information Presented by Authorities",
+    "slug": "on-information-presented-by-authorities",
+    "pageUrl": "https://www.lesswrong.com/posts/KfLA9fCGDArmwQKds/on-information-presented-by-authorities",
+    "postedAt": "2021-04-02T15:40:08.121Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://www.inoue.today/p/steelmanning-ideology",
+    "user": {
+      "username": "adaminoue",
+      "slug": "adaminoue",
+      "displayName": "adaminoue"
+    }
+  },
+  {
+    "_id": "iZP5iAZjdtmqsSjFN",
+    "title": "The Meaning Crisis",
+    "slug": "the-meaning-crisis",
+    "pageUrl": "https://www.lesswrong.com/events/iZP5iAZjdtmqsSjFN/the-meaning-crisis",
+    "postedAt": "2021-04-02T01:04:48.470Z",
+    "baseScore": 18,
+    "voteCount": 6,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "AdZdJ8hdQbmEoQpQZ",
+    "title": "2 innovative life extension approaches using cryonics technology",
+    "slug": "2-innovative-life-extension-approaches-using-cryonics",
+    "pageUrl": "https://www.lesswrong.com/posts/AdZdJ8hdQbmEoQpQZ/2-innovative-life-extension-approaches-using-cryonics",
+    "postedAt": "2021-04-02T00:54:04.539Z",
+    "baseScore": 41,
+    "voteCount": 17,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MathieuRoy",
+      "slug": "mathieuroy",
+      "displayName": "Mati_Roy"
+    }
+  },
+  {
+    "_id": "wfpdejMWog4vEDLDg",
+    "title": "\"AI and Compute\" trend isn't predictive of what is happening",
+    "slug": "ai-and-compute-trend-isn-t-predictive-of-what-is-happening",
+    "pageUrl": "https://www.lesswrong.com/posts/wfpdejMWog4vEDLDg/ai-and-compute-trend-isn-t-predictive-of-what-is-happening",
+    "postedAt": "2021-04-02T00:44:46.671Z",
+    "baseScore": 133,
+    "voteCount": 56,
+    "commentCount": 16,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "alexlyzhov",
+      "slug": "alexlyzhov",
+      "displayName": "alexlyzhov"
+    }
+  },
+  {
+    "_id": "kaBGzQrCiTtQnpDoL",
+    "title": "Examples of Acausal Trade with an Alien Universe?",
+    "slug": "examples-of-acausal-trade-with-an-alien-universe",
+    "pageUrl": "https://www.lesswrong.com/posts/kaBGzQrCiTtQnpDoL/examples-of-acausal-trade-with-an-alien-universe",
+    "postedAt": "2021-04-01T18:10:13.541Z",
+    "baseScore": 5,
+    "voteCount": 1,
+    "commentCount": 4,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "mikkel-wilson",
+      "slug": "mikkel-wilson",
+      "displayName": "MikkW"
+    }
+  },
+  {
+    "_id": "9facA2MMtPrGvxy9h",
+    "title": "April drafts",
+    "slug": "april-drafts",
+    "pageUrl": "https://www.lesswrong.com/posts/9facA2MMtPrGvxy9h/april-drafts",
+    "postedAt": "2021-04-01T18:10:05.590Z",
+    "baseScore": 49,
+    "voteCount": 18,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AI Imacts",
+      "slug": "ai-imacts",
+      "displayName": "AI Impacts"
+    }
+  },
+  {
+    "_id": "EGHtomuh55375u7RT",
+    "title": "Forecasting Newsletter: March 2021",
+    "slug": "forecasting-newsletter-march-2021",
+    "pageUrl": "https://www.lesswrong.com/posts/EGHtomuh55375u7RT/forecasting-newsletter-march-2021",
+    "postedAt": "2021-04-01T17:12:09.499Z",
+    "baseScore": 23,
+    "voteCount": 7,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Radamantis",
+      "slug": "nunosempere",
+      "displayName": "NunoSempere"
+    }
+  },
+  {
+    "_id": "CRiJuJxgArjBMJLvK",
+    "title": "A new acausal trading platform: RobinShould",
+    "slug": "a-new-acausal-trading-platform-robinshould",
+    "pageUrl": "https://www.lesswrong.com/posts/CRiJuJxgArjBMJLvK/a-new-acausal-trading-platform-robinshould",
+    "postedAt": "2021-04-01T16:56:07.488Z",
+    "baseScore": 116,
+    "voteCount": 61,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "matthew-barnett",
+      "slug": "matthew-barnett",
+      "displayName": "Matthew Barnett"
+    }
+  },
+  {
+    "_id": "AEdfqZCnhXnchiBLQ",
+    "title": "How Crypto Crosses the Moat",
+    "slug": "how-crypto-crosses-the-moat",
+    "pageUrl": "https://www.lesswrong.com/posts/AEdfqZCnhXnchiBLQ/how-crypto-crosses-the-moat",
+    "postedAt": "2021-04-01T15:26:09.367Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://www.inoue.today/p/how-crypto-crosses-the-moat",
+    "user": {
+      "username": "adaminoue",
+      "slug": "adaminoue",
+      "displayName": "adaminoue"
+    }
+  },
+  {
+    "_id": "fyBTuk65yxdHjTv5J",
+    "title": "Covid 4/1: Vaccine Passports",
+    "slug": "covid-4-1-vaccine-passports",
+    "pageUrl": "https://www.lesswrong.com/posts/fyBTuk65yxdHjTv5J/covid-4-1-vaccine-passports",
+    "postedAt": "2021-04-01T12:10:01.814Z",
+    "baseScore": 50,
+    "voteCount": 36,
+    "commentCount": 52,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Zvi",
+      "slug": "zvi",
+      "displayName": "Zvi"
+    }
+  },
+  {
+    "_id": "ThCE4nuszh2HpSeph",
+    "title": "Center for Applied Postrationality: An Update",
+    "slug": "center-for-applied-postrationality-an-update-1",
+    "pageUrl": "https://www.lesswrong.com/posts/ThCE4nuszh2HpSeph/center-for-applied-postrationality-an-update-1",
+    "postedAt": "2021-04-01T08:13:53.221Z",
+    "baseScore": 78,
+    "voteCount": 40,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "DonyChristie",
+      "slug": "pee-doom",
+      "displayName": "Pee Doom"
+    }
+  },
+  {
+    "_id": "YG9WkpgbqfqeAKKgp",
+    "title": "\nAI and the Probability of Conflict",
+    "slug": "ai-and-the-probability-of-conflict",
+    "pageUrl": "https://www.lesswrong.com/posts/YG9WkpgbqfqeAKKgp/ai-and-the-probability-of-conflict",
+    "postedAt": "2021-04-01T07:00:32.130Z",
+    "baseScore": 8,
+    "voteCount": 7,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "tonyoconnor",
+      "slug": "tonyoconnor",
+      "displayName": "tonyoconnor"
+    }
+  },
+  {
+    "_id": "syeBtmGoKvjJTH6sH",
+    "title": "Why We Launched LessWrong.SubStack",
+    "slug": "why-we-launched-lesswrong-substack",
+    "pageUrl": "https://www.lesswrong.com/posts/syeBtmGoKvjJTH6sH/why-we-launched-lesswrong-substack",
+    "postedAt": "2021-04-01T06:34:00.907Z",
+    "baseScore": 131,
+    "voteCount": 65,
+    "commentCount": 44,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Benito",
+      "slug": "benito",
+      "displayName": "Ben Pace"
+    }
+  },
+  {
+    "_id": "uyYNuPpWkxrXNCFZv",
+    "title": "What specific decision, event, or action significantly improved an aspect of your life in a value-congruent way? How?",
+    "slug": "what-specific-decision-event-or-action-significantly",
+    "pageUrl": "https://www.lesswrong.com/posts/uyYNuPpWkxrXNCFZv/what-specific-decision-event-or-action-significantly",
+    "postedAt": "2021-04-01T04:26:52.120Z",
+    "baseScore": 9,
+    "voteCount": 5,
+    "commentCount": 1,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Eh_Yo_Lexa",
+      "slug": "willa",
+      "displayName": "Willa"
+    }
+  },
+  {
+    "_id": "4AntqfQWfRfRWbnRB",
+    "title": "Bridging Two Esoteric 4-Value Logics Using Quantum Physics: Answered Modal Logic vs Catuṣkoṭi",
+    "slug": "bridging-two-esoteric-4-value-logics-using-quantum-physics",
+    "pageUrl": "https://www.lesswrong.com/posts/4AntqfQWfRfRWbnRB/bridging-two-esoteric-4-value-logics-using-quantum-physics",
+    "postedAt": "2021-04-01T00:34:19.306Z",
+    "baseScore": 3,
+    "voteCount": 4,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "bvssvni",
+      "slug": "bvssvni",
+      "displayName": "Sven Nilsen"
+    }
+  },
+  {
+    "_id": "pLLmDsGjJnjXm3DrX",
+    "title": "  Where can one draw the line between sentience and the state of being just a random bunch of quarks? At what point is the 'conscience' generated?",
+    "slug": "where-can-one-draw-the-line-between-sentience-and-the-state",
+    "pageUrl": "https://www.lesswrong.com/posts/pLLmDsGjJnjXm3DrX/where-can-one-draw-the-line-between-sentience-and-the-state",
+    "postedAt": "2021-04-01T00:30:20.332Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 6,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Astaroth07",
+      "slug": "astaroth07",
+      "displayName": "Astaroth07"
+    }
+  },
+  {
+    "_id": "eyodthcFCgvDJ8J73",
+    "title": "What is the semantics of assigning probabilities to future events?",
+    "slug": "what-is-the-semantics-of-assigning-probabilities-to-future",
+    "pageUrl": "https://www.lesswrong.com/posts/eyodthcFCgvDJ8J73/what-is-the-semantics-of-assigning-probabilities-to-future",
+    "postedAt": "2021-04-01T00:29:22.589Z",
+    "baseScore": 12,
+    "voteCount": 4,
+    "commentCount": 7,
+    "meta": false,
+    "question": true,
+    "url": null,
+    "user": {
+      "username": "Michal",
+      "slug": "michal",
+      "displayName": "Michal"
+    }
+  }
+]

@@ -1,0 +1,1892 @@
+[
+  {
+    "_id": "JHk54Kq4zkzHLiY2j",
+    "title": "Wikidebate",
+    "slug": "wikidebate",
+    "pageUrl": "https://www.lesswrong.com/posts/JHk54Kq4zkzHLiY2j/wikidebate",
+    "postedAt": "2016-10-31T23:24:06.985Z",
+    "baseScore": 4,
+    "voteCount": 4,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "https://en.wikiversity.org/wiki/Wikidebate",
+    "user": {
+      "username": "Sophivorus",
+      "slug": "sophivorus",
+      "displayName": "Sophivorus"
+    }
+  },
+  {
+    "_id": "chqmsRZxMwcswXAP7",
+    "title": "Open thread, Oct. 31 - Nov. 6, 2016",
+    "slug": "open-thread-oct-31-nov-6-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/chqmsRZxMwcswXAP7/open-thread-oct-31-nov-6-2016",
+    "postedAt": "2016-10-31T21:24:05.923Z",
+    "baseScore": 7,
+    "voteCount": 5,
+    "commentCount": 83,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Gyrodiot",
+      "slug": "gyrodiot",
+      "displayName": "Gyrodiot"
+    }
+  },
+  {
+    "_id": "nCaszuGW9bvbv6jX8",
+    "title": "The true degree of our emotional disconnect",
+    "slug": "the-true-degree-of-our-emotional-disconnect",
+    "pageUrl": "https://www.lesswrong.com/posts/nCaszuGW9bvbv6jX8/the-true-degree-of-our-emotional-disconnect",
+    "postedAt": "2016-10-31T19:07:42.333Z",
+    "baseScore": 7,
+    "voteCount": 5,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "siIver",
+      "slug": "siiver",
+      "displayName": "siIver"
+    }
+  },
+  {
+    "_id": "QEgGp7gaogAQjqgRi",
+    "title": "Is Global Reinforcement Learning (RL) a Fantasy?",
+    "slug": "is-global-reinforcement-learning-rl-a-fantasy",
+    "pageUrl": "https://www.lesswrong.com/posts/QEgGp7gaogAQjqgRi/is-global-reinforcement-learning-rl-a-fantasy",
+    "postedAt": "2016-10-31T01:49:50.788Z",
+    "baseScore": 5,
+    "voteCount": 18,
+    "commentCount": 51,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "35qx94QK8JEj3aJ8t",
+    "title": "AI black box for developers to code around, BONSAI",
+    "slug": "ai-black-box-for-developers-to-code-around-bonsai",
+    "pageUrl": "https://www.lesswrong.com/posts/35qx94QK8JEj3aJ8t/ai-black-box-for-developers-to-code-around-bonsai",
+    "postedAt": "2016-10-30T23:08:27.492Z",
+    "baseScore": 4,
+    "voteCount": 3,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": "https://bons.ai/",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf0670375280",
+    "title": "Online Learning 2: Bandit learning with catastrophes",
+    "slug": "online-learning-2-bandit-learning-with-catastrophes",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf0670375280/online-learning-2-bandit-learning-with-catastrophes",
+    "postedAt": "2016-10-29T16:53:28.000Z",
+    "baseScore": 0,
+    "voteCount": 0,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RyanCarey",
+      "slug": "ryancarey",
+      "displayName": "RyanCarey"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037525e",
+    "title": "Online Learning 1: Bias-detecting online learners",
+    "slug": "online-learning-1-bias-detecting-online-learners",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037525e/online-learning-1-bias-detecting-online-learners",
+    "postedAt": "2016-10-29T16:45:04.000Z",
+    "baseScore": 6,
+    "voteCount": 4,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RyanCarey",
+      "slug": "ryancarey",
+      "displayName": "RyanCarey"
+    }
+  },
+  {
+    "_id": "dRdDCjEai2dkmHTK7",
+    "title": "Meetup : Sydney Rationality Dojo - December 2016",
+    "slug": "meetup-sydney-rationality-dojo-december-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/dRdDCjEai2dkmHTK7/meetup-sydney-rationality-dojo-december-2016",
+    "postedAt": "2016-10-28T23:39:09.735Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "luminosity",
+      "slug": "luminosity",
+      "displayName": "luminosity"
+    }
+  },
+  {
+    "_id": "K63uZ7N3aAJ2LhSat",
+    "title": "Meetup : Sydney Rationality Dojo - November 2016",
+    "slug": "meetup-sydney-rationality-dojo-november-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/K63uZ7N3aAJ2LhSat/meetup-sydney-rationality-dojo-november-2016",
+    "postedAt": "2016-10-28T23:38:36.155Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "luminosity",
+      "slug": "luminosity",
+      "displayName": "luminosity"
+    }
+  },
+  {
+    "_id": "3qCYHH5vqyT5tvZ2Z",
+    "title": "Citizen scientist space projects",
+    "slug": "citizen-scientist-space-projects",
+    "pageUrl": "https://www.lesswrong.com/posts/3qCYHH5vqyT5tvZ2Z/citizen-scientist-space-projects",
+    "postedAt": "2016-10-28T21:56:44.750Z",
+    "baseScore": 3,
+    "voteCount": 3,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": "https://spacehack.org/",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "HRcugv48Rxu9PL6Fj",
+    "title": "Meetup : Baltimore Area / UMBC Weekly Meetup",
+    "slug": "meetup-baltimore-area-umbc-weekly-meetup-3",
+    "pageUrl": "https://www.lesswrong.com/posts/HRcugv48Rxu9PL6Fj/meetup-baltimore-area-umbc-weekly-meetup-3",
+    "postedAt": "2016-10-28T18:36:23.737Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "iarwain1",
+      "slug": "iarwain1",
+      "displayName": "iarwain1"
+    }
+  },
+  {
+    "_id": "CRfaKEfmEeJ8j4ARR",
+    "title": "Meetup : Meetup #5 - Amsterdam edition!",
+    "slug": "meetup-meetup-5-amsterdam-edition",
+    "pageUrl": "https://www.lesswrong.com/posts/CRfaKEfmEeJ8j4ARR/meetup-meetup-5-amsterdam-edition",
+    "postedAt": "2016-10-28T17:55:15.286Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "4EbnT8uTcJKGDwNj4",
+    "title": "Philosophical theory with an empirical prediction",
+    "slug": "philosophical-theory-with-an-empirical-prediction",
+    "pageUrl": "https://www.lesswrong.com/posts/4EbnT8uTcJKGDwNj4/philosophical-theory-with-an-empirical-prediction",
+    "postedAt": "2016-10-28T16:14:16.480Z",
+    "baseScore": -3,
+    "voteCount": 4,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mgin",
+      "slug": "mgin",
+      "displayName": "mgin"
+    }
+  },
+  {
+    "_id": "DrKYyDnKSdQ8PbTv4",
+    "title": "Weekly LW Meetups",
+    "slug": "weekly-lw-meetups-111",
+    "pageUrl": "https://www.lesswrong.com/posts/DrKYyDnKSdQ8PbTv4/weekly-lw-meetups-111",
+    "postedAt": "2016-10-28T15:47:58.838Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "3svoavScpwzikaEEG",
+    "title": "Your Truth Is Not My Truth",
+    "slug": "your-truth-is-not-my-truth",
+    "pageUrl": "https://www.lesswrong.com/posts/3svoavScpwzikaEEG/your-truth-is-not-my-truth",
+    "postedAt": "2016-10-28T13:35:01.968Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Bound_up",
+      "slug": "bound_up",
+      "displayName": "Bound_up"
+    }
+  },
+  {
+    "_id": "bzaQpRe4oDiZkDGMh",
+    "title": "Meetup : Stockholm: Bottlenecks to trading personal resources",
+    "slug": "meetup-stockholm-bottlenecks-to-trading-personal-resources",
+    "pageUrl": "https://www.lesswrong.com/posts/bzaQpRe4oDiZkDGMh/meetup-stockholm-bottlenecks-to-trading-personal-resources",
+    "postedAt": "2016-10-28T11:41:49.046Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "pepe_prime",
+      "slug": "pepe_prime",
+      "displayName": "pepe_prime"
+    }
+  },
+  {
+    "_id": "MADrfzDrkwhxNLQPi",
+    "title": "Year 1 Redux – Trump",
+    "slug": "year-1-redux-trump",
+    "pageUrl": "https://www.lesswrong.com/posts/MADrfzDrkwhxNLQPi/year-1-redux-trump",
+    "postedAt": "2016-10-27T21:58:51.000Z",
+    "baseScore": 1,
+    "voteCount": 0,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "pWgNRSi6EYM6Jw9an",
+    "title": "Meetup : Moscow: rational review, status quo bias, interpersonal closeness",
+    "slug": "meetup-moscow-rational-review-status-quo-bias-interpersonal",
+    "pageUrl": "https://www.lesswrong.com/posts/pWgNRSi6EYM6Jw9an/meetup-moscow-rational-review-status-quo-bias-interpersonal",
+    "postedAt": "2016-10-27T13:58:31.795Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "berekuk",
+      "slug": "slava-matyukhin",
+      "displayName": "Slava Matyukhin"
+    }
+  },
+  {
+    "_id": "PJCDY3iZGEcvRKSvw",
+    "title": "Counterfactual do-what-I-mean",
+    "slug": "counterfactual-do-what-i-mean",
+    "pageUrl": "https://www.lesswrong.com/posts/PJCDY3iZGEcvRKSvw/counterfactual-do-what-i-mean",
+    "postedAt": "2016-10-27T13:54:29.879Z",
+    "baseScore": 5,
+    "voteCount": 3,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037527c",
+    "title": "Counterfactual do-what-I-mean",
+    "slug": "counterfactual-do-what-i-mean",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037527c/counterfactual-do-what-i-mean",
+    "postedAt": "2016-10-27T13:53:47.000Z",
+    "baseScore": 0,
+    "voteCount": 0,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Stuart_Armstrong",
+      "slug": "stuart_armstrong",
+      "displayName": "Stuart_Armstrong"
+    }
+  },
+  {
+    "_id": "pJba9jics7JCtmoPr",
+    "title": "Meetup : San Francisco Meetup: Board Games",
+    "slug": "meetup-san-francisco-meetup-board-games-7",
+    "pageUrl": "https://www.lesswrong.com/posts/pJba9jics7JCtmoPr/meetup-san-francisco-meetup-board-games-7",
+    "postedAt": "2016-10-27T02:56:19.883Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rocurley",
+      "slug": "rocurley",
+      "displayName": "rocurley"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037527b",
+    "title": "Training Garrabrant inductors to predict counterfactuals",
+    "slug": "training-garrabrant-inductors-to-predict-counterfactuals",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037527b/training-garrabrant-inductors-to-predict-counterfactuals",
+    "postedAt": "2016-10-27T02:41:49.000Z",
+    "baseScore": 3,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "TsviBT",
+      "slug": "tsvibt",
+      "displayName": "TsviBT"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037527a",
+    "title": "Desiderata for decision theory",
+    "slug": "desiderata-for-decision-theory",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037527a/desiderata-for-decision-theory",
+    "postedAt": "2016-10-27T02:10:48.000Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "TsviBT",
+      "slug": "tsvibt",
+      "displayName": "TsviBT"
+    }
+  },
+  {
+    "_id": "KpT8qQZK4uphEkGWh",
+    "title": "Meetup : Washington, D.C.: Halloween Party",
+    "slug": "meetup-washington-d-c-halloween-party",
+    "pageUrl": "https://www.lesswrong.com/posts/KpT8qQZK4uphEkGWh/meetup-washington-d-c-halloween-party",
+    "postedAt": "2016-10-26T21:37:01.292Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobinZ",
+      "slug": "robinz",
+      "displayName": "RobinZ"
+    }
+  },
+  {
+    "_id": "eySGdpSX5JrTcyEdz",
+    "title": "Slashdot: study Finds Little Lies Lead To Bigger Ones",
+    "slug": "slashdot-study-finds-little-lies-lead-to-bigger-ones",
+    "pageUrl": "https://www.lesswrong.com/posts/eySGdpSX5JrTcyEdz/slashdot-study-finds-little-lies-lead-to-bigger-ones",
+    "postedAt": "2016-10-26T06:53:29.557Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://science.slashdot.org/story/16/10/24/215251/study-finds-little-lies-lead-to-bigger-ones",
+    "user": {
+      "username": "Gunnar_Zarncke",
+      "slug": "gunnar_zarncke",
+      "displayName": "Gunnar_Zarncke"
+    }
+  },
+  {
+    "_id": "ap5iZBaytH6PkWyco",
+    "title": "Scientists Create AI Program That Can Predict Human Rights Trials With 79 Percent Accuracy",
+    "slug": "scientists-create-ai-program-that-can-predict-human-rights",
+    "pageUrl": "https://www.lesswrong.com/posts/ap5iZBaytH6PkWyco/scientists-create-ai-program-that-can-predict-human-rights",
+    "postedAt": "2016-10-26T06:47:49.124Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://news.slashdot.org/story/16/10/25/2319236/scientists-create-ai-program-that-can-predict-human-rights-trials-with-79-percent-accuracy",
+    "user": {
+      "username": "Gunnar_Zarncke",
+      "slug": "gunnar_zarncke",
+      "displayName": "Gunnar_Zarncke"
+    }
+  },
+  {
+    "_id": "nGRop7RdKtagyA8dE",
+    "title": "Year 1 Redux – Serena and Ivan",
+    "slug": "year-1-redux-serena-and-ivan",
+    "pageUrl": "https://www.lesswrong.com/posts/nGRop7RdKtagyA8dE/year-1-redux-serena-and-ivan",
+    "postedAt": "2016-10-26T01:30:11.000Z",
+    "baseScore": 1,
+    "voteCount": 0,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "AH5Mc9Yy2ok8uzced",
+    "title": "Trying to find a short story",
+    "slug": "trying-to-find-a-short-story",
+    "pageUrl": "https://www.lesswrong.com/posts/AH5Mc9Yy2ok8uzced/trying-to-find-a-short-story",
+    "postedAt": "2016-10-25T02:27:42.156Z",
+    "baseScore": 1,
+    "voteCount": 5,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "mgin",
+      "slug": "mgin",
+      "displayName": "mgin"
+    }
+  },
+  {
+    "_id": "Bqht6nhhPkJWcRAFd",
+    "title": "How Feasible Is the Rapid Development of Artificial Superintelligence?",
+    "slug": "how-feasible-is-the-rapid-development-of-artificial",
+    "pageUrl": "https://www.lesswrong.com/posts/Bqht6nhhPkJWcRAFd/how-feasible-is-the-rapid-development-of-artificial",
+    "postedAt": "2016-10-24T08:43:28.050Z",
+    "baseScore": 14,
+    "voteCount": 9,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": "https://foundational-research.org/how-feasible-is-rapid-development-artificial-superintelligence",
+    "user": {
+      "username": "Kaj_Sotala",
+      "slug": "kaj_sotala",
+      "displayName": "Kaj_Sotala"
+    }
+  },
+  {
+    "_id": "DpYEfnkeLniLbFToY",
+    "title": "Open thread, Oct. 24 - Oct. 30, 2016",
+    "slug": "open-thread-oct-24-oct-30-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/DpYEfnkeLniLbFToY/open-thread-oct-24-oct-30-2016",
+    "postedAt": "2016-10-24T06:54:52.132Z",
+    "baseScore": 6,
+    "voteCount": 4,
+    "commentCount": 220,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MrMind",
+      "slug": "mrmind",
+      "displayName": "MrMind"
+    }
+  },
+  {
+    "_id": "LGJNe7zzpEQ8kSnbv",
+    "title": "Farm in a Box, permaculte package",
+    "slug": "farm-in-a-box-permaculte-package",
+    "pageUrl": "https://www.lesswrong.com/posts/LGJNe7zzpEQ8kSnbv/farm-in-a-box-permaculte-package",
+    "postedAt": "2016-10-23T22:40:41.365Z",
+    "baseScore": -6,
+    "voteCount": 5,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "http://www.farmfromabox.com/",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "hTXY5JDhFWR4L8hW6",
+    "title": "Spectral signal in halo stars, ETI suspected.",
+    "slug": "spectral-signal-in-halo-stars-eti-suspected",
+    "pageUrl": "https://www.lesswrong.com/posts/hTXY5JDhFWR4L8hW6/spectral-signal-in-halo-stars-eti-suspected",
+    "postedAt": "2016-10-23T20:21:26.387Z",
+    "baseScore": -5,
+    "voteCount": 5,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "7mNxFiuCDLXtzDhm2",
+    "title": "Internal Race Conditions",
+    "slug": "internal-race-conditions",
+    "pageUrl": "https://www.lesswrong.com/posts/7mNxFiuCDLXtzDhm2/internal-race-conditions",
+    "postedAt": "2016-10-23T13:23:29.286Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": "http://squirrelinhell.blogspot.com/2016/10/internal-race-conditions.html",
+    "user": {
+      "username": "SquirrelInHell",
+      "slug": "squirrelinhell",
+      "displayName": "SquirrelInHell"
+    }
+  },
+  {
+    "_id": "hNowKTTeLbuHd27YC",
+    "title": "A Year of Putting a Numonit",
+    "slug": "a-year-of-putting-a-numonit",
+    "pageUrl": "https://www.lesswrong.com/posts/hNowKTTeLbuHd27YC/a-year-of-putting-a-numonit",
+    "postedAt": "2016-10-23T07:03:36.000Z",
+    "baseScore": 1,
+    "voteCount": 0,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "BNb6PRXNSMfcvd8zJ",
+    "title": "What's the most annoying part of your life/job?",
+    "slug": "what-s-the-most-annoying-part-of-your-life-job",
+    "pageUrl": "https://www.lesswrong.com/posts/BNb6PRXNSMfcvd8zJ/what-s-the-most-annoying-part-of-your-life-job",
+    "postedAt": "2016-10-23T03:37:55.440Z",
+    "baseScore": 25,
+    "voteCount": 18,
+    "commentCount": 126,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Liron",
+      "slug": "liron",
+      "displayName": "Liron"
+    }
+  },
+  {
+    "_id": "d2qhwdPBTjnzhjmip",
+    "title": "Meetup : Baltimore Area / UMBC Weekly Meetup",
+    "slug": "meetup-baltimore-area-umbc-weekly-meetup-7",
+    "pageUrl": "https://www.lesswrong.com/posts/d2qhwdPBTjnzhjmip/meetup-baltimore-area-umbc-weekly-meetup-7",
+    "postedAt": "2016-10-23T00:26:25.104Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "iarwain1",
+      "slug": "iarwain1",
+      "displayName": "iarwain1"
+    }
+  },
+  {
+    "_id": "qKSrmedZLBtgpWMP3",
+    "title": "Trying to make politics less irrational by cognitive bias-checking the US presidential debates",
+    "slug": "trying-to-make-politics-less-irrational-by-cognitive-bias",
+    "pageUrl": "https://www.lesswrong.com/posts/qKSrmedZLBtgpWMP3/trying-to-make-politics-less-irrational-by-cognitive-bias",
+    "postedAt": "2016-10-22T02:32:46.626Z",
+    "baseScore": -2,
+    "voteCount": 7,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "https://theconversation.com/fact-checking-clinton-and-trump-is-not-enough-67506",
+    "user": {
+      "username": "Gleb_Tsipursky",
+      "slug": "gleb_tsipursky",
+      "displayName": "Gleb_Tsipursky"
+    }
+  },
+  {
+    "_id": "eqGQGCWzy6ghTn22i",
+    "title": "Conscious Exotica - structure of the space of possible minds",
+    "slug": "conscious-exotica-structure-of-the-space-of-possible-minds",
+    "pageUrl": "https://www.lesswrong.com/posts/eqGQGCWzy6ghTn22i/conscious-exotica-structure-of-the-space-of-possible-minds",
+    "postedAt": "2016-10-21T23:45:27.046Z",
+    "baseScore": 3,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://aeon.co/essays/beyond-humans-what-other-kinds-of-minds-might-be-out-there",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "fShArdMFx6bRFwJxK",
+    "title": "New LW Meetup: Zurich",
+    "slug": "new-lw-meetup-zurich-0",
+    "pageUrl": "https://www.lesswrong.com/posts/fShArdMFx6bRFwJxK/new-lw-meetup-zurich-0",
+    "postedAt": "2016-10-21T10:47:45.030Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "QgkmfGTcM8othLSs3",
+    "title": "The Leverhulme Centre for the Future of Intelligence officially launches.",
+    "slug": "the-leverhulme-centre-for-the-future-of-intelligence",
+    "pageUrl": "https://www.lesswrong.com/posts/QgkmfGTcM8othLSs3/the-leverhulme-centre-for-the-future-of-intelligence",
+    "postedAt": "2016-10-21T01:22:19.504Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "http://lcfi.ac.uk/",
+    "user": {
+      "username": "ignoranceprior",
+      "slug": "ignoranceprior",
+      "displayName": "ignoranceprior"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf0670375274",
+    "title": "Transitive negotiations with counterfactual agents",
+    "slug": "transitive-negotiations-with-counterfactual-agents",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf0670375274/transitive-negotiations-with-counterfactual-agents",
+    "postedAt": "2016-10-20T23:27:04.000Z",
+    "baseScore": 4,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Scott Garrabrant",
+      "slug": "scott-garrabrant",
+      "displayName": "Scott Garrabrant"
+    }
+  },
+  {
+    "_id": "vdCGKBqQ8EWzSx5Cz",
+    "title": "Linked List",
+    "slug": "linked-list",
+    "pageUrl": "https://www.lesswrong.com/posts/vdCGKBqQ8EWzSx5Cz/linked-list",
+    "postedAt": "2016-10-20T22:56:57.720Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://linkedlist.org",
+    "user": {
+      "username": "wmoore",
+      "slug": "wmoore",
+      "displayName": "wmoore"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf0670375273",
+    "title": "Attacking the grain of truth problem using Bayes-Savage agents",
+    "slug": "attacking-the-grain-of-truth-problem-using-bayes-savage",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf0670375273/attacking-the-grain-of-truth-problem-using-bayes-savage",
+    "postedAt": "2016-10-20T14:41:56.000Z",
+    "baseScore": 11,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "vanessa-kosoy",
+      "slug": "vanessa-kosoy",
+      "displayName": "Vanessa Kosoy"
+    }
+  },
+  {
+    "_id": "X5sxXWBWZgt3Y8aPz",
+    "title": "*How* people shut down thought because of high-status respectable halos",
+    "slug": "how-people-shut-down-thought-because-of-high-status",
+    "pageUrl": "https://www.lesswrong.com/posts/X5sxXWBWZgt3Y8aPz/how-people-shut-down-thought-because-of-high-status",
+    "postedAt": "2016-10-20T14:09:07.504Z",
+    "baseScore": 21,
+    "voteCount": 12,
+    "commentCount": 20,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "NancyLebovitz",
+      "slug": "nancylebovitz",
+      "displayName": "NancyLebovitz"
+    }
+  },
+  {
+    "_id": "xu8mH4MQinvvGjTiJ",
+    "title": "Meetup : San Francisco Meetup: Stories",
+    "slug": "meetup-san-francisco-meetup-stories-2",
+    "pageUrl": "https://www.lesswrong.com/posts/xu8mH4MQinvvGjTiJ/meetup-san-francisco-meetup-stories-2",
+    "postedAt": "2016-10-20T04:17:36.768Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rocurley",
+      "slug": "rocurley",
+      "displayName": "rocurley"
+    }
+  },
+  {
+    "_id": "mR6RMfefu3P98d5y3",
+    "title": "Program good ethics into artificial intelligence",
+    "slug": "program-good-ethics-into-artificial-intelligence",
+    "pageUrl": "https://www.lesswrong.com/posts/mR6RMfefu3P98d5y3/program-good-ethics-into-artificial-intelligence",
+    "postedAt": "2016-10-19T16:28:40.542Z",
+    "baseScore": 5,
+    "voteCount": 3,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": "http://www.nature.com/news/program-good-ethics-into-artificial-intelligence-1.20821?WT.mc_id=TWT_NatureNews",
+    "user": {
+      "username": "XFrequentist",
+      "slug": "xfrequentist",
+      "displayName": "XFrequentist"
+    }
+  },
+  {
+    "_id": "zEpK9RcsuespKqehm",
+    "title": "Meetup : Washington, D.C.: Technology of Communication",
+    "slug": "meetup-washington-d-c-technology-of-communication",
+    "pageUrl": "https://www.lesswrong.com/posts/zEpK9RcsuespKqehm/meetup-washington-d-c-technology-of-communication",
+    "postedAt": "2016-10-18T23:14:33.131Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobinZ",
+      "slug": "robinz",
+      "displayName": "RobinZ"
+    }
+  },
+  {
+    "_id": "9Nk3NngECEpm7iWiK",
+    "title": "AI-ON is an open community dedicated to advancing Artificial Intelligence",
+    "slug": "ai-on-is-an-open-community-dedicated-to-advancing-artificial",
+    "pageUrl": "https://www.lesswrong.com/posts/9Nk3NngECEpm7iWiK/ai-on-is-an-open-community-dedicated-to-advancing-artificial",
+    "postedAt": "2016-10-18T22:17:28.675Z",
+    "baseScore": 5,
+    "voteCount": 4,
+    "commentCount": 17,
+    "meta": false,
+    "question": false,
+    "url": "http://ai-on.org/",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "nwXHvz3MWzNvEnBxn",
+    "title": "Meetup : Munich Meetup in October",
+    "slug": "meetup-munich-meetup-in-october",
+    "pageUrl": "https://www.lesswrong.com/posts/nwXHvz3MWzNvEnBxn/meetup-munich-meetup-in-october",
+    "postedAt": "2016-10-18T22:10:01.027Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Teobaldo",
+      "slug": "valeriy",
+      "displayName": "Valeriy"
+    }
+  },
+  {
+    "_id": "QQNro37BxtuLEGMDu",
+    "title": "Meetup : Games in Kocherga club: FallacyMania, Tower of Chaos, Scientific Discovery",
+    "slug": "meetup-games-in-kocherga-club-fallacymania-tower-of-chaos-6",
+    "pageUrl": "https://www.lesswrong.com/posts/QQNro37BxtuLEGMDu/meetup-games-in-kocherga-club-fallacymania-tower-of-chaos-6",
+    "postedAt": "2016-10-18T21:00:42.115Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Alexander230",
+      "slug": "alexander230",
+      "displayName": "Alexander230"
+    }
+  },
+  {
+    "_id": "pwqT9MPDDhNdZX5Hc",
+    "title": "Meetup : Stockholm: Mental contrasting",
+    "slug": "meetup-stockholm-mental-contrasting",
+    "pageUrl": "https://www.lesswrong.com/posts/pwqT9MPDDhNdZX5Hc/meetup-stockholm-mental-contrasting",
+    "postedAt": "2016-10-18T20:24:08.473Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "pepe_prime",
+      "slug": "pepe_prime",
+      "displayName": "pepe_prime"
+    }
+  },
+  {
+    "_id": "boc476TnbLSSBKr7w",
+    "title": "The Non-identity Problem - Another argument in favour of classical utilitarianism",
+    "slug": "the-non-identity-problem-another-argument-in-favour-of",
+    "pageUrl": "https://www.lesswrong.com/posts/boc476TnbLSSBKr7w/the-non-identity-problem-another-argument-in-favour-of",
+    "postedAt": "2016-10-18T13:41:14.047Z",
+    "baseScore": 5,
+    "voteCount": 5,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": "http://plato.stanford.edu/entries/nonidentity-problem/#WroLif",
+    "user": {
+      "username": "casebash",
+      "slug": "casebash",
+      "displayName": "casebash"
+    }
+  },
+  {
+    "_id": "G9vBGJusQEzADRNCL",
+    "title": "Meetup : NY Solstice 2016 - The Story of Smallpox",
+    "slug": "meetup-ny-solstice-2016-the-story-of-smallpox",
+    "pageUrl": "https://www.lesswrong.com/posts/G9vBGJusQEzADRNCL/meetup-ny-solstice-2016-the-story-of-smallpox",
+    "postedAt": "2016-10-18T02:50:01.727Z",
+    "baseScore": 0,
+    "voteCount": 0,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Raemon",
+      "slug": "raemon",
+      "displayName": "Raemon"
+    }
+  },
+  {
+    "_id": "BZMc9Xzqw5WcCMHrr",
+    "title": "The Moral Of The Story",
+    "slug": "the-moral-of-the-story",
+    "pageUrl": "https://www.lesswrong.com/posts/BZMc9Xzqw5WcCMHrr/the-moral-of-the-story",
+    "postedAt": "2016-10-18T02:22:45.000Z",
+    "baseScore": 55,
+    "voteCount": 42,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Yvain",
+      "slug": "scottalexander",
+      "displayName": "Scott Alexander"
+    }
+  },
+  {
+    "_id": "KrYyusMFBgrFsuKf6",
+    "title": "Open thread, Oct. 17 - Oct. 23, 2016",
+    "slug": "open-thread-oct-17-oct-23-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/KrYyusMFBgrFsuKf6/open-thread-oct-17-oct-23-2016",
+    "postedAt": "2016-10-17T07:02:08.902Z",
+    "baseScore": 7,
+    "voteCount": 4,
+    "commentCount": 68,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MrMind",
+      "slug": "mrmind",
+      "displayName": "MrMind"
+    }
+  },
+  {
+    "_id": "yGWMkgHj9vZqNcd4y",
+    "title": "Astrobiology IV: Photosynthesis and energy",
+    "slug": "astrobiology-iv-photosynthesis-and-energy",
+    "pageUrl": "https://www.lesswrong.com/posts/yGWMkgHj9vZqNcd4y/astrobiology-iv-photosynthesis-and-energy",
+    "postedAt": "2016-10-17T00:30:46.138Z",
+    "baseScore": 18,
+    "voteCount": 11,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "GL5W4sDeBaW2Th4Y3",
+    "title": "There are 125 sheep and 5 dogs in a flock. How old is the shepherd? / Math Education",
+    "slug": "there-are-125-sheep-and-5-dogs-in-a-flock-how-old-is-the",
+    "pageUrl": "https://www.lesswrong.com/posts/GL5W4sDeBaW2Th4Y3/there-are-125-sheep-and-5-dogs-in-a-flock-how-old-is-the",
+    "postedAt": "2016-10-17T00:12:03.593Z",
+    "baseScore": 10,
+    "voteCount": 8,
+    "commentCount": 13,
+    "meta": false,
+    "question": false,
+    "url": "https://medium.com/@fjmubeen/how-old-is-the-shepherd-the-problem-that-shook-school-mathematics-ad89b565fff#.7al3bj7oj",
+    "user": {
+      "username": "James_Miller",
+      "slug": "james_miller",
+      "displayName": "James_Miller"
+    }
+  },
+  {
+    "_id": "pDdYKZsLJw4HZZ4Kp",
+    "title": "Animated explainer video promoting EA-themed effective giving ideas and meta-charities",
+    "slug": "animated-explainer-video-promoting-ea-themed-effective",
+    "pageUrl": "https://www.lesswrong.com/posts/pDdYKZsLJw4HZZ4Kp/animated-explainer-video-promoting-ea-themed-effective",
+    "postedAt": "2016-10-16T22:44:16.494Z",
+    "baseScore": -10,
+    "voteCount": 9,
+    "commentCount": 5,
+    "meta": false,
+    "question": false,
+    "url": "https://www.youtube.com/watch?v=_4ydp0eyZjo",
+    "user": {
+      "username": "Gleb_Tsipursky",
+      "slug": "gleb_tsipursky",
+      "displayName": "Gleb_Tsipursky"
+    }
+  },
+  {
+    "_id": "j3F7Bz8dHLgWcWRbs",
+    "title": "H+Pedia opens projects and editorial portal",
+    "slug": "h-pedia-opens-projects-and-editorial-portal",
+    "pageUrl": "https://www.lesswrong.com/posts/j3F7Bz8dHLgWcWRbs/h-pedia-opens-projects-and-editorial-portal",
+    "postedAt": "2016-10-16T21:41:11.089Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://hpluspedia.org/wiki/Community_portal",
+    "user": {
+      "username": "Deku-shrub",
+      "slug": "deku-shrub",
+      "displayName": "Deku-shrub"
+    }
+  },
+  {
+    "_id": "8zhKkreGrG8wo3hhg",
+    "title": "Video to induce hallucinations , meme implanter?",
+    "slug": "video-to-induce-hallucinations-meme-implanter",
+    "pageUrl": "https://www.lesswrong.com/posts/8zhKkreGrG8wo3hhg/video-to-induce-hallucinations-meme-implanter",
+    "postedAt": "2016-10-16T20:33:48.707Z",
+    "baseScore": 3,
+    "voteCount": 3,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "http://sciencebulletin.org/archives/6276.html",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "zoppybx3eLQRQuHeJ",
+    "title": "Meetup : Zürich social Rationality meetup",
+    "slug": "meetup-zuerich-social-rationality-meetup",
+    "pageUrl": "https://www.lesswrong.com/posts/zoppybx3eLQRQuHeJ/meetup-zuerich-social-rationality-meetup",
+    "postedAt": "2016-10-16T09:52:40.791Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Marko",
+      "slug": "marko",
+      "displayName": "Marko"
+    }
+  },
+  {
+    "_id": "pQDsMqTY2YLW7jgES",
+    "title": "Meetup : Melbourne Social Meetup: October",
+    "slug": "meetup-melbourne-social-meetup-october",
+    "pageUrl": "https://www.lesswrong.com/posts/pQDsMqTY2YLW7jgES/meetup-melbourne-social-meetup-october",
+    "postedAt": "2016-10-16T05:53:38.550Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Maelin",
+      "slug": "maelin",
+      "displayName": "Maelin"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf0670375265",
+    "title": "Control and security",
+    "slug": "control-and-security",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf0670375265/control-and-security",
+    "postedAt": "2016-10-15T21:11:55.000Z",
+    "baseScore": 4,
+    "voteCount": 3,
+    "commentCount": 7,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "paulfchristiano",
+      "slug": "paulfchristiano",
+      "displayName": "paulfchristiano"
+    }
+  },
+  {
+    "_id": "yvXSGh7djNhPoFnPL",
+    "title": "Map and Territory: a new rationalist group blog",
+    "slug": "map-and-territory-a-new-rationalist-group-blog",
+    "pageUrl": "https://www.lesswrong.com/posts/yvXSGh7djNhPoFnPL/map-and-territory-a-new-rationalist-group-blog",
+    "postedAt": "2016-10-15T17:55:06.762Z",
+    "baseScore": 13,
+    "voteCount": 10,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "gworley",
+      "slug": "gordon-seidoh-worley",
+      "displayName": "Gordon Seidoh Worley"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf0670375264",
+    "title": "Asymptotic Decision Theory",
+    "slug": "asymptotic-decision-theory",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf0670375264/asymptotic-decision-theory",
+    "postedAt": "2016-10-15T02:42:44.000Z",
+    "baseScore": 7,
+    "voteCount": 5,
+    "commentCount": 2,
+    "meta": false,
+    "question": false,
+    "url": "http://gallabytes.com/2016/10/adt.html",
+    "user": {
+      "username": "gallabytes",
+      "slug": "gallabytes",
+      "displayName": "gallabytes"
+    }
+  },
+  {
+    "_id": "DMhMvc9Anqqe9o4kX",
+    "title": "Reducing Risks of Astronomical Suffering (S-Risks): A Neglected Global Priority",
+    "slug": "reducing-risks-of-astronomical-suffering-s-risks-a-neglected",
+    "pageUrl": "https://www.lesswrong.com/posts/DMhMvc9Anqqe9o4kX/reducing-risks-of-astronomical-suffering-s-risks-a-neglected",
+    "postedAt": "2016-10-14T19:58:14.077Z",
+    "baseScore": 13,
+    "voteCount": 8,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "https://foundational-research.org/reducing-risks-of-astronomical-suffering-a-neglected-global-priority/",
+    "user": {
+      "username": "ignoranceprior",
+      "slug": "ignoranceprior",
+      "displayName": "ignoranceprior"
+    }
+  },
+  {
+    "_id": "42E8xtDeiKkmLNosL",
+    "title": "Reducing Risks of Astronomical Suffering (S-Risks): A Neglected Global Priority",
+    "slug": "reducing-risks-of-astronomical-suffering-s-risks-a-neglected-0",
+    "pageUrl": "https://www.lesswrong.com/posts/42E8xtDeiKkmLNosL/reducing-risks-of-astronomical-suffering-s-risks-a-neglected-0",
+    "postedAt": "2016-10-14T19:56:27.359Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "/r/discussion/lw/o0s/reducing_risks_of_astronomical_suffering_srisks_a/",
+    "user": {
+      "username": "ignoranceprior",
+      "slug": "ignoranceprior",
+      "displayName": "ignoranceprior"
+    }
+  },
+  {
+    "_id": "RKGC8Actviae5jqN3",
+    "title": "Meetup : Baltimore Area / UMBC Weekly Meetup",
+    "slug": "meetup-baltimore-area-umbc-weekly-meetup-4",
+    "pageUrl": "https://www.lesswrong.com/posts/RKGC8Actviae5jqN3/meetup-baltimore-area-umbc-weekly-meetup-4",
+    "postedAt": "2016-10-14T16:39:57.573Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "iarwain1",
+      "slug": "iarwain1",
+      "displayName": "iarwain1"
+    }
+  },
+  {
+    "_id": "hKo6AkdHvmYgo3cDM",
+    "title": "Weekly LW Meetups",
+    "slug": "weekly-lw-meetups-125",
+    "pageUrl": "https://www.lesswrong.com/posts/hKo6AkdHvmYgo3cDM/weekly-lw-meetups-125",
+    "postedAt": "2016-10-14T15:56:24.185Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "7reqMyBG6auDkSCfM",
+    "title": "GiveWell: A case study in effective altruism, part 1",
+    "slug": "givewell-a-case-study-in-effective-altruism-part-1",
+    "pageUrl": "https://www.lesswrong.com/posts/7reqMyBG6auDkSCfM/givewell-a-case-study-in-effective-altruism-part-1",
+    "postedAt": "2016-10-14T10:46:23.303Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "http://benjaminrosshoffman.com/givewell-case-study-effective-altruism-1/",
+    "user": {
+      "username": "philh",
+      "slug": "philh",
+      "displayName": "philh"
+    }
+  },
+  {
+    "_id": "wqmEqTiSrk7Gk5vvb",
+    "title": "Wikipedia book based on betterhumans' article on cognitive biases",
+    "slug": "wikipedia-book-based-on-betterhumans-article-on-cognitive",
+    "pageUrl": "https://www.lesswrong.com/posts/wqmEqTiSrk7Gk5vvb/wikipedia-book-based-on-betterhumans-article-on-cognitive",
+    "postedAt": "2016-10-14T01:03:58.421Z",
+    "baseScore": 3,
+    "voteCount": 2,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://en.wikipedia.org/wiki/User:Mathieu.roy.37/Books/Cognitive_Bias#Cognitive_Bias",
+    "user": {
+      "username": "MathieuRoy",
+      "slug": "mathieuroy",
+      "displayName": "Mati_Roy"
+    }
+  },
+  {
+    "_id": "y5hYACoJCcYjmJwRm",
+    "title": "The map of agents which may create x-risks",
+    "slug": "the-map-of-agents-which-may-create-x-risks",
+    "pageUrl": "https://www.lesswrong.com/posts/y5hYACoJCcYjmJwRm/the-map-of-agents-which-may-create-x-risks",
+    "postedAt": "2016-10-13T11:17:51.236Z",
+    "baseScore": 3,
+    "voteCount": 5,
+    "commentCount": 6,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "turchin",
+      "slug": "turchin",
+      "displayName": "turchin"
+    }
+  },
+  {
+    "_id": "gCGR24ZJGpwWw6uPo",
+    "title": "Meetup : San Francisco Meetup: Rationality Diary",
+    "slug": "meetup-san-francisco-meetup-rationality-diary-1",
+    "pageUrl": "https://www.lesswrong.com/posts/gCGR24ZJGpwWw6uPo/meetup-san-francisco-meetup-rationality-diary-1",
+    "postedAt": "2016-10-13T05:18:03.800Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rocurley",
+      "slug": "rocurley",
+      "displayName": "rocurley"
+    }
+  },
+  {
+    "_id": "yA3wJ8cZgfHMgJs9s",
+    "title": "Barack Obama's opinions on near-future AI [Fixed]",
+    "slug": "barack-obama-s-opinions-on-near-future-ai-fixed",
+    "pageUrl": "https://www.lesswrong.com/posts/yA3wJ8cZgfHMgJs9s/barack-obama-s-opinions-on-near-future-ai-fixed",
+    "postedAt": "2016-10-12T15:46:44.334Z",
+    "baseScore": 7,
+    "voteCount": 5,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": "https://www.wired.com/2016/10/obama-envisions-ai-new-apollo-program/",
+    "user": {
+      "username": "scarcegreengrass",
+      "slug": "commander-zander",
+      "displayName": "Commander Zander"
+    }
+  },
+  {
+    "_id": "GpQPGh2pW6gfX69Kg",
+    "title": "Barack Obama on Artificial Intelligence, Autonomous Cars, and the Future of Humanity",
+    "slug": "barack-obama-on-artificial-intelligence-autonomous-cars-and",
+    "pageUrl": "https://www.lesswrong.com/posts/GpQPGh2pW6gfX69Kg/barack-obama-on-artificial-intelligence-autonomous-cars-and",
+    "postedAt": "2016-10-12T14:41:48.728Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://www.wired.com/2016/10/president-obama-mit-joi-ito-interview/",
+    "user": {
+      "username": "Lightwave",
+      "slug": "lightwave",
+      "displayName": "Lightwave"
+    }
+  },
+  {
+    "_id": "MexZpzAxmqgbyq5Ew",
+    "title": "An attempt in layman's language to explain the metaethics sequence in a single post.",
+    "slug": "an-attempt-in-layman-s-language-to-explain-the-metaethics",
+    "pageUrl": "https://www.lesswrong.com/posts/MexZpzAxmqgbyq5Ew/an-attempt-in-layman-s-language-to-explain-the-metaethics",
+    "postedAt": "2016-10-12T13:57:34.375Z",
+    "baseScore": 2,
+    "voteCount": 3,
+    "commentCount": 93,
+    "meta": false,
+    "question": false,
+    "url": "https://atheistkit.wordpress.com/ethics/",
+    "user": {
+      "username": "Bound_up",
+      "slug": "bound_up",
+      "displayName": "Bound_up"
+    }
+  },
+  {
+    "_id": "2Bpp8kLiPhCvvpj9a",
+    "title": "Barack Obama's opinions on near-future AI",
+    "slug": "barack-obama-s-opinions-on-near-future-ai",
+    "pageUrl": "https://www.lesswrong.com/posts/2Bpp8kLiPhCvvpj9a/barack-obama-s-opinions-on-near-future-ai",
+    "postedAt": "2016-10-12T13:44:51.257Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "/r/discussion/lw/o0f/barack_obamas_opinions_on_nearfuture_ai/",
+    "user": {
+      "username": "scarcegreengrass",
+      "slug": "commander-zander",
+      "displayName": "Commander Zander"
+    }
+  },
+  {
+    "_id": "JtjArMYobkFqLEyR4",
+    "title": "Meetup : Washington, D.C.: Fun & Games",
+    "slug": "meetup-washington-d-c-fun-and-games-25",
+    "pageUrl": "https://www.lesswrong.com/posts/JtjArMYobkFqLEyR4/meetup-washington-d-c-fun-and-games-25",
+    "postedAt": "2016-10-12T00:02:48.074Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobinZ",
+      "slug": "robinz",
+      "displayName": "RobinZ"
+    }
+  },
+  {
+    "_id": "MwZBmSmQqNh3wTkrz",
+    "title": "MIRI AMA plus updates",
+    "slug": "miri-ama-plus-updates",
+    "pageUrl": "https://www.lesswrong.com/posts/MwZBmSmQqNh3wTkrz/miri-ama-plus-updates",
+    "postedAt": "2016-10-11T23:52:44.410Z",
+    "baseScore": 18,
+    "voteCount": 13,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobbBB",
+      "slug": "robbbb",
+      "displayName": "Rob Bensinger"
+    }
+  },
+  {
+    "_id": "weGLJJHQWG79LcgaD",
+    "title": "[Recommendation] Steven Universe & cryonics",
+    "slug": "recommendation-steven-universe-and-cryonics",
+    "pageUrl": "https://www.lesswrong.com/posts/weGLJJHQWG79LcgaD/recommendation-steven-universe-and-cryonics",
+    "postedAt": "2016-10-11T16:21:51.672Z",
+    "baseScore": 13,
+    "voteCount": 9,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "tadrinth",
+      "slug": "tadrinth",
+      "displayName": "tadrinth"
+    }
+  },
+  {
+    "_id": "qsQnpbP5zEPziixLn",
+    "title": "Reasonable Requirements of any Moral Theory",
+    "slug": "reasonable-requirements-of-any-moral-theory",
+    "pageUrl": "https://www.lesswrong.com/posts/qsQnpbP5zEPziixLn/reasonable-requirements-of-any-moral-theory",
+    "postedAt": "2016-10-10T20:48:35.714Z",
+    "baseScore": -2,
+    "voteCount": 4,
+    "commentCount": 10,
+    "meta": false,
+    "question": false,
+    "url": "http://vif.fitnessism.org/2016/08/reasonable-requirements-of-any-moral.html",
+    "user": {
+      "username": "TheSurvivalMachine",
+      "slug": "thesurvivalmachine",
+      "displayName": "TheSurvivalMachine"
+    }
+  },
+  {
+    "_id": "BGHBhYByHM3KjQTjQ",
+    "title": "Meetup : St. Petersburg Weekly / Biweekly Meetup",
+    "slug": "meetup-st-petersburg-weekly-biweekly-meetup",
+    "pageUrl": "https://www.lesswrong.com/posts/BGHBhYByHM3KjQTjQ/meetup-st-petersburg-weekly-biweekly-meetup",
+    "postedAt": "2016-10-10T17:53:46.959Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "AvImd",
+      "slug": "avimd",
+      "displayName": "AvImd"
+    }
+  },
+  {
+    "_id": "bEMs686rs37LKmrZC",
+    "title": "Open thread, Oct. 10 - Oct. 16, 2016",
+    "slug": "open-thread-oct-10-oct-16-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/bEMs686rs37LKmrZC/open-thread-oct-10-oct-16-2016",
+    "postedAt": "2016-10-10T07:00:15.327Z",
+    "baseScore": 7,
+    "voteCount": 4,
+    "commentCount": 157,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MrMind",
+      "slug": "mrmind",
+      "displayName": "MrMind"
+    }
+  },
+  {
+    "_id": "RbWcDfLA7Aj7J7jes",
+    "title": "Meetup : Stockholm: Trigger-Action Plans",
+    "slug": "meetup-stockholm-trigger-action-plans",
+    "pageUrl": "https://www.lesswrong.com/posts/RbWcDfLA7Aj7J7jes/meetup-stockholm-trigger-action-plans",
+    "postedAt": "2016-10-09T21:27:02.008Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "pepe_prime",
+      "slug": "pepe_prime",
+      "displayName": "pepe_prime"
+    }
+  },
+  {
+    "_id": "7S3BMr96mE49uuYg4",
+    "title": "Biofuels a climate mistake",
+    "slug": "biofuels-a-climate-mistake",
+    "pageUrl": "https://www.lesswrong.com/posts/7S3BMr96mE49uuYg4/biofuels-a-climate-mistake",
+    "postedAt": "2016-10-09T21:16:50.819Z",
+    "baseScore": 7,
+    "voteCount": 5,
+    "commentCount": 4,
+    "meta": false,
+    "question": false,
+    "url": "http://theconversation.com/biofuels-turn-out-to-be-a-climate-mistake-heres-why-64463",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "KGxbe4oRThjLozp6G",
+    "title": "Quantum Bayesianism",
+    "slug": "quantum-bayesianism",
+    "pageUrl": "https://www.lesswrong.com/posts/KGxbe4oRThjLozp6G/quantum-bayesianism",
+    "postedAt": "2016-10-08T23:27:08.750Z",
+    "baseScore": 2,
+    "voteCount": 2,
+    "commentCount": 37,
+    "meta": false,
+    "question": false,
+    "url": "https://en.wikipedia.org/wiki/Quantum_Bayesianism",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "gZxJZScg9qKMMrvir",
+    "title": "Viruses and DRACOs in the Valley of Death in medical research.",
+    "slug": "viruses-and-dracos-in-the-valley-of-death-in-medical",
+    "pageUrl": "https://www.lesswrong.com/posts/gZxJZScg9qKMMrvir/viruses-and-dracos-in-the-valley-of-death-in-medical",
+    "postedAt": "2016-10-08T20:36:12.394Z",
+    "baseScore": -2,
+    "voteCount": 4,
+    "commentCount": 9,
+    "meta": false,
+    "question": false,
+    "url": "https://www.inverse.com/article/16784-meet-todd-rider-the-man-who-maybe-probably-cured-most-of-the-viruses-on-earth",
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "aq3Zd5qvyNX56kT2F",
+    "title": "Six principles of a truth-friendly discourse",
+    "slug": "six-principles-of-a-truth-friendly-discourse",
+    "pageUrl": "https://www.lesswrong.com/posts/aq3Zd5qvyNX56kT2F/six-principles-of-a-truth-friendly-discourse",
+    "postedAt": "2016-10-08T16:56:59.994Z",
+    "baseScore": 10,
+    "voteCount": 7,
+    "commentCount": 3,
+    "meta": false,
+    "question": false,
+    "url": "http://benjaminrosshoffman.com/six-principles-of-a-truth-friendly-discourse/",
+    "user": {
+      "username": "philh",
+      "slug": "philh",
+      "displayName": "philh"
+    }
+  },
+  {
+    "_id": "GEnB8peeL4WNYiC9C",
+    "title": "The map of organizations, sites and people involved in x-risks prevention",
+    "slug": "the-map-of-organizations-sites-and-people-involved-in-x",
+    "pageUrl": "https://www.lesswrong.com/posts/GEnB8peeL4WNYiC9C/the-map-of-organizations-sites-and-people-involved-in-x",
+    "postedAt": "2016-10-07T12:04:29.954Z",
+    "baseScore": 10,
+    "voteCount": 7,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "turchin",
+      "slug": "turchin",
+      "displayName": "turchin"
+    }
+  },
+  {
+    "_id": "FZ4JxR72j8xnTKNej",
+    "title": "Meetup : San Francisco Meetup: Projects",
+    "slug": "meetup-san-francisco-meetup-projects-6",
+    "pageUrl": "https://www.lesswrong.com/posts/FZ4JxR72j8xnTKNej/meetup-san-francisco-meetup-projects-6",
+    "postedAt": "2016-10-07T05:27:20.018Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "rocurley",
+      "slug": "rocurley",
+      "displayName": "rocurley"
+    }
+  },
+  {
+    "_id": "yd3s3bfyC4cv8WNFL",
+    "title": "Weekly LW Meetups",
+    "slug": "weekly-lw-meetups-137",
+    "pageUrl": "https://www.lesswrong.com/posts/yd3s3bfyC4cv8WNFL/weekly-lw-meetups-137",
+    "postedAt": "2016-10-07T03:58:13.712Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "s4z5JP3qDZqS6qPqx",
+    "title": "Meetup : Washington, D.C.: Games Discussion",
+    "slug": "meetup-washington-d-c-games-discussion",
+    "pageUrl": "https://www.lesswrong.com/posts/s4z5JP3qDZqS6qPqx/meetup-washington-d-c-games-discussion",
+    "postedAt": "2016-10-07T01:08:31.652Z",
+    "baseScore": 2,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "RobinZ",
+      "slug": "robinz",
+      "displayName": "RobinZ"
+    }
+  },
+  {
+    "_id": "jJrnuWKWGyx8idstK",
+    "title": "Meetup : Baltimore Area / UMBC Weekly Meetup",
+    "slug": "meetup-baltimore-area-umbc-weekly-meetup-11",
+    "pageUrl": "https://www.lesswrong.com/posts/jJrnuWKWGyx8idstK/meetup-baltimore-area-umbc-weekly-meetup-11",
+    "postedAt": "2016-10-07T00:30:40.101Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "iarwain1",
+      "slug": "iarwain1",
+      "displayName": "iarwain1"
+    }
+  },
+  {
+    "_id": "2G3AhXwzDkXFAGbip",
+    "title": "The University of Cambridge Centre for the Study of Existential Risk (CSER) is hiring!",
+    "slug": "the-university-of-cambridge-centre-for-the-study-of",
+    "pageUrl": "https://www.lesswrong.com/posts/2G3AhXwzDkXFAGbip/the-university-of-cambridge-centre-for-the-study-of",
+    "postedAt": "2016-10-06T16:53:26.841Z",
+    "baseScore": 12,
+    "voteCount": 7,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "crmflynn",
+      "slug": "crmflynn",
+      "displayName": "crmflynn"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037525d",
+    "title": "Logical inductor limits are dense under pointwise convergence",
+    "slug": "logical-inductor-limits-are-dense-under-pointwise-convergence",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037525d/logical-inductor-limits-are-dense-under-pointwise-convergence",
+    "postedAt": "2016-10-06T08:07:53.000Z",
+    "baseScore": 5,
+    "voteCount": 4,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "SamEisenstat",
+      "slug": "sameisenstat",
+      "displayName": "SamEisenstat"
+    }
+  },
+  {
+    "_id": "gDa3naWsPjJfMYTvh",
+    "title": "Putanumonit - Discarding empathy to save the world",
+    "slug": "putanumonit-discarding-empathy-to-save-the-world",
+    "pageUrl": "https://www.lesswrong.com/posts/gDa3naWsPjJfMYTvh/putanumonit-discarding-empathy-to-save-the-world",
+    "postedAt": "2016-10-06T07:03:04.835Z",
+    "baseScore": 14,
+    "voteCount": 9,
+    "commentCount": 38,
+    "meta": false,
+    "question": false,
+    "url": "http://putanumonit.com/2016/10/06/theory-of-an-immoral-sentiment/",
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "XhZsXDqxfjr8RDqnr",
+    "title": "Theory of an Immoral Sentiment",
+    "slug": "theory-of-an-immoral-sentiment",
+    "pageUrl": "https://www.lesswrong.com/posts/XhZsXDqxfjr8RDqnr/theory-of-an-immoral-sentiment",
+    "postedAt": "2016-10-06T05:55:48.000Z",
+    "baseScore": 6,
+    "voteCount": 1,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "Jacobian",
+      "slug": "jacob-falkovich",
+      "displayName": "Jacob Falkovich"
+    }
+  },
+  {
+    "_id": "crXaQzgHpyecw6qLs",
+    "title": "Meetup : Moscow: rational review, bias busters, Kolmogorov and Jayes probability",
+    "slug": "meetup-moscow-rational-review-bias-busters-kolmogorov-and",
+    "pageUrl": "https://www.lesswrong.com/posts/crXaQzgHpyecw6qLs/meetup-moscow-rational-review-bias-busters-kolmogorov-and",
+    "postedAt": "2016-10-05T19:32:22.651Z",
+    "baseScore": 1,
+    "voteCount": 1,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "berekuk",
+      "slug": "slava-matyukhin",
+      "displayName": "Slava Matyukhin"
+    }
+  },
+  {
+    "_id": "NxJgmEBFGcnYSLRPN",
+    "title": "Nick Bostrom says Google is winning the AI arms race",
+    "slug": "nick-bostrom-says-google-is-winning-the-ai-arms-race",
+    "pageUrl": "https://www.lesswrong.com/posts/NxJgmEBFGcnYSLRPN/nick-bostrom-says-google-is-winning-the-ai-arms-race",
+    "postedAt": "2016-10-05T18:50:38.933Z",
+    "baseScore": 8,
+    "voteCount": 6,
+    "commentCount": 32,
+    "meta": false,
+    "question": false,
+    "url": "http://www.newsweek.com/nick-bostrom-google-winning-artificial-intelligence-arms-race-red-button-506624",
+    "user": {
+      "username": "polymathwannabe",
+      "slug": "polymathwannabe",
+      "displayName": "polymathwannabe"
+    }
+  },
+  {
+    "_id": "5bd75cc58225bf067037525c",
+    "title": "law as moral guide",
+    "slug": "law-as-moral-guide",
+    "pageUrl": "https://www.lesswrong.com/posts/5bd75cc58225bf067037525c/law-as-moral-guide",
+    "postedAt": "2016-10-04T22:41:04.000Z",
+    "baseScore": 0,
+    "voteCount": 0,
+    "commentCount": 0,
+    "meta": false,
+    "question": false,
+    "url": "https://docs.google.com/document/d/1eRirDom-EA_CtLD9Q5T9hWLD6xEKJ80AL3h_u7K-ErA/edit?usp=sharing",
+    "user": {
+      "username": "Imported-IAFF-User-186",
+      "slug": "IAFF-User-186",
+      "displayName": "IAFF-User-186"
+    }
+  },
+  {
+    "_id": "PJ4RPks9GkWYgdmxx",
+    "title": "Astrobiology III:  Why Earth?",
+    "slug": "astrobiology-iii-why-earth",
+    "pageUrl": "https://www.lesswrong.com/posts/PJ4RPks9GkWYgdmxx/astrobiology-iii-why-earth",
+    "postedAt": "2016-10-04T21:59:57.716Z",
+    "baseScore": 27,
+    "voteCount": 18,
+    "commentCount": 12,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "FWpbwgajZTpceZmPd",
+    "title": "Astrobiology III:  Why Earth?",
+    "slug": "astrobiology-iii-why-earth-0",
+    "pageUrl": "https://www.lesswrong.com/posts/FWpbwgajZTpceZmPd/astrobiology-iii-why-earth-0",
+    "postedAt": "2016-10-04T21:44:29.430Z",
+    "baseScore": 4,
+    "voteCount": 2,
+    "commentCount": 1,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": null
+  },
+  {
+    "_id": "eTXP5uKFvjzohNJ9N",
+    "title": "Open thread, Oct. 03 - Oct. 09, 2016",
+    "slug": "open-thread-oct-03-oct-09-2016",
+    "pageUrl": "https://www.lesswrong.com/posts/eTXP5uKFvjzohNJ9N/open-thread-oct-03-oct-09-2016",
+    "postedAt": "2016-10-03T06:59:03.141Z",
+    "baseScore": 8,
+    "voteCount": 5,
+    "commentCount": 166,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "MrMind",
+      "slug": "mrmind",
+      "displayName": "MrMind"
+    }
+  },
+  {
+    "_id": "GKaS7eyKx2FxgJjtA",
+    "title": "80% of data in Chinese clinical trials have been fabricated",
+    "slug": "80-of-data-in-chinese-clinical-trials-have-been-fabricated",
+    "pageUrl": "https://www.lesswrong.com/posts/GKaS7eyKx2FxgJjtA/80-of-data-in-chinese-clinical-trials-have-been-fabricated",
+    "postedAt": "2016-10-02T07:38:05.278Z",
+    "baseScore": 11,
+    "voteCount": 7,
+    "commentCount": 18,
+    "meta": false,
+    "question": false,
+    "url": "/r/discussion/lw/nzi/80_of_data_in_chinese_clinical_trials_have_been/",
+    "user": {
+      "username": "DanArmak",
+      "slug": "danarmak",
+      "displayName": "DanArmak"
+    }
+  },
+  {
+    "_id": "P2zmtKJx7CYA4XdkW",
+    "title": "Cryo with magnetics added",
+    "slug": "cryo-with-magnetics-added",
+    "pageUrl": "https://www.lesswrong.com/posts/P2zmtKJx7CYA4XdkW/cryo-with-magnetics-added",
+    "postedAt": "2016-10-01T22:27:05.573Z",
+    "baseScore": 8,
+    "voteCount": 8,
+    "commentCount": 11,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "morganism",
+      "slug": "morganism",
+      "displayName": "morganism"
+    }
+  },
+  {
+    "_id": "zkQukMhA58ThprgkD",
+    "title": "Fermi paradox of human past, and corresponding x-risks",
+    "slug": "fermi-paradox-of-human-past-and-corresponding-x-risks",
+    "pageUrl": "https://www.lesswrong.com/posts/zkQukMhA58ThprgkD/fermi-paradox-of-human-past-and-corresponding-x-risks",
+    "postedAt": "2016-10-01T17:01:48.832Z",
+    "baseScore": 10,
+    "voteCount": 8,
+    "commentCount": 28,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "turchin",
+      "slug": "turchin",
+      "displayName": "turchin"
+    }
+  },
+  {
+    "_id": "4ri3dtgHiho6MFhmS",
+    "title": "October 2016 Media Thread",
+    "slug": "october-2016-media-thread",
+    "pageUrl": "https://www.lesswrong.com/posts/4ri3dtgHiho6MFhmS/october-2016-media-thread",
+    "postedAt": "2016-10-01T14:05:55.965Z",
+    "baseScore": 10,
+    "voteCount": 6,
+    "commentCount": 20,
+    "meta": false,
+    "question": false,
+    "url": null,
+    "user": {
+      "username": "ArisKatsaris",
+      "slug": "ariskatsaris",
+      "displayName": "ArisKatsaris"
+    }
+  }
+]
