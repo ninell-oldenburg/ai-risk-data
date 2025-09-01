@@ -32,7 +32,7 @@ MALE_NAMES = {
     'gergo', 'gasteigerjo', 'augustin', 'gentzel', 'soren', 'lsusr', 'gworley', 
     'ruby', 'gwern', 'mingyuan', 'screwtape', 'alkjash', 'yair', 'bhauth', 
     'diffractor', 'hazard', 'charlie', 'remmelt', 'shminux', 'jmh', 'mako',
-    'logan-zoellner', 'paolo', 'elriggs', 'wei_dai', 'alenglander', 'aphyer', 'lc',
+    'paolo', 'elriggs', 'wei_dai', 'alenglander', 'aphyer', 'lc',
     'liron', 'deluks', 'cousin_it', 'moridinamael', 'scasper', 'ege-erdil', 
     'jsevillamol', 'mtrazzi', 'dadadarren', 'beren', 'jchan', 'bob', 'linch',
     'issa', 'said', 'nostalgebraist', 'vojta', 'pchvykov', 'madhatter', 'q home',
@@ -75,7 +75,29 @@ MALE_NAMES = {
     'helmut', 'walter', 'günter', 'dieter', 'jürgen', 'bernd', 'rainer', 'uwe', 
     'werner', 'horst', 'gerhard', 'ralf', 'detlef', 'norbert', 'jens', 'steffen',
     'aleksandr', 'sergey', 'aleksey', 'maxim', 'oleg', 'pavel', 'roman', 'yuriy', 
-    'evgeniy', 'denis', 'artem', 'kirill', 'yegor', 'ruslan'
+    'evgeniy', 'denis', 'artem', 'kirill', 'yegor', 'ruslan',
+    'val', 'ike', 'fin', 'zane', 'daan', 'fraser', 'tyson', 'lewis', 'russell', 'pinto',
+    'sergei', 'hadrien', 'sahil', 'burns', 'mojmir', 'claudio', 'keaton', 'egor',
+    'mustafa', 'atharva', 'dinkar', 'aron', 'jude', 'arvo', 'alfred', 'ramon',
+    'casey', 'forrest', 'momcilo', 'ahmed', 'graeme', 'russel', 'tegan', 'harjas',
+    'woody', 'dex', 'chapin', 'hadrien', 'karthik', 'jeff', 'arturs', 'prince',
+    'ihor', 'freddie', 'dmitrii', 'michal', 'parthh', 'jakub', 'anish', 'jake',
+    'gideon', 'louka', 'keaton', 'tobi', 'dimi', 'sathish', 'mustafa', 'sezer',
+    'kola', 'bart', 'gal', 'wynn', 'aksh', 'satvik', 'diego', 'javier', 'wilson',
+    'joao', 'edgar', 'dhruv', 'rome', 'sunishchal', 'saeid', 'lewis', 'vernichtung',
+    'enoch', 'curtis', 'edmund', 'carson', 'dustin', 'logan', 'glen', 'omid', 'luis', 
+    'harold', 'damien', 'luca', 'jeroen', 'judson', 'allen', 'ace', 'bruce', 'adrià', 
+    'moses', 'cedric', 'taymon', 'vincent', 'solomon', 'luigi', 'wdmacaskill', 
+    'jasper', 'radford', 'fahad', 'jdcampolargo', 'kaarlo', 'matej', 'raphaëll',
+    'rasmus', 'aaguirre', 'szymon', 'artyom', 'onur', 'mathis', 'gytis', 'wulky', 'jorges',
+    'sandro', 'jon', 'bernie', 'thor', 'mathieu', 'jotham', 'dorian', 'milo',
+    'roven', 'tamay', 'garrett', 'carl', 'kristof', 'jörn', 'lowell', 'domenic', 
+    'keith', 'bastiaan', 'bruce', 'brett', 'greg', 'toby', 'rhys', 'curt', 'stepan',
+    'harrison', 'nicolas', 'dawson', 'yovel', 'jáchym', 'malte', 'yakov', 'santeri',
+    'andrij', 'randall', 'itay', 'maciej', 'pekka', 'pete', 'clément', 'akram', 'eoin',
+    'kieron', 'jakob', 'damilo', 'ian', 'nicolo', 'lauriander', 'patrik', 'patrick',
+    'edmun', 'vittu', 'marek', 'lucien', 'ewan', 'vorak', 'wes', 'aengus',
+    'rick', 'callum', 'avi'
 }
 
 FEMALE_NAMES = {
@@ -142,5 +164,10 @@ FEMALE_NAMES = {
     'rosa', 'concepcion', 'amparo', 'manuela', 'remedios', 'esperanza',
     'irina', 'elena', 'natasha', 'svetlana', 'olga', 'tatiana', 'marina',
     'anastasia', 'ekaterina', 'yulia', 'anna', 'maria', 'galina', 'lyudmila',
-    'valentina', 'nadezhda', 'larisa', 'vera', 'nina', 'alla', 'tamara'
+    'valentina', 'nadezhda', 'larisa', 'vera', 'nina', 'alla', 'tamara',
+    'tanja', 'leticiagarcia', 'siya', 'gracie', 'jenny', 'kerry', 'rivka', 
+    'maggy', 'nidhi', 'cissy', 'darcey', 'sophie', 'ellen', 'lydia', 'inga', 'sandi',
+    'sandy', 'jolly', 'sophie', 'sophia', 'lydia', 'yoreth', 'anca', 'anka',
+    'apollonia', 'amber', 'lucy', 
+
 }
