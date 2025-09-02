@@ -20,3 +20,7 @@ ENV/
 # Ignore OS-specific junk
 .DS_Store
 Thumbs.db
+
+# Ignore images
+img/
+*png
