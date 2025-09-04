@@ -1,26 +1,24 @@
-# Ignore JSON data dumps
 lw_json/
 *.json
 
-# Ignore CSV exports
 lw_csv/
 *.csv
 
-# Ignore Python cache files
 __pycache__/
 *.pyc
 *.pyo
 
-# Ignore virtual environments
 .env/
 .venv/
 venv/
 ENV/
 
-# Ignore OS-specific junk
 .DS_Store
 Thumbs.db
 
-# Ignore images
 img/
 *png
+
+results/
+*.csv
+*.txt

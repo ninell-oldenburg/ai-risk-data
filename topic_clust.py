@@ -49,20 +49,22 @@ class BlogTopicClustering:
                         df.columns = df.columns.str.strip()
             
                         for _, row in df.iterrows():
-                            text_content = ""
-                            if pd.notna(row['title']):
-                                text_content += str(row['title']) + " "
-                            if pd.notna(row['cleaned_htmlBody']):
-                                text_content += str(row['cleaned_htmlBody'])
+                            if row['topic_cluster_id'] == 24:
+                                text_content = ""
+                                if pd.notna(row['title']):
+                                    text_content += str(row['title']) + " "
+                                if pd.notna(row['cleaned_htmlBody']):
+                                    text_content += str(row['cleaned_htmlBody'])
                             
-                            if text_content.strip():
-                                all_posts.append({
-                                    'text': text_content.strip(),
-                                    'title': str(row['title']).strip() if 'title' in row and pd.notna(row['title']) else "",
-                                    'year': year,
-                                    'month': month,
-                                    'file': str(csv_path)
-                                })
+                            
+                                if text_content.strip():
+                                    all_posts.append({
+                                        'text': text_content.strip(),
+                                        'title': str(row['title']).strip() if 'title' in row and pd.notna(row['title']) else "",
+                                        'year': year,
+                                        'month': month,
+                                        'file': str(csv_path)
+                                    })
                         
                         file_count += 1
                         print(f"Loaded {len(df)} posts from {csv_path}")
@@ -117,7 +119,7 @@ class BlogTopicClustering:
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
-            'make', 'know', 'https', 'com', 'plus', 'pm',
+            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've'
         ])
         
         # Create TF-IDF vectorizer
@@ -466,21 +468,21 @@ def main():
     # Use the suggested optimal number of clusters
     # 'optimal_k_silhouette' or 'optimal_k_elbow'
     # optimal_k = elbow_results['optimal_k_silhouette']
-    optimal_k = 10
+    optimal_k = 25
     print(f"\nUsing k={optimal_k} clusters based on silhouette score")
     
     # Perform clustering
     results = analyzer.perform_clustering(n_clusters=optimal_k)
-    
+
     # Print summary
     analyzer.print_cluster_summary()
-    
+        
     # Visualize results
     analyzer.visualize_clusters()
     
     # Save results
-    analyzer.save_results('blog_clustering_results.csv')
-    
+    analyzer.save_results(f'blog_clustering_results_rationality_{optimal_k}.csv')
+        
     print("\nAnalysis complete!")
 
 if __name__ == "__main__":
