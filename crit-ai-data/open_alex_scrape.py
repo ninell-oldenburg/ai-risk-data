@@ -24,7 +24,7 @@ class AIScholarshipAnalyzer:
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         
-    def search_papers(self, query: str, years: str = "2015-2024", limit: int = 1000) -> List[Dict]:
+    def search_papers(self, query: str, years: str = "2016-2025", limit: int = 1000) -> List[Dict]:
         """
         Search for papers using OpenAlex API
         
@@ -80,7 +80,13 @@ class AIScholarshipAnalyzer:
             "existential risk",
             "agi",
             "superintelligence",
-            "AI governance",
+            "ai governance",
+            "ai risk",
+            "security generative ai",
+            "ai security",
+            "ai deception",
+            "catastrophic ai risks",
+            "x-risk",
         ]
         
         all_papers = []
@@ -114,7 +120,12 @@ class AIScholarshipAnalyzer:
             "algorithmic accountability transparency",
             "AI hype",
             "technological solutionism",
-            "tescreal"
+            "tescreal",
+            "dystopia ai",
+            "ethical concerns artificial intelligence",
+            "sociocultural artificial intelligence",
+            "sociopolitical artificial intelligence",
+            "critical theory artificial intelligence"
         ]
         
         all_papers = []
@@ -158,8 +169,7 @@ class AIScholarshipAnalyzer:
             referenced_works = paper.get('referenced_works', [])
             
             for ref_id in referenced_works:
-                if ref_id in paper_ids:  # Only connect if both papers are in our dataset
-                    G.add_edge(paper_id, ref_id)
+                G.add_edge(paper_id, ref_id)
         
         return G
     
@@ -218,9 +228,11 @@ class AIScholarshipAnalyzer:
         Classify communities as x-risk vs critical AI based on common concepts/keywords
         """
         xrisk_keywords = ['existential risk', 'superintelligence', 'ai safety', 'alignment', 
-                         'artificial general intelligence', 'control problem', 'ai risk']
+                         'artificial general intelligence', 'control problem', 'ai risk', 
+                         'agi', 'ai security']
         critical_keywords = ['algorithmic bias', 'fairness', 'ethics', 'accountability',
-                           'discrimination', 'social justice', 'governance', 'transparency']
+                           'discrimination', 'social justice', 'governance', 'transparency', 
+                           'dystopia', 'ai hype']
         
         community_labels = {}
         
