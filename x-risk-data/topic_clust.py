@@ -9,6 +9,10 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
+import pyLDAvis
+import pyLDAvis.lda_model
 import re
 from collections import defaultdict, Counter
 from pathlib import Path
@@ -16,7 +20,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class BlogTopicClustering:
-    def __init__(self, base_path="lw_csv"):
+    def __init__(self, base_path="x-risk-data/lw_csv"):
         self.base_path = base_path
         self.blog_posts = []
         self.tfidf_matrix = None
@@ -49,22 +53,22 @@ class BlogTopicClustering:
                         df.columns = df.columns.str.strip()
             
                         for _, row in df.iterrows():
-                            if row['topic_cluster_id'] == 24:
-                                text_content = ""
-                                if pd.notna(row['title']):
-                                    text_content += str(row['title']) + " "
-                                if pd.notna(row['cleaned_htmlBody']):
-                                    text_content += str(row['cleaned_htmlBody'])
-                            
-                            
-                                if text_content.strip():
-                                    all_posts.append({
-                                        'text': text_content.strip(),
-                                        'title': str(row['title']).strip() if 'title' in row and pd.notna(row['title']) else "",
-                                        'year': year,
-                                        'month': month,
-                                        'file': str(csv_path)
-                                    })
+                            #if row['topic_cluster_id'] == 24:
+                            text_content = ""
+                            if pd.notna(row['title']):
+                                text_content += str(row['title']) + " "
+                            if pd.notna(row['cleaned_htmlBody']):
+                                text_content += str(row['cleaned_htmlBody'])
+                        
+                        
+                            if text_content.strip():
+                                all_posts.append({
+                                    'text': text_content.strip(),
+                                    'title': str(row['title']).strip() if 'title' in row and pd.notna(row['title']) else "",
+                                    'year': year,
+                                    'month': month,
+                                    'file': str(csv_path)
+                                })
                         
                         file_count += 1
                         print(f"Loaded {len(df)} posts from {csv_path}")
@@ -119,7 +123,8 @@ class BlogTopicClustering:
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
-            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've'
+            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've', 'lot', 'need', 'use', 'really', 'going',
+            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say'
         ])
         
         # Create TF-IDF vectorizer
@@ -449,10 +454,412 @@ class BlogTopicClustering:
         
         print(f"Cluster summary saved to {summary_file}")
 
+    def create_bow_matrix(self, max_features=3000, min_df=3, max_df=0.9):
+        """Create Bag-of-Words matrix for LDA (LDA works better with count data than TF-IDF)"""
+        print("Creating Bag-of-Words matrix for LDA...")
+        
+        # Preprocess all texts
+        texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
+        
+        # Remove empty texts
+        valid_texts = []
+        valid_indices = []
+        for i, text in enumerate(texts):
+            if len(text.split()) >= 5:  # At least 5 words
+                valid_texts.append(text)
+                valid_indices.append(i)
+        
+        print(f"Using {len(valid_texts)} posts with sufficient text content")
+
+        extra_stopwords = set([
+            'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
+            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've'
+        ])
+        
+        # Create CountVectorizer for LDA
+        self.count_vectorizer = CountVectorizer(
+            max_features=max_features,
+            min_df=min_df,
+            max_df=max_df,
+            stop_words=list(ENGLISH_STOP_WORDS.union(extra_stopwords)),
+            ngram_range=(1, 2)  # Include unigrams and bigrams
+        )
+        
+        # Fit and transform
+        self.bow_matrix = self.count_vectorizer.fit_transform(valid_texts)
+        
+        # Update blog_posts to only include valid ones
+        self.blog_posts = [self.blog_posts[i] for i in valid_indices]
+        
+        print(f"Bag-of-Words matrix shape: {self.bow_matrix.shape}")
+        print(f"Vocabulary size: {len(self.count_vectorizer.vocabulary_)}")
+        
+        return self.bow_matrix
+
+    def lda_topic_coherence_test(self, topic_range=range(25, 36, 5), n_samples=None):
+        """Test different numbers of topics for LDA using perplexity and log-likelihood"""
+        print("Testing LDA topic coherence...")
+        
+        if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
+            self.create_bow_matrix()
+        
+        # Use subset for efficiency if dataset is large
+        if n_samples and len(self.blog_posts) > n_samples:
+            indices = np.random.choice(len(self.blog_posts), n_samples, replace=False)
+            X = self.bow_matrix[indices]
+        else:
+            X = self.bow_matrix
+        
+        perplexities = []
+        log_likelihoods = []
+        
+        for n_topics in topic_range:
+            print(f"Testing {n_topics} topics...")
+            
+            lda = LatentDirichletAllocation(
+                n_components=n_topics,
+                random_state=42,
+                max_iter=20,
+                learning_method='batch',
+                doc_topic_prior=0.1,  # Alpha parameter
+                topic_word_prior=0.01  # Beta parameter
+            )
+            
+            lda.fit(X)
+            
+            perplexity = lda.perplexity(X)
+            log_likelihood = lda.score(X)
+            
+            perplexities.append(perplexity)
+            log_likelihoods.append(log_likelihood)
+            
+            print(f"  Perplexity: {perplexity:.2f}, Log-likelihood: {log_likelihood:.2f}")
+        
+        # Plot results
+        plt.figure(figsize=(12, 5))
+        
+        plt.subplot(1, 2, 1)
+        plt.plot(topic_range, perplexities, 'ro-')
+        plt.xlabel('Number of Topics')
+        plt.ylabel('Perplexity')
+        plt.title('LDA Model Perplexity')
+        plt.grid(True, alpha=0.3)
+        
+        # Find optimal number of topics (lowest perplexity)
+        optimal_topics_perp = topic_range[np.argmin(perplexities)]
+        plt.axvline(x=optimal_topics_perp, color='g', linestyle='--', 
+                    label=f'Min perplexity at {optimal_topics_perp} topics')
+        plt.legend()
+        
+        plt.subplot(1, 2, 2)
+        plt.plot(topic_range, log_likelihoods, 'bo-')
+        plt.xlabel('Number of Topics')
+        plt.ylabel('Log Likelihood')
+        plt.title('LDA Model Log Likelihood')
+        plt.grid(True, alpha=0.3)
+        
+        # Find optimal number of topics (highest log-likelihood)
+        optimal_topics_ll = topic_range[np.argmax(log_likelihoods)]
+        plt.axvline(x=optimal_topics_ll, color='g', linestyle='--', 
+                    label=f'Max log-likelihood at {optimal_topics_ll} topics')
+        plt.legend()
+        
+        plt.tight_layout()
+        plt.show()
+        
+        print(f"Optimal topics (lowest perplexity): {optimal_topics_perp}")
+        print(f"Optimal topics (highest log-likelihood): {optimal_topics_ll}")
+        
+        return {
+            'topic_range': list(topic_range),
+            'perplexities': perplexities,
+            'log_likelihoods': log_likelihoods,
+            'optimal_topics_perplexity': optimal_topics_perp,
+            'optimal_topics_likelihood': optimal_topics_ll
+        }
+
+    def perform_lda(self, n_topics, max_iter=50):
+        """Perform LDA topic modeling"""
+        print(f"Performing LDA topic modeling with {n_topics} topics...")
+        
+        if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
+            self.create_bow_matrix()
+        
+        # Initialize LDA model
+        lda_model = LatentDirichletAllocation(
+            n_components=n_topics,
+            random_state=42,
+            max_iter=max_iter,
+            learning_method='batch',
+            doc_topic_prior=0.1,  # Alpha: lower values lead to sparser document-topic distributions
+            topic_word_prior=0.01,  # Beta: lower values lead to sparser topic-word distributions
+            verbose=1
+        )
+        
+        # Fit the model
+        doc_topic_dist = lda_model.fit_transform(self.bow_matrix)
+        
+        # Get topic assignments (dominant topic for each document)
+        topic_assignments = np.argmax(doc_topic_dist, axis=1)
+        
+        # Add topic assignments to blog posts
+        for i, post in enumerate(self.blog_posts):
+            post['lda_topic'] = topic_assignments[i]
+            post['topic_probabilities'] = doc_topic_dist[i]
+        
+        # Get feature names
+        feature_names = self.count_vectorizer.get_feature_names_out()
+        
+        # Extract top words for each topic
+        topic_words = {}
+        for topic_idx in range(n_topics):
+            # Get word weights for this topic
+            topic_weights = lda_model.components_[topic_idx]
+            
+            # Get top words
+            top_word_indices = topic_weights.argsort()[-20:][::-1]  # Top 20 words
+            top_words = [(feature_names[i], topic_weights[i]) for i in top_word_indices]
+            
+            topic_words[topic_idx] = top_words
+        
+        # Calculate topic statistics
+        topic_stats = {}
+        for topic_id in range(n_topics):
+            topic_posts = [post for post in self.blog_posts if post['lda_topic'] == topic_id]
+            
+            # Year distribution
+            year_dist = Counter([post['year'] for post in topic_posts])
+            
+            # Calculate average topic probability for posts assigned to this topic
+            avg_prob = np.mean([post['topic_probabilities'][topic_id] for post in topic_posts]) if topic_posts else 0
+            
+            topic_stats[topic_id] = {
+                'size': len(topic_posts),
+                'percentage': len(topic_posts) / len(self.blog_posts) * 100,
+                'average_probability': avg_prob,
+                'year_distribution': dict(year_dist),
+                'top_words': topic_words[topic_id]
+            }
+        
+        self.lda_results = {
+            'n_topics': n_topics,
+            'model': lda_model,
+            'doc_topic_dist': doc_topic_dist,
+            'topic_assignments': topic_assignments,
+            'topic_stats': topic_stats,
+            'perplexity': lda_model.perplexity(self.bow_matrix),
+            'log_likelihood': lda_model.score(self.bow_matrix)
+        }
+        
+        return self.lda_results
+
+    def visualize_lda_topics(self):
+        """Visualize LDA topics using pyLDAvis and custom plots"""
+        if not hasattr(self, 'lda_results') or not self.lda_results:
+            print("No LDA results available. Run perform_lda() first.")
+            return
+        
+        print("Creating LDA visualizations...")
+        
+        try:
+                vis_data = pyLDAvis.lda_model.prepare(
+                    self.lda_results['model'], 
+                    self.bow_matrix, 
+                    self.count_vectorizer,
+                    mds='tsne'  # Use t-SNE for dimensionality reduction
+                )
+                pyLDAvis.display(vis_data)
+                print("Interactive topic visualization displayed above.")
+        except Exception as e:
+                print(f"Could not create interactive visualization: {e}")
+        
+        # Custom visualizations
+        plt.figure(figsize=(20, 12))
+        
+        # Topic sizes
+        plt.subplot(2, 3, 1)
+        topic_sizes = [self.lda_results['topic_stats'][i]['size'] 
+                    for i in range(self.lda_results['n_topics'])]
+        plt.bar(range(len(topic_sizes)), topic_sizes)
+        plt.xlabel('Topic')
+        plt.ylabel('Number of Posts')
+        plt.title('Topic Sizes (LDA)')
+        plt.xticks(rotation=45)
+        
+        # Topic probability distribution
+        plt.subplot(2, 3, 2)
+        avg_probs = [self.lda_results['topic_stats'][i]['average_probability'] 
+                    for i in range(self.lda_results['n_topics'])]
+        plt.bar(range(len(avg_probs)), avg_probs)
+        plt.xlabel('Topic')
+        plt.ylabel('Average Topic Probability')
+        plt.title('Average Topic Probabilities')
+        plt.xticks(rotation=45)
+        
+        # Year distribution across topics
+        plt.subplot(2, 3, 3)
+        years = sorted(set(post['year'] for post in self.blog_posts))
+        topic_year_matrix = np.zeros((self.lda_results['n_topics'], len(years)))
+        
+        for i, topic_id in enumerate(range(self.lda_results['n_topics'])):
+            year_dist = self.lda_results['topic_stats'][topic_id]['year_distribution']
+            for j, year in enumerate(years):
+                topic_year_matrix[i, j] = year_dist.get(year, 0)
+        
+        im = plt.imshow(topic_year_matrix, cmap='YlOrRd', aspect='auto')
+        plt.colorbar(im)
+        plt.yticks(range(self.lda_results['n_topics']), 
+                [f'Topic {i}' for i in range(self.lda_results['n_topics'])])
+        plt.xticks(range(len(years)), years, rotation=45)
+        plt.xlabel('Year')
+        plt.ylabel('Topic')
+        plt.title('Posts Distribution by Year and Topic (LDA)')
+        
+        # Document-topic probability heatmap (sample)
+        plt.subplot(2, 3, 4)
+        sample_size = min(50, len(self.blog_posts))
+        sample_indices = np.random.choice(len(self.blog_posts), sample_size, replace=False)
+        sample_doc_topic = self.lda_results['doc_topic_dist'][sample_indices]
+        
+        im2 = plt.imshow(sample_doc_topic.T, cmap='Blues', aspect='auto')
+        plt.colorbar(im2)
+        plt.xlabel(f'Documents (sample of {sample_size})')
+        plt.ylabel('Topics')
+        plt.title('Document-Topic Probability Matrix (Sample)')
+        
+        # Model metrics
+        plt.subplot(2, 3, 5)
+        plt.text(0.1, 0.8, f"Number of Topics: {self.lda_results['n_topics']}", 
+                fontsize=12, transform=plt.gca().transAxes)
+        plt.text(0.1, 0.7, f"Perplexity: {self.lda_results['perplexity']:.2f}", 
+                fontsize=12, transform=plt.gca().transAxes)
+        plt.text(0.1, 0.6, f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}", 
+                fontsize=12, transform=plt.gca().transAxes)
+        plt.text(0.1, 0.5, f"Total Posts: {len(self.blog_posts)}", 
+                fontsize=12, transform=plt.gca().transAxes)
+        
+        # Show top words for each topic (first few topics)
+        y_pos = 0.35
+        for topic_id in range(min(4, self.lda_results['n_topics'])):
+            top_words = [word[0] for word in self.lda_results['topic_stats'][topic_id]['top_words'][:5]]
+            plt.text(0.1, y_pos, f"Topic {topic_id}: {', '.join(top_words)}", 
+                    fontsize=9, transform=plt.gca().transAxes)
+            y_pos -= 0.06
+        
+        plt.axis('off')
+        plt.title('LDA Model Summary')
+        
+        # Topic coherence visualization
+        plt.subplot(2, 3, 6)
+        # Calculate topic coherence (simplified - top word co-occurrence)
+        coherence_scores = []
+        for topic_id in range(self.lda_results['n_topics']):
+            # Simple coherence measure based on topic size and average probability
+            size = self.lda_results['topic_stats'][topic_id]['size']
+            avg_prob = self.lda_results['topic_stats'][topic_id]['average_probability']
+            coherence = size * avg_prob  # Simple coherence proxy
+            coherence_scores.append(coherence)
+        
+        plt.bar(range(len(coherence_scores)), coherence_scores)
+        plt.xlabel('Topic')
+        plt.ylabel('Coherence Score (Size × Avg Prob)')
+        plt.title('Topic Coherence Scores')
+        plt.xticks(rotation=45)
+        
+        plt.tight_layout()
+        plt.show()
+
+    def print_lda_summary(self):
+        """Print detailed LDA topic summary"""
+        if not hasattr(self, 'lda_results') or not self.lda_results:
+            print("No LDA results available. Run perform_lda() first.")
+            return
+        
+        print(f"\n{'='*50}")
+        print(f"LDA TOPIC MODELING SUMMARY")
+        print(f"{'='*50}")
+        print(f"Number of topics: {self.lda_results['n_topics']}")
+        print(f"Total posts analyzed: {len(self.blog_posts)}")
+        print(f"Perplexity: {self.lda_results['perplexity']:.2f}")
+        print(f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}")
+        
+        for topic_id in range(self.lda_results['n_topics']):
+            stats = self.lda_results['topic_stats'][topic_id]
+            print(f"\n{'-'*40}")
+            print(f"TOPIC {topic_id}")
+            print(f"{'-'*40}")
+            print(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)")
+            print(f"Average topic probability: {stats['average_probability']:.3f}")
+            
+            print(f"\nTop words:")
+            for i, (word, weight) in enumerate(stats['top_words'][:10], 1):
+                print(f"  {i:2d}. {word} ({weight:.4f})")
+            
+            print(f"\nYear distribution:")
+            year_dist = stats['year_distribution']
+            for year in sorted(year_dist.keys()):
+                print(f"  {year}: {year_dist[year]} posts")
+
+    def save_lda_results(self, output_file='lda_results.csv'):
+        """Save LDA results to CSV"""
+        if not hasattr(self, 'lda_results') or not self.lda_results:
+            print("No LDA results available. Run perform_lda() first.")
+            return
+
+        # Prepare data for CSV
+        results_data = []
+        for i, post in enumerate(self.blog_posts):
+            # Get topic probabilities as separate columns
+            topic_probs = {f'topic_{j}_prob': post['topic_probabilities'][j] 
+                        for j in range(self.lda_results['n_topics'])}
+            
+            row_data = {
+                'title': post['title'],
+                'year': post['year'],
+                'month': post['month'],
+                'dominant_topic': post['lda_topic'],
+                'file': post['file']
+            }
+            row_data.update(topic_probs)
+            results_data.append(row_data)
+
+        df = pd.DataFrame(results_data)
+        df.to_csv(output_file, index=False)
+        print(f"LDA results saved to {output_file}")
+            
+        # Save topic summaries
+        summary_file = output_file.replace('.csv', '_summary.txt')
+        with open(summary_file, 'w') as f:
+            f.write(f"LDA TOPIC MODELING SUMMARY\n")
+            f.write(f"{'='*50}\n")
+            f.write(f"Number of topics: {self.lda_results['n_topics']}\n")
+            f.write(f"Total posts analyzed: {len(self.blog_posts)}\n")
+            f.write(f"Perplexity: {self.lda_results['perplexity']:.2f}\n")
+            f.write(f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}\n\n")
+            
+            for topic_id in range(self.lda_results['n_topics']):
+                stats = self.lda_results['topic_stats'][topic_id]
+                f.write(f"TOPIC {topic_id}\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)\n")
+                f.write(f"Average topic probability: {stats['average_probability']:.3f}\n\n")
+                
+                f.write(f"Top words:\n")
+                for i, (word, weight) in enumerate(stats['top_words'][:15], 1):
+                    f.write(f"  {i:2d}. {word} ({weight:.4f})\n")
+                
+                f.write(f"\nYear distribution:\n")
+                year_dist = stats['year_distribution']
+                for year in sorted(year_dist.keys()):
+                    f.write(f"  {year}: {year_dist[year]} posts\n")
+                f.write(f"\n")
+        
+        print(f"LDA topic summary saved to {summary_file}")
+
 # Main execution
 def main():
     # Initialize the clustering analysis
-    analyzer = BlogTopicClustering(base_path="lw_csv")
+    analyzer = BlogTopicClustering(base_path="x-risk-data/lw_csv_cleaned")
     
     # Load CSV files
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
@@ -461,6 +868,39 @@ def main():
     
     # Create TF-IDF matrix
     analyzer.create_tfidf_matrix(max_features=3000, min_df=3, max_df=0.9)
+    analyzer.create_bow_matrix(max_features=3000, min_df=3, max_df=0.9)
+
+    # LDA analysis
+    print("\n" + "="*60)
+    print("PERFORMING LDA TOPIC MODELING")
+    print("="*60)
+    
+    # Test different numbers of topics
+    lda_coherence_results = analyzer.lda_topic_coherence_test(
+        topic_range=range(5, 26, 5), 
+        n_samples=2000
+    )
+    
+    # Use optimal number of topics
+    optimal_topics = lda_coherence_results['optimal_topics_perplexity']
+    print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
+    
+    # Perform LDA
+    lda_results = analyzer.perform_lda(n_topics=optimal_topics)
+    
+    # Print LDA summary
+    analyzer.print_lda_summary()
+    
+    # Visualize LDA results
+    analyzer.visualize_lda_topics()
+    
+    # Save LDA results
+    analyzer.save_lda_results(f'blog_lda_results_rationality_{optimal_topics}.csv')
+    
+    # K-means analysis (your existing code)
+    print("\n" + "="*60)
+    print("PERFORMING K-MEANS CLUSTERING")
+    print("="*60)
     
     # Perform elbow test
     #elbow_results = analyzer.elbow_test(k_range=range(3, 16), n_samples=2000)  # Sample for speed
