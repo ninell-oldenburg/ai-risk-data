@@ -53,13 +53,11 @@ class BlogTopicClustering:
                         df.columns = df.columns.str.strip()
             
                         for _, row in df.iterrows():
-                            #if row['topic_cluster_id'] == 24:
                             text_content = ""
                             if pd.notna(row['title']):
                                 text_content += str(row['title']) + " "
                             if pd.notna(row['cleaned_htmlBody']):
                                 text_content += str(row['cleaned_htmlBody'])
-                        
                         
                             if text_content.strip():
                                 all_posts.append({
@@ -110,21 +108,25 @@ class BlogTopicClustering:
         
         # Preprocess all texts
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
+        meetup_file_count = 0
         
         # Remove empty texts
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
+            if 'meetup' in text[:20]:
+                meetup_file_count += 1
+                continue
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
         
-        print(f"Using {len(valid_texts)} posts with sufficient text content")
+        print(f"Using {len(valid_texts)} posts not being meetups and having sufficient text content")
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
             'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've', 'lot', 'need', 'use', 'really', 'going',
-            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say'
+            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say', 'doesn',
         ])
         
         # Create TF-IDF vectorizer
@@ -145,7 +147,7 @@ class BlogTopicClustering:
         print(f"TF-IDF matrix shape: {self.tfidf_matrix.shape}")
         print(f"Vocabulary size: {len(self.vectorizer.vocabulary_)}")
         
-        return self.tfidf_matrix
+        return self.tfidf_matrix, meetup_file_count
     
     def elbow_test(self, k_range=range(2, 21), n_samples=None):
         """Perform elbow test to find optimal number of clusters"""
@@ -460,20 +462,25 @@ class BlogTopicClustering:
         
         # Preprocess all texts
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
+        meetup_file_count = 0
         
         # Remove empty texts
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
+            if 'meetup' in text[:20]:
+                meetup_file_count += 1
+                continue
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
         
-        print(f"Using {len(valid_texts)} posts with sufficient text content")
+        print(f"Using {len(valid_texts)} posts not being meetups and having sufficient text content")
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
-            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've'
+            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've', 'lot', 'need', 'use', 'really', 'going',
+            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say', 'doesn',
         ])
         
         # Create CountVectorizer for LDA
@@ -494,14 +501,14 @@ class BlogTopicClustering:
         print(f"Bag-of-Words matrix shape: {self.bow_matrix.shape}")
         print(f"Vocabulary size: {len(self.count_vectorizer.vocabulary_)}")
         
-        return self.bow_matrix
+        return self.bow_matrix, meetup_file_count
 
     def lda_topic_coherence_test(self, topic_range=range(25, 36, 5), n_samples=None):
         """Test different numbers of topics for LDA using perplexity and log-likelihood"""
         print("Testing LDA topic coherence...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            self.create_bow_matrix()
+            _, _ = self.create_bow_matrix()
         
         # Use subset for efficiency if dataset is large
         if n_samples and len(self.blog_posts) > n_samples:
@@ -583,7 +590,7 @@ class BlogTopicClustering:
         print(f"Performing LDA topic modeling with {n_topics} topics...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            self.create_bow_matrix()
+            _, _ = self.create_bow_matrix()
         
         # Initialize LDA model
         lda_model = LatentDirichletAllocation(
@@ -867,8 +874,14 @@ def main():
         return
     
     # Create TF-IDF matrix
-    analyzer.create_tfidf_matrix(max_features=3000, min_df=3, max_df=0.9)
-    analyzer.create_bow_matrix(max_features=3000, min_df=3, max_df=0.9)
+    _, meetup_count = analyzer.create_tfidf_matrix(max_features=3000, min_df=3, max_df=0.9)
+    _, meetup_count_lda = analyzer.create_bow_matrix(max_features=3000, min_df=3, max_df=0.9)
+
+    print("\n" + "="*60)
+    print('MEETUP COUNT')
+    print(f'TF-IDF {meetup_count}')
+    print(f'LDA {meetup_count_lda}')
+    print("\n" + "="*60)
 
     # LDA analysis
     print("\n" + "="*60)
@@ -876,13 +889,11 @@ def main():
     print("="*60)
     
     # Test different numbers of topics
-    lda_coherence_results = analyzer.lda_topic_coherence_test(
-        topic_range=range(5, 26, 5), 
-        n_samples=2000
-    )
+    #lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
     
     # Use optimal number of topics
-    optimal_topics = lda_coherence_results['optimal_topics_perplexity']
+    #optimal_topics = lda_coherence_results['optimal_topics_perplexity']
+    optimal_topics = 36
     print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
     
     # Perform LDA
@@ -895,21 +906,23 @@ def main():
     analyzer.visualize_lda_topics()
     
     # Save LDA results
-    analyzer.save_lda_results(f'blog_lda_results_rationality_{optimal_topics}.csv')
+    analyzer.save_lda_results(f'x-risk-data/results/blog_lda_results_{optimal_topics}.csv')
     
     # K-means analysis (your existing code)
     print("\n" + "="*60)
     print("PERFORMING K-MEANS CLUSTERING")
     print("="*60)
     
+    # COMMENT THE BELOW OUT FOR K MEANS CLUSTERING 
+    """
     # Perform elbow test
-    #elbow_results = analyzer.elbow_test(k_range=range(3, 16), n_samples=2000)  # Sample for speed
+    elbow_results = analyzer.elbow_test(k_range=range(35, 46), n_samples=2000)  # Sample for speed
     
     # Use the suggested optimal number of clusters
     # 'optimal_k_silhouette' or 'optimal_k_elbow'
-    # optimal_k = elbow_results['optimal_k_silhouette']
-    optimal_k = 25
-    print(f"\nUsing k={optimal_k} clusters based on silhouette score")
+    optimal_k = elbow_results['optimal_k_silhouette']
+    optimal_k = 40
+    print(f"\nUsing k={optimal_topics} clusters based on silhouette score")
     
     # Perform clustering
     results = analyzer.perform_clustering(n_clusters=optimal_k)
@@ -921,7 +934,8 @@ def main():
     analyzer.visualize_clusters()
     
     # Save results
-    analyzer.save_results(f'blog_clustering_results_rationality_{optimal_k}.csv')
+    analyzer.save_results(f'x-risk-data/results/blog_clustering_results_rationality_{optimal_k}.csv')
+    """
         
     print("\nAnalysis complete!")
 
