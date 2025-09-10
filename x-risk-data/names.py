@@ -97,7 +97,12 @@ MALE_NAMES = {
     'andrij', 'randall', 'itay', 'maciej', 'pekka', 'pete', 'clément', 'akram', 'eoin',
     'kieron', 'jakob', 'damilo', 'ian', 'nicolo', 'lauriander', 'patrik', 'patrick',
     'edmun', 'vittu', 'marek', 'lucien', 'ewan', 'vorak', 'wes', 'aengus',
-    'rick', 'callum', 'avi'
+    'rick', 'callum', 'avi', 'cronodas', 'esrogs', 'elo', 'orthonormal', 'gjm',
+    'crmflynn', 'dentin', 'deku-shrub', 'varshul', 'ram@rachum.com', 'mwatkins',
+    'saul', 'keltan', 'sjadler', 'wenitte', 'ctrout', 'ymeskhout', 'azsantosk', 
+    'raffaele', 'ojorgensen', 'amaury', 'jwray', 'ialdabaoth', 'gyrodiot',
+    'proofoflogic', 'larks', 'jsalvatier', 'sniffnoy', 'denkenberger', 'malo',
+    'exceph', 'ofer', 'gurkenglas', 
 }
 
 FEMALE_NAMES = {
@@ -168,6 +173,6 @@ FEMALE_NAMES = {
     'tanja', 'leticiagarcia', 'siya', 'gracie', 'jenny', 'kerry', 'rivka', 
     'maggy', 'nidhi', 'cissy', 'darcey', 'sophie', 'ellen', 'lydia', 'inga', 'sandi',
     'sandy', 'jolly', 'sophie', 'sophia', 'lydia', 'yoreth', 'anca', 'anka',
-    'apollonia', 'amber', 'lucy', 
+    'apollonia', 'amber', 'lucy', 'bridgett', 'ziz', 'epiphi',
 
 }
