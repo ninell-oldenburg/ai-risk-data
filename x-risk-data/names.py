@@ -75,7 +75,7 @@ MALE_NAMES = {
     'helmut', 'walter', 'günter', 'dieter', 'jürgen', 'bernd', 'rainer', 'uwe', 
     'werner', 'horst', 'gerhard', 'ralf', 'detlef', 'norbert', 'jens', 'steffen',
     'aleksandr', 'sergey', 'aleksey', 'maxim', 'oleg', 'pavel', 'roman', 'yuriy', 
-    'evgeniy', 'denis', 'artem', 'kirill', 'yegor', 'ruslan',
+    'evgeniy', 'denis', 'artem', 'kirill', 'yegor', 'ruslan', 'youssef',
     'val', 'ike', 'fin', 'zane', 'daan', 'fraser', 'tyson', 'lewis', 'russell', 'pinto',
     'sergei', 'hadrien', 'sahil', 'burns', 'mojmir', 'claudio', 'keaton', 'egor',
     'mustafa', 'atharva', 'dinkar', 'aron', 'jude', 'arvo', 'alfred', 'ramon',
@@ -102,8 +102,14 @@ MALE_NAMES = {
     'saul', 'keltan', 'sjadler', 'wenitte', 'ctrout', 'ymeskhout', 'azsantosk', 
     'raffaele', 'ojorgensen', 'amaury', 'jwray', 'ialdabaoth', 'gyrodiot',
     'proofoflogic', 'larks', 'jsalvatier', 'sniffnoy', 'denkenberger', 'malo',
-    'exceph', 'ofer', 'gurkenglas', 
-}
+    'exceph', 'ofer', 'gurkenglas', 'stuhlmueller', 'dagon', 'cole', 'mikhail',
+    'kyriakos', 'hoagy', 'leggi', 'xodarap', 'agentydragon', 'ideopunk', 'jp',
+    'sudhanshu', 'huw', 'huon', 'brenton', 'balazs', 'aric', 'niel', 'dspeyer', 
+    'eggsyntax', 'alamerton', 'thiccythot', 'pl5015', 'artkpv', 'moyamo', 
+    'cdkg', 'palus', 'aelwood', 'tryactions', 'hippke', '1a3orn', 'mondsemmel', 
+    'writer', 'hath', 'delton137', 'jdp', 'yaroslav', 'epirito', 'kave', 'stavros',
+    'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 
+    }
 
 FEMALE_NAMES = {
     'mary', 'patricia', 'jennifer', 'linda', 'elizabeth', 'barbara', 'susan',
@@ -128,7 +134,7 @@ FEMALE_NAMES = {
     'scarlett', 'riley', 'aria', 'lily', 'aubrey', 'zoey', 'penelope', 'lillian', 
     'addison', 'layla', 'camila', 'brooklyn', 'leah', 'aaliyah', 'savannah', 
     'gabriella', 'claire', 'skylar', 'bella', 'genesis', 'leilani', 'jordan', 
-    'jocelyn', 'lyla', 'maggie', 'paige', 'valentina', 'nora', 'cora', 'alice', 
+    'jocelyn', 'lyla', 'maggie', 'paige', 'valentina', 'nora', 'cora', 
     'elena', 'ivy', 'ellie', 'daisy', 'lucia', 'ainsley', 'austin', 'nova', 
     'parker', 'hunter', 'raven', 'jordyn', 'sage', 'phoenix', 'river', 'dakota', 
     'rowan', 'london', 'eden', 'juniper', 'autumn', 'iris', 'luna', 'willow', 
@@ -159,7 +165,7 @@ FEMALE_NAMES = {
     'silvia', 'martina', 'eva', 'barbara', 'christa', 'doris', 'elfriede',
     'francoise', 'marie', 'isabelle', 'sylvie', 'nathalie', 'catherine', 'christine',
     'monique', 'brigitte', 'nicole', 'veronique', 'sandrine', 'valerie', 'corinne',
-    'pascale', 'dominique', 'chantal', 'michele', 'danielle', 'martine', 'laurence',
+    'pascale', 'dominique', 'chantal', 'michele', 'martine', 'laurence',
     'giovanna', 'francesca', 'paola', 'laura', 'barbara', 'elena', 'monica',
     'stefania', 'patrizia', 'roberta', 'claudia', 'rita', 'carla', 'daniela',
     'alessandro', 'manuela', 'simona', 'marina', 'cristina', 'federica', 'chiara',
@@ -173,6 +179,9 @@ FEMALE_NAMES = {
     'tanja', 'leticiagarcia', 'siya', 'gracie', 'jenny', 'kerry', 'rivka', 
     'maggy', 'nidhi', 'cissy', 'darcey', 'sophie', 'ellen', 'lydia', 'inga', 'sandi',
     'sandy', 'jolly', 'sophie', 'sophia', 'lydia', 'yoreth', 'anca', 'anka',
-    'apollonia', 'amber', 'lucy', 'bridgett', 'ziz', 'epiphi',
+    'apollonia', 'amber', 'lucy', 'bridgett', 'ziz', 'epiphi', 'chana', 'ines', 
+    'jenna', 'sashika', 'zershaaneh', 'zia', 'arden', 'gabi', 'karina', 
+    'gracie', 'sonata', 
+
 
 }
