@@ -108,7 +108,7 @@ MALE_NAMES = {
     'eggsyntax', 'alamerton', 'thiccythot', 'pl5015', 'artkpv', 'moyamo', 
     'cdkg', 'palus', 'aelwood', 'tryactions', 'hippke', '1a3orn', 'mondsemmel', 
     'writer', 'hath', 'delton137', 'jdp', 'yaroslav', 'epirito', 'kave', 'stavros',
-    'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 
+    'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 'quinn'
     }
 
 FEMALE_NAMES = {
@@ -181,7 +181,7 @@ FEMALE_NAMES = {
     'sandy', 'jolly', 'sophie', 'sophia', 'lydia', 'yoreth', 'anca', 'anka',
     'apollonia', 'amber', 'lucy', 'bridgett', 'ziz', 'epiphi', 'chana', 'ines', 
     'jenna', 'sashika', 'zershaaneh', 'zia', 'arden', 'gabi', 'karina', 
-    'gracie', 'sonata', 
+    'gracie', 'sonata', 'adriana'
 
 
 }
