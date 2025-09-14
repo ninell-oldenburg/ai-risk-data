@@ -108,7 +108,8 @@ MALE_NAMES = {
     'eggsyntax', 'alamerton', 'thiccythot', 'pl5015', 'artkpv', 'moyamo', 
     'cdkg', 'palus', 'aelwood', 'tryactions', 'hippke', '1a3orn', 'mondsemmel', 
     'writer', 'hath', 'delton137', 'jdp', 'yaroslav', 'epirito', 'kave', 'stavros',
-    'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 'quinn'
+    'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 'quinn', 
+    'lorxus'
     }
 
 FEMALE_NAMES = {
