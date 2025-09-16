@@ -4,7 +4,7 @@ This is a LessWrong Dataset for the 10 years from 2016 to 2025. I contains all a
 You can use our code to generate the dataset locally (and tweak the metadata) using the `main.py` file. You can visualize
 the generated data with the notebook provided, `visualize.ipynb`.
 
-## Data and metadata
+## Data and Metadata
 
 You can find the csv data in `data/lw_csv_cleaned_topic/` which means that the json files were converted into CSVs, cleaned (i.e. gender classified and text and links extracted from the HTML) and a topic clustering has been performed and also appended to the CSVs. All other folders in `data/` are one of the preceeding steps to reach this final CSV.
 
@@ -27,7 +27,7 @@ In each CSV, you can now find:
 - `is_linkpost`:    If this post starts with "This is a linkpost" (bool)
 - `extracted_links`:    List of extracted links, first one is skipped if it's a linkpost
 - `cleaned_htmlBody`:   Pure text without any HTML tags
-- `user_gender`:    Classified user gender (see more under [Gender Classification](#Gender Classification))
+- `user_gender`:    Classified user gender (see more under Gender Classification)
 - `topic_cluster_id`:   ID of the identified *dominant* topic (-2 to 35)
 - `topic_label`:    Label of the topic (we manually assigned the labels to the topics)
 
