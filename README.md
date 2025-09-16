@@ -4,8 +4,6 @@ This is a LessWrong Dataset for the 10 years from 2016 to 2025. I contains all a
 You can use our code to generate the dataset locally (and tweak the metadata) using the `main.py` file. You can visualize
 the generated data with the notebook provided, `visualize.ipynb`.
 
-## Introduction
-
 ## Data and metadata
 
 You can find the csv data in `data/lw_csv_cleaned_topic/` which means that the json files were converted into CSVs, cleaned (i.e. gender classified and text and links extracted from the HTML) and a topic clustering has been performed and also appended to the CSVs. All other folders in `data/` are one of the preceeding steps to reach this final CSV.
@@ -42,3 +40,7 @@ We then checked all users that were not catched by this inital classification. E
 Users who deleted their account are also classified as "unknown". Users with ambiguously gendered names such as Logan or Kim unless they have more than five posts and self-identified gender noted anywhere.
 
 We are well aware that this classification is still noisy from different aspects. People may change their gender and still have their old username. Different cultures may use a female or multi-gender name as male one and vice versa. People may have been referred to by others using the wrong gender assumptions and didn't raise the issue for several reasons. However, we think these are reasonable levels of noise and accept them in sake for this classification.
+
+## Links
+
+We extracted all links in the posts unless it is a linkpost (a post that only contains one link to another website). You can use the links for e.g. a citation graph analysis.
