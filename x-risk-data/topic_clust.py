@@ -865,75 +865,60 @@ class BlogTopicClustering:
 
 # Main execution
 def main():
-    # Initialize the clustering analysis
     analyzer = BlogTopicClustering(base_path="x-risk-data/lw_csv_cleaned")
     
-    # Load CSV files
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
     if not success:
         return
     
-    # Create TF-IDF matrix
+    # Create TF-IDF matrix for k means and LDA
     _, meetup_count = analyzer.create_tfidf_matrix(max_features=3000, min_df=3, max_df=0.9)
     _, meetup_count_lda = analyzer.create_bow_matrix(max_features=3000, min_df=3, max_df=0.9)
 
     print("\n" + "="*60)
     print('MEETUP COUNT')
-    print(f'TF-IDF {meetup_count}')
-    print(f'LDA {meetup_count_lda}')
+    print(f'TF-IDF {meetup_count}') # counts how many posts are meetup announcements
+    print(f'LDA {meetup_count_lda}') # counts how many posts are meetup announcements
     print("\n" + "="*60)
 
-    # LDA analysis
+    # LDA 
     print("\n" + "="*60)
     print("PERFORMING LDA TOPIC MODELING")
     print("="*60)
     
-    # Test different numbers of topics
-    #lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
-    
-    # Use optimal number of topics
-    #optimal_topics = lda_coherence_results['optimal_topics_perplexity']
-    optimal_topics = 36
+    """ 
+    # USE THIS TO PERFORM TEST ON THE NUMBER OF OPTIMAL TOPICS
+    lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
+    optimal_topics = lda_coherence_results['optimal_topics_perplexity']
     print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
-    
-    # Perform LDA
+    """
+
+    optimal_topics = 36 # if you use the above, you should comment out this (overwrites the optimal topics found)
     lda_results = analyzer.perform_lda(n_topics=optimal_topics)
-    
-    # Print LDA summary
     analyzer.print_lda_summary()
-    
-    # Visualize LDA results
     analyzer.visualize_lda_topics()
-    
-    # Save LDA results
     analyzer.save_lda_results(f'x-risk-data/results/blog_lda_results_{optimal_topics}.csv')
     
-    # K-means analysis (your existing code)
+    """
+    # USE THIS TO TEST AND PERFORM K MEANS CLUSTERING
+
+    # K MEANS
     print("\n" + "="*60)
     print("PERFORMING K-MEANS CLUSTERING")
     print("="*60)
-    
-    # COMMENT THE BELOW OUT FOR K MEANS CLUSTERING 
-    """
-    # Perform elbow test
+     
+    # elbow test
     elbow_results = analyzer.elbow_test(k_range=range(35, 46), n_samples=2000)  # Sample for speed
     
-    # Use the suggested optimal number of clusters
+    # optimal number of clusters according to
     # 'optimal_k_silhouette' or 'optimal_k_elbow'
-    optimal_k = elbow_results['optimal_k_silhouette']
-    optimal_k = 40
+    optimal_k = elbow_results['optimal_k_silhouette'] # change for test method
+    optimal_k = 40 # or whatever number you choose yourself (overwrites the test result)
     print(f"\nUsing k={optimal_topics} clusters based on silhouette score")
     
-    # Perform clustering
     results = analyzer.perform_clustering(n_clusters=optimal_k)
-
-    # Print summary
     analyzer.print_cluster_summary()
-        
-    # Visualize results
     analyzer.visualize_clusters()
-    
-    # Save results
     analyzer.save_results(f'x-risk-data/results/blog_clustering_results_rationality_{optimal_k}.csv')
     """
         
