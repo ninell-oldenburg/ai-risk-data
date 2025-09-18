@@ -45,6 +45,10 @@ class LesswrongJsonToCsv:
                 # flatten json into data frame
                 df = pd.json_normalize(posts)
 
+                # Remove 'user' and 'url' columns if they exist
+                columns_to_remove = ['user', 'url']
+                df = df.drop(columns=[col for col in columns_to_remove if col in df.columns])
+
                 # output csv path
                 csv_filename = filename.replace(".json", ".csv")
                 output_path = os.path.join(output_year_folder, csv_filename)
@@ -54,9 +58,9 @@ class LesswrongJsonToCsv:
                 subtotal_posts += len(df)
                 print(f"✅ Saved {output_path} ({len(df)} posts)")
 
-            total_posts += subtotal_posts
+            self.total_posts += subtotal_posts
 
-        print(f'Total Posts: {total_posts}')
+        print(f'Total Posts: {self.total_posts}')
 
 def main():
     transformer = LesswrongJsonToCsv()
