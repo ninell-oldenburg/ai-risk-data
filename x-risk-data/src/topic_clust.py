@@ -61,6 +61,7 @@ class BlogTopicClustering:
                         
                             if text_content.strip():
                                 all_posts.append({
+                                    '_id': str(row['_id']),
                                     'text': text_content.strip(),
                                     'title': str(row['title']).strip() if 'title' in row and pd.notna(row['title']) else "",
                                     'year': year,
@@ -73,6 +74,7 @@ class BlogTopicClustering:
                             
                     except Exception as e:
                         print(f"Error reading {csv_path}: {e}")
+
         
         self.blog_posts = all_posts
         print(f"\nTotal: Loaded {len(all_posts)} blog posts from {file_count} files")
@@ -108,20 +110,16 @@ class BlogTopicClustering:
         
         # Preprocess all texts
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
-        meetup_file_count = 0
         
         # Remove empty texts
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
-            """if 'meetup' in text[:20]:
-                meetup_file_count += 1
-                continue"""
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
         
-        print(f"Using {len(valid_texts)} posts not being meetups and having sufficient text content")
+        print(f"Using {len(valid_texts)} posts having sufficient text content")
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
@@ -147,7 +145,7 @@ class BlogTopicClustering:
         print(f"TF-IDF matrix shape: {self.tfidf_matrix.shape}")
         print(f"Vocabulary size: {len(self.vectorizer.vocabulary_)}")
         
-        return self.tfidf_matrix, meetup_file_count
+        return self.tfidf_matrix
     
     def elbow_test(self, k_range=range(2, 21), n_samples=None):
         """Perform elbow test to find optimal number of clusters"""
@@ -418,6 +416,7 @@ class BlogTopicClustering:
         results_data = []
         for post in self.blog_posts:
             results_data.append({
+                '_id': post['_id'],
                 'title': post['title'],
                 'year': post['year'],
                 'month': post['month'],
@@ -462,20 +461,16 @@ class BlogTopicClustering:
         
         # Preprocess all texts
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
-        meetup_file_count = 0
         
         # Remove empty texts
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
-            """if 'meetup' in text[:20]:
-                meetup_file_count += 1
-                continue"""
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
         
-        print(f"Using {len(valid_texts)} posts not being meetups and having sufficient text content")
+        print(f"Using {len(valid_texts)} posts having sufficient text content")
 
         extra_stopwords = set([
             'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
@@ -501,14 +496,14 @@ class BlogTopicClustering:
         print(f"Bag-of-Words matrix shape: {self.bow_matrix.shape}")
         print(f"Vocabulary size: {len(self.count_vectorizer.vocabulary_)}")
         
-        return self.bow_matrix, meetup_file_count
+        return self.bow_matrix
 
     def lda_topic_coherence_test(self, topic_range=range(25, 36, 5), n_samples=None):
         """Test different numbers of topics for LDA using perplexity and log-likelihood"""
         print("Testing LDA topic coherence...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            _, _ = self.create_bow_matrix()
+            _ = self.create_bow_matrix()
         
         # Use subset for efficiency if dataset is large
         if n_samples and len(self.blog_posts) > n_samples:
@@ -590,7 +585,7 @@ class BlogTopicClustering:
         print(f"Performing LDA topic modeling with {n_topics} topics...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            _, _ = self.create_bow_matrix()
+            _ = self.create_bow_matrix()
         
         # Initialize LDA model
         lda_model = LatentDirichletAllocation(
@@ -821,6 +816,7 @@ class BlogTopicClustering:
                         for j in range(self.lda_results['n_topics'])}
             
             row_data = {
+                '_id': post['_id'],
                 'title': post['title'],
                 'year': post['year'],
                 'month': post['month'],
@@ -870,16 +866,6 @@ def main(test: bool = False, optimal_topics: int = 37, type_cluster: str = 'lda'
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
     if not success:
         return
-    
-    # Create TF-IDF matrix for k means and LDA
-    _, meetup_count = analyzer.create_tfidf_matrix(max_features=3000, min_df=3, max_df=0.9)
-    _, meetup_count_lda = analyzer.create_bow_matrix(max_features=3000, min_df=3, max_df=0.9)
-
-    print("\n" + "="*60)
-    print('MEETUP COUNT')
-    print(f'TF-IDF {meetup_count}') # counts how many posts are meetup announcements
-    print(f'LDA {meetup_count_lda}') # counts how many posts are meetup announcements
-    print("\n" + "="*60)
 
     if type_cluster == 'lda' or type_cluster == 'both':
         # LDA 
@@ -920,7 +906,17 @@ def main(test: bool = False, optimal_topics: int = 37, type_cluster: str = 'lda'
     print("\nAnalysis complete!")
 
 if __name__ == "__main__":
+    """
+    Params:
+        test: bool = False (default), True // whether to perform testing, 
+                                  define what ints of topics to test this on in the main()
+        optimal_topics: int = 37 (default), // amount of topics to cluster into
+        type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
+    """
     main()
 
 # 32,780 total posts
 # 32,543 with sufficient length
+# 32,697 rows in the summary
+# --> remove duplicates!
+# topic to clust

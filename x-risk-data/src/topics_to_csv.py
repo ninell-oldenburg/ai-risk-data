@@ -74,22 +74,14 @@ class TopicsToCsv:
                 df = pd.read_csv(correct_file_path)
                 original_count = len(df)
 
-                merge_data = group[["title", "dominant_topic", "topic_label"]]
-                merged = df.merge(merge_data, how="left", on="title")
+                merge_data = group[["_id", "dominant_topic", "topic_label"]]
+                merged = df.merge(merge_data, how="left", on="_id")
 
                 # rename cluster column
                 merged.rename(columns={"dominant_topic": "topic_cluster_id"}, inplace=True)
 
                 merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
                 merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
-                
-                mask = (merged["topic_label"] == "Misc: No Topic") & (
-                    merged["cleaned_htmlBody"].str[:20].str.lower().str.contains("meetup", na=False)
-                    | merged["title"].str.lower().str.contains("meetup", na=False)
-                )
-                # meetups are defined rule-based
-                merged.loc[mask, "topic_label"] = "Community: Meetups & Events"
-                merged.loc[mask, "topic_cluster_id"] = -2 
 
                 # save back with proper filename
                 output_path = f'x-risk-data/data/lw_csv_cleaned_topic/{file_path.split("lw_csv_cleaned/")[1]}'
