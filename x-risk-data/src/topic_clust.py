@@ -114,9 +114,9 @@ class BlogTopicClustering:
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
-            if 'meetup' in text[:20]:
+            """if 'meetup' in text[:20]:
                 meetup_file_count += 1
-                continue
+                continue"""
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
@@ -468,9 +468,9 @@ class BlogTopicClustering:
         valid_texts = []
         valid_indices = []
         for i, text in enumerate(texts):
-            if 'meetup' in text[:20]:
+            """if 'meetup' in text[:20]:
                 meetup_file_count += 1
-                continue
+                continue"""
             if len(text.split()) >= 5:  # At least 5 words
                 valid_texts.append(text)
                 valid_indices.append(i)
@@ -864,7 +864,7 @@ class BlogTopicClustering:
         print(f"LDA topic summary saved to {summary_file}")
 
 # Main execution
-def main():
+def main(test: bool = False, optimal_topics: int = 37, type_cluster: str = 'lda'):
     analyzer = BlogTopicClustering(base_path="x-risk-data/data/lw_csv_cleaned")
     
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
@@ -881,48 +881,46 @@ def main():
     print(f'LDA {meetup_count_lda}') # counts how many posts are meetup announcements
     print("\n" + "="*60)
 
-    # LDA 
-    print("\n" + "="*60)
-    print("PERFORMING LDA TOPIC MODELING")
-    print("="*60)
-    
-    """ 
-    # USE THIS TO PERFORM TEST ON THE NUMBER OF OPTIMAL TOPICS
-    lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
-    optimal_topics = lda_coherence_results['optimal_topics_perplexity']
-    print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
-    """
+    if type_cluster == 'lda' or type_cluster == 'both':
+        # LDA 
+        print("\n" + "="*60)
+        print("PERFORMING LDA TOPIC MODELING")
+        print("="*60)
+        
+        if test:
+            # USE THIS TO PERFORM TEST ON THE NUMBER OF OPTIMAL TOPICS
+            lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
+            optimal_topics = lda_coherence_results['optimal_topics_perplexity']
+            print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
 
-    optimal_topics = 36 # if you use the above, you should comment out this (overwrites the optimal topics found)
-    lda_results = analyzer.perform_lda(n_topics=optimal_topics)
-    analyzer.print_lda_summary()
-    analyzer.visualize_lda_topics()
-    analyzer.save_lda_results(f'x-risk-data/topics/lda_results_{optimal_topics}.csv')
+        lda_results = analyzer.perform_lda(n_topics=optimal_topics)
+        analyzer.print_lda_summary()
+        analyzer.visualize_lda_topics()
+        analyzer.save_lda_results(f'x-risk-data/topics/lda_results_{optimal_topics}.csv')
     
-    """
-    # USE THIS TO TEST AND PERFORM K MEANS CLUSTERING
-
-    # K MEANS
-    print("\n" + "="*60)
-    print("PERFORMING K-MEANS CLUSTERING")
-    print("="*60)
-     
-    # elbow test
-    elbow_results = analyzer.elbow_test(k_range=range(35, 46), n_samples=2000)  # Sample for speed
-    
-    # optimal number of clusters according to
-    # 'optimal_k_silhouette' or 'optimal_k_elbow'
-    optimal_k = elbow_results['optimal_k_silhouette'] # change for test method
-    optimal_k = 40 # or whatever number you choose yourself (overwrites the test result)
-    print(f"\nUsing k={optimal_topics} clusters based on silhouette score")
-    
-    results = analyzer.perform_clustering(n_clusters=optimal_k)
-    analyzer.print_cluster_summary()
-    analyzer.visualize_clusters()
-    analyzer.save_results(f'x-risk-data/topics/kmeans_results__{optimal_k}.csv')
-    """
+    if type_cluster == 'kmeans' or type_cluster == 'both':
+        # K MEANS
+        print("\n" + "="*60)
+        print("PERFORMING K-MEANS CLUSTERING")
+        print("="*60)
+        
+        if test:
+            # elbow test
+            elbow_results = analyzer.elbow_test(k_range=range(35, 46), n_samples=2000)  # Sample for speed
+            # optimal number of clusters according to
+            # 'optimal_k_silhouette' or 'optimal_k_elbow'
+            optimal_topics = elbow_results['optimal_k_silhouette'] # change for test method
+            print(f"\nUsing k={optimal_topics} clusters based on silhouette score")
+        
+        results = analyzer.perform_clustering(n_clusters=optimal_topics)
+        analyzer.print_cluster_summary()
+        analyzer.visualize_clusters()
+        analyzer.save_results(f'x-risk-data/topics/kmeans_results__{optimal_topics}.csv')
         
     print("\nAnalysis complete!")
 
 if __name__ == "__main__":
     main()
+
+# 32,780 total posts
+# 32,543 with sufficient length

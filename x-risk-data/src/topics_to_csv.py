@@ -2,49 +2,49 @@ import pandas as pd
 
 # define manually!
 CLUSTER_TOPICS = {
-        0: 'ai: agi',
-        1: 'ai: safety',
-        2: 'ai: model capabilities',
-        3: 'rationality: mental health & productivity', 
-        4: 'economics: macroeconomics',
-        5: 'economics: nuclear preparedness',
-        6: 'philosophy: consciousness',
-        7: 'ai: neural network circuits', 
-        8: 'ai: alignment',
-        9: 'rationality: abstract world problems',
-        10: 'rationality: concrete world problems',
-        11: 'ai: mech interp',
-        12: 'community: personal stories',
-        13: 'community: lesswrong auditing',
-        14: 'ai: reinforcement learning',
-        15: 'ai: model training & optimization',
-        16: 'bio: covid',
-        17: 'ai: tech giants',
-        18: 'bio: evolution',
-        19: 'economics: decision theory',
-        20: 'philosophy: simulations',
-        21: 'ai: model reasoning',
-        22: 'community: media and media threads',
-        23: 'ai: research',
-        24: 'rationality: forecasting',
-        25: 'misc: miscelleanous',
-        26: 'rationality: social problems',
-        27: 'ai: alignment problems', 
-        28: 'philosophy: moral philosophy',
-        29: 'community: effective altruism',
-        30: 'ai: scaling',
-        31: 'ai: probability theory', 
-        32: 'economics: decision theory',
-        33: 'economics: game theory',
-        34: 'ai: data & information',
-        35: 'rationality: parenting',
+        0: 'AI: AGI & Superintelligence',
+        1: 'AI: AI Safety & Risk Management',
+        2: 'AI: Alignment & Control',
+        3: 'Rationality: Productivity & Bias', 
+        4: 'Economics: Markets & Economic Behavior',
+        5: 'Misc: Geopolitics & International Relations',
+        6: 'Rationality: Psychiatry & Mind',
+        7: 'AI: Neural Networks & Interpretability', 
+        8: 'AI: Research Communications & Postings',
+        9: 'Rationality: Mental Models & Conceptual Frameworks',
+        10: 'Rationality: Argumentation & Belief Formation',
+        11: 'AI: Sparse Autoencoders & Feature Analysis',
+        12: 'Community: Personal Narratives & Stories',
+        13: 'Community: LessWrong Meta & Community',
+        14: 'AI: Reinforcement Learning',
+        15: 'AI: Optimization & Mesa-Optimization',
+        16: 'Misc: COVID & Health Research',
+        17: 'AI: AI Industry & Companies',
+        18: 'Philosophy: Evolution & Long-term Future',
+        19: 'Economics: Complex Systems & Social Decision-making',
+        20: 'Philosophy: Physics & Cosmology',
+        21: 'AI: Large Language Models & Applications',
+        22: 'Community: Digital Media & Online Platforms',
+        23: 'AI: ML Research & Academic Papers',
+        24: 'Rationality: Forecasting & Predictions',
+        25: 'Community: Conversational/Informal Discussion',
+        26: 'Psychology: Social Psychology & Relationships',
+        27: 'AI: Alignment Theory', 
+        28: 'Philosophy: Moral Philosophy',
+        29: 'Community: Effective Altruism Organization & Funding',
+        30: 'AI: AI Progress & Scaling Laws',
+        31: 'Rationality: Probability & Bayesian Reasoning', 
+        32: 'Economics: Decision Theory & Utility Maximization',
+        33: 'Economics: Game Theory & Mathematical Proofs',
+        34: 'Misc: Software & Technology',
+        35: 'Psychology: Education & Learning',
     }
 
 class TopicsToCsv:
     def __init__(self):
         pass
 
-    def append_topics_to_csv():
+    def append_topics_to_csv(self):
         """
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
@@ -81,14 +81,14 @@ class TopicsToCsv:
                 merged.rename(columns={"dominant_topic": "topic_cluster_id"}, inplace=True)
 
                 merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
-                merged["topic_label"] = merged["topic_label"].fillna("misc: no topic")
+                merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
                 
-                mask = (merged["topic_label"] == "No Topic") & (
-                    merged["cleaned_htmlBody"].str[:50].str.lower().str.contains("meetup", na=False)
+                mask = (merged["topic_label"] == "Misc: No Topic") & (
+                    merged["cleaned_htmlBody"].str[:20].str.lower().str.contains("meetup", na=False)
                     | merged["title"].str.lower().str.contains("meetup", na=False)
                 )
                 # meetups are defined rule-based
-                merged.loc[mask, "topic_label"] = "community: meetup"
+                merged.loc[mask, "topic_label"] = "Community: Meetups & Events"
                 merged.loc[mask, "topic_cluster_id"] = -2 
 
                 # save back with proper filename

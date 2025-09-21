@@ -12,7 +12,7 @@ class ExtractLinksAndGender:
         self.MALE_NAMES = names.MALE_NAMES
         self.FEMALE_NAMES = names.FEMALE_NAMES
 
-    def is_linkpost(row) -> bool:
+    def is_linkpost(self, row) -> bool:
         """Check if a post is marked as a linkpost by looking for 'this is a linkpost' at the beginning"""
         html_content = row.get('htmlBody')
         if pd.isna(html_content):
@@ -30,7 +30,7 @@ class ExtractLinksAndGender:
             print(f"Error checking linkpost status: {e}")
             return False
     
-    def clean_html(html_content: str) -> str:
+    def clean_html(self, html_content: str) -> str:
         """Extract plain text from HTML, removing all tags and styling"""
         if pd.isna(html_content):
             return ''
@@ -46,7 +46,7 @@ class ExtractLinksAndGender:
             print(f"Error cleaning HTML: {e}")
             return ''
         
-    def extract_links_from_html(html_content: str) -> List[str]:
+    def extract_links_from_html(self, html_content: str) -> List[str]:
         """Extract all links from HTML content"""
         if pd.isna(html_content):
             return []
@@ -147,8 +147,8 @@ class ExtractLinksAndGender:
         
 def main():
     extractor = ExtractLinksAndGender()
-    base_path_in = "../data/lw_csv"
-    base_path_out = "../data/lw_csv_cleaned"
+    base_path_in = "x-risk-data/data/lw_csv"
+    base_path_out = "x-risk-data/data/lw_csv_cleaned"
     total_posts_with_links = 0
     total_linkposts = 0
     files_processed = 0
