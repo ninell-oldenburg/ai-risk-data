@@ -77,25 +77,72 @@ class ExtractLinksAndGender:
         if pd.isna(username):
             return 'unknown'
         
-        # combine username and display name for analysis
+        # First, try to extract individual components from username
+        username_parts = self._split_username(str(username))
+        
+        # Check each part against name lists
+        for part in username_parts:
+            gender = self._check_name_in_lists(part.lower())
+            if gender != 'unknown':
+                return gender
+        
+        # If no parts matched, try display name parts
+        if pd.notna(display_name):
+            display_parts = self._split_username(str(display_name))
+            for part in display_parts:
+                gender = self._check_name_in_lists(part.lower())
+                if gender != 'unknown':
+                    return gender
+        
+        # If still no match, fall back to original method (substring search)
         text_to_analyze = str(username).lower()
         if pd.notna(display_name):
             text_to_analyze += ' ' + str(display_name).lower()
         
-        # all names and sort by length (longest first)
-        # this prevents one name being classified as different gender 
-        # when it contains another gender's name, e.g.  pauline as paul
+        # Sort by length (longest first) to prevent shorter names matching within longer ones
         all_names = list(self.FEMALE_NAMES) + list(self.MALE_NAMES)
         all_names_sorted = sorted(all_names, key=len, reverse=True)
         
         for name in all_names_sorted:
             if name in text_to_analyze:
-                if name in self.FEMALE_NAMES:
-                    return 'female'
-                else: 
-                    return 'male'
+                self._check_name_in_lists(name)
         
         return 'unknown'
+
+    def _split_username(self, username: str) -> list:
+        """Split username into individual components using various methods"""
+        parts = []
+        
+        # Method 1: Split by common separators
+        separated_parts = re.split(r'[_\-\.\s]+', username)
+        parts.extend([part for part in separated_parts if len(part) > 1])
+        
+        # Method 2: Split camelCase
+        camel_parts = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|\b)', username)
+        parts.extend([part for part in camel_parts if len(part) > 1])
+        
+        # Method 3: Split by numbers (keep the text parts)
+        number_split = re.split(r'\d+', username)
+        parts.extend([part for part in number_split if len(part) > 1])
+        
+        # Remove duplicates and filter out very short parts
+        unique_parts = list(set(parts))
+        filtered_parts = [part for part in unique_parts if len(part) >= 2]
+        
+        # If no good parts found, return the original username
+        if not filtered_parts:
+            filtered_parts = [username]
+        
+        return filtered_parts
+
+    def _check_name_in_lists(self, name: str) -> str:
+        """Check if a name exists in the gender name lists"""
+        if name in self.FEMALE_NAMES:
+            return 'female'
+        elif name in self.MALE_NAMES:
+            return 'male'
+        else:
+            return 'unknown'
     
     def process_csv_file(self, in_filepath: str, out_filepath: str) -> None:
         """Process a single CSV file and add extracted links column"""
