@@ -26,7 +26,7 @@ MALE_NAMES = {
     'grant', 'marc', 'johann', 'anton', 'matt', 'ig0r', 'tom', 'gregor', 'luke',
     'derek', 'morgan', 'lennart', 'hamish', 'jim', 'matthias', 'everett', 'liam',
     'todd', 'tyrrell', 'jean', 'jaan', 'yonatan', 'geoffrey', 'tomek', 'felix',
-    'valentin', 'quentin', 'parker', 'gianluca', 'rahul', 'winston', 'ozzie', 
+    'valentin', 'quentin', 'gianluca', 'rahul', 'winston', 'ozzie', 
     'corin', 'lawchan', 'elifland', 'adrian', 'agucova', 'pepe', 'steve', 'aidan',
     'jesse', 'tsvibt', 'raemon', 'vaniver', 'silas', 'rubi', 'jarviniemi', 'olli', 
     'gergo', 'gasteigerjo', 'augustin', 'gentzel', 'soren', 'lsusr', 'gworley', 
@@ -133,8 +133,14 @@ MALE_NAMES = {
     'eduardo', 'ras', 'pat', 'goeran', 'ondrej', 'corey', 'marvin', 'vassil', 
     'guido', 'eiko', 'sid', 'abe', 'diogo', 'abhay', 'hristo', 'stan', 'mauro',
     'jorge', 'mrmind', 'abhishaike', 'austin', 'alexei', 'ryancarey', 'elliot', 
-    'abhimanyu', 'pasha', 'yan', 'kongo',
+    'abhimanyu', 'pasha', 'yan', 'kongo', 'jalen', 'laurence', 'alexis-carlier',
+    'bryan frances', 'parker-conley', 'ruben', 'valerii', 'xander', 'sammy', 
+    'yash', 'lidor', 'tudor', 'soumyadeep', 
     }
+
+ALL_GENDER_NAMES = {
+    'riley', 'andrea', 'parker'
+}
 
 FEMALE_NAMES = {
     'mary', 'patricia', 'jennifer', 'linda', 'elizabeth', 'barbara', 'susan',
@@ -156,12 +162,12 @@ FEMALE_NAMES = {
     'heather', 'diane', 'julie', 'joyce', 'kelly', 'christina', 'joan', 'evelyn', 
     'judith', 'cheryl', 'jacqueline', 'gloria', 'janice', 'ann', 'kathryn', 
     'teresa', 'doris', 'marie', 'ruby', 'charlotte', 'amelia', 'harper', 'ella', 
-    'scarlett', 'riley', 'aria', 'lily', 'aubrey', 'zoey', 'penelope', 'lillian', 
+    'scarlett', 'aria', 'lily', 'aubrey', 'zoey', 'penelope', 'lillian', 
     'addison', 'layla', 'camila', 'brooklyn', 'leah', 'aaliyah', 'savannah', 
-    'gabriella', 'claire', 'skylar', 'bella', 'genesis', 'leilani', 
+    'gabriella', 'claire', 'skylar', 'bella', 'genesis', 'leilani', 'elika',
     'jocelyn', 'lyla', 'maggie', 'paige', 'valentina', 'nora', 'cora', 
     'elena', 'ivy', 'ellie', 'daisy', 'lucia', 'ainsley', 'austin', 'nova', 
-    'parker', 'hunter', 'raven', 'jordyn', 'sage', 'phoenix', 'river', 'dakota', 
+    'hunter', 'raven', 'jordyn', 'sage', 'phoenix', 'river', 'dakota', 
     'rowan', 'london', 'eden', 'juniper', 'autumn', 'iris', 'luna', 'willow', 
     'hazel', 'violet', 'aurora', 'poppy', 'maeve', 'kinsley', 'naomi', 'maya', 
     'audrey', 'stella', 'brooke', 'faith', 'hope', 'destiny', 'sydney', 'miranda', 
@@ -182,8 +188,7 @@ FEMALE_NAMES = {
     'asuka', 'haruka', 'nana', 'kana', 'saki', 'yui', 'rei', 'moe', 'ai',
     'riko', 'yuka', 'maki', 'hitomi', 'jun', 'keiko', 'naomi', 'hiroko',
     'masako', 'fumiko', 'tomoko', 'noriko', 'sachiko', 'michiko', 'yoshiko',
-    'wei', 'xin', 'ling', 'jing', 'hui', 'ping',
-    'lei', 'fang', 'hong', 'ying', 'qing', 'xiao', 'rui',
+    'wei', 'xin', 'ling', 'jing', 'hui', 'ping',  'fang', 'hong', 'ying', 'qing',
     'meiling', 'xiaoli', 'xiaofang', 'xiaojuan', 'xiaomin', 'xiaohong', 'xiaolan',
     'ingrid', 'astrid', 'greta', 'helga', 'brigitta', 'margit', 'ursula', 'petra',
     'sabine', 'katarina', 'gabriela', 'monika', 'susanne', 'claudia', 'andrea',
@@ -210,5 +215,5 @@ FEMALE_NAMES = {
     'aysja', 'katy', 'kmenou', 'suzie', 'adrusi', 'celeste', 'mom', 'noa', 
     'math-viking', 'arithine', 'daphne', 'madi_hexa', 'marget', 'sinem', 
     'jodie', 'laurie', 'lara', 'asha', 'franziska', 'sindhu', 'tamera', 'britt',
-    'jenn',
+    'jenn', 'rishika', 'paula', 
 }
