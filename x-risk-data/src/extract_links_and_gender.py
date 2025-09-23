@@ -104,10 +104,12 @@ class ExtractLinksAndGender:
         all_names_sorted = sorted(all_names, key=len, reverse=True)
         
         for name in all_names_sorted:
-            if name in text_to_analyze:
-                gender = self._check_name_in_lists(name)
-                if gender != 'unknown':  
-                    return gender
+            if len(name) > 3 and name in text_to_analyze:
+                #print(f"Found '{name}' in '{text_to_analyze}'")
+                if name in self.FEMALE_NAMES:
+                    return 'female'
+                elif name in self.MALE_NAMES:
+                    return 'male'
         
         return 'unknown'
 
