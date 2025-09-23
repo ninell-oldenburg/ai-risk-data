@@ -105,7 +105,9 @@ class ExtractLinksAndGender:
         
         for name in all_names_sorted:
             if name in text_to_analyze:
-                self._check_name_in_lists(name)
+                gender = self._check_name_in_lists(name)
+                if gender != 'unknown':  
+                    return gender
         
         return 'unknown'
 
