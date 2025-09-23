@@ -769,6 +769,7 @@ class BlogTopicClustering:
         plt.xticks(rotation=45)
         
         plt.tight_layout()
+        plt.savefig(f"x-risk-data/img/lda_topic_{self.lda_results['n_topics']}.pdf")
         plt.show()
 
     def print_lda_summary(self):
@@ -913,7 +914,7 @@ if __name__ == "__main__":
         optimal_topics: int = 20 (default), // amount of topics to cluster into
         type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
     """
-    main(test=False, optimal_topics=20)
+    main(test=False, optimal_topics=25)
 
 # 32,780 total posts
 # 32,543 with sufficient length

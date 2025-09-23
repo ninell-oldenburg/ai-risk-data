@@ -51,7 +51,7 @@ MALE_NAMES = {
     'chase', 'finn', 'cole', 'shane', 'riley', 'austin', 'miles', 'cooper', 
     'bryce', 'emmett', 'preston', 'kai', 'dean', 'ezra', 'ricardo', 'phoenix',
     'raj', 'ravi', 'amit', 'suresh', 'rajesh', 'mahesh', 'ramesh', 'dinesh',
-    'krishna', 'arjun', 'rohan', 'vikram', 'sanjay', 'ajay', 'vijay', 'nikhil',
+    'krishna', 'arjun', 'vikram', 'sanjay', 'ajay', 'vijay', 'nikhil',
     'arun', 'anand', 'rakesh', 'manish', 'ashish', 'rohit', 'shivam', 'aman',
     'abhishek', 'akash', 'gaurav', 'karan', 'varun', 'vishal', 'sachin', 'rahul',
     'deepak', 'pradeep', 'sunil', 'anil', 'mukesh', 'yogesh', 'naveen', 'pankaj',
@@ -109,7 +109,30 @@ MALE_NAMES = {
     'cdkg', 'palus', 'aelwood', 'tryactions', 'hippke', '1a3orn', 'mondsemmel', 
     'writer', 'hath', 'delton137', 'jdp', 'yaroslav', 'epirito', 'kave', 'stavros',
     'arturo', 'niko', 'phil', 'wcargo', 'duck_master', 'lord-god', 'quinn', 
-    'lorxus'
+    'lorxus', 'sharmake', 'robi', 'mostafa', 'gesild', 'edoarad', 'jobst', 'ulrik',
+    'seth', 'munkh', 'prance', 'dude', 'king', 'guy', 'emrik', 'alx', 'le-nguyen-hoang', 
+    'mergimio', 'mauricio', 'koen', 'elmer', 'mister', 'adithya', 'can', 'nguyen-tran',
+    'stijn', 'wilm', 'caspar', 'yafah', 'sd-marlow', 'premek', 'eigil', 
+    'alfonso', 'aydin', 'a.olmotitos', 'asksathvik', 'tuan-tu-nguyen', 'lord', 
+    'emanuele', 'omar', 'mitchell', 'norman', 'hastings', 'niclas', 'pawel', 
+    'yehuda', 'hawk', 'delesley', 'soroush', 'milton', 'matheus', 'mr-beastly', 
+    'govind', 'chetan', 'madhav', 'giles', 'tiberius', 'mislav', 'stan', 
+    'jj-hepburn', 'hjalmar', 'sultan', 'olaoluwa', 'amadeus', 'ole', 'agent smith',
+    'henk', 'gatlen', 'baram', 'ron', 'cade', 'jem-mosig', 'ram', 'sherlock', 
+    'toni', 'manuel', 'mohammad', 'rafael', 'mauricio', 'tilman', 'hashem', 
+    'mrpointy', 'eitan', 'aldrin', 'harry', 'sridhar', 'jaspar', 'russ', 'kieran',
+    'kolya', 'mathijs', 'henrik', 'cohen', 'dad', 'kazi', 'ross', 'delen', 
+    'ashwin', 'parth', 'peer', 'man', 'razmęk', 'zoltan', 'ash-jafari', 'jamal', 
+    'emerson', 'arash', 'barry', 'ted', 'kyoung', 'maralorn', 'sahaj', 'tgetschmann', 
+    'bernhard', 'kareem', 'mr.magpie', 'knuckels', 'alyosha', 'ajith', 'deruwyn',
+    'aleksander', 'joschka', 'kris', 'cory', 'gordon', 'arrrlex', 'jared', 'mister', 
+    'chico', 'swante', 'kaustubh', 'henning', 'mgfcatherall', 'herman', 'eddie', 
+    'sathvik', 'arkhos', 'mickey', 'le magicien quantique', 'ovidijus', 'adriaan', 
+    'seon', 'j-rosser', 'zoheb', 'michał', 'shaurya', 'piotr', 'rob', 'shawn', 
+    'guillaume', 'arne', 'ebrahim', 'gunther', 'tiplur', 'adrien', 'shoka', 
+    'eduardo', 'ras', 'pat', 'goeran', 'ondrej', 'corey', 'marvin', 'vassil', 
+    'guido', 'eiko', 'sid', 'abe', 'diogo', 'abhay', 'hristo', 'stan', 'mauro',
+
     }
 
 FEMALE_NAMES = {
@@ -182,7 +205,9 @@ FEMALE_NAMES = {
     'sandy', 'jolly', 'sophie', 'sophia', 'lydia', 'yoreth', 'anca', 'anka',
     'apollonia', 'amber', 'lucy', 'bridgett', 'ziz', 'epiphi', 'chana', 'ines', 
     'jenna', 'sashika', 'zershaaneh', 'zia', 'arden', 'gabi', 'karina', 
-    'gracie', 'sonata', 'adriana'
-
-
+    'gracie', 'sonata', 'adriana', 'chi', 'girl', 'queen', 'lady', 'kirsten',
+    'aysja', 'katy', 'kmenou', 'suzie', 'adrusi', 'celeste', 'mom', 'noa', 
+    'math-viking', 'arithine', 'daphne', 'madi_hexa', 'marget', 'sinem', 
+    'jodie', 'laurie', 'lara', 'asha', 'franziska', 'sindhu', 'tamera', 'britt',
+    'jenn',
 }
