@@ -860,7 +860,7 @@ class BlogTopicClustering:
         print(f"LDA topic summary saved to {summary_file}")
 
 # Main execution
-def main(test: bool = False, optimal_topics: int = 37, type_cluster: str = 'lda'):
+def main(test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'):
     analyzer = BlogTopicClustering(base_path="x-risk-data/data/lw_csv_cleaned")
     
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
@@ -919,4 +919,4 @@ if __name__ == "__main__":
 # 32,543 with sufficient length
 # 32,697 rows in the summary
 # --> remove duplicates!
-# topic to clust
+# 32,543 posts matched!

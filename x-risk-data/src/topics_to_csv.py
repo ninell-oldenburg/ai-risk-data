@@ -2,42 +2,31 @@ import pandas as pd
 
 # define manually!
 CLUSTER_TOPICS = {
-        0: 'AI: AGI & Superintelligence',
-        1: 'AI: AI Safety & Risk Management',
-        2: 'AI: Alignment & Control',
-        3: 'Rationality: Productivity & Bias', 
+        0: 'Rationality: Probability & Bayesian Reasoning', 
+        1: 'AI: Research Agendas & Infrastructure',
+        2: 'Community: Meetups & Events',
+        3: 'AI: Agency, Control & Power',
         4: 'Economics: Markets & Economic Behavior',
-        5: 'Misc: Geopolitics & International Relations',
-        6: 'Rationality: Psychiatry & Mind',
-        7: 'AI: Neural Networks & Interpretability', 
-        8: 'AI: Research Communications & Postings',
-        9: 'Rationality: Mental Models & Conceptual Frameworks',
-        10: 'Rationality: Argumentation & Belief Formation',
-        11: 'AI: Sparse Autoencoders & Feature Analysis',
-        12: 'Community: Personal Narratives & Stories',
-        13: 'Community: LessWrong Meta & Community',
-        14: 'AI: Reinforcement Learning',
-        15: 'AI: Optimization & Mesa-Optimization',
-        16: 'Misc: COVID & Health Research',
-        17: 'AI: AI Industry & Companies',
-        18: 'Philosophy: Evolution & Long-term Future',
-        19: 'Economics: Complex Systems & Social Decision-making',
-        20: 'Philosophy: Physics & Cosmology',
-        21: 'AI: Large Language Models & Applications',
-        22: 'Community: Digital Media & Online Platforms',
-        23: 'AI: ML Research & Academic Papers',
-        24: 'Rationality: Forecasting & Predictions',
-        25: 'Community: Conversational/Informal Discussion',
-        26: 'Psychology: Social Psychology & Relationships',
-        27: 'AI: Alignment Theory', 
-        28: 'Philosophy: Moral Philosophy',
-        29: 'Community: Effective Altruism Organization & Funding',
-        30: 'AI: AI Progress & Scaling Laws',
-        31: 'Rationality: Probability & Bayesian Reasoning', 
-        32: 'Economics: Decision Theory & Utility Maximization',
-        33: 'Economics: Game Theory & Mathematical Proofs',
-        34: 'Misc: Software & Technology',
-        35: 'Psychology: Education & Learning',
+        5: 'Rationality: Productivity & Wellbeing',
+        6: 'AI: Research Communications & Postings',
+        7: 'AI: Alignment Theory & Strategy',
+        8: 'Community: LessWrong Meta & Community',
+        9: 'Rationality: Science & Culture',
+        10: 'Rationality: Pandemic Epistemics & COVID',
+        11: 'AI: AGI & Global Catastrophic Risk',
+        12: 'AI: AI Progress & Scaling',
+        13: 'Economics: Game Theory & Decision Theory',
+        14: 'Rationality: Knowledge Systems & Concepts',
+        15: 'AI: Emergent Capabilities & Misalignment',
+        16: 'Philosophy: Mind, Consciousness & Evolution',
+        17: 'AI: Companies, Governance & Public Impact',
+        18: 'Philosophy: Morality & Ethics',
+        19: 'AI: Mechanistic Interpretability',
+        20: 'Community: Informal & Exploratory Discussion',
+        21: 'AI: Optimization, Mesa-Optimization & RL',
+        22: 'AI: Value Alignment',
+        23: 'AI: Core ML & Neural Networks',
+        24: 'Rationality: Mathematics & Formal Reasoning'
     }
 
 class TopicsToCsv:
@@ -49,7 +38,7 @@ class TopicsToCsv:
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
         """
-        clustering_results_csv = 'x-risk-data/topics/lda_results_36.csv'
+        clustering_results_csv = 'x-risk-data/topics/lda_results_25.csv'
 
         print(f"Loading clustering results from {clustering_results_csv}...")
         results_df = pd.read_csv(clustering_results_csv)
@@ -100,6 +89,9 @@ class TopicsToCsv:
             except Exception as e:
                 print(f'Error processing {file_path}: {e}')
                 print(f'Error type: {type(e).__name__}')
+
+        print()
+        print(f'TOTAL MATCHES: {total_matches}')
 
 def main():
     converter = TopicsToCsv()
