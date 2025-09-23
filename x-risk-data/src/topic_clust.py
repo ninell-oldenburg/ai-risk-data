@@ -910,10 +910,10 @@ if __name__ == "__main__":
     Params:
         test: bool = False (default), True // whether to perform testing, 
                                   define what ints of topics to test this on in the main()
-        optimal_topics: int = 37 (default), // amount of topics to cluster into
+        optimal_topics: int = 20 (default), // amount of topics to cluster into
         type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
     """
-    main()
+    main(test=False, optimal_topics=20)
 
 # 32,780 total posts
 # 32,543 with sufficient length
