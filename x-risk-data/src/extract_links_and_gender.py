@@ -6,11 +6,13 @@ import glob
 from typing import List
 from collections import Counter
 import names
+import nomquamgender as nqg
 
 class ExtractLinksAndGender:
     def __init__(self):
         self.MALE_NAMES = names.MALE_NAMES
         self.FEMALE_NAMES = names.FEMALE_NAMES
+        self.nqgmodel = nqg.NBGC()
 
     def is_linkpost(self, row) -> bool:
         """Check if a post is marked as a linkpost by looking for 'this is a linkpost' at the beginning"""
@@ -105,7 +107,6 @@ class ExtractLinksAndGender:
         
         for name in all_names_sorted:
             if len(name) > 3 and name in text_to_analyze:
-                #print(f"Found '{name}' in '{text_to_analyze}'")
                 if name in self.FEMALE_NAMES:
                     return 'female'
                 elif name in self.MALE_NAMES:
