@@ -19,132 +19,57 @@ class AIScholarshipAnalyzer:
             email: Your email for OpenAlex API (polite pool access)
         """
         self.base_url = "https://api.openalex.org"
-        self.email = "ninelloldenburg@gmail.com"
-        self.headers = {'User-Agent': f'AI-Scholarship-Analyzer (mailto:{email})'}
+        self.email = email
+        self.headers = {'User-Agent': f'mailto:{email}'}
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         
-    def search_papers(self, query: str, years: str = "2016-2025", limit: int = 1000) -> List[Dict]:
-        """
-        Search for papers using OpenAlex API
-        
-        Args:
-            query: Search query
-            years: Year range (e.g., "2016-2025")
-            limit: Maximum number of papers to retrieve
-        """
+    def search_papers(self, topic_id: str = "T10883", years: str = "2016-2025", limit: int = 10000) -> List[Dict]:
         papers = []
         page = 1
-        per_page = 200  # Max allowed by OpenAlex
+        per_page = 100
         
-        while len(papers) < limit:
+        while True:
             url = f"{self.base_url}/works"
             params = {
-                'search': query,
-                'filter': f'publication_year:{years},type:article',
+                'filter': f'publication_year:{years},type:article,topics.id:{topic_id}',
                 'per-page': per_page,
                 'page': page,
                 'select': 'id,title,publication_year,cited_by_count,concepts,authorships,referenced_works'
             }
             
             response = self.session.get(url, params=params)
-            if response.status_code != 200:
-                print(f"Error: {response.status_code}")
+            """
+            if response.status_code == 403:
+                print(f"Rate limited at {len(papers)} papers. Waiting 60 seconds...")
+                time.sleep(60)  # Wait longer for rate limit
+                continue
+            elif response.status_code != 200:
+                print(f"Error {response.status_code}: {response.text}")
                 break
-                
+                """
             data = response.json()
             batch = data.get('results', [])
             
             if not batch:
+                print("No more results available")
                 break
                 
             papers.extend(batch)
             print(f"Retrieved {len(papers)} papers...")
             
-            if len(batch) < per_page:  # Last page
+            if limit and len(papers) >= limit:
+                papers = papers[:limit]
+                break
+                
+            if len(batch) < per_page:
+                print("Reached last page")
                 break
                 
             page += 1
-            time.sleep(0.1)  # Be polite to the API
+            time.sleep(1)  # Increase delay to be extra polite
             
-        return papers[:limit]
-    
-    def get_xrisk_papers(self) -> List[Dict]:
-        """Get existential risk papers using targeted keywords"""
-        xrisk_queries = [
-            "existential risk artificial intelligence",
-            "ai safety",
-            'ai alignment',
-            "control problem", 
-            "artificial general intelligence",
-            "existential risk",
-            "agi",
-            "superintelligence",
-            "ai governance",
-            "ai risk",
-            "security generative ai",
-            "ai security",
-            "ai deception",
-            "catastrophic ai risks",
-            "x-risk",
-        ]
-        
-        all_papers = []
-        for query in xrisk_queries:
-            print(f"Searching for: {query}")
-            papers = self.search_papers(query, limit=200)
-            all_papers.extend(papers)
-            time.sleep(1)
-        
-        # Deduplicate by ID
-        seen_ids = set()
-        unique_papers = []
-        for paper in all_papers:
-            if paper['id'] not in seen_ids:
-                unique_papers.append(paper)
-                seen_ids.add(paper['id'])
-                
-        print(f"Found {len(unique_papers)} unique x-risk papers")
-        return unique_papers
-    
-    def get_critical_ai_papers(self) -> List[Dict]:
-        """Get critical AI papers using targeted keywords"""
-        critical_queries = [
-            "algorithmic bias",
-            "ai fairness",
-            "ai ethics",
-            "responsible artificial intelligence",
-            "critical algorithm studies",
-            "ai regulation",
-            "artificial intelligence social justice",
-            "algorithmic accountability transparency",
-            "AI hype",
-            "technological solutionism",
-            "tescreal",
-            "dystopia ai",
-            "ethical concerns artificial intelligence",
-            "sociocultural artificial intelligence",
-            "sociopolitical artificial intelligence",
-            "critical theory artificial intelligence"
-        ]
-        
-        all_papers = []
-        for query in critical_queries:
-            print(f"Searching for: {query}")
-            papers = self.search_papers(query, limit=300)
-            all_papers.extend(papers)
-            time.sleep(1)
-        
-        # Deduplicate
-        seen_ids = set()
-        unique_papers = []
-        for paper in all_papers:
-            if paper['id'] not in seen_ids:
-                unique_papers.append(paper)
-                seen_ids.add(paper['id'])
-                
-        print(f"Found {len(unique_papers)} unique critical AI papers")
-        return unique_papers
+        return papers
     
     def build_citation_network(self, papers: List[Dict]) -> nx.Graph:
         """
@@ -169,7 +94,8 @@ class AIScholarshipAnalyzer:
             referenced_works = paper.get('referenced_works', [])
             
             for ref_id in referenced_works:
-                G.add_edge(paper_id, ref_id)
+                if ref_id in paper_ids:
+                    G.add_edge(paper_id, ref_id)
         
         return G
     
@@ -297,18 +223,13 @@ class AIScholarshipAnalyzer:
         print("=== AI Scholarship Citation Network Analysis ===\n")
         
         # Step 1: Collect papers
-        print("1. Collecting X-risk papers...")
-        xrisk_papers = self.get_xrisk_papers()
-        
-        print("\n2. Collecting Critical AI papers...")
-        critical_papers = self.get_critical_ai_papers()
-        
-        all_papers = xrisk_papers + critical_papers
-        print(f"\nTotal papers collected: {len(all_papers)}")
+        print("1. Collecting papers...")
+        papers = self.search_papers()
+        print(f"\nTotal papers collected: {len(papers)}")
         
         # Step 2: Build citation network
         print("\n3. Building citation network...")
-        G = self.build_citation_network(all_papers)
+        G = self.build_citation_network(papers)
         print(f"Network: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
         
         # Step 3: Detect communities
@@ -317,7 +238,7 @@ class AIScholarshipAnalyzer:
         
         # Step 4: Analyze communities
         print("\n5. Analyzing communities...")
-        community_df = self.analyze_communities(all_papers, partition)
+        community_df = self.analyze_communities(papers, partition)
         
         # Step 5: Classify communities
         print("\n6. Classifying communities...")
@@ -325,14 +246,14 @@ class AIScholarshipAnalyzer:
         
         # Step 6: Extract author info
         print("\n7. Extracting author information...")
-        author_df = self.extract_author_gender_info(all_papers)
+        author_df = self.extract_author_gender_info(papers)
         
         return community_df, community_labels, author_df
 
 # Usage example
 if __name__ == "__main__":
     # Initialize analyzer with your email
-    analyzer = AIScholarshipAnalyzer("your.email@university.edu")  # Replace with your email
+    analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com") 
     
     # Run analysis
     community_df, community_labels, author_df = analyzer.run_full_analysis()
