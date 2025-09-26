@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import glob
 from typing import List, Optional
 from collections import Counter
-import names
+import src.names
 import nomquamgender as nqg
 import json
 import sys
