@@ -18,7 +18,7 @@ def main(forum):
     processor.scrape(forum)
     processor.to_csv(forum)
     processor.lng(forum)
-    ntopics = processor.tc(forum)
+    ntopics = processor.tc(forum, test=False, optimal_topics=25, type_cluster = 'lda')
     processor.ttc(forum, ntopics)
 
 if __name__ == '__main__':

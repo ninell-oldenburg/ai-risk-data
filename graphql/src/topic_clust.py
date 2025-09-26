@@ -375,7 +375,9 @@ class BlogTopicClustering:
         plt.title('Clustering Summary')
         
         plt.tight_layout()
-        plt.savefig(f"graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf")
+        output_path = f"graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
+        os.makedirs(output_path, exist_ok=True)
+        plt.savefig(output_path)
         plt.show()
     
     def print_cluster_summary(self):
@@ -770,7 +772,9 @@ class BlogTopicClustering:
         plt.xticks(rotation=45)
         
         plt.tight_layout()
-        plt.savefig(f"graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf")
+        output_path = f"graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
+        os.makedirs(output_path, exist_ok=True)
+        plt.savefig(output_path)
         plt.show()
 
     def print_lda_summary(self):
@@ -884,7 +888,9 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         lda_results = analyzer.perform_lda(n_topics=optimal_topics)
         analyzer.print_lda_summary()
         analyzer.visualize_lda_topics()
-        analyzer.save_lda_results(f'graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv')
+        output_path = f'graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv'
+        os.mkdir(output_path, exist_ok=True)
+        analyzer.save_lda_results(output_path)
     
     if type_cluster == 'kmeans' or type_cluster == 'both':
         # K MEANS
@@ -903,7 +909,9 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         results = analyzer.perform_clustering(n_clusters=optimal_topics)
         analyzer.print_cluster_summary()
         analyzer.visualize_clusters()
-        analyzer.save_results(f'graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv')
+        output_path = f'graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv'
+        os.mkdir(output_path, exist_ok=True)
+        analyzer.save_results(output_path)
         
     print("\nAnalysis complete!")
     return optimal_topics
