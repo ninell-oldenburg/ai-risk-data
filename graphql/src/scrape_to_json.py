@@ -4,11 +4,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 import time
 import sys
+import os
 
 class ScrapeLesswrong:
   
     """ 
-    Simple pyhton class to scrape lesswrong data during a certain time.
+    Simple python class to scrape lesswrong data during a certain time.
     For changing the dates, go to get_and_save_articles(). 
     To change the result variables, visit https://www.lesswrong.com/graphiql 
     """
@@ -32,8 +33,11 @@ class ScrapeLesswrong:
                     "Referer": "https://www.alignmentforum.org/",
                     "Origin": "https://www.alignmentforum.org"
                 }
-        except ValueError:
-            print("FORUM variable has to be 'lw' or 'af'")
+            else:
+                raise ValueError("FORUM variable has to be 'lw' or 'af'")
+        except ValueError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
         
         self.query = """
         query ($after: Date, $before: Date, $limit: Int) {
@@ -82,14 +86,26 @@ class ScrapeLesswrong:
             after = start_date.isoformat() + "Z"
             before = next_month.isoformat() + "Z"
             
-            variables = {"after": after, "before": before, "limit": 10000}  # 5000 per request
+            variables = {"after": after, "before": before, "limit": 10000}  # 10000 per request
             response = requests.post(self.url, json={"query": self.query, "variables": variables}, headers=self.headers)
+            
+            # Check for request errors
+            if response.status_code != 200:
+                print(f"Error: HTTP {response.status_code} for {start_date.strftime('%Y-%m')}")
+                start_date = next_month
+                continue
+                
             data = response.json()
             results = data.get("data", {}).get("posts", {}).get("results", [])
             
+            # Create directory structure if it doesn't exist
+            year_dir = f"graphql/data/{self.platform}/json/{start_date.year}"
+            os.makedirs(year_dir, exist_ok=True)
+            
             # Save JSON for this month
             filename = f"{start_date.year}-{start_date.month:02}.json"
-            filepath = f"graphql/data/{self.platform}/json/{start_date.year}/" + filename
+            filepath = os.path.join(year_dir, filename)
+            
             with open(filepath, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
@@ -105,4 +121,8 @@ def main(platform):
     scraper.get_and_save_articles()
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <forum>")
+        print("Where <forum> is 'lw' or 'af'")
+        sys.exit(1)
     main(sys.argv[1])
