@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import glob
 from typing import List, Optional
 from collections import Counter
-import src.names
+import src.names as names
 import nomquamgender as nqg
 import json
 import sys
@@ -282,8 +282,6 @@ class ExtractLinksAndGender:
         """Process a single CSV file and add extracted links column"""
         try:
             df = pd.read_csv(in_filepath)
-
-            print(out_filepath)
             
             # add new columns for link information
             df['is_linkpost'] = df.apply(self.is_linkpost, axis=1)
@@ -367,7 +365,7 @@ def main(forum):
         total_posts_with_links += posts_with_links
         total_linkposts += linkposts
         files_processed += 1
-        print(f"  ✓ Updated with {posts_with_links} posts with links, {linkposts} linkposts")
+        print(f"✅ Updated with {posts_with_links} posts with links, {linkposts} linkposts")
 
     print(f"\nCompleted!")
     print(f"Files processed: {files_processed}/{len(csv_file_pairs)}")
