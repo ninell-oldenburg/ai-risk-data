@@ -376,8 +376,8 @@ class BlogTopicClustering:
         
         plt.tight_layout()
         output_path = f"graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
-        os.makedirs(output_path, exist_ok=True)
-        plt.savefig(output_path)
+        output_dir = os.path.dirname(output_path)
+        os.makedirs(output_dir, exist_ok=True)
         plt.show()
     
     def print_cluster_summary(self):
@@ -773,7 +773,8 @@ class BlogTopicClustering:
         
         plt.tight_layout()
         output_path = f"graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
-        os.makedirs(output_path, exist_ok=True)
+        output_dir = os.path.dirname(output_path)
+        os.makedirs(output_dir, exist_ok=True)
         plt.savefig(output_path)
         plt.show()
 
