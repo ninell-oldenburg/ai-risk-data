@@ -1,4 +1,5 @@
 import pandas as pd
+import sys
 
 # define manually!
 CLUSTER_TOPICS = {
@@ -30,15 +31,16 @@ CLUSTER_TOPICS = {
     }
 
 class TopicsToCsv:
-    def __init__(self):
-        pass
+    def __init__(self, platform, ntopics):
+        self.ntopics = ntopics
+        self.platform = platform
 
     def append_topics_to_csv(self):
         """
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
         """
-        clustering_results_csv = 'x-risk-data/topics/lda_results_25.csv'
+        clustering_results_csv = f'graphql/topics/{self.platform}/lda_{self.ntopics}.csv'
 
         print(f"Loading clustering results from {clustering_results_csv}...")
         results_df = pd.read_csv(clustering_results_csv)
@@ -57,7 +59,7 @@ class TopicsToCsv:
                 # just the filename and build correct path
                 import os
                 filename = os.path.basename(file_path)  # gets just "2025-01.csv"
-                correct_file_path = f'x-risk-data/data/lw_csv_cleaned/{file_path.split("x-risk-data/data/lw_csv_cleaned/")[1]}'  # gets "lw_csv_cleaned/2025/2025-01.csv"
+                correct_file_path = f'graphql/data/{self.platform}/csv_cleaned/{file_path.split(f"graphql/data/{self.platform}/csv_cleaned/")[1]}'  # gets "csv_cleaned/2025/2025-01.csv"
                 
                 # original file with correct path
                 df = pd.read_csv(correct_file_path)
@@ -73,7 +75,7 @@ class TopicsToCsv:
                 merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
 
                 # save back with proper filename
-                output_path = f'x-risk-data/data/lw_csv_cleaned_topic/{file_path.split("lw_csv_cleaned/")[1]}'
+                output_path = f'graphql/data/{self.platform}/csv_cleanedwithtopic/{file_path.split("csv_cleaned/")[1]}'
                 
                 # check output directory exists
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -93,9 +95,9 @@ class TopicsToCsv:
         print()
         print(f'TOTAL MATCHES: {total_matches}')
 
-def main():
-    converter = TopicsToCsv()
+def main(platform, topics):
+    converter = TopicsToCsv(platform=platform, ntopics=topics)
     converter.append_topics_to_csv()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1], sys.argv[2])

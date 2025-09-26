@@ -13,6 +13,7 @@ from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
 import pyLDAvis
 import pyLDAvis.lda_model
+import sys
 import re
 from collections import defaultdict, Counter
 from pathlib import Path
@@ -20,8 +21,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class BlogTopicClustering:
-    def __init__(self, base_path="x-risk-data/data/lw_csv"):
-        self.base_path = base_path
+    def __init__(self, forum):
+        self.platform = forum
+        self.base_path = f"graphql/data/{forum}/csv_cleaned"
         self.blog_posts = []
         self.tfidf_matrix = None
         self.vectorizer = None
@@ -375,6 +377,7 @@ class BlogTopicClustering:
         plt.title('Clustering Summary')
         
         plt.tight_layout()
+        plt.savefig(f"graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf")
         plt.show()
     
     def print_cluster_summary(self):
@@ -769,7 +772,7 @@ class BlogTopicClustering:
         plt.xticks(rotation=45)
         
         plt.tight_layout()
-        plt.savefig(f"x-risk-data/img/lda_topic_{self.lda_results['n_topics']}.pdf")
+        plt.savefig(f"graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf")
         plt.show()
 
     def print_lda_summary(self):
@@ -861,8 +864,8 @@ class BlogTopicClustering:
         print(f"LDA topic summary saved to {summary_file}")
 
 # Main execution
-def main(test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'):
-    analyzer = BlogTopicClustering(base_path="x-risk-data/data/lw_csv_cleaned")
+def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'):
+    analyzer = BlogTopicClustering(platform)
     
     success = analyzer.load_csv_files(start_year=2016, end_year=2025)
     if not success:
@@ -883,7 +886,7 @@ def main(test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'
         lda_results = analyzer.perform_lda(n_topics=optimal_topics)
         analyzer.print_lda_summary()
         analyzer.visualize_lda_topics()
-        analyzer.save_lda_results(f'x-risk-data/topics/lda_results_{optimal_topics}.csv')
+        analyzer.save_lda_results(f'graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv')
     
     if type_cluster == 'kmeans' or type_cluster == 'both':
         # K MEANS
@@ -902,9 +905,10 @@ def main(test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'
         results = analyzer.perform_clustering(n_clusters=optimal_topics)
         analyzer.print_cluster_summary()
         analyzer.visualize_clusters()
-        analyzer.save_results(f'x-risk-data/topics/kmeans_results__{optimal_topics}.csv')
+        analyzer.save_results(f'graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv')
         
     print("\nAnalysis complete!")
+    return optimal_topics
 
 if __name__ == "__main__":
     """
@@ -914,7 +918,7 @@ if __name__ == "__main__":
         optimal_topics: int = 20 (default), // amount of topics to cluster into
         type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
     """
-    main(test=False, optimal_topics=25)
+    main(sys.argv[1], test=False, optimal_topics=25, type_cluster = 'lda')
 
 # 32,780 total posts
 # 32,543 with sufficient length

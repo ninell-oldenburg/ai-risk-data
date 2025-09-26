@@ -3,9 +3,9 @@ import json
 import pandas as pd
 
 class LesswrongJsonToCsv:
-    def __init__(self):
-        self.input_base = "x-risk-data/data/lw_json" 
-        self.output_base = "x-risk-data/data/lw_csv"
+    def __init__(self, platform):
+        self.input_base = f"graphql/data/{platform}/json" 
+        self.output_base = f"graphql/data/{platform}/csv"
         self.total_posts = 0
 
     def transform(self):
@@ -62,8 +62,8 @@ class LesswrongJsonToCsv:
 
         print(f'Total Posts: {self.total_posts}')
 
-def main():
-    transformer = LesswrongJsonToCsv()
+def main(platform):
+    transformer = LesswrongJsonToCsv(platform)
     transformer.transform()
 
 if __name__ == "__main__":
