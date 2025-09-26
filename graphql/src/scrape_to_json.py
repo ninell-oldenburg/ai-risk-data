@@ -3,6 +3,7 @@ import json
 import pandas as pd
 from datetime import datetime, timedelta
 import time
+import sys
 
 class ScrapeLesswrong:
   
@@ -12,8 +13,28 @@ class ScrapeLesswrong:
     To change the result variables, visit https://www.lesswrong.com/graphiql 
     """
   
-    def __init__(self):
-        self.url = "https://www.lesswrong.com/graphql"
+    def __init__(self, forum):
+        self.platform = forum
+        try:
+            if forum == 'lw':
+                self.url = "https://www.lesswrong.com/graphql"
+                self.headers = {
+                    "Content-Type": "application/json",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+                    "Referer": "https://www.lesswrong.com/",
+                    "Origin": "https://www.lesswrong.com"
+                }
+            elif forum == 'af':
+                self.url = "https://www.alignmentforum.org/graphql"
+                self.headers = {
+                    "Content-Type": "application/json",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+                    "Referer": "https://www.alignmentforum.org/",
+                    "Origin": "https://www.alignmentforum.org"
+                }
+        except ValueError:
+            print("FORUM variable has to be 'lw' or 'af'")
+        
         self.query = """
         query ($after: Date, $before: Date, $limit: Int) {
             posts(input: {
@@ -47,12 +68,6 @@ class ScrapeLesswrong:
             }
         }
         """
-        self.headers = {
-            "Content-Type": "application/json",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-            "Referer": "https://www.lesswrong.com/",
-            "Origin": "https://www.lesswrong.com"
-        }
 
     def get_and_save_articles(self):
         start_date = datetime(2016, 1, 1)
@@ -74,7 +89,7 @@ class ScrapeLesswrong:
             
             # Save JSON for this month
             filename = f"{start_date.year}-{start_date.month:02}.json"
-            filepath = f"x-risk-data/data/lw_json/{start_date.year}/" + filename
+            filepath = f"graphql/data/{self.platform}/json/{start_date.year}/" + filename
             with open(filepath, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
@@ -85,9 +100,9 @@ class ScrapeLesswrong:
 
             start_date = next_month
 
-def main():
-    scraper = ScrapeLesswrong()
+def main(platform):
+    scraper = ScrapeLesswrong(forum=platform)
     scraper.get_and_save_articles()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
