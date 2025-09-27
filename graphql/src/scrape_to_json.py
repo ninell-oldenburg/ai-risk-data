@@ -29,15 +29,19 @@ class ScrapeLesswrong:
                 self.url = "https://www.alignmentforum.org/graphql"
                 self.headers = {
                     "Content-Type": "application/json",
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                     "Referer": "https://www.alignmentforum.org/",
-                    "Origin": "https://www.alignmentforum.org"
+                    "Origin": "https://www.alignmentforum.org",
+                    "Cache-Control": "no-cache",
+                    "Pragma": "no-cache",
                 }
             else:
                 raise ValueError("FORUM variable has to be 'lw' or 'af'")
         except ValueError as e:
             print(f"Error: {e}")
             sys.exit(1)
+
+        self.session = requests.Session()
         
         self.query = """
         query ($after: Date, $before: Date, $limit: Int) {
@@ -86,8 +90,8 @@ class ScrapeLesswrong:
             after = start_date.isoformat() + "Z"
             before = next_month.isoformat() + "Z"
             
-            variables = {"after": after, "before": before, "limit": 10000}  # 10000 per request
-            response = requests.post(self.url, json={"query": self.query, "variables": variables}, headers=self.headers)
+            variables = {"after": after, "before": before, "limit": 1000}  # 10000 per request
+            response = self.session.post(self.url, json={"query": self.query, "variables": variables}, headers=self.headers)
             
             # Check for request errors
             if response.status_code != 200:
