@@ -222,22 +222,17 @@ class ExtractLinksAndGender:
                 elif name in self.MALE_USERNAMES:
                     return 'gm'
         
-        # First, try to extract individual components from username
-        username_parts = self._split_username(str(username))
-        
-        # Check each part against name lists
-        for part in username_parts:
-            gender = self.nqgmodel.classify(part.lower())
-            if gender[0] != '-':
-                return gender[0]
+        split_username = self._split_username(str(username))
+        gender = self.nqgmodel.classify(split_username.lower())
+        if gender[0] != '-':
+            return gender[0]
         
         # If no parts matched, try display name parts
         if pd.notna(display_name):
-            display_parts = self._split_username(str(display_name))
-            for part in display_parts:
-                gender = self.nqgmodel.classify(part.lower())
-                if gender[0] != '-':
-                    return gender[0]
+            split_displayname = self._split_username(str(display_name))
+            gender = self.nqgmodel.classify(split_displayname.lower())
+            if gender[0] != '-':
+                return gender[0]
                 
         """# Sort by length (longest first) to prevent shorter names matching within longer ones
         all_names = list(self.FEMALE_NAMES) + list(self.MALE_NAMES)
@@ -256,27 +251,26 @@ class ExtractLinksAndGender:
         """Split username into individual components using various methods"""
         parts = []
         
-        # Method 1: Split by common separators
         separated_parts = re.split(r'[_\-\.\s]+', username)
         parts.extend([part for part in separated_parts if len(part) > 1])
         
-        # Method 2: Split camelCase
         camel_parts = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|\b)', username)
         parts.extend([part for part in camel_parts if len(part) > 1])
         
-        # Method 3: Split by numbers (keep the text parts)
         number_split = re.split(r'\d+', username)
         parts.extend([part for part in number_split if len(part) > 1])
         
-        # Remove duplicates and filter out very short parts
         unique_parts = list(set(parts))
         filtered_parts = [part for part in unique_parts if len(part) >= 2]
         
-        # If no good parts found, return the original username
         if not filtered_parts:
-            filtered_parts = [username]
+            filtered_parts = username
         
-        return filtered_parts
+        filtered_part_str = ''
+        for part in filtered_parts:
+            filtered_part_str += part + ' '
+        
+        return filtered_part_str
     
     def process_csv_file(self, in_filepath: str, out_filepath: str) -> None:
         """Process a single CSV file and add extracted links column"""
@@ -289,6 +283,7 @@ class ExtractLinksAndGender:
             df['cleaned_htmlBody'] = ''
             df['user_gender'] = ''
             usrs = Counter()
+            gender_dist = Counter()
             
             for idx, row in df.iterrows():
                 # clean the HTML content to plain text
@@ -298,6 +293,7 @@ class ExtractLinksAndGender:
                 # extract gender from username
                 gender = self.extract_gender_from_username(row.get('user.username'), row.get('user.displayName'))
                 df.at[idx, 'user_gender'] = gender
+                gender_dist[gender] += 1
                 usrs[row.get('user.username')] += 1
                 
                 # extract links from htmlBody
@@ -318,7 +314,7 @@ class ExtractLinksAndGender:
             posts_with_links = (df['extracted_links'] != '').sum()
             linkposts = df['is_linkpost'].sum()
             
-            return posts_with_links, linkposts, usrs
+            return posts_with_links, linkposts, usrs, gender_dist
         
         except Exception as e:
             print(f"Error processing {in_filepath}: {e}")
@@ -331,7 +327,6 @@ def main(forum):
     total_posts_with_links = 0
     total_linkposts = 0
     files_processed = 0
-    unknown_names = Counter()
     usrs = Counter()
 
     csv_file_pairs = []
@@ -356,7 +351,7 @@ def main(forum):
     # Process each pair
     for i, (csv_file_in, csv_file_out) in enumerate(sorted(csv_file_pairs)):
         print(f"Processing {i+1}/{len(csv_file_pairs)}: {csv_file_in} -> {csv_file_out}")
-        posts_with_links, linkposts, file_usrs = extractor.process_csv_file(csv_file_in, csv_file_out)
+        posts_with_links, linkposts, file_usrs, gender_dist = extractor.process_csv_file(csv_file_in, csv_file_out)
         usrs += file_usrs
         
         total_posts_with_links += posts_with_links
@@ -373,9 +368,11 @@ def main(forum):
     print(f"  - 'extracted_links': Citation links (semicolon-separated)")
     print(f"  - 'cleaned_htmlBody': Plain text with all HTML removed")
 
+    print()
+
     print(f'Total users: {len(usrs)}')
-    print(f'Unknown names: {len(unknown_names)}')
-    for key, value in unknown_names.items():
+    print(f'Unknown names: {len(gender_dist)}')
+    for key, value in gender_dist.items():
         print(f'{key}: {value}')
 
 if __name__ == "__main__":    
