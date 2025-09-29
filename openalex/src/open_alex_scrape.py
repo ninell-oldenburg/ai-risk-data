@@ -39,15 +39,6 @@ class AIScholarshipAnalyzer:
             }
             
             response = self.session.get(url, params=params)
-            """
-            if response.status_code == 403:
-                print(f"Rate limited at {len(papers)} papers. Waiting 60 seconds...")
-                time.sleep(60)  # Wait longer for rate limit
-                continue
-            elif response.status_code != 200:
-                print(f"Error {response.status_code}: {response.text}")
-                break
-                """
             data = response.json()
             batch = data.get('results', [])
             
@@ -259,10 +250,10 @@ if __name__ == "__main__":
     community_df, community_labels, author_df = analyzer.run_full_analysis()
     
     # Save results
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y_%m_%d")
     
-    community_df.to_csv(f'ai_communities_{timestamp}.csv', index=False)
-    author_df.to_csv(f'ai_authors_{timestamp}.csv', index=False)
+    community_df.to_csv(f'openalex/data/ai_communities_{timestamp}.csv', index=False)
+    author_df.to_csv(f'openalex/data/ai_authors_{timestamp}.csv', index=False)
     
     # Convert numpy int64 keys to regular int for JSON serialization
     community_labels_serializable = {int(k): v for k, v in community_labels.items()}
