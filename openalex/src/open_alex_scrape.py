@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List, Dict
 import requests
 import pandas as pd
+import glob
 
 class AIScholarshipAnalyzer:
     def __init__(self, email: str):
@@ -222,7 +223,7 @@ class AIScholarshipAnalyzer:
             os.makedirs(year_dir, exist_ok=True)
             filepath = os.path.join(year_dir, f"{year_month}.csv")
             
-            # Flatten papers
+            # Flatten papers and include referenced_works
             flattened_papers = []
             for paper in papers:
                 flat_paper = {
@@ -241,23 +242,75 @@ class AIScholarshipAnalyzer:
                         concept.get('display_name', '') 
                         for concept in paper.get('concepts', [])
                     ]),
-                    'num_references': len(paper.get('referenced_works', []))
+                    'num_references': len(paper.get('referenced_works', [])),
+                    'referenced_works': '; '.join(paper.get('referenced_works', [])) if paper.get('referenced_works') else ''
                 }
                 flattened_papers.append(flat_paper)
-            
+
             df = pd.DataFrame(flattened_papers)
-            
-            # If file exists, append and deduplicate by paper ID
-            if os.path.exists(filepath):
-                existing_df = pd.read_csv(filepath)
-                df = pd.concat([existing_df, df], ignore_index=True)
-                df = df.drop_duplicates(subset=['id'], keep='first')
-            
+
+            df['referenced_dois'] = df['referenced_works'].apply(self.extract_dois_from_references)
+
             df.to_csv(filepath, index=False, encoding='utf-8')
             saved_counts[filepath] = len(df)
-            print(f"  ✓ Saved {len(df)} papers to {filepath}")
-        
+            print(f"✅ Saved {len(df)} papers to {filepath} (overwritten if existed)")
+
         return saved_counts
+    
+    def extract_dois_from_references(self, referenced_works: str) -> str:
+        """Extract DOIs from OpenAlex referenced works."""
+        import time
+        
+        if pd.isna(referenced_works) or not referenced_works.strip():
+            return ''
+        
+        # Clean string and extract work IDs
+        works_clean = referenced_works.replace('[','').replace(']','').replace("'",'').replace('"','')
+        work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
+        
+        if not work_ids:
+            return ''
+        
+        dois = []
+        batch_size = 50  # OpenAlex batch size
+        
+        for i in range(0, len(work_ids), batch_size):
+            batch = work_ids[i:i+batch_size]
+            try:
+                # Query OpenAlex for this batch
+                filter_string = '|'.join(batch)
+                url = "https://api.openalex.org/works"
+                params = {
+                    'filter': f'openalex_id:{filter_string}',
+                    'select': 'id,doi',
+                    'per-page': 200
+                }
+                response = self.session.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                data = response.json()
+                
+                # Map OpenAlex ID -> DOI
+                doi_map = {}
+                for work in data.get('results', []):
+                    work_id = work.get('id', '').split('/')[-1]
+                    doi = work.get('doi', '')
+                    if doi:
+                        doi = doi.replace('https://doi.org/', '')
+                    doi_map[work_id] = doi
+                
+                # Keep order same as batch
+                batch_dois = [doi_map.get(wid, '') for wid in batch]
+                dois.extend(batch_dois)
+                
+            except Exception as e:
+                print(f"    Warning: Error fetching DOI batch: {e}")
+                # Fill with empty strings for this batch to preserve order
+                dois.extend([''] * len(batch))
+            
+            time.sleep(0.1)  # Polite delay
+        
+        # Return semicolon-separated DOIs
+        return '; '.join(filter(None, dois))
 
 # Usage example
 if __name__ == "__main__":
