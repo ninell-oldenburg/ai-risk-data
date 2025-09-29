@@ -1,280 +1,266 @@
+import os
+import time
+from datetime import datetime
+from typing import List, Dict
 import requests
 import pandas as pd
-import networkx as nx
-from collections import defaultdict, Counter
-import time
-import json
-from typing import List, Dict, Set, Tuple
-import community as community_louvain
-import matplotlib.pyplot as plt
-import seaborn as sns
-from datetime import datetime
 
 class AIScholarshipAnalyzer:
     def __init__(self, email: str):
-        """
-        Initialize the analyzer with OpenAlex API access
-        
-        Args:
-            email: Your email for OpenAlex API (polite pool access)
-        """
         self.base_url = "https://api.openalex.org"
         self.email = email
         self.headers = {'User-Agent': f'mailto:{email}'}
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         
-    def search_papers(self, topic_id: str = "T10883", years: str = "2016-2025", limit: int = 10000) -> List[Dict]:
-        papers = []
+    def get_and_save_articles(self, topic_id: str = "T10883", 
+                             start_year: int = 2016, 
+                             end_year: int = 2025) -> Dict[str, int]:
+        """
+        Fetch ALL papers by iterating year-by-year (or month-by-month if needed).
+        This bypasses the 10,000 result limit.
+        
+        Returns:
+            Dictionary with statistics about saved papers
+        """
+        total_papers = 0
+        saved_counts = {}
+        
+        for year in range(start_year, end_year + 1):
+            print(f"\n{'='*60}")
+            print(f"Processing year {year}...")
+            print(f"{'='*60}")
+            
+            # First, check how many papers this year has
+            count = self._get_paper_count(topic_id, year)
+            print(f"Found {count} papers for {year}")
+            
+            if count > 10000:
+                # If more than 10k, iterate by month
+                print(f"⚠️  Year {year} has {count} papers (>10k limit). Splitting by month...")
+                year_counts = self._fetch_year_by_month(topic_id, year)
+            else:
+                # Otherwise fetch the whole year at once
+                year_counts = self._fetch_year(topic_id, year)
+            
+            # Update totals
+            for filepath, count in year_counts.items():
+                saved_counts[filepath] = saved_counts.get(filepath, 0) + count
+                total_papers += count
+        
+        print(f"\n{'='*60}")
+        print(f"✓ COMPLETE: Retrieved {total_papers} papers total")
+        print(f"✓ Saved across {len(saved_counts)} files")
+        print(f"{'='*60}")
+        
+        return saved_counts
+    
+    def _get_paper_count(self, topic_id: str, year: int) -> int:
+        """Get count of papers for a specific year"""
+        url = f"{self.base_url}/works"
+        params = {
+            'filter': f'publication_year:{year},type:article,topics.id:{topic_id}',
+            'per-page': 1
+        }
+        
+        try:
+            response = self.session.get(url, params=params, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            return data.get('meta', {}).get('count', 0)
+        except requests.exceptions.RequestException as e:
+            print(f"Error getting count for {year}: {e}")
+            return 0
+    
+    def _fetch_year(self, topic_id: str, year: int) -> Dict[str, int]:
+        """Fetch all papers for a single year"""
+        papers_by_month = {}
         page = 1
-        per_page = 100
+        per_page = 200
+        
+        url = f"{self.base_url}/works"
         
         while True:
-            url = f"{self.base_url}/works"
             params = {
-                'filter': f'publication_year:{years},type:article,topics.id:{topic_id}',
+                'filter': f'publication_year:{year},type:article,topics.id:{topic_id}',
                 'per-page': per_page,
                 'page': page,
-                'select': 'id,title,publication_year,cited_by_count,concepts,authorships,referenced_works'
+                'select': 'id,title,publication_year,publication_date,cited_by_count,concepts,authorships,referenced_works'
             }
             
-            response = self.session.get(url, params=params)
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                data = response.json()
+                batch = data.get('results', [])
+                
+                if not batch:
+                    break
+                
+                # Group by month
+                for paper in batch:
+                    pub_date = paper.get('publication_date')
+                    if pub_date and len(pub_date) >= 7:
+                        year_month = pub_date[:7]
+                    else:
+                        year_month = f"{year}-01"
+                    
+                    if year_month not in papers_by_month:
+                        papers_by_month[year_month] = []
+                    papers_by_month[year_month].append(paper)
+                
+                print(f"  Page {page}: {len(batch)} papers retrieved...")
+                
+                if len(batch) < per_page:
+                    break
+                    
+                page += 1
+                time.sleep(0.1)
+                
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching page {page} for year {year}: {e}")
+                break
+        
+        return self._save_papers_by_month(papers_by_month)
+    
+    def _fetch_year_by_month(self, topic_id: str, year: int) -> Dict[str, int]:
+        """Fetch papers month-by-month for years with >10k papers"""
+        all_saved_counts = {}
+        
+        for month in range(1, 13):
+            month_str = f"{month:02d}"
+            year_month = f"{year}-{month_str}"
+            
+            # Check count for this month
+            count = self._get_month_count(topic_id, year, month)
+            print(f"  {year_month}: {count} papers")
+            
+            if count == 0:
+                continue
+            
+            if count > 10000:
+                print(f"    ⚠️  Month {year_month} has {count} papers (>10k). This is unusual!")
+                print(f"    ⚠️  You may need to split by day or filter further.")
+            
+            papers = self._fetch_month(topic_id, year, month)
+            saved_counts = self._save_papers_by_month({year_month: papers})
+            
+            for filepath, file_count in saved_counts.items():
+                all_saved_counts[filepath] = all_saved_counts.get(filepath, 0) + file_count
+            
+            time.sleep(0.2)  # Extra politeness between months
+        
+        return all_saved_counts
+    
+    def _get_month_count(self, topic_id: str, year: int, month: int) -> int:
+        """Get count of papers for a specific month"""
+        url = f"{self.base_url}/works"
+        month_str = f"{month:02d}"
+        params = {
+            'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_id}',
+            'per-page': 1
+        }
+        
+        try:
+            response = self.session.get(url, params=params, timeout=30)
+            response.raise_for_status()
             data = response.json()
-            batch = data.get('results', [])
+            return data.get('meta', {}).get('count', 0)
+        except requests.exceptions.RequestException as e:
+            print(f"Error getting count for {year}-{month_str}: {e}")
+            return 0
+    
+    def _fetch_month(self, topic_id: str, year: int, month: int) -> List[Dict]:
+        """Fetch all papers for a single month"""
+        papers = []
+        page = 1
+        per_page = 200
+        month_str = f"{month:02d}"
+        
+        url = f"{self.base_url}/works"
+        
+        while True:
+            params = {
+                'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_id}',
+                'per-page': per_page,
+                'page': page,
+                'select': 'id,title,publication_year,publication_date,cited_by_count,concepts,authorships,referenced_works'
+            }
             
-            if not batch:
-                print("No more results available")
-                break
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                data = response.json()
+                batch = data.get('results', [])
                 
-            papers.extend(batch)
-            print(f"Retrieved {len(papers)} papers...")
-            
-            if limit and len(papers) >= limit:
-                papers = papers[:limit]
-                break
+                if not batch:
+                    break
                 
-            if len(batch) < per_page:
-                print("Reached last page")
-                break
+                papers.extend(batch)
                 
-            page += 1
-            time.sleep(1)  # Increase delay to be extra polite
-            
+                if len(batch) < per_page:
+                    break
+                    
+                page += 1
+                time.sleep(0.1)
+                
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching page {page} for {year}-{month_str}: {e}")
+                break
+        
         return papers
     
-    def build_citation_network(self, papers: List[Dict]) -> nx.Graph:
-        """
-        Build citation network from papers
+    def _save_papers_by_month(self, papers_by_month: Dict[str, List[Dict]]) -> Dict[str, int]:
+        saved_counts = {}
         
-        Args:
-            papers: List of paper dictionaries from OpenAlex
-        """
-        G = nx.Graph()
-        paper_ids = set(paper['id'] for paper in papers)
-        
-        # Add nodes
-        for paper in papers:
-            G.add_node(paper['id'], 
-                      title=paper.get('title', ''),
-                      year=paper.get('publication_year'),
-                      citations=paper.get('cited_by_count', 0))
-        
-        # Add edges based on citations
-        for paper in papers:
-            paper_id = paper['id']
-            referenced_works = paper.get('referenced_works', [])
-            
-            for ref_id in referenced_works:
-                if ref_id in paper_ids:
-                    G.add_edge(paper_id, ref_id)
-        
-        return G
-    
-    def detect_communities(self, G: nx.Graph) -> Dict[str, int]:
-        """
-        Detect communities in the citation network using Louvain algorithm
-        """
-        if community_louvain is not None:
-            # Use python-louvain if available
-            partition = community_louvain.best_partition(G)
-        else:
-            # Fall back to NetworkX's built-in community detection
-            print("Using NetworkX community detection (install python-louvain for better results)")
-            communities = nx_community.louvain_communities(G)
-            partition = {}
-            for i, community in enumerate(communities):
-                for node in community:
-                    partition[node] = i
-        
-        # Print community statistics
-        community_sizes = Counter(partition.values())
-        print(f"Found {len(community_sizes)} communities:")
-        for comm_id, size in community_sizes.most_common():
-            print(f"  Community {comm_id}: {size} papers")
-            
-        return partition
-    
-    def analyze_communities(self, papers: List[Dict], partition: Dict[str, int]) -> pd.DataFrame:
-        """
-        Analyze the detected communities to understand their characteristics
-        """
-        paper_dict = {paper['id']: paper for paper in papers}
-        
-        community_data = []
-        for paper_id, comm_id in partition.items():
-            paper = paper_dict.get(paper_id, {})
-            
-            # Extract concepts/keywords
-            concepts = paper.get('concepts', [])
-            concept_names = [c.get('display_name', '') for c in concepts[:5]]  # Top 5 concepts
-            
-            community_data.append({
-                'paper_id': paper_id,
-                'community': comm_id,
-                'title': paper.get('title', ''),
-                'year': paper.get('publication_year'),
-                'citations': paper.get('cited_by_count', 0),
-                'concepts': ', '.join(concept_names)
-            })
-        
-        df = pd.DataFrame(community_data)
-        return df
-    
-    def classify_communities(self, df: pd.DataFrame) -> Dict[int, str]:
-        """
-        Classify communities as x-risk vs critical AI based on common concepts/keywords
-        """
-        xrisk_keywords = ['existential risk', 'superintelligence', 'ai safety', 'alignment', 
-                         'artificial general intelligence', 'control problem', 'ai risk', 
-                         'agi', 'ai security']
-        critical_keywords = ['algorithmic bias', 'fairness', 'ethics', 'accountability',
-                           'discrimination', 'social justice', 'governance', 'transparency', 
-                           'dystopia', 'ai hype']
-        
-        community_labels = {}
-        
-        for comm_id in df['community'].unique():
-            comm_papers = df[df['community'] == comm_id]
-            
-            # Combine all concepts for this community
-            all_concepts = ' '.join(comm_papers['concepts'].fillna('')).lower()
-            all_titles = ' '.join(comm_papers['title'].fillna('')).lower()
-            combined_text = all_concepts + ' ' + all_titles
-            
-            # Count keyword matches
-            xrisk_score = sum(1 for kw in xrisk_keywords if kw in combined_text)
-            critical_score = sum(1 for kw in critical_keywords if kw in combined_text)
-            
-            # Classify based on scores
-            if xrisk_score > critical_score:
-                label = 'X-Risk'
-            elif critical_score > xrisk_score:
-                label = 'Critical AI'
-            else:
-                label = 'Mixed/Other'
+        for year_month, papers in papers_by_month.items():
+            if not papers:
+                continue
                 
-            community_labels[comm_id] = label
+            year = year_month.split('-')[0]
+            year_dir = f"openalex/data/csv/{year}"
+            os.makedirs(year_dir, exist_ok=True)
+            filepath = os.path.join(year_dir, f"{year_month}.csv")
             
-            print(f"Community {comm_id}: {label} (X-risk: {xrisk_score}, Critical: {critical_score})")
-            print(f"  Size: {len(comm_papers)} papers")
-            print(f"  Sample titles: {list(comm_papers['title'].head(3))}")
-            print()
+            # Flatten papers
+            flattened_papers = []
+            for paper in papers:
+                flat_paper = {
+                    'id': paper.get('id'),
+                    'title': paper.get('title'),
+                    'publication_year': paper.get('publication_year'),
+                    'publication_date': paper.get('publication_date'),
+                    'cited_by_count': paper.get('cited_by_count'),
+                    'num_authors': len(paper.get('authorships', [])),
+                    'author_names': '; '.join([
+                        auth.get('author', {}).get('display_name', '') 
+                        for auth in paper.get('authorships', [])
+                    ]),
+                    'num_concepts': len(paper.get('concepts', [])),
+                    'concepts': '; '.join([
+                        concept.get('display_name', '') 
+                        for concept in paper.get('concepts', [])
+                    ]),
+                    'num_references': len(paper.get('referenced_works', []))
+                }
+                flattened_papers.append(flat_paper)
             
-        return community_labels
-    
-    def extract_author_gender_info(self, papers: List[Dict]) -> pd.DataFrame:
-        """
-        Extract author information for gender analysis
-        Note: This extracts available author data - you'll need additional tools for gender inference
-        """
-        author_data = []
-        
-        for paper in papers:
-            authorships = paper.get('authorships', [])
+            df = pd.DataFrame(flattened_papers)
             
-            for authorship in authorships:
-                author = authorship.get('author', {})
-                
-                author_data.append({
-                    'paper_id': paper['id'],
-                    'author_id': author.get('id'),
-                    'author_name': author.get('display_name'),
-                    'position': authorship.get('author_position'),
-                    'is_corresponding': authorship.get('is_corresponding', False),
-                    'paper_title': paper.get('title', ''),
-                    'year': paper.get('publication_year')
-                })
+            # If file exists, append and deduplicate by paper ID
+            if os.path.exists(filepath):
+                existing_df = pd.read_csv(filepath)
+                df = pd.concat([existing_df, df], ignore_index=True)
+                df = df.drop_duplicates(subset=['id'], keep='first')
+            
+            df.to_csv(filepath, index=False, encoding='utf-8')
+            saved_counts[filepath] = len(df)
+            print(f"  ✓ Saved {len(df)} papers to {filepath}")
         
-        return pd.DataFrame(author_data)
-    
-    def run_full_analysis(self) -> Tuple[pd.DataFrame, Dict[int, str], pd.DataFrame]:
-        """
-        Run the complete analysis pipeline
-        """
-        print("=== AI Scholarship Citation Network Analysis ===\n")
-        
-        # Step 1: Collect papers
-        print("1. Collecting papers...")
-        papers = self.search_papers()
-        print(f"\nTotal papers collected: {len(papers)}")
-        
-        # Step 2: Build citation network
-        print("\n3. Building citation network...")
-        G = self.build_citation_network(papers)
-        print(f"Network: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
-        
-        # Step 3: Detect communities
-        print("\n4. Detecting communities...")
-        partition = self.detect_communities(G)
-        
-        # Step 4: Analyze communities
-        print("\n5. Analyzing communities...")
-        community_df = self.analyze_communities(papers, partition)
-        
-        # Step 5: Classify communities
-        print("\n6. Classifying communities...")
-        community_labels = self.classify_communities(community_df)
-        
-        # Step 6: Extract author info
-        print("\n7. Extracting author information...")
-        author_df = self.extract_author_gender_info(papers)
-        
-        return community_df, community_labels, author_df
+        return saved_counts
 
 # Usage example
 if __name__ == "__main__":
     # Initialize analyzer with your email
     analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com") 
-    
-    # Run analysis
-    community_df, community_labels, author_df = analyzer.run_full_analysis()
-    
-    # Save results
-    timestamp = datetime.now().strftime("%Y_%m_%d")
-    
-    community_df.to_csv(f'openalex/data/ai_communities_{timestamp}.csv', index=False)
-    author_df.to_csv(f'openalex/data/ai_authors_{timestamp}.csv', index=False)
-    
-    # Convert numpy int64 keys to regular int for JSON serialization
-    community_labels_serializable = {int(k): v for k, v in community_labels.items()}
-    
-    with open(f'community_labels_{timestamp}.json', 'w') as f:
-        json.dump(community_labels_serializable, f, indent=2)
-    
-    print("\n=== Analysis Complete ===")
-    print(f"Results saved with timestamp: {timestamp}")
-    print(f"Community data: ai_communities_{timestamp}.csv")
-    print(f"Author data: ai_authors_{timestamp}.csv")
-    print(f"Community labels: community_labels_{timestamp}.json")
-    
-    # Quick summary
-    print(f"\nQuick Summary:")
-    print(f"Total papers analyzed: {len(community_df)}")
-    print(f"Communities found: {len(set(community_df['community']))}")
-    print(f"Total authors: {len(author_df)}")
-    
-    for label in set(community_labels.values()):
-        count = sum(1 for l in community_labels.values() if l == label)
-        papers_count = len(community_df[community_df['community'].isin(
-            [k for k, v in community_labels.items() if v == label])])
-        print(f"{label} communities: {count} (containing {papers_count} papers)")
+    analyzer.get_and_save_articles()

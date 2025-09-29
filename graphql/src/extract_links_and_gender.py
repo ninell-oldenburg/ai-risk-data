@@ -3,7 +3,6 @@ import os
 import re
 from bs4 import BeautifulSoup
 import glob
-from typing import List, Optional
 from collections import Counter
 import src.names as names
 import nomquamgender as nqg
@@ -12,6 +11,7 @@ import sys
 import kagglehub
 from pathlib import Path
 import logging
+from typing import List, Optional, Dict
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
