@@ -4,7 +4,7 @@ import re
 from bs4 import BeautifulSoup
 import glob
 from collections import Counter
-import src.names as names
+import names as names
 import nomquamgender as nqg
 import json
 import sys
@@ -26,6 +26,8 @@ class ExtractLinksAndGender:
 
         self.MALE_NAMES = names.MALE_NAMES
         self.FEMALE_NAMES = names.FEMALE_NAMES
+        self.MALE_USERNAMES = names.MALE_USERNAMES
+        self.FEMALE_USERNAMES = names.FEMALE_USERNAMES
         self.nqgmodel = nqg.NBGC()
         self.arxiv_data = {}
         self.arxiv_pattern = re.compile(r'arxiv\.org/(?:abs/|pdf/)?([0-9]{4}\.[0-9]{4,5}(?:v[0-9]+)?)', re.IGNORECASE)
@@ -206,42 +208,49 @@ class ExtractLinksAndGender:
     def extract_gender_from_username(self, username: str, display_name: str = None) -> str:
         """Attempt to extract gender from username and display name"""
         if pd.isna(username):
-            return 'unknown'
+            return 'nan'
+        
+        text_to_analyze = str(username).lower()
+        if pd.notna(display_name):
+            text_to_analyze += ' ' + str(display_name).lower()
+        
+        all_usernames = list(self.FEMALE_USERNAMES) + list(self.MALE_USERNAMES)
+        for name in all_usernames:
+            if len(name) > 3 and name in text_to_analyze:
+                if name in self.FEMALE_USERNAMES:
+                    return 'gf'
+                elif name in self.MALE_USERNAMES:
+                    return 'gm'
         
         # First, try to extract individual components from username
         username_parts = self._split_username(str(username))
         
         # Check each part against name lists
         for part in username_parts:
-            gender = self._check_name_in_lists(part.lower())
-            if gender != 'unknown':
-                return gender
+            gender = self.nqgmodel.classify(part.lower())
+            if gender[0] != '-':
+                return gender[0]
         
         # If no parts matched, try display name parts
         if pd.notna(display_name):
             display_parts = self._split_username(str(display_name))
             for part in display_parts:
-                gender = self._check_name_in_lists(part.lower())
-                if gender != 'unknown':
-                    return gender
-        
-        # If still no match, fall back to original method (substring search)
-        text_to_analyze = str(username).lower()
-        if pd.notna(display_name):
-            text_to_analyze += ' ' + str(display_name).lower()
-        
-        # Sort by length (longest first) to prevent shorter names matching within longer ones
+                gender = self.nqgmodel.classify(part.lower())
+                if gender[0] != '-':
+                    return gender[0]
+                
+        """# Sort by length (longest first) to prevent shorter names matching within longer ones
         all_names = list(self.FEMALE_NAMES) + list(self.MALE_NAMES)
         all_names_sorted = sorted(all_names, key=len, reverse=True)
         
         for name in all_names_sorted:
             if len(name) > 3 and name in text_to_analyze:
                 if name in self.FEMALE_NAMES:
-                    return 'female'
+                    return 'gf'
                 elif name in self.MALE_NAMES:
-                    return 'male'
+                    return 'gm'"""
         
-        return 'unknown'
+        return '-'
 
     def _split_username(self, username: str) -> list:
         """Split username into individual components using various methods"""
@@ -268,15 +277,6 @@ class ExtractLinksAndGender:
             filtered_parts = [username]
         
         return filtered_parts
-
-    def _check_name_in_lists(self, name: str) -> str:
-        """Check if a name exists in the gender name lists"""
-        if name in self.FEMALE_NAMES:
-            return 'female'
-        elif name in self.MALE_NAMES:
-            return 'male'
-        else:
-            return 'unknown'
     
     def process_csv_file(self, in_filepath: str, out_filepath: str) -> None:
         """Process a single CSV file and add extracted links column"""
@@ -288,7 +288,6 @@ class ExtractLinksAndGender:
             df['extracted_links'] = ''
             df['cleaned_htmlBody'] = ''
             df['user_gender'] = ''
-            unknown_names = Counter()
             usrs = Counter()
             
             for idx, row in df.iterrows():
@@ -299,7 +298,6 @@ class ExtractLinksAndGender:
                 # extract gender from username
                 gender = self.extract_gender_from_username(row.get('user.username'), row.get('user.displayName'))
                 df.at[idx, 'user_gender'] = gender
-                unknown_names[gender] += 1
                 usrs[row.get('user.username')] += 1
                 
                 # extract links from htmlBody
@@ -320,7 +318,7 @@ class ExtractLinksAndGender:
             posts_with_links = (df['extracted_links'] != '').sum()
             linkposts = df['is_linkpost'].sum()
             
-            return posts_with_links, linkposts, unknown_names, usrs
+            return posts_with_links, linkposts, usrs
         
         except Exception as e:
             print(f"Error processing {in_filepath}: {e}")
@@ -358,8 +356,7 @@ def main(forum):
     # Process each pair
     for i, (csv_file_in, csv_file_out) in enumerate(sorted(csv_file_pairs)):
         print(f"Processing {i+1}/{len(csv_file_pairs)}: {csv_file_in} -> {csv_file_out}")
-        posts_with_links, linkposts, unknowns, file_usrs = extractor.process_csv_file(csv_file_in, csv_file_out)
-        unknown_names += unknowns
+        posts_with_links, linkposts, file_usrs = extractor.process_csv_file(csv_file_in, csv_file_out)
         usrs += file_usrs
         
         total_posts_with_links += posts_with_links
@@ -380,13 +377,6 @@ def main(forum):
     print(f'Unknown names: {len(unknown_names)}')
     for key, value in unknown_names.items():
         print(f'{key}: {value}')
-
-    """
-    # USE THIS TO PRINT OUT UNKNOWN USERNAMES
-    for key, value in unknown_names.items():
-        if value > 4:
-            print(key)
-    """
 
 if __name__ == "__main__":    
     main(sys.argv[1])
