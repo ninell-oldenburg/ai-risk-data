@@ -4,7 +4,9 @@ import re
 from bs4 import BeautifulSoup
 import glob
 from collections import Counter
+import importlib
 import names as names
+importlib.reload(names) 
 import nomquamgender as nqg
 import json
 import sys
@@ -29,6 +31,7 @@ class ExtractLinksAndGender:
         self.MALE_USERNAMES = names.MALE_USERNAMES
         self.FEMALE_USERNAMES = names.FEMALE_USERNAMES
         self.nqgmodel = nqg.NBGC()
+        self.nqgmodel.threshold = .4
         self.arxiv_data = {}
         self.arxiv_pattern = re.compile(r'arxiv\.org/(?:abs/|pdf/)?([0-9]{4}\.[0-9]{4,5}(?:v[0-9]+)?)', re.IGNORECASE)
         self.doi_pattern = re.compile(r'(?:doi:|doi\.org/|dx\.doi\.org/)([0-9]{2}\.[0-9]{4,}/[^\s,;)]+)', re.IGNORECASE)
@@ -223,14 +226,14 @@ class ExtractLinksAndGender:
                     return 'gm'
         
         split_username = self._split_username(str(username))
-        gender = self.nqgmodel.classify(split_username.lower())
+        gender = self.nqgmodel.classify(split_username)
         if gender[0] != '-':
             return gender[0]
         
         # If no parts matched, try display name parts
         if pd.notna(display_name):
             split_displayname = self._split_username(str(display_name))
-            gender = self.nqgmodel.classify(split_displayname.lower())
+            gender = self.nqgmodel.classify(split_displayname)
             if gender[0] != '-':
                 return gender[0]
                 
@@ -247,30 +250,31 @@ class ExtractLinksAndGender:
         
         return '-'
 
-    def _split_username(self, username: str) -> list:
-        """Split username into individual components using various methods"""
-        parts = []
+    def _split_username(self, username: str) -> str:
+        """Split username into individual components and return as lowercase string"""
+        # First, replace numbers with spaces (to split words separated by numbers)
+        username = re.sub(r'\d+', ' ', username)
         
-        separated_parts = re.split(r'[_\-\.\s]+', username)
-        parts.extend([part for part in separated_parts if len(part) > 1])
+        # Then split by common separators (underscore, dash, dot, space)
+        parts = re.split(r'[_\-\.\s]+', username)
         
-        camel_parts = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|\b)', username)
-        parts.extend([part for part in camel_parts if len(part) > 1])
+        # Then handle camelCase within each part
+        expanded_parts = []
+        for part in parts:
+            if not part:  # Skip empty strings
+                continue
+            # Split camelCase: insert space before capitals (except at start)
+            camel_split = re.sub(r'([a-z])([A-Z])', r'\1 \2', part)
+            # Also handle consecutive capitals followed by lowercase (e.g., "XMLParser" -> "XML Parser")
+            camel_split = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', camel_split)
+            expanded_parts.append(camel_split)
         
-        number_split = re.split(r'\d+', username)
-        parts.extend([part for part in number_split if len(part) > 1])
+        # Join and normalize: lowercase and clean up extra spaces
+        result = ' '.join(expanded_parts).lower().strip()
+        # Clean up any multiple spaces
+        result = re.sub(r'\s+', ' ', result)
         
-        unique_parts = list(set(parts))
-        filtered_parts = [part for part in unique_parts if len(part) >= 2]
-        
-        if not filtered_parts:
-            filtered_parts = username
-        
-        filtered_part_str = ''
-        for part in filtered_parts:
-            filtered_part_str += part + ' '
-        
-        return filtered_part_str
+        return result if result else username.lower()
     
     def process_csv_file(self, in_filepath: str, out_filepath: str) -> None:
         """Process a single CSV file and add extracted links column"""
@@ -296,7 +300,7 @@ class ExtractLinksAndGender:
                 gender_dist[gender] += 1
                 usrs[row.get('user.username')] += 1
                 
-                # extract links from htmlBody
+                """# extract links from htmlBody
                 html_links = self.extract_links_from_html(row.get('htmlBody'))
                 
                 # if it's a linkpost, skip the first link
@@ -305,7 +309,7 @@ class ExtractLinksAndGender:
                 else:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links)
 
-            df['extracted_dois'] = df['extracted_links'].apply(self.extract_all_dois)
+            df['extracted_dois'] = df['extracted_links'].apply(self.extract_all_dois)"""
             
             # save back to the same file
             df.to_csv(out_filepath, index=False)
@@ -328,6 +332,7 @@ def main(forum):
     total_linkposts = 0
     files_processed = 0
     usrs = Counter()
+    gender_dist = Counter()
 
     csv_file_pairs = []
     for year in range(2016, 2026):
@@ -351,8 +356,9 @@ def main(forum):
     # Process each pair
     for i, (csv_file_in, csv_file_out) in enumerate(sorted(csv_file_pairs)):
         print(f"Processing {i+1}/{len(csv_file_pairs)}: {csv_file_in} -> {csv_file_out}")
-        posts_with_links, linkposts, file_usrs, gender_dist = extractor.process_csv_file(csv_file_in, csv_file_out)
+        posts_with_links, linkposts, file_usrs, gender_dict = extractor.process_csv_file(csv_file_in, csv_file_out)
         usrs += file_usrs
+        gender_dist += gender_dict
         
         total_posts_with_links += posts_with_links
         total_linkposts += linkposts

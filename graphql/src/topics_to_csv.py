@@ -100,7 +100,7 @@ def main(platform, topics):
     converter.append_topics_to_csv()
 
 if __name__ == "__main__":
-    if not len(sys.argv == 3):
+    if not len(sys.argv) == 3:
         print("Usage: python script.py <forum>")
         print("Where <forum> is 'lw' or 'af'")
         sys.exit(1)
