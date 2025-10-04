@@ -256,7 +256,7 @@ class ExtractLinksAndGender:
         username = re.sub(r'\d+', ' ', username)
         
         # Then split by common separators (underscore, dash, dot, space)
-        parts = re.split(r'[_\-\.\s]+', username)
+        parts = re.split(r'[_\-\.\s\@]+', username)
         
         # Then handle camelCase within each part
         expanded_parts = []
