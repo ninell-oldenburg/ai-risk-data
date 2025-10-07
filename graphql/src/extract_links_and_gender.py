@@ -217,13 +217,13 @@ class ExtractLinksAndGender:
         if pd.notna(display_name):
             text_to_analyze += ' ' + str(display_name).lower()
         
-        all_usernames = list(self.FEMALE_USERNAMES) + list(self.MALE_USERNAMES)
+        """all_usernames = list(self.FEMALE_USERNAMES) + list(self.MALE_USERNAMES)
         for name in all_usernames:
             if len(name) > 3 and name in text_to_analyze:
                 if name in self.FEMALE_USERNAMES:
                     return 'gf'
                 elif name in self.MALE_USERNAMES:
-                    return 'gm'
+                    return 'gm'"""
         
         split_username = self._split_username(str(username))
         gender = self.nqgmodel.classify(split_username)
@@ -237,7 +237,7 @@ class ExtractLinksAndGender:
             if gender[0] != '-':
                 return gender[0]
                 
-        # Sort by length (longest first) to prevent shorter names matching within longer ones
+        """# Sort by length (longest first) to prevent shorter names matching within longer ones
         all_names = list(self.FEMALE_NAMES) + list(self.MALE_NAMES)
         all_names_sorted = sorted(all_names, key=len, reverse=True)
         
@@ -246,7 +246,7 @@ class ExtractLinksAndGender:
                 if name in self.FEMALE_NAMES:
                     return 'gf'
                 elif name in self.MALE_NAMES:
-                    return 'gm'
+                    return 'gm'"""
         
         return '-'
 
@@ -335,7 +335,7 @@ def main(forum):
     gender_dist = Counter()
 
     csv_file_pairs = []
-    for year in range(2016, 2026):
+    for year in range(2015, 2025):
         input_dir = os.path.join(base_path_in, str(year))
         output_dir = os.path.join(base_path_out, str(year))
         

@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import sys
 
 class LesswrongJsonToCsv:
     def __init__(self, platform):
@@ -10,7 +11,7 @@ class LesswrongJsonToCsv:
 
     def transform(self):
         # walk through all year folders
-        for year in range(2016, 2026):  # 2016–2025 inclusive
+        for year in range(2015, 2025): 
             year_folder = os.path.join(self.input_base, str(year))
             if not os.path.exists(year_folder):
                 continue
@@ -67,4 +68,4 @@ def main(platform):
     transformer.transform()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
