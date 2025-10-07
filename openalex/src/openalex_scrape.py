@@ -15,8 +15,8 @@ class AIScholarshipAnalyzer:
         self.session.headers.update(self.headers)
         
     def get_and_save_articles(self, topic_id: str = "T10883", 
-                             start_year: int = 2016, 
-                             end_year: int = 2025) -> Dict[str, int]:
+                             start_year: int = 2015, 
+                             end_year: int = 2024) -> Dict[str, int]:
         """
         Fetch ALL papers by iterating year-by-year (or month-by-month if needed).
         This bypasses the 10,000 result limit.
@@ -223,7 +223,7 @@ class AIScholarshipAnalyzer:
             os.makedirs(year_dir, exist_ok=True)
             filepath = os.path.join(year_dir, f"{year_month}.csv")
             
-            # Flatten papers and include referenced_works
+            # Flatten papers
             flattened_papers = []
             for paper in papers:
                 flat_paper = {
@@ -248,17 +248,94 @@ class AIScholarshipAnalyzer:
                 flattened_papers.append(flat_paper)
 
             df = pd.DataFrame(flattened_papers)
-
-            df['referenced_dois'] = df['referenced_works'].apply(self.extract_dois_from_references)
+            
+            # Batch fetch ALL DOIs for this month at once
+            #print(f"  Fetching DOIs for {len(df)} papers...")
+            #df['referenced_dois'] = self.batch_fetch_dois_for_month(df['referenced_works'])
 
             df.to_csv(filepath, index=False, encoding='utf-8')
             saved_counts[filepath] = len(df)
-            print(f"✅ Saved {len(df)} papers to {filepath} (overwritten if existed)")
+            print(f"✅ Saved {len(df)} papers to {filepath}")
 
         return saved_counts
+
+    """def batch_fetch_dois_for_month(self, referenced_works_series: pd.Series) -> pd.Series:
+        # Fetch DOIs for all papers in a month efficiently.
+        # Collect all unique work IDs
+        all_work_ids = set()
+        for ref_str in referenced_works_series:
+            if pd.isna(ref_str) or ref_str is None or not str(ref_str).strip():
+                continue
+            works_clean = str(ref_str).replace('[','').replace(']','').replace("'",'').replace('"','')
+            work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
+            all_work_ids.update(work_ids)
+        
+        print(f"  Found {len(all_work_ids)} unique referenced works to fetch DOIs for...")
+        
+        # Fetch DOIs in batches
+        doi_map = self.fetch_dois_batch(list(all_work_ids))
+        
+        # Map back to each paper
+        result = []
+        for ref_str in referenced_works_series:
+            if pd.isna(ref_str) or ref_str is None or not str(ref_str).strip():
+                result.append('')
+                continue
+            
+            works_clean = str(ref_str).replace('[','').replace(']','').replace("'",'').replace('"','')
+            work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
+            dois = [doi_map.get(wid, '') for wid in work_ids]
+            result.append('; '.join(filter(None, dois)))
+        
+        return pd.Series(result)
+
+    def fetch_dois_batch(self, work_ids: List[str]) -> Dict[str, str]:
+        # Fetch DOIs for a list of work IDs with rate limit handling.
+        doi_map = {}
+        batch_size = 50
+        
+        for i in range(0, len(work_ids), batch_size):
+            batch = work_ids[i:i+batch_size]
+            
+            for attempt in range(3):
+                try:
+                    filter_string = '|'.join(batch)
+                    url = f"{self.base_url}/works"
+                    params = {
+                        'filter': f'openalex_id:{filter_string}',
+                        'select': 'id,doi',
+                        'per-page': 200
+                    }
+                    response = self.session.get(url, params=params, timeout=30)
+                    response.raise_for_status()
+                    data = response.json()
+                    
+                    for work in data.get('results', []):
+                        work_id = work.get('id', '').split('/')[-1]
+                        doi = work.get('doi', '')
+                        # Only process DOI if it's not None or empty
+                        if doi:
+                            doi = doi.replace('https://doi.org/', '')
+                        doi_map[work_id] = doi
+                    break
+                    
+                except requests.exceptions.HTTPError as e:
+                    if e.response.status_code == 429:
+                        wait_time = (2 ** attempt) * 2
+                        print(f"    Rate limit. Waiting {wait_time}s...")
+                        time.sleep(wait_time)
+                    else:
+                        break
+                except Exception as e:
+                    print(f"    Error: {e}")
+                    break
+            
+            time.sleep(0.5)  # Longer delay between batches
+        
+        return doi_map
     
     def extract_dois_from_references(self, referenced_works: str) -> str:
-        """Extract DOIs from OpenAlex referenced works."""
+        # Extract DOIs from OpenAlex referenced works.
         import time
         
         if pd.isna(referenced_works) or not referenced_works.strip():
@@ -310,7 +387,7 @@ class AIScholarshipAnalyzer:
             time.sleep(0.1)  # Polite delay
         
         # Return semicolon-separated DOIs
-        return '; '.join(filter(None, dois))
+        return '; '.join(filter(None, dois))"""
 
 # Usage example
 if __name__ == "__main__":

@@ -78,8 +78,8 @@ class ScrapeLesswrong:
         """
 
     def get_and_save_articles(self):
-        start_date = datetime(2016, 1, 1)
-        end_date = datetime(2025, 12, 31)
+        start_date = datetime(2015, 1, 1)
+        end_date = datetime(2024, 12, 31)
 
         all_results = []
 

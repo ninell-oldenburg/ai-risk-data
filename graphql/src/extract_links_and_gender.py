@@ -237,7 +237,7 @@ class ExtractLinksAndGender:
             if gender[0] != '-':
                 return gender[0]
                 
-        """# Sort by length (longest first) to prevent shorter names matching within longer ones
+        # Sort by length (longest first) to prevent shorter names matching within longer ones
         all_names = list(self.FEMALE_NAMES) + list(self.MALE_NAMES)
         all_names_sorted = sorted(all_names, key=len, reverse=True)
         
@@ -246,7 +246,7 @@ class ExtractLinksAndGender:
                 if name in self.FEMALE_NAMES:
                     return 'gf'
                 elif name in self.MALE_NAMES:
-                    return 'gm'"""
+                    return 'gm'
         
         return '-'
 
