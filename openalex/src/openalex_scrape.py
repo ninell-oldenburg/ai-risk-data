@@ -86,7 +86,7 @@ class AIScholarshipAnalyzer:
                 'filter': f'publication_year:{year},type:article,topics.id:{topic_id}',
                 'per-page': per_page,
                 'page': page,
-                'select': 'id,title,publication_year,publication_date,cited_by_count,concepts,authorships,referenced_works'
+                'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,cited_by_api_url,counts_by_year'
             }
             
             try:
