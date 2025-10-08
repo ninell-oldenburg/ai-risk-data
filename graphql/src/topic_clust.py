@@ -13,6 +13,10 @@ import pyLDAvis
 import pyLDAvis.lda_model
 import sys
 import re
+import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
+nltk.download('averaged_perceptron_tagger_eng')
 from collections import defaultdict, Counter
 from pathlib import Path
 import warnings
@@ -27,7 +31,7 @@ class BlogTopicClustering:
         self.vectorizer = None
         self.cluster_results = {}
         
-    def load_csv_files(self, start_year=2016, end_year=2025):
+    def load_csv_files(self, start_year=2015, end_year=2024):
         """Load all CSV files from the specified year range"""
         print(f"Loading CSV files from {start_year} to {end_year}...")
         
@@ -104,11 +108,47 @@ class BlogTopicClustering:
         
         return text
     
-    def create_tfidf_matrix(self, max_features=5000, min_df=2, max_df=0.95):
-        """Create TF-IDF matrix from blog posts"""
-        print("Creating TF-IDF matrix...")
+    def get_wordnet_pos(self, treebank_tag):
+        """Convert treebank POS tags to WordNet POS tags"""
+        if treebank_tag.startswith('J'):
+            return wordnet.ADJ
+        elif treebank_tag.startswith('V'):
+            return wordnet.VERB
+        elif treebank_tag.startswith('N'):
+            return wordnet.NOUN
+        elif treebank_tag.startswith('R'):
+            return wordnet.ADV
+        else:
+            return wordnet.NOUN
+
+    def preprocess_text(self, text):
+        """Preprocess text with lemmatization"""
+        # Basic cleaning
+        text = text.lower()
+        text = re.sub(r'http\S+|www.\S+', '', text)
+        text = re.sub(r'[^\w\s]', ' ', text)
+        text = re.sub(r'\s+', ' ', text).strip()
         
-        # Preprocess all texts
+        # Tokenize
+        tokens = text.split()
+        
+        # POS tagging for better lemmatization
+        pos_tags = nltk.pos_tag(tokens)
+        
+        # Lemmatize with POS tags
+        lemmatizer = WordNetLemmatizer()
+        lemmatized_tokens = [
+            lemmatizer.lemmatize(token, self.get_wordnet_pos(pos)) 
+            for token, pos in pos_tags
+        ]
+        
+        return ' '.join(lemmatized_tokens)
+
+    def create_tfidf_matrix(self, max_features=5000, min_df=2, max_df=0.95):
+        """Create TF-IDF matrix from blog posts with lemmatization"""
+        print("Creating TF-IDF matrix with lemmatization...")
+        
+        # Preprocess all texts (now includes lemmatization)
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
         
         # Remove empty texts
@@ -120,20 +160,14 @@ class BlogTopicClustering:
                 valid_indices.append(i)
         
         print(f"Using {len(valid_texts)} posts having sufficient text content")
-
-        extra_stopwords = set([
-            'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
-            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've', 'lot', 'need', 'use', 'really', 'going',
-            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say', 'doesn',
-        ])
         
         # Create TF-IDF vectorizer
         self.vectorizer = TfidfVectorizer(
             max_features=max_features,
             min_df=min_df,
             max_df=max_df,
-            stop_words=list(ENGLISH_STOP_WORDS.union(extra_stopwords)),
-            ngram_range=(1, 2)  # Include unigrams and bigrams
+            stop_words=list(ENGLISH_STOP_WORDS),
+            ngram_range=(1, 2) # unigrams & bigrams
         )
         
         # Fit and transform
@@ -459,10 +493,10 @@ class BlogTopicClustering:
         print(f"Cluster summary saved to {summary_file}")
 
     def create_bow_matrix(self, max_features=3000, min_df=3, max_df=0.9):
-        """Create Bag-of-Words matrix for LDA (LDA works better with count data than TF-IDF)"""
-        print("Creating Bag-of-Words matrix for LDA...")
+        """Create Bag-of-Words matrix for LDA with lemmatization (LDA works better with count data than TF-IDF)"""
+        print("Creating Bag-of-Words matrix for LDA with lemmatization...")
         
-        # Preprocess all texts
+        # Preprocess all texts (now includes lemmatization)
         texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
         
         # Remove empty texts
@@ -474,19 +508,13 @@ class BlogTopicClustering:
                 valid_indices.append(i)
         
         print(f"Using {len(valid_texts)} posts having sufficient text content")
-
-        extra_stopwords = set([
-            'people', 'like', 'think', 'just', 'don', 'time', 'way', 'good', 'want', 'new', 'thing', 'things',
-            'make', 'know', 'https', 'com', 'plus', 'pm', 'does', 've', 'lot', 'need', 'use', 'really', 'going',
-            'pretty', 'bit', 'doing', 'maybe', 'didn', 'said', 'say', 'doesn',
-        ])
         
         # Create CountVectorizer for LDA
         self.count_vectorizer = CountVectorizer(
             max_features=max_features,
             min_df=min_df,
             max_df=max_df,
-            stop_words=list(ENGLISH_STOP_WORDS.union(extra_stopwords)),
+            stop_words=list(ENGLISH_STOP_WORDS),
             ngram_range=(1, 2)  # Include unigrams and bigrams
         )
         
@@ -501,7 +529,7 @@ class BlogTopicClustering:
         
         return self.bow_matrix
 
-    def lda_topic_coherence_test(self, topic_range=range(25, 36, 5), n_samples=None):
+    def lda_topic_coherence_test(self, topic_range=range(10, 56, 5), n_samples=None):
         """Test different numbers of topics for LDA using perplexity and log-likelihood"""
         print("Testing LDA topic coherence...")
         
@@ -526,8 +554,8 @@ class BlogTopicClustering:
                 random_state=42,
                 max_iter=20,
                 learning_method='batch',
-                doc_topic_prior=0.1,  # Alpha parameter
-                topic_word_prior=0.01  # Beta parameter
+                doc_topic_prior=0.1,  # alpha
+                topic_word_prior=0.01  # betaT
             )
             
             lda.fit(X)
@@ -870,7 +898,7 @@ class BlogTopicClustering:
 def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'):
     analyzer = BlogTopicClustering(platform)
     
-    success = analyzer.load_csv_files(start_year=2016, end_year=2025)
+    success = analyzer.load_csv_files(start_year=2015, end_year=2024)
     if not success:
         return
 
@@ -882,7 +910,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         
         if test:
             # USE THIS TO PERFORM TEST ON THE NUMBER OF OPTIMAL TOPICS
-            lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(35, 46, 5), n_samples=2000)
+            lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(10, 56, 5), n_samples=2000)
             optimal_topics = lda_coherence_results['optimal_topics_perplexity']
             print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
 
@@ -927,7 +955,22 @@ if __name__ == "__main__":
         optimal_topics: int = 20 (default), // amount of topics to cluster into
         type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
     """
-    main(sys.argv[1], test=False, optimal_topics=25, type_cluster = 'lda')
+    if len(sys.argv) > 1:
+        input_file = sys.argv[1]
+    else:
+        print("USAGE: python topic_clust.py <FORUM> <TEST (optional)> <OPTIMAL_TOPICS (optional)> <TYPE_CLUSTER (optional)>")
+        print("\nParams:")
+        print("  FORUM: Required input file/forum name")
+        print("  TEST: Optional boolean (True/False) - whether to perform testing (default: False)")
+        print("  OPTIMAL_TOPICS: Optional int - number of topics to cluster into (default: 20)")
+        print("  TYPE_CLUSTER: Optional str ('lda', 'kmeans', 'both') - clustering method (default: 'lda')")
+        sys.exit(1)
+
+    test = sys.argv[2] if len(sys.argv) > 2 else False
+    optimal_topics = int(sys.argv[3]) if len(sys.argv) > 3 else 25
+    type_cluster = sys.argv[4] if len(sys.argv) > 4 else 'lda'
+    
+    main(input_file, test=test, optimal_topics=optimal_topics, type_cluster=type_cluster)
 
 # 32,780 total posts
 # 32,543 with sufficient length
