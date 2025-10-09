@@ -21,6 +21,9 @@ from collections import defaultdict, Counter
 from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
+from gensim.models.coherencemodel import CoherenceModel
+from gensim.corpora import Dictionary
+import gensim
 
 class BlogTopicClustering:
     def __init__(self, forum):
@@ -143,6 +146,29 @@ class BlogTopicClustering:
         ]
         
         return ' '.join(lemmatized_tokens)
+    
+    def split_train_test(self, test_size=0.2, random_state=42):
+        """Split data into train and test sets"""
+        from sklearn.model_selection import train_test_split
+        
+        n_docs = self.bow_matrix.shape[0]
+        indices = np.arange(n_docs)
+        
+        train_idx, test_idx = train_test_split(
+            indices, 
+            test_size=test_size, 
+            random_state=random_state
+        )
+        
+        self.train_bow = self.bow_matrix[train_idx]
+        self.test_bow = self.bow_matrix[test_idx]
+        self.train_posts = [self.blog_posts[i] for i in train_idx]
+        self.test_posts = [self.blog_posts[i] for i in test_idx]
+        
+        print(f"Train set: {len(train_idx)} documents")
+        print(f"Test set: {len(test_idx)} documents")
+    
+        return train_idx, test_idx
 
     def create_tfidf_matrix(self, max_features=5000, min_df=2, max_df=0.95):
         """Create TF-IDF matrix from blog posts with lemmatization"""
@@ -529,94 +555,174 @@ class BlogTopicClustering:
         
         return self.bow_matrix
 
-    def lda_topic_coherence_test(self, topic_range=range(10, 56, 5), n_samples=None):
-        """Test different numbers of topics for LDA using perplexity and log-likelihood"""
-        print("Testing LDA topic coherence...")
+    def lda_topic_coherence_test(self, topic_range=range(10, 56, 5), i, n_samples=None):
+        """Test different numbers of topics with multiple metrics including coherence"""
+        print("Testing LDA with perplexity, log-likelihood, AND coherence...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
             _ = self.create_bow_matrix()
         
-        # Use subset for efficiency if dataset is large
-        if n_samples and len(self.blog_posts) > n_samples:
-            indices = np.random.choice(len(self.blog_posts), n_samples, replace=False)
-            X = self.bow_matrix[indices]
-        else:
-            X = self.bow_matrix
+        # Split into train/test
+        train_idx, test_idx = self.split_train_test(test_size=0.2)
         
-        perplexities = []
+        # Prepare texts for coherence calculation
+        texts = [self.preprocess_text(post['text']).split() for post in self.blog_posts]
+        train_texts = [texts[i] for i in train_idx]
+        
+        # Create Gensim dictionary for coherence
+        dictionary = Dictionary(train_texts)
+        
+        train_perplexities = []
+        test_perplexities = []
         log_likelihoods = []
+        coherence_scores = []
         
         for n_topics in topic_range:
-            print(f"Testing {n_topics} topics...")
+            print(f"\nTesting {n_topics} topics...")
             
             lda = LatentDirichletAllocation(
                 n_components=n_topics,
                 random_state=42,
                 max_iter=20,
-                learning_method='batch',
-                doc_topic_prior=0.1,  # alpha
-                topic_word_prior=0.01  # betaT
+                learning_method='online',
+                doc_topic_prior=0.1,
+                topic_word_prior=0.01,
+                n_jobs=-1
             )
             
-            lda.fit(X)
+            # Fit on training data
+            lda.fit(self.train_bow)
             
-            perplexity = lda.perplexity(X)
-            log_likelihood = lda.score(X)
+            # Calculate metrics
+            train_perp = lda.perplexity(self.train_bow)
+            test_perp = lda.perplexity(self.test_bow)
+            log_lik = lda.score(self.train_bow)
             
-            perplexities.append(perplexity)
-            log_likelihoods.append(log_likelihood)
+            train_perplexities.append(train_perp)
+            test_perplexities.append(test_perp)
+            log_likelihoods.append(log_lik)
             
-            print(f"  Perplexity: {perplexity:.2f}, Log-likelihood: {log_likelihood:.2f}")
+            # Calculate coherence using Gensim
+            # Convert sklearn LDA to gensim format for coherence
+            feature_names = self.count_vectorizer.get_feature_names_out()
+            topics_words = []
+            for topic_idx in range(n_topics):
+                topic = lda.components_[topic_idx]
+                top_indices = topic.argsort()[-20:][::-1]  # Top 20 words
+                topic_words = [feature_names[i] for i in top_indices]
+                topics_words.append(topic_words)
+            
+            # Calculate C_v coherence
+            cm = CoherenceModel(
+                topics=topics_words,
+                texts=train_texts,
+                dictionary=dictionary,
+                coherence='c_v'
+            )
+            coherence = cm.get_coherence()
+            coherence_scores.append(coherence)
+            
+            print(f"  Train Perplexity: {train_perp:.2f}")
+            print(f"  Test Perplexity: {test_perp:.2f}")
+            print(f"  Log-likelihood: {log_lik:.2f}")
+            print(f"  Coherence (C_v): {coherence:.4f}")
         
-        # Plot results
-        plt.figure(figsize=(12, 5))
+        # Find optimal k
+        optimal_coherence = topic_range[np.argmax(coherence_scores)]
+        optimal_test_perp = topic_range[np.argmin(test_perplexities)]
         
-        plt.subplot(1, 2, 1)
-        plt.plot(topic_range, perplexities, 'ro-')
-        plt.xlabel('Number of Topics')
-        plt.ylabel('Perplexity')
-        plt.title('LDA Model Perplexity')
-        plt.grid(True, alpha=0.3)
+        # Plot results - THIS IS YOUR KEY FIGURE FOR NATURE
+        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
         
-        # Find optimal number of topics (lowest perplexity)
-        optimal_topics_perp = topic_range[np.argmin(perplexities)]
-        plt.axvline(x=optimal_topics_perp, color='g', linestyle='--', 
-                    label=f'Min perplexity at {optimal_topics_perp} topics')
-        plt.legend()
+        # Train vs Test Perplexity
+        ax1 = axes[0, 0]
+        ax1.plot(topic_range, train_perplexities, 'bo-', label='Train Perplexity', linewidth=2)
+        ax1.plot(topic_range, test_perplexities, 'ro-', label='Test Perplexity', linewidth=2)
+        ax1.axvline(x=optimal_test_perp, color='g', linestyle='--', 
+                    label=f'Min test perplexity at {optimal_test_perp}')
+        ax1.set_xlabel('Number of Topics', fontsize=12)
+        ax1.set_ylabel('Perplexity', fontsize=12)
+        ax1.set_title('Model Perplexity (Train vs Test)', fontsize=14, fontweight='bold')
+        ax1.legend()
+        ax1.grid(True, alpha=0.3)
         
-        plt.subplot(1, 2, 2)
-        plt.plot(topic_range, log_likelihoods, 'bo-')
-        plt.xlabel('Number of Topics')
-        plt.ylabel('Log Likelihood')
-        plt.title('LDA Model Log Likelihood')
-        plt.grid(True, alpha=0.3)
+        # Log Likelihood
+        ax2 = axes[0, 1]
+        ax2.plot(topic_range, log_likelihoods, 'go-', linewidth=2)
+        ax2.set_xlabel('Number of Topics', fontsize=12)
+        ax2.set_ylabel('Log Likelihood', fontsize=12)
+        ax2.set_title('Model Log Likelihood', fontsize=14, fontweight='bold')
+        ax2.grid(True, alpha=0.3)
         
-        # Find optimal number of topics (highest log-likelihood)
-        optimal_topics_ll = topic_range[np.argmax(log_likelihoods)]
-        plt.axvline(x=optimal_topics_ll, color='g', linestyle='--', 
-                    label=f'Max log-likelihood at {optimal_topics_ll} topics')
-        plt.legend()
+        # Coherence Score - CRITICAL FOR NATURE
+        ax3 = axes[1, 0]
+        ax3.plot(topic_range, coherence_scores, 'mo-', linewidth=2)
+        ax3.axvline(x=optimal_coherence, color='g', linestyle='--', 
+                    label=f'Max coherence at {optimal_coherence}')
+        ax3.set_xlabel('Number of Topics', fontsize=12)
+        ax3.set_ylabel('Coherence Score (C_v)', fontsize=12)
+        ax3.set_title('Topic Coherence', fontsize=14, fontweight='bold')
+        ax3.legend()
+        ax3.grid(True, alpha=0.3)
+        
+        # Combined metrics (normalized)
+        ax4 = axes[1, 1]
+        # Normalize metrics to 0-1 for comparison
+        norm_coherence = (np.array(coherence_scores) - np.min(coherence_scores)) / \
+                        (np.max(coherence_scores) - np.min(coherence_scores))
+        norm_test_perp = 1 - (np.array(test_perplexities) - np.min(test_perplexities)) / \
+                        (np.max(test_perplexities) - np.min(test_perplexities))  # Invert: lower is better
+        
+        ax4.plot(topic_range, norm_coherence, 'mo-', label='Coherence (normalized)', linewidth=2)
+        ax4.plot(topic_range, norm_test_perp, 'ro-', label='Test Perplexity (normalized, inverted)', linewidth=2)
+        ax4.set_xlabel('Number of Topics', fontsize=12)
+        ax4.set_ylabel('Normalized Score', fontsize=12)
+        ax4.set_title('Combined Metrics (Normalized)', fontsize=14, fontweight='bold')
+        ax4.legend()
+        ax4.grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.show()
         
-        print(f"Optimal topics (lowest perplexity): {optimal_topics_perp}")
-        print(f"Optimal topics (highest log-likelihood): {optimal_topics_ll}")
+        # Save the figure
+        output_path = f"graphql/img/{self.platform}/lda_model_selection_{i}.pdf"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        print(f"\nModel selection figure saved to {output_path}")
+        #plt.show()
+        
+        print(f"\n{'='*60}")
+        print(f"OPTIMAL TOPIC SELECTION")
+        print(f"{'='*60}")
+        print(f"Best coherence: {optimal_coherence} topics (C_v = {max(coherence_scores):.4f})")
+        print(f"Best test perplexity: {optimal_test_perp} topics (perplexity = {min(test_perplexities):.2f})")
+        print(f"\nRECOMMENDATION: Choose k based on coherence plateau and interpretability")
         
         return {
             'topic_range': list(topic_range),
-            'perplexities': perplexities,
+            'train_perplexities': train_perplexities,
+            'test_perplexities': test_perplexities,
             'log_likelihoods': log_likelihoods,
-            'optimal_topics_perplexity': optimal_topics_perp,
-            'optimal_topics_likelihood': optimal_topics_ll
+            'coherence_scores': coherence_scores,
+            'optimal_topics_coherence': optimal_coherence,
+            'optimal_topics_test_perplexity': optimal_test_perp
         }
 
-    def perform_lda(self, n_topics, max_iter=50):
+    def perform_lda(self, n_topics, max_iter=50, use_full_data=True):
         """Perform LDA topic modeling"""
         print(f"Performing LDA topic modeling with {n_topics} topics...")
         
         if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
             _ = self.create_bow_matrix()
+        
+        # Use full data or train data
+        if use_full_data:
+            X = self.bow_matrix
+            posts = self.blog_posts
+        else:
+            if not hasattr(self, 'train_bow'):
+                self.split_train_test()
+            X = self.train_bow
+            posts = self.train_posts
         
         # Initialize LDA model
         lda_model = LatentDirichletAllocation(
@@ -624,11 +730,11 @@ class BlogTopicClustering:
             random_state=42,
             max_iter=max_iter,
             learning_method='batch',
-            doc_topic_prior=0.1,  # Alpha: lower values lead to sparser document-topic distributions
-            topic_word_prior=0.01,  # Beta: lower values lead to sparser topic-word distributions
+            doc_topic_prior=0.1,
+            topic_word_prior=0.01,
             verbose=1
         )
-        
+            
         # Fit the model
         doc_topic_dist = lda_model.fit_transform(self.bow_matrix)
         
@@ -804,7 +910,7 @@ class BlogTopicClustering:
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         plt.savefig(output_path)
-        plt.show()
+        #plt.show()
 
     def print_lda_summary(self):
         """Print detailed LDA topic summary"""
@@ -903,18 +1009,21 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         return
 
     if type_cluster == 'lda' or type_cluster == 'both':
-        # LDA 
         print("\n" + "="*60)
         print("PERFORMING LDA TOPIC MODELING")
         print("="*60)
         
         if test:
-            # USE THIS TO PERFORM TEST ON THE NUMBER OF OPTIMAL TOPICS
-            lda_coherence_results = analyzer.lda_topic_coherence_test(topic_range=range(10, 56, 5), n_samples=2000)
-            optimal_topics = lda_coherence_results['optimal_topics_perplexity']
-            print(f"\nUsing {optimal_topics} topics for LDA based on perplexity")
-
-        lda_results = analyzer.perform_lda(n_topics=optimal_topics)
+            for i in range(5):
+                lda_coherence_results = analyzer.lda_topic_coherence_test(
+                    topic_range=range(15, 56, 5), i
+                )
+                # Choose based on coherence, not perplexity!
+                optimal_topics = lda_coherence_results['optimal_topics_coherence']
+                print(f"\nUsing {optimal_topics} topics for LDA based on coherence")
+        
+        # Train final model with optimal topics
+        lda_results = analyzer.perform_lda(n_topics=optimal_topics, use_full_data=True)
         analyzer.print_lda_summary()
         analyzer.visualize_lda_topics()
         output_path = f'graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv'
@@ -954,7 +1063,7 @@ if __name__ == "__main__":
                                   define what ints of topics to test this on in the main()
         optimal_topics: int = 20 (default), // amount of topics to cluster into
         type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
-    """
+    """        
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     else:
