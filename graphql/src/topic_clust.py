@@ -555,7 +555,7 @@ class BlogTopicClustering:
         
         return self.bow_matrix
 
-    def lda_topic_coherence_test(self, topic_range=range(10, 56, 5), i, n_samples=None):
+    def lda_topic_coherence_test(self, i=5, topic_range=range(10, 56, 5), n_samples=None):
         """Test different numbers of topics with multiple metrics including coherence"""
         print("Testing LDA with perplexity, log-likelihood, AND coherence...")
         
@@ -583,7 +583,7 @@ class BlogTopicClustering:
             lda = LatentDirichletAllocation(
                 n_components=n_topics,
                 random_state=42,
-                max_iter=20,
+                max_iter=15,
                 learning_method='online',
                 doc_topic_prior=0.1,
                 topic_word_prior=0.01,
@@ -1016,7 +1016,8 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         if test:
             for i in range(5):
                 lda_coherence_results = analyzer.lda_topic_coherence_test(
-                    topic_range=range(15, 56, 5), i
+                    i=i,
+                    topic_range=range(10, 56, 5),
                 )
                 # Choose based on coherence, not perplexity!
                 optimal_topics = lda_coherence_results['optimal_topics_coherence']
