@@ -567,7 +567,7 @@ class BlogTopicClustering:
         
         # Prepare texts for coherence calculation
         texts = [self.preprocess_text(post['text']).split() for post in self.blog_posts]
-        train_texts = [texts[i] for i in train_idx]
+        train_texts = [texts[n] for n in train_idx]
         
         # Create Gensim dictionary for coherence
         dictionary = Dictionary(train_texts)
@@ -1014,14 +1014,13 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         print("="*60)
         
         if test:
-            for i in range(5):
-                lda_coherence_results = analyzer.lda_topic_coherence_test(
-                    i=i,
-                    topic_range=range(10, 56, 5),
-                )
-                # Choose based on coherence, not perplexity!
-                optimal_topics = lda_coherence_results['optimal_topics_coherence']
-                print(f"\nUsing {optimal_topics} topics for LDA based on coherence")
+            lda_coherence_results = analyzer.lda_topic_coherence_test(
+                i=1,
+                topic_range=range(10, 56, 5),
+            )
+            # Choose based on coherence, not perplexity!
+            optimal_topics = lda_coherence_results['optimal_topics_coherence']
+            print(f"\nUsing {optimal_topics} topics for LDA based on coherence")
         
         # Train final model with optimal topics
         lda_results = analyzer.perform_lda(n_topics=optimal_topics, use_full_data=True)
