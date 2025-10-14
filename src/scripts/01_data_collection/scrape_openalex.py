@@ -219,7 +219,7 @@ class AIScholarshipAnalyzer:
                 continue
                 
             year = year_month.split('-')[0]
-            year_dir = f"openalex/data/csv/{year}"
+            year_dir = f"src/raw_data/openalex/csv/{year}"
             os.makedirs(year_dir, exist_ok=True)
             filepath = os.path.join(year_dir, f"{year_month}.csv")
             

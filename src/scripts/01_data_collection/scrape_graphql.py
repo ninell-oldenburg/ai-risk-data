@@ -15,7 +15,7 @@ class ScrapeLesswrong:
     """
   
     def __init__(self, forum):
-        self.platform = forum
+        self.platform = 'lesswrong' if forum == 'lw' else 'alignment_forum'
         try:
             if forum == 'lw':
                 self.url = "https://www.lesswrong.com/graphql"
@@ -103,7 +103,7 @@ class ScrapeLesswrong:
             results = data.get("data", {}).get("posts", {}).get("results", [])
             
             # Create directory structure if it doesn't exist
-            year_dir = f"graphql/data/{self.platform}/json/{start_date.year}"
+            year_dir = f"src/raw_data/{self.platform}/json/{start_date.year}"
             os.makedirs(year_dir, exist_ok=True)
             
             # Save JSON for this month
