@@ -76,7 +76,7 @@ class OpenAlexCSVProcessor:
         return author_genders_readable
     
     def generate_summary_report(self) -> pd.DataFrame:
-        csv_pattern = os.path.join(self.base_dir, "*", "*.csv")
+        csv_pattern = os.path.join(self.output_dir, "*", "*.csv")
         csv_files = glob.glob(csv_pattern)
         
         summaries = []
@@ -96,8 +96,8 @@ class OpenAlexCSVProcessor:
                     'male_first_authors': male_first_authors.sum(),
                     'female_first_authors': female_first_authors.sum(),
                     'unknown_gender': unknown_gender.sum(),
-                    'papers_with_dois': (df.get('num_referenced_dois', pd.Series(0)) > 0).sum(),
-                    'avg_dois_per_paper': df.get('num_referenced_dois', pd.Series(0)).mean()
+                    #'papers_with_dois': (df.get('num_referenced_dois', pd.Series(0)) > 0).sum(),
+                    #'avg_dois_per_paper': df.get('num_referenced_dois', pd.Series(0)).mean()
                 }
                 
                 summaries.append(summary)

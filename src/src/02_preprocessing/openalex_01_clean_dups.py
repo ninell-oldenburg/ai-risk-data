@@ -4,8 +4,8 @@ from datasketch import MinHash, MinHashLSH
 
 class OpenAlexDeduplicator:
     def __init__(self, threshold=0.85):
-        self.input_folder = "src/raw_data/openalex/csv"
-        self.output_folder = "src/processed_data/openalex/01_dedup"
+        self.input_folder = "src/raw_data/openalex/csv/"
+        self.output_folder = "src/processed_data/openalex/01_dedup/"
         os.makedirs(self.output_folder, exist_ok=True)
         self.lsh = MinHashLSH(threshold=threshold, num_perm=128)
         self.minhashes = {}
@@ -37,14 +37,26 @@ class OpenAlexDeduplicator:
         return pd.DataFrame(unique_rows)
 
     def run(self):
-        all_csvs = [f for f in os.listdir(self.input_folder) if f.endswith(".csv")]
-        for csv_file in all_csvs:
-            input_path = os.path.join(self.input_folder, csv_file)
+        all_csvs = [
+            os.path.join(root, f)
+            for root, _, files in os.walk(self.input_folder)
+            for f in files if f.endswith(".csv")
+        ]
+
+        if not all_csvs:
+            print("⚠️ No CSV files found — check your input folder structure.")
+            return
+
+        for input_path in all_csvs:
+            rel_path = os.path.relpath(input_path, self.input_folder)
+            output_path = os.path.join(self.output_folder, rel_path)
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
             df_unique = self.deduplicate_file(input_path)
             if df_unique is not None and not df_unique.empty:
-                output_path = os.path.join(self.output_folder, csv_file)
                 df_unique.to_csv(output_path, index=False, encoding="utf-8")
                 print(f"✅ Saved deduplicated file: {output_path}")
+
 
 if __name__ == "__main__":
     deduper = OpenAlexDeduplicator()
