@@ -1,8 +1,9 @@
 *.json
 *.csv
-*.txt
 *.pdf
 *.png
+
+src/hidden
 
 __pycache__/
 *.pyc
