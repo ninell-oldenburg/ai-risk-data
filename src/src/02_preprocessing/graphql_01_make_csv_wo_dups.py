@@ -11,7 +11,7 @@ class LesswrongJsonToCsv:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
-        self.input_base = f"src/raw_data/{self.platform}" 
+        self.input_base = f"src/raw_data/{self.platform}/json/" 
         self.output_base = f"src/processed_data/{self.platform}/01_cleaned_csv"
         self.total_posts = 0
 
@@ -94,4 +94,9 @@ def main(platform):
     transformer.transform()
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python graphql_01_make_csv_wo_dups.py <forum>")
+        print("Where <forum> is 'lw' (LessWrong) or 'af' (Alignment Forum)")
+        sys.exit(1)
+        
     main(sys.argv[1])

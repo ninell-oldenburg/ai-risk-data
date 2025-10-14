@@ -1071,7 +1071,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     else:
-        print("USAGE: python topic_clust.py <FORUM> <TEST (optional)> <OPTIMAL_TOPICS (optional)> <TYPE_CLUSTER (optional)>")
+        print("USAGE: python graphql_03_run_topic_clustering.py <FORUM> <TEST (optional)> <OPTIMAL_TOPICS (optional)> <TYPE_CLUSTER (optional)>")
         print("\nParams:")
         print("  FORUM: Required input file/forum name")
         print("  TEST: Optional boolean (True/False) - whether to perform testing (default: False)")
@@ -1080,13 +1080,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     test = sys.argv[2] if len(sys.argv) > 2 else False
-    optimal_topics = int(sys.argv[3]) if len(sys.argv) > 3 else 25
+    optimal_topics = int(sys.argv[3]) if len(sys.argv) > 3 else 55
     type_cluster = sys.argv[4] if len(sys.argv) > 4 else 'lda'
     
     main(input_file, test=test, optimal_topics=optimal_topics, type_cluster=type_cluster)
-
-# 32,780 total posts
-# 32,543 with sufficient length
-# 32,697 rows in the summary
-# --> remove duplicates!
-# 32,543 posts matched!

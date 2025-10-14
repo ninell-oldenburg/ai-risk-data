@@ -5,8 +5,6 @@ from bs4 import BeautifulSoup
 import glob
 from collections import Counter
 import importlib
-import names as names
-importlib.reload(names) 
 import nomquamgender as nqg
 import json
 import sys
@@ -14,6 +12,7 @@ import kagglehub
 from pathlib import Path
 import logging
 from typing import List, Optional, Dict
+import chgender
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -26,12 +25,14 @@ class ExtractLinksAndGender:
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
 
-        self.MALE_NAMES = names.MALE_NAMES
-        self.FEMALE_NAMES = names.FEMALE_NAMES
-        self.MALE_USERNAMES = names.MALE_USERNAMES
-        self.FEMALE_USERNAMES = names.FEMALE_USERNAMES
+        with open("src/src/02_preprocessing/graphql_usernames.json", "r", encoding="utf-8") as f:
+            names_data = json.load(f)
+
+        self.MALE_USERNAMES = names_data["MALE_USERNAMES"]
+        self.FEMALE_USERNAMES = names_data["FEMALE_USERNAMES"]
+        self.GENDER_TERMS = {'male': 'gm', 'female': 'gf'}
         self.nqgmodel = nqg.NBGC()
-        self.nqgmodel.threshold = .4
+        self.nqgmodel.threshold = .2
         self.arxiv_data = {}
         self.arxiv_pattern = re.compile(r'arxiv\.org/(?:abs/|pdf/)?([0-9]{4}\.[0-9]{4,5}(?:v[0-9]+)?)', re.IGNORECASE)
         self.doi_pattern = re.compile(r'(?:doi:|doi\.org/|dx\.doi\.org/)([0-9]{2}\.[0-9]{4,}/[^\s,;)]+)', re.IGNORECASE)
@@ -229,6 +230,10 @@ class ExtractLinksAndGender:
         gender = self.nqgmodel.classify(split_username)
         if gender[0] != '-':
             return gender[0]
+        else:
+            prediction, prob = chgender.guess(name)
+            if prob > 0.8: 
+                gender = self.GENDER_TERMS[prediction]
         
         # If no parts matched, try display name parts
         if pd.notna(display_name):
@@ -236,6 +241,10 @@ class ExtractLinksAndGender:
             gender = self.nqgmodel.classify(split_displayname)
             if gender[0] != '-':
                 return gender[0]
+            else:
+                prediction, prob = chgender.guess(name)
+                if prob > 0.8: 
+                    gender = self.GENDER_TERMS[prediction]
         
         return '-'
 
@@ -365,10 +374,20 @@ def main(forum):
 
     print()
 
-    print(f'Total users: {len(usrs)}')
-    print(f'Unknown names: {len(gender_dist)}')
+    print('Inferred gender distribution of posts:')
     for key, value in gender_dist.items():
         print(f'{key}: {value}')
 
+    print()
+
+    print(f'Total users: {len(usrs)}')
+    for key, value in user_dist.item():
+        print(f'{key}: {value}')
+
 if __name__ == "__main__":    
+    if len(sys.argv) != 2:
+        print("Usage: python graphql_02_extract_links_predict_gender.py <forum>")
+        print("Where <forum> is 'lw' (LessWrong) or 'af' (Alignment Forum)")
+        sys.exit(1)
+        
     main(sys.argv[1])

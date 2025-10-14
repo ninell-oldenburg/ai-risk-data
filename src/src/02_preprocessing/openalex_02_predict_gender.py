@@ -14,6 +14,7 @@ class OpenAlexCSVProcessor:
         self.output_dir = "src/processed_data/openalex/02_with_gender"
         os.makedirs(self.output_dir, exist_ok=True)
         self.nqgmodel = nqg.NBGC()
+        self.nqgmodel.threshold = .2
         self.GENDER_TERMS = {'male': 'gm', 'female': 'gf'}
         
     def process_all_csvs(self):

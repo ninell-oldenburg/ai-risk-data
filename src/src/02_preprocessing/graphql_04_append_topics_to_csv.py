@@ -136,7 +136,7 @@ def main(platform, topics):
 
 if __name__ == "__main__":
     if not len(sys.argv) == 3:
-        print("Usage: python script.py <forum>")
+        print("Usage: python graphql_04_append_topics_to_csv.py <forum>")
         print("Where <forum> is 'lw' or 'af'")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
