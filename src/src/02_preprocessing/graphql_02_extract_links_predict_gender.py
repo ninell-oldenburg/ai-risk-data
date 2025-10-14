@@ -315,8 +315,8 @@ class ExtractLinksAndGender:
         
 def main(forum):
     extractor = ExtractLinksAndGender(platform=forum)
-    base_path_in = f"src/raw_data/{extractor.platform}/csv"
-    base_path_out = f"src/processed_data/{extractor.platform}/01_links_and_gender"
+    base_path_in = f"src/processed_data/{extractor.platform}/01_cleaned_csv"
+    base_path_out = f"src/processed_data/{extractor.platform}/02_with_links_and_gender"
     total_posts_with_links = 0
     total_linkposts = 0
     files_processed = 0

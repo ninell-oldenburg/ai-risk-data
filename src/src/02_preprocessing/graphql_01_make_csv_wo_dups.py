@@ -2,32 +2,43 @@ import os
 import json
 import pandas as pd
 import sys
+from datasketch import MinHash, MinHashLSH
 
 class LesswrongJsonToCsv:
-    def __init__(self, platform):
+    def __init__(self, platform, deduplicate=True, threshold=0.85):
         try:
             if platform in ['lw', 'af']:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
-        self.input_base = f"src/raw_data/{self.platform}/json" 
-        self.output_base = f"src/raw_data/{self.platform}/csv"
+        self.input_base = f"src/raw_data/{self.platform}" 
+        self.output_base = f"src/processed_data/{self.platform}/01_cleaned_csv"
         self.total_posts = 0
 
+        # near-duplicate detection
+        self.deduplicate = deduplicate
+        self.threshold = threshold
+        if deduplicate:
+            self.lsh = MinHashLSH(threshold=threshold, num_perm=128)
+            self.minhashes = {}
+
+    def _get_minhash(self, text):
+        """Compute a MinHash signature for a given text."""
+        m = MinHash(num_perm=128)
+        for word in text.split():
+            m.update(word.encode('utf8'))
+        return m
+
     def transform(self):
-        # walk through all year folders
         for year in range(2015, 2025): 
             year_folder = os.path.join(self.input_base, str(year))
             if not os.path.exists(year_folder):
                 continue
 
-            # check output year folder exists
             output_year_folder = os.path.join(self.output_base, str(year))
             os.makedirs(output_year_folder, exist_ok=True)
 
             subtotal_posts = 0
-
-            # all monthly JSON files (e.g. 2025-01.json)
             for filename in sorted(os.listdir(year_folder)):
                 if not filename.endswith(".json"):
                     continue
@@ -35,7 +46,7 @@ class LesswrongJsonToCsv:
                 filepath = os.path.join(year_folder, filename)
                 with open(filepath, "r", encoding="utf-8") as f:
                     try:
-                        posts = json.load(f)  # this should be a list
+                        posts = json.load(f)
                     except json.JSONDecodeError as e:
                         print(f"⚠️ Failed to parse {filepath}: {e}")
                         continue
@@ -44,22 +55,32 @@ class LesswrongJsonToCsv:
                     print(f"⚠️ Unexpected structure in {filepath}, skipping...")
                     continue
 
-                if not posts:
-                    print(f"⚠️ No posts in {filepath}")
-                    continue
-
-                # flatten json into data frame
                 df = pd.json_normalize(posts)
-
-                # Remove 'user' and 'url' columns if they exist
                 columns_to_remove = ['user', 'url']
                 df = df.drop(columns=[col for col in columns_to_remove if col in df.columns])
 
-                # output csv path
+                # ✅ Near duplicate removal
+                if self.deduplicate and 'title' in df.columns and 'body' in df.columns:
+                    unique_rows = []
+                    for idx, row in df.iterrows():
+                        text = f"{row['title']} {row['body']}"
+                        mh = self._get_minhash(text)
+                        # Check if similar post already exists
+                        dup = self.lsh.query(mh)
+                        if not dup:
+                            # Add new post
+                            key = f"{year}-{filename}-{idx}"
+                            self.lsh.insert(key, mh)
+                            self.minhashes[key] = mh
+                            unique_rows.append(row)
+                    df = pd.DataFrame(unique_rows)
+                    print(f"🧹 Deduplicated to {len(df)} unique posts in {filename}")
+
+                if len(df) == 0:
+                    continue
+
                 csv_filename = filename.replace(".json", ".csv")
                 output_path = os.path.join(output_year_folder, csv_filename)
-
-                # Save
                 df.to_csv(output_path, index=False, encoding="utf-8")
                 subtotal_posts += len(df)
                 print(f"✅ Saved {output_path} ({len(df)} posts)")
@@ -69,7 +90,7 @@ class LesswrongJsonToCsv:
         print(f'Total Posts: {self.total_posts}')
 
 def main(platform):
-    transformer = LesswrongJsonToCsv(platform)
+    transformer = LesswrongJsonToCsv(platform, deduplicate=True)
     transformer.transform()
 
 if __name__ == "__main__":

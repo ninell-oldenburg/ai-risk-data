@@ -68,8 +68,8 @@ class TopicsToCsv:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
-        self.input_base = f'src/processed_data/data/{self.platform}/csv_cleaned/'
-        self.output_base = f'src/processed_data/{self.platform}/with_topics/'
+        self.input_base = f'src/processed_data/data/{self.platform}/02_with_links_and_gender/'
+        self.output_base = f'src/processed_data/{self.platform}/03_with_topics/'
 
 
     def append_topics_to_csv(self):
