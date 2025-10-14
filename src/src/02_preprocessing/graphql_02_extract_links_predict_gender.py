@@ -298,7 +298,7 @@ class ExtractLinksAndGender:
                 gender_dist[gender] += 1
                 usrs[row.get('user.username')] += 1
                 
-                """# extract links from htmlBody
+                # extract links from htmlBody
                 html_links = self.extract_links_from_html(row.get('htmlBody'))
                 
                 # if it's a linkpost, skip the first link
@@ -307,7 +307,7 @@ class ExtractLinksAndGender:
                 else:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links)
 
-            df['extracted_dois'] = df['extracted_links'].apply(self.extract_all_dois)"""
+            df['extracted_dois'] = df['extracted_links'].apply(self.extract_all_dois)
             
             # save back to the same file
             df.to_csv(out_filepath, index=False)
@@ -374,15 +374,28 @@ def main(forum):
 
     print()
 
-    print('Inferred gender distribution of posts:')
-    for key, value in gender_dist.items():
+    user_gender_map = {}
+    for username, count in usrs.items():
+        gender = extractor.extract_gender_from_username(username)
+        user_gender_map[username] = gender
+    
+    user_dist = Counter(user_gender_map.values())
+
+    print(f'Total users: {len(usrs)}')
+    for key, value in user_dist.items():
         print(f'{key}: {value}')
 
     print()
 
-    print(f'Total users: {len(usrs)}')
-    for key, value in user_dist.item():
+    print('Inferred gender distribution of posts:')
+    for key, value in gender_dist.items():
         print(f'{key}: {value}')
+
+    """ 
+    # UNCOMMENT THIS TO SEE SINGLE NAME - GENDER MAPPING
+    for key, value in user_gender_map.items():
+        print(f'{key}: {value}')
+    """
 
 if __name__ == "__main__":    
     if len(sys.argv) != 2:
