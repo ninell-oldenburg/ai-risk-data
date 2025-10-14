@@ -5,8 +5,9 @@ import sys
 
 class LesswrongJsonToCsv:
     def __init__(self, platform):
-        self.input_base = f"graphql/data/{platform}/json" 
-        self.output_base = f"graphql/data/{platform}/csv"
+        self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        self.input_base = f"src/raw_data/{self.platform}/json" 
+        self.output_base = f"src/raw_data/{self.platform}/csv"
         self.total_posts = 0
 
     def transform(self):
