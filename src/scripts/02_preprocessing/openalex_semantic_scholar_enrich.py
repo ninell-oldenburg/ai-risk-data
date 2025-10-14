@@ -172,7 +172,7 @@ class SemanticScholarEnricher:
 if __name__ == "__main__":
     enricher = SemanticScholarEnricher(rate_limit_delay=1.0)
 
-    root_dir = "openalex/data/csv/"
+    root_dir = "src/processed_data/openalex"
 
     csv_files = []
     for year in range(2015, 2025):

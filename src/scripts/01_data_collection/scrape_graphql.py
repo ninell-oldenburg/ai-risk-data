@@ -14,8 +14,12 @@ class ScrapeLesswrong:
     To change the result variables, visit https://www.lesswrong.com/graphiql 
     """
   
-    def __init__(self, forum):
-        self.platform = 'lesswrong' if forum == 'lw' else 'alignment_forum'
+    def __init__(self, platform):
+        try:
+            if platform in ['lw', 'af']:
+                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        except ValueError:
+            print("FORUM variable has to be 'lw' or 'af'")
         try:
             if forum == 'lw':
                 self.url = "https://www.lesswrong.com/graphql"
@@ -121,7 +125,7 @@ class ScrapeLesswrong:
             start_date = next_month
 
 def main(platform):
-    scraper = ScrapeLesswrong(forum=platform)
+    scraper = ScrapeLesswrong(platform=platform)
     scraper.get_and_save_articles()
 
 if __name__ == "__main__":

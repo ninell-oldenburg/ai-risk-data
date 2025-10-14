@@ -5,7 +5,11 @@ import sys
 
 class LesswrongJsonToCsv:
     def __init__(self, platform):
-        self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        try:
+            if platform in ['lw', 'af']:
+                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        except ValueError:
+            print("FORUM variable has to be 'lw' or 'af'")
         self.input_base = f"src/raw_data/{self.platform}/json" 
         self.output_base = f"src/raw_data/{self.platform}/csv"
         self.total_posts = 0

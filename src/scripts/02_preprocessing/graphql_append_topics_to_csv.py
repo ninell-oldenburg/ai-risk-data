@@ -63,14 +63,21 @@ CLUSTER_TOPICS = {
 class TopicsToCsv:
     def __init__(self, platform, ntopics):
         self.ntopics = ntopics
-        self.platform = platform
+        try:
+            if platform in ['lw', 'af']:
+                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        except ValueError:
+            print("FORUM variable has to be 'lw' or 'af'")
+        self.input_base = f'src/processed_data/data/{self.platform}/csv_cleaned/'
+        self.output_base = f'src/processed_data/{self.platform}/with_topics/'
+
 
     def append_topics_to_csv(self):
         """
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
         """
-        clustering_results_csv = f'src/graphql/topics/{self.platform}/lda_{self.ntopics}.csv'
+        clustering_results_csv = f'src/metadata/clustering_results/{self.platform}/lda_{self.ntopics}.csv'
 
         print(f"Loading clustering results from {clustering_results_csv}...")
         results_df = pd.read_csv(clustering_results_csv)
@@ -89,8 +96,8 @@ class TopicsToCsv:
                 # just the filename and build correct path
                 import os
                 filename = os.path.basename(file_path)  # gets just "2025-01.csv"
-                correct_file_path = f'src/graphql/data/{self.platform}/csv_cleaned/{file_path.split(f"src/graphql/data/{self.platform}/csv_cleaned/")[1]}'  # gets "csv_cleaned/2025/2025-01.csv"
-                
+                correct_file_path = self.input_base + f'{file_path.split(f"src/graphql/data/{self.platform}/csv_cleaned/")[1]}'
+
                 # original file with correct path
                 df = pd.read_csv(correct_file_path)
                 original_count = len(df)
@@ -104,10 +111,8 @@ class TopicsToCsv:
                 merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
                 merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
 
-                # save back with proper filename
-                output_path = f'src/graphql/data/{self.platform}/csv_cleanedwithtopic/{file_path.split("csv_cleaned/")[1]}'
+                output_path = self.output_base + f'{file_path.split("csv_cleaned/")[1]}'
                 
-                # check output directory exists
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 
                 merged.to_csv(output_path, index=False)

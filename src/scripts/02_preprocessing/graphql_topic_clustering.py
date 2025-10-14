@@ -26,9 +26,13 @@ from gensim.corpora import Dictionary
 import gensim
 
 class BlogTopicClustering:
-    def __init__(self, forum):
-        self.platform = forum
-        self.base_path = f"src/graphql/data/{forum}/csv_cleaned"
+    def __init__(self, platform):
+        try:
+            if platform in ['lw', 'af']:
+                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
+        except ValueError:
+            print("FORUM variable has to be 'lw' or 'af'")
+        self.base_path = f"src/processed_data/{self.platform}/csv_cleaned"
         self.blog_posts = []
         self.tfidf_matrix = None
         self.vectorizer = None
@@ -435,7 +439,7 @@ class BlogTopicClustering:
         plt.title('Clustering Summary')
         
         plt.tight_layout()
-        output_path = f"src/graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
+        output_path = f"src/metadata/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         plt.show()
@@ -684,7 +688,7 @@ class BlogTopicClustering:
         plt.tight_layout()
         
         # Save the figure
-        output_path = f"src/graphql/img/{self.platform}/lda_model_selection_{i}.pdf"
+        output_path = f"src/metadata/img/{self.platform}/lda_model_selection_{i}.pdf"
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         print(f"\nModel selection figure saved to {output_path}")
@@ -906,7 +910,7 @@ class BlogTopicClustering:
         plt.xticks(rotation=45)
         
         plt.tight_layout()
-        output_path = f"src/graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
+        output_path = f"src/metadata/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         plt.savefig(output_path)
@@ -1026,7 +1030,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         lda_results = analyzer.perform_lda(n_topics=optimal_topics, use_full_data=True)
         analyzer.print_lda_summary()
         analyzer.visualize_lda_topics()
-        output_path = f'src/graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv'
+        output_path = f'src/metadata/clustering_results/{analyzer.platform}/lda_{optimal_topics}.csv'
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         analyzer.save_lda_results(output_path)
@@ -1048,7 +1052,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         results = analyzer.perform_clustering(n_clusters=optimal_topics)
         analyzer.print_cluster_summary()
         analyzer.visualize_clusters()
-        output_path = f'src/graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv'
+        output_path = f'src/metadata/clustering_results/{analyzer.platform}/kmeans_{optimal_topics}.csv'
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         analyzer.save_results(output_path)

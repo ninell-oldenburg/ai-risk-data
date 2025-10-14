@@ -22,7 +22,7 @@ class ExtractLinksAndGender:
     def __init__(self, platform):
         try:
             if platform in ['lw', 'af']:
-                self.platform = platform
+                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
 
@@ -88,9 +88,9 @@ class ExtractLinksAndGender:
                     if href.startswith('//'):
                         href = 'https:' + href
                     elif href.startswith('/'):
-                        if self.platform == 'lw':
+                        if self.platform == 'lesswrong':
                             href = 'https://lesswrong.com' + href
-                        elif self.platform == 'af':
+                        elif self.platform == 'alignment_forum':
                             href = 'https://alignmentforum.org' + href
                     links.append(href)
             
@@ -315,8 +315,8 @@ class ExtractLinksAndGender:
         
 def main(forum):
     extractor = ExtractLinksAndGender(platform=forum)
-    base_path_in = f"graphql/data/{extractor.platform}/csv"
-    base_path_out = f"graphql/data/{extractor.platform}/csv_cleaned"
+    base_path_in = f"src/raw_data/{extractor.platform}/csv"
+    base_path_out = f"src/processed_data/{extractor.platform}/01_links_and_gender"
     total_posts_with_links = 0
     total_linkposts = 0
     files_processed = 0
