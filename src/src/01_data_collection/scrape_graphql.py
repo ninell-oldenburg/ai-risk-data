@@ -84,6 +84,7 @@ class ScrapeLesswrong:
     def get_and_save_articles(self):
         start_date = datetime(2015, 1, 1)
         end_date = datetime(2024, 12, 31)
+        last_month = start_date
         all_results = []
         files_opened = 0
 
@@ -97,8 +98,8 @@ class ScrapeLesswrong:
             next_month = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1)
             after = start_date.isoformat() + "Z"
             before = next_month.isoformat() + "Z"
-            
-            if next_month.year != start_date.year:
+
+            if last_month.year != start_date.year:
                 print()
                 print(f"\n{'='*60}")
                 print(f"Processing year {next_month.year}...")
@@ -135,13 +136,18 @@ class ScrapeLesswrong:
             # small delay to avoid rate limiting
             time.sleep(1)
 
+            last_month = start_date
             start_date = next_month
 
-        return len(all_results), n_files
+        return len(all_results), files_opened
 
 def main(platform):
     scraper = ScrapeLesswrong(platform=platform)
     n_posts, n_files = scraper.get_and_save_articles()
+    print(f"\n{'='*60}")
+    print(f"✓ COMPLETE: Retrieved {n_posts} papers total")
+    print(f"✓ Saved across {len(n_files)} files")
+    print(f"{'='*60}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
