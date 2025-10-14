@@ -28,7 +28,7 @@ import gensim
 class BlogTopicClustering:
     def __init__(self, forum):
         self.platform = forum
-        self.base_path = f"graphql/data/{forum}/csv_cleaned"
+        self.base_path = f"src/graphql/data/{forum}/csv_cleaned"
         self.blog_posts = []
         self.tfidf_matrix = None
         self.vectorizer = None
@@ -435,7 +435,7 @@ class BlogTopicClustering:
         plt.title('Clustering Summary')
         
         plt.tight_layout()
-        output_path = f"graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
+        output_path = f"src/graphql/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         plt.show()
@@ -583,7 +583,7 @@ class BlogTopicClustering:
             lda = LatentDirichletAllocation(
                 n_components=n_topics,
                 random_state=42,
-                max_iter=15,
+                max_iter=10,
                 learning_method='online',
                 doc_topic_prior=0.1,
                 topic_word_prior=0.01,
@@ -684,7 +684,7 @@ class BlogTopicClustering:
         plt.tight_layout()
         
         # Save the figure
-        output_path = f"graphql/img/{self.platform}/lda_model_selection_{i}.pdf"
+        output_path = f"src/graphql/img/{self.platform}/lda_model_selection_{i}.pdf"
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         print(f"\nModel selection figure saved to {output_path}")
@@ -906,7 +906,7 @@ class BlogTopicClustering:
         plt.xticks(rotation=45)
         
         plt.tight_layout()
-        output_path = f"graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
+        output_path = f"src/graphql/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         plt.savefig(output_path)
@@ -1015,7 +1015,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         
         if test:
             lda_coherence_results = analyzer.lda_topic_coherence_test(
-                i=1,
+                i=2,
                 topic_range=range(10, 56, 5),
             )
             # Choose based on coherence, not perplexity!
@@ -1026,7 +1026,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         lda_results = analyzer.perform_lda(n_topics=optimal_topics, use_full_data=True)
         analyzer.print_lda_summary()
         analyzer.visualize_lda_topics()
-        output_path = f'graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv'
+        output_path = f'src/graphql/topics/{analyzer.platform}/lda_{optimal_topics}.csv'
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         analyzer.save_lda_results(output_path)
@@ -1048,7 +1048,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         results = analyzer.perform_clustering(n_clusters=optimal_topics)
         analyzer.print_cluster_summary()
         analyzer.visualize_clusters()
-        output_path = f'graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv'
+        output_path = f'src/graphql/topics/{analyzer.platform}/kmeans_{optimal_topics}.csv'
         output_dir = os.path.dirname(output_path)
         os.makedirs(output_dir, exist_ok=True)
         analyzer.save_results(output_path)
