@@ -9,22 +9,19 @@ import importlib
 import chgender
 
 class OpenAlexCSVProcessor:
-    def __init__(self, base_dir: str = "openalex/data"):
-        self.base_dir = base_dir
+    def __init__(self):
+        self.input_dir = "src/processed_data/openalex/01_dedup"
+        self.output_dir = "src/processed_data/openalex/02_with_gender"
+        os.makedirs(self.output_dir, exist_ok=True)
         self.nqgmodel = nqg.NBGC()
         self.GENDER_TERMS = {'male': 'gm', 'female': 'gf'}
         
     def process_all_csvs(self):
-        """
-        Process all CSV files in the directory structure.
-        Adds gender and DOI columns to each CSV.
-        """
-        # Find all CSV files
-        csv_pattern = os.path.join(self.base_dir, "*", "*.csv")
+        csv_pattern = os.path.join(self.input_dir, "*", "*.csv")
         csv_files = glob.glob(csv_pattern)
         
         if not csv_files:
-            print(f"No CSV files found in {self.base_dir}")
+            print(f"No CSV files found in {self.input_dir}")
             return
         
         print(f"Found {len(csv_files)} CSV files to process")
@@ -38,21 +35,20 @@ class OpenAlexCSVProcessor:
                 continue
     
     def process_single_csv(self, filepath: str):
-        """Process a single CSV file: add gender and DOI columns"""
-        # Read the CSV
         df = pd.read_csv(filepath)
-        initial_rows = len(df)
-        print(f"  Loaded {initial_rows} papers")
+        print(f"  Loaded {len(df)} papers")
 
-        print(f"  Adding gender predictions...")
         df['author_genders'] = df.apply(
             lambda row: self.extract_first_author_gender(row['id'], row['author_names']), 
             axis=1
         )
         
-        # Save the updated CSV
-        df.to_csv(filepath, index=False, encoding='utf-8')
-        print(f"  ✓ Saved updated CSV with {len(df)} papers")
+        relative_path = os.path.relpath(filepath, self.input_dir)
+        output_path = os.path.join(self.output_dir, relative_path)
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
+        df.to_csv(output_path, index=False, encoding='utf-8')
+        print(f"  ✓ Saved updated CSV: {output_path}")
     
     def extract_first_author_gender(self, paper_id: str, author_names: str) -> str:
         if pd.isna(author_names) or not author_names:
@@ -125,7 +121,3 @@ if __name__ == "__main__":
     print("="*60)
     summary = processor.generate_summary_report()
     print(summary.to_string())
-    
-    # Save summary
-    summary.to_csv("openalex/processing_summary.csv", index=False)
-    print("\n✓ Summary saved to openalex/processing_summary.csv")

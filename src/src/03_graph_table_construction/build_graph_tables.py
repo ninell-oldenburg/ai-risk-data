@@ -27,7 +27,7 @@ import json
 class ForumGraphBuilder:
     def __init__(self):
         self.forum_data_dir = Path('src/processed_data/')
-        self.openalex_data_dir = Path('src/processed_data/openalex')
+        self.openalex_data_dir = Path('src/processed_data/openalex/02_with_gender')
         self.output_dir = Path('data')
         self.output_dir.mkdir(exist_ok=True)
         
@@ -46,7 +46,7 @@ class ForumGraphBuilder:
         all_posts = []
         
         for forum in ['lesswrong', 'alignment_forum']:
-            forum_path = self.forum_data_dir / forum / 'with_topics'
+            forum_path = self.forum_data_dir / forum / '03_with_topics'
             
             if not forum_path.exists():
                 print(f"Warning: {forum_path} does not exist, skipping {forum}")
