@@ -25,12 +25,10 @@ from collections import defaultdict
 import json
 
 class ForumGraphBuilder:
-    def __init__(self, forum_data_dir='src/graphql/processed', 
-                 openalex_data_dir='src/openalex/processed',
-                 output_dir='data'):
-        self.forum_data_dir = Path(forum_data_dir)
-        self.openalex_data_dir = Path(openalex_data_dir)
-        self.output_dir = Path(output_dir)
+    def __init__(self):
+        self.forum_data_dir = Path('src/processed_data/')
+        self.openalex_data_dir = Path('src/processed_data/openalex')
+        self.output_dir = Path('data')
         self.output_dir.mkdir(exist_ok=True)
         
         # URL patterns for identifying forum posts
@@ -47,8 +45,8 @@ class ForumGraphBuilder:
         """Load all forum CSVs from both LW and AF"""
         all_posts = []
         
-        for forum in ['lw', 'af']:
-            forum_path = self.forum_data_dir / forum / 'csv_cleanedwithtopic'
+        for forum in ['lesswrong', 'alignment_forum']:
+            forum_path = self.forum_data_dir / forum / 'with_topics'
             
             if not forum_path.exists():
                 print(f"Warning: {forum_path} does not exist, skipping {forum}")
@@ -114,8 +112,7 @@ class ForumGraphBuilder:
             'cleaned_htmlBody': 'text',
             'user_gender': 'author_gender_inferred',
             'topic_cluster_id': 'topic_id',
-            'topci_label': 'topic_label',  # Fix typo
-            'topic_label': 'topic_label',  # In case it's already fixed
+            'topic_label': 'topic_label',
         }
         
         df = df.rename(columns=column_mapping)
