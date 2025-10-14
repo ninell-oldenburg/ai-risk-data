@@ -44,3 +44,88 @@ We are well aware that this classification is still noisy from different aspects
 ## Links
 
 We extracted all links in the posts unless it is a linkpost (a post that only contains one link to another website). You can use the links for e.g. a citation graph analysis.
+
+# AI Risk Research Network Data
+
+**Version:** 1.0  
+**Last Updated:** October 2024  
+**Citation:** [Your paper citation]
+
+## Overview
+This dataset contains a network analysis of AI risk research communities (LessWrong, Alignment Forum) and their citations to academic literature.
+
+## Dataset Description
+
+### Time Period
+- LessWrong: January 2015 - September 2024
+- Alignment Forum: June 2017 - September 2024  
+- OpenAlex Works: 2015-2024 (cited works only)
+
+### Data Collection
+- LessWrong/AF posts scraped via GraphQL API on October 15, 2024
+- OpenAlex data retrieved via API on October 12, 2024
+- Gender inference performed using [method] with X% coverage
+
+### Contents
+
+**Node Tables** (N nodes):
+- `nodes/nodes_posts.csv` - Forum posts (N=15,234)
+- `nodes/nodes_authors.csv` - Forum users (N=3,421)
+- `nodes/nodes_openalex_works.csv` - Academic papers (N=8,932)
+- `nodes/nodes_openalex_authors.csv` - Academic researchers (N=12,456)
+
+**Edge Tables** (N edges):
+- `edges/edges_post_citations.csv` - Post→Post citations (N=45,678)
+- `edges/edges_post_openalex.csv` - Post→Paper citations (N=23,456)
+- `edges/edges_openalex_authorship.csv` - Author→Paper (N=34,567)
+
+**Metadata**:
+- `metadata/data_dictionary.csv` - Column definitions
+- `metadata/data_collection.json` - Collection metadata
+- `metadata/processing_log.txt` - Processing history
+
+## Data Dictionary
+See `metadata/data_dictionary.csv` for complete column definitions.
+
+### Key Fields
+- **post_id**: Unique identifier format abc123XYZ
+- **source**: 'lw' (LessWrong) or 'af' (Alignment Forum)
+- **author_gender_inferred**: Inferred using [method], values: male/female/unknown
+- **topic_id**: From BERTopic clustering (20 topics)
+
+## Quality & Limitations
+
+### Known Issues
+- Gender inference coverage: 78% of authors
+- Some historical posts may have incomplete text
+- Citation extraction limited to hyperlinks in post body
+
+### Excluded Data
+- Comments (not included)
+- Draft posts
+- Deleted or private posts
+
+## Usage
+
+### Loading Data
+```python
+import pandas as pd
+
+posts = pd.read_csv('data/nodes/nodes_posts.csv')
+citations = pd.read_csv('data/edges/edges_post_citations.csv')
+
+Reproducibility
+To reproduce this dataset from scratch:
+bashpip install -r requirements.txt
+python src/01_data_collection/scrape_lesswrong.py
+python src/02_preprocessing/clean_and_enrich.py
+python src/03_graph_construction/build_graph_tables.py
+See docs/methodology.md for detailed pipeline documentation.
+License
+[Your license]
+Contact
+[Your email]
+Acknowledgments
+
+LessWrong/Alignment Forum for data access
+OpenAlex for bibliometric data
