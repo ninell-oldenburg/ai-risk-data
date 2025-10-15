@@ -363,6 +363,9 @@ def main(forum):
         files_processed += 1
         print(f"✅ Updated with {posts_with_links} posts with links, {linkposts} linkposts")
 
+    print("\n" + "="*60)
+    print("SUMMARY REPORT")
+    print("="*60)
     print(f"\nCompleted!")
     print(f"Files processed: {files_processed}/{len(csv_file_pairs)}")
     print(f"Total posts with extracted links: {total_posts_with_links}")

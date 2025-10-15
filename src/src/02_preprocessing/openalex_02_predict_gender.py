@@ -7,6 +7,7 @@ import time
 import requests
 import importlib
 import chgender
+from collections import Counter
 
 class OpenAlexCSVProcessor:
     def __init__(self):
@@ -49,7 +50,7 @@ class OpenAlexCSVProcessor:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         
         df.to_csv(output_path, index=False, encoding='utf-8')
-        print(f"  ✓ Saved updated CSV: {output_path}")
+        print(f"✅ Saved updated CSV: {output_path}")
     
     def extract_first_author_gender(self, paper_id: str, author_names: str) -> str:
         if pd.isna(author_names) or not author_names:
@@ -78,35 +79,47 @@ class OpenAlexCSVProcessor:
     def generate_summary_report(self) -> pd.DataFrame:
         csv_pattern = os.path.join(self.output_dir, "*", "*.csv")
         csv_files = glob.glob(csv_pattern)
-        
-        summaries = []
-        
+
+        male_first_author_count = 0
+        female_first_author_count = 0
+        unknown_first_author_count = 0
+        total_paper_count = 0
+        files_processed = 0
+
         for csv_file in csv_files:
             try:
                 df = pd.read_csv(csv_file)
-
-                male_first_authors = df['author_genders'].str.split(';').str[0].str.strip() == 'gm'
-                female_first_authors = df['author_genders'].str.split(';').str[0].str.strip() == 'gf'
-                unknown_gender = df['author_genders'].str.split(';').str[0].str.strip() == '-'
+                files_processed += 1
                 
-                summary = {
-                    'file': os.path.basename(csv_file),
-                    'year': os.path.basename(os.path.dirname(csv_file)),
-                    'total_papers': len(df),
-                    'male_first_authors': male_first_authors.sum(),
-                    'female_first_authors': female_first_authors.sum(),
-                    'unknown_gender': unknown_gender.sum(),
-                    #'papers_with_dois': (df.get('num_referenced_dois', pd.Series(0)) > 0).sum(),
-                    #'avg_dois_per_paper': df.get('num_referenced_dois', pd.Series(0)).mean()
-                }
+                first_author_genders = df['author_genders'].str.split(';').str[0].str.strip()
                 
-                summaries.append(summary)
+                male_first_author_count += (first_author_genders == 'gm').sum()
+                female_first_author_count += (first_author_genders == 'gf').sum()
+                unknown_first_author_count += (first_author_genders == '-').sum()
+                total_paper_count += len(df)
+                
             except Exception as e:
                 print(f"Error reading {csv_file}: {e}")
                 continue
         
-        return pd.DataFrame(summaries)
-
+        summary_data = {
+            'Metric': [
+                'Files processed',
+                'Total papers',
+                'Male first author',
+                'Female first author',
+                'Unknown first author'
+            ],
+            'Count': [
+                f"{files_processed}/{len(csv_files)}",
+                total_paper_count,
+                male_first_author_count,
+                female_first_author_count,
+                unknown_first_author_count
+            ]
+        }
+        
+        return pd.DataFrame(summary_data)
 
 # Usage example
 if __name__ == "__main__":
