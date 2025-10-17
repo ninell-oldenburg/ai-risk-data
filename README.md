@@ -113,8 +113,11 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 ## Metadata
 
 **Version:** 1.0 
+
 **Last Updated:** October 2025
+
 **Citation:** *forthcoming*
+
 **Python Version:** 3.10.8
 
 ## License
