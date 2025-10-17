@@ -12,6 +12,8 @@ This is a data set for citation and demographic analysis of the discourse around
 - [License](#license)
 - [Contact](#contact)
 
+---
+
 ## Overview
 
 The data set contains three sources: 
@@ -19,6 +21,8 @@ The data set contains three sources:
 1) [LessWrong](https://www.lesswrong.com). An online forum of the rationalist community where, amongst other things, AI risk is discussed. Founded in 2009.
 2) [Alignment Forum](https://www.alignmentforum.org). A very similar but a lot smaller forum only dedicated to AI. Founded in 2015.
 3) Academic papers that are available under the topic "[Ethics and Social Impacts of AI](https://api.openalex.org/T10883)" on the citation graph data base [OpenAlex](https://openalex.org/).
+
+---
 
 ## Data Set Description
 
@@ -54,6 +58,8 @@ Find detailed descriptions in `docs/`, i.e.
 - `docs/data_dictionary.csv` - Complete column definitions
 - `docs/data_collection.json` - Collection metadata
 - `docs/processing_log.txt` - Processing history
+
+---
 
 ## Usage
 
@@ -122,6 +128,8 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 
 **Known Limitations:** Gender classification contains inherent uncertainties (see `docs/methodology.md`). Near-duplicate detection may not catch all duplicates.
 
+---
+
 ## Metadata
 
 **Version:** 1.0 
@@ -132,9 +140,8 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 
 **Python Version:** [![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
 
-
-## License
+### License
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Contact
+### Contact
 ninelloldenburg@gmail.com
