@@ -32,12 +32,6 @@ All data lies in `data/`, divided in nodes (all forum posts, all forum authors, 
 - `data/edges/edges_post_citations.csv` - Post→Post/Paper citations (N=45,678)
 - `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=34,567)
 
-### Key Fields
-- **post_id**: Unique identifier format abc123XYZ
-- **source**: 'lw' (LessWrong) or 'af' (Alignment Forum)
-- **author_gender_inferred**: Inferred using `nomquamgender`, `chegender`, and manual username mapping, values: male/female/unknown
-- **topic_id**: Through Latent Dirochlet Allocation (LDA), 55 topics grouped into X umbrella topics
-
 ### Details
 
 Find detailed descriptions in `docs/`, i.e. 
@@ -61,7 +55,7 @@ academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 ```
 
 ### Reproducibility
-To reproduce this dataset from scratch:
+To reproduce this dataset from scratch (runs apprx. 2 hours on intel chip):
 ```
 bashpip install -r requirements.txt
 python src/src/main.py
@@ -110,11 +104,14 @@ python src/src/03_graph_construction/build_graph_tables.py
 
 See docs/methodology.md for detailed pipeline documentation. To visualize the ouutputs, use `notebooks/visualize.ipynb`.
 
+**Known Limitations:** Gender classification contains inherent uncertainties (see `docs/methodology.md`). Near-duplicate detection may not catch all duplicates.
+
 ## Metadata
 
-**Version:** 1.0  
-**Last Updated:** October 2025 
+**Version:** 1.0 
+**Last Updated:** October 2025
 **Citation:** *forthcoming*
+**Python Version:** 3.10.8
 
 ## License
 GNU GENERAL PUBLIC LICENSE V. 3
