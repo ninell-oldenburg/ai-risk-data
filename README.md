@@ -2,7 +2,9 @@
 
 This is a data set for citation and demographic analysis of the discourse around the risks of AI.
 
-## Table of Contents
+---
+
+## Contents
 - [Overview](#overview)
 - [Data Set Description](#data-set-description)
 - [Usage](#usage)
@@ -16,7 +18,7 @@ The data set contains three sources:
 
 1) [LessWrong](https://www.lesswrong.com). An online forum of the rationalist community where, amongst other things, AI risk is discussed. Founded in 2009.
 2) [Alignment Forum](https://www.alignmentforum.org). A very similar but a lot smaller forum only dedicated to AI. Founded in 2015.
-3) Academic papers that are available under the topic ["Ethics and Social Impacts of AI"](https://api.openalex.org/T10883) on the data base [openalex.org](https://openalex.org/).
+3) Academic papers that are available under the topic "[Ethics and Social Impacts of AI](https://api.openalex.org/T10883)" on the citation graph data base [OpenAlex](https://openalex.org/).
 
 ## Data Set Description
 
@@ -29,8 +31,8 @@ All data lies in `data/`, divided in nodes and edges.
 
 ### Data Collection
 - LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
-- OpenAlex data retrieved via API on October 15, 2025
-- Gender inference performed using `nomquamgender`, `chegender`, and manual username mapping
+- OpenAlex data retrieved via [API](https://openalex.org/) on October 15, 2025
+- Gender inference performed using `[nomquamgender](https://github.com/ianvanbuskirk/nomquamgender)` (Van Buskirk, 2023), `chegender`, and manual username mapping
 
 ### Contents
 
