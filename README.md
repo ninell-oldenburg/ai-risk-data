@@ -12,7 +12,7 @@ The data set contains three sources:
 
 ## Data Set Description
 
-All data lies in `data/`, divided in nodes (all forum posts, all forum authors, all academic papers) and edges (edges for forum posts, edges for academic papers).
+All data lies in `data/`, divided in nodes and edges.
 
 ### Time Period
 - LessWrong: 2015-2024
