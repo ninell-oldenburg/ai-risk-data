@@ -4,7 +4,11 @@ This is a data set for citation and demographic analysis of the discourse around
 
 ## Overview
 
-The data set contains three sources: 1) LessWrong (founded in 2009), an online forum of the rationalist community where they, amongst other things, talk about AI risk, 2) the Alignment Forum (founded 2015), a very similar but a lot smaller forum only dedicated to AI, and 3) academic papers that are available under the topic "Ethics and Social Impacts of AI" on the data base openalex.org.
+The data set contains three sources: 
+
+1) LessWrong (founded in 2009), an online forum of the rationalist community where they, amongst other things, talk about AI risk, 
+2) the Alignment Forum (founded 2015), a very similar but a lot smaller forum only dedicated to AI, and 
+3) academic papers that are available under the topic "Ethics and Social Impacts of AI" on the data base openalex.org.
 
 ## Data Set Description
 
