@@ -1,6 +1,11 @@
 # AI Risk Research Network Data
 
-This is a data set for citation and demographic analysis of the discourse around the risks of AI.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
+
+## Abstract
+
+TBD 
 
 ---
 
@@ -35,20 +40,22 @@ All data lies in `data/`, divided in nodes and edges.
 
 ### Data Collection
 - LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
-- OpenAlex data retrieved via [API](https://openalex.org/) on October 15, 2025
-- Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk, 2023), [`chgender`](https://pypi.org/project/chgender/) (Zhou, 2016), and manual username mapping
+- OpenAlex data retrieved via [API](https://docs.openalex.org/) on October 15, 2025
+- Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk et al., 2023), [`chgender`](https://pypi.org/project/chgender/) (Zhou, 2016), and manual username mapping
 
 ### Contents
 
 **Node Tables** (N nodes):
-- `data/nodes/nodes_posts.csv` - Forum posts (N=15,234)
-- `data/nodes/nodes_authors.csv` - Forum users (N=3,421)
-- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=8,932)
-- `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=12,456)
+- `data/nodes/nodes_posts.csv` - Forum posts (N=15,234) (~XX MB)
+- `data/nodes/nodes_authors.csv` - Forum users (N=3,421) (~XX MB)
+- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=8,932) (~XX MB)
+- `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=12,456) (~XX MB)
 
 **Edge Tables** (N edges):
-- `data/edges/edges_post_citations.csv` - Post→Post/Paper citations (N=45,678)
-- `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=34,567)
+- `data/edges/edges_post_citations.csv` - Post→Post/Paper citations (N=45,678) (~XX MB)
+- `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=34,567) (~XX MB)
+
+**Total dataset size:** ~XXX MB
 
 ### Details
 
@@ -76,15 +83,13 @@ academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 
 ### Reproducibility
 To reproduce this dataset from scratch (runs apprx. 2 hours on intel chip):
-```
-bash
+```bash
 pip install -r requirements.txt
 python src/src/main.py
 ```
 
 or 
-```
-bash
+```bash
 pip install -r requirements.txt
 # Scrape data and save them to src/raw_data/
 python src/src/01_data_collection/scrape_graphql.py lw
@@ -115,9 +120,9 @@ python src/src/02_preprocessing/graphql_03_run_topic_clustering.py af
 python src/src/02_preprocessing/graphql_04_append_topics_to_csv.py lw
 python src/src/02_preprocessing/graphql_04_append_topics_to_csv.py af
 
-# Run dup detection for academix papers
+# Run dup detection for academic papers
 python src/src/02_preprocessing/openalex_01_clean_dups.py
-# Infer author genders for academix papers
+# Infer author genders for academic papers
 python src/src/02_preprocessing/openalex_02_predict_gender.py
 
 # Construct final nodes and edges tables
@@ -138,17 +143,18 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 
 **Citation:** *forthcoming*
 
-**Python Version:** [![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
-
-### License
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
 ### Contact
 ninelloldenburg@gmail.com
 
 ---
 
+## Acknowledgements
+
+TBD
+
+---
+
 ## References
 
-- Ian Van Buskirk, Aaron Clauset, and Daniel B Larremore (2023). An Open-Source Cultural Consensus Approach to Name-Based Gender Classification. Proceedings of the International AAAI Conference on Web and Social Media, Volumne 17, pages 866--877. Github: [Nomquamgender](https://github.com/ianvanbuskirk/nomquamgender).
-- Jiajian Zhou (2023). Chgender. Pypi: [chgender 0.0.2](https://pypi.org/project/chgender/).
+- Van Buskirk, I; Clauset, A., and Larremore, D. B. (2023). An Open-Source Cultural Consensus Approach to Name-Based Gender Classification. Proceedings of the International AAAI Conference on Web and Social Media, Volumne 17, pages 866--877. Github. https://github.com/ianvanbuskirk/nomquamgender
+- Zhou, J. (2016). chgender (Version 0.0.2) [Python package]. PyPI. https://pypi.org/project/chgender/
