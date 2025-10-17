@@ -29,7 +29,7 @@ The data set contains three sources:
 
 ---
 
-## Data Set Description
+## Data Record
 
 All data lies in `data/`, divided in nodes and edges.
 
@@ -129,11 +129,13 @@ python src/src/02_preprocessing/openalex_02_predict_gender.py
 python src/src/03_graph_construction/build_graph_tables.py
 ```
 
-See docs/methodology.md for detailed pipeline documentation. To visualize the outputs, use `notebooks/visualize.ipynb`.
-
-**Known Limitations:** Gender classification contains inherent uncertainties (see `docs/methodology.md`). Near-duplicate detection may not catch all duplicates.
+See `docs/methodology.md` for detailed pipeline documentation.
 
 ---
+
+## Technical Validation
+
+We perform duplicate detection on papers and forum posts, gender predicition as briefly described above, and topic analysis using Latent Dirichlet Allocation (Blei & Jordan, 2001). Find details on the technical validation in the paper and under `docs/methology.md`.
 
 ## Metadata
 
@@ -156,5 +158,6 @@ TBD
 
 ## References
 
+- Blei, D., Ng, A., & Jordan, M. (2001). Latent dirichlet allocation. Advances in neural information processing systems, 14.
 - Van Buskirk, I; Clauset, A., and Larremore, D. B. (2023). An Open-Source Cultural Consensus Approach to Name-Based Gender Classification. Proceedings of the International AAAI Conference on Web and Social Media, Volumne 17, pages 866--877. Github. https://github.com/ianvanbuskirk/nomquamgender
 - Zhou, J. (2016). chgender (Version 0.0.2) [Python package]. PyPI. https://pypi.org/project/chgender/
