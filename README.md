@@ -10,12 +10,14 @@ TBD
 ---
 
 ## Contents
+- [Abstract](#abstract)
 - [Overview](#overview)
-- [Data Set Description](#data-set-description)
+- [Data Record](#data-record)
 - [Usage](#usage)
-- [Reproducibility](#reproducibility)
-- [License](#license)
-- [Contact](#contact)
+- [Technical Validation](#technical-validation)
+- [Metadata](#metadata)
+- [Acknowledgements](#acknowledgements)
+- [References](#references)
 
 ---
 
@@ -81,7 +83,7 @@ forum_citations = pd.read_csv('data/edges/edges_post_citations.csv')
 academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 ```
 
-### Reproducibility
+## Reproducibility
 To reproduce this dataset from scratch (runs apprx. 2 hours on intel chip):
 ```bash
 pip install -r requirements.txt
@@ -135,7 +137,7 @@ See `docs/methodology.md` for detailed pipeline documentation.
 
 ## Technical Validation
 
-We perform duplicate detection on papers and forum posts, gender predicition as briefly described above, and topic analysis using Latent Dirichlet Allocation (Blei & Jordan, 2001). Find details on the technical validation in the paper and under `docs/methology.md`.
+We perform duplicate detection on papers and forum posts, gender prediction as briefly described above, and topic analysis using Latent Dirichlet Allocation (Blei, Ng, & Jordan, 2001). Find details on the technical validation in the paper and under `docs/methodology.md`.
 
 ## Metadata
 
