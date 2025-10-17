@@ -36,7 +36,7 @@ All data lies in `data/`, divided in nodes and edges.
 ### Data Collection
 - LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
 - OpenAlex data retrieved via [API](https://openalex.org/) on October 15, 2025
-- Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk, 2023), [`chegender`]() (Zhou, 2016), and manual username mapping
+- Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk, 2023), [`chgender`](https://pypi.org/project/chgender/) (Zhou, 2016), and manual username mapping
 
 ### Contents
 
