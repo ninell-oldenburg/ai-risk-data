@@ -2,13 +2,21 @@
 
 This is a data set for citation and demographic analysis of the discourse around the risks of AI.
 
+## Table of Contents
+- [Overview](#overview)
+- [Data Set Description](#data-set-description)
+- [Usage](#usage)
+- [Reproducibility](#reproducibility)
+- [License](#license)
+- [Contact](#contact)
+
 ## Overview
 
 The data set contains three sources: 
 
-1) LessWrong (founded in 2009), an online forum of the rationalist community where they, amongst other things, talk about AI risk, 
-2) the Alignment Forum (founded 2015), a very similar but a lot smaller forum only dedicated to AI, and 
-3) academic papers that are available under the topic "Ethics and Social Impacts of AI" on the data base openalex.org.
+1) [LessWrong](https://www.lesswrong.com). An online forum of the rationalist community where, amongst other things, AI risk is discussed. Founded in 2009.
+2) [Alignment Forum](https://www.alignmentforum.org). A very similar but a lot smaller forum only dedicated to AI. Founded in 2015.
+3) Academic papers that are available under the topic ["Ethics and Social Impacts of AI"](https://api.openalex.org/T10883) on the data base [openalex.org](https://openalex.org/).
 
 ## Data Set Description
 
@@ -20,7 +28,7 @@ All data lies in `data/`, divided in nodes and edges.
 - OpenAlex Works: 2015-2024
 
 ### Data Collection
-- LessWrong/AF posts scraped via GraphQL API on October 15, 2025
+- LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
 - OpenAlex data retrieved via API on October 15, 2025
 - Gender inference performed using `nomquamgender`, `chegender`, and manual username mapping
 
@@ -61,13 +69,15 @@ academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 ### Reproducibility
 To reproduce this dataset from scratch (runs apprx. 2 hours on intel chip):
 ```
-bashpip install -r requirements.txt
+bash
+pip install -r requirements.txt
 python src/src/main.py
 ```
 
 or 
 ```
-bashpip install -r requirements.txt
+bash
+pip install -r requirements.txt
 # Scrape data and save them to src/raw_data/
 python src/src/01_data_collection/scrape_graphql.py lw
 python src/src/01_data_collection/scrape_graphql.py af
@@ -106,7 +116,7 @@ python src/src/02_preprocessing/openalex_02_predict_gender.py
 python src/src/03_graph_construction/build_graph_tables.py
 ```
 
-See docs/methodology.md for detailed pipeline documentation. To visualize the ouutputs, use `notebooks/visualize.ipynb`.
+See docs/methodology.md for detailed pipeline documentation. To visualize the outputs, use `notebooks/visualize.ipynb`.
 
 **Known Limitations:** Gender classification contains inherent uncertainties (see `docs/methodology.md`). Near-duplicate detection may not catch all duplicates.
 
@@ -118,10 +128,11 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 
 **Citation:** *forthcoming*
 
-**Python Version:** 3.10.8
+**Python Version:** [![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
+
 
 ## License
-GNU GENERAL PUBLIC LICENSE V. 3
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Contact
 ninelloldenburg@gmail.com
