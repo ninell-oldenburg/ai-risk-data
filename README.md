@@ -36,7 +36,7 @@ All data lies in `data/`, divided in nodes and edges.
 ### Data Collection
 - LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
 - OpenAlex data retrieved via [API](https://openalex.org/) on October 15, 2025
-- Gender inference performed using `[nomquamgender](https://github.com/ianvanbuskirk/nomquamgender)` (Van Buskirk, 2023), `chegender`, and manual username mapping
+- Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk, 2023), [`chegender`]() (Zhou, 2016), and manual username mapping
 
 ### Contents
 
@@ -145,3 +145,10 @@ See docs/methodology.md for detailed pipeline documentation. To visualize the ou
 
 ### Contact
 ninelloldenburg@gmail.com
+
+---
+
+## References
+
+- Ian Van Buskirk, Aaron Clauset, and Daniel B Larremore (2023). An Open-Source Cultural Consensus Approach to Name-Based Gender Classification. Proceedings of the International AAAI Conference on Web and Social Media, Volumne 17, pages 866--877. Github: [Nomquamgender](https://github.com/ianvanbuskirk/nomquamgender).
+- Jiajian Zhou (2023). Chgender. Pypi: [chgender 0.0.2](https://pypi.org/project/chgender/).
