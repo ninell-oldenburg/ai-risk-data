@@ -25,7 +25,7 @@ class ExtractLinksAndGender:
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
 
-        with open("src/src/02_preprocessing/graphql_usernames.json", "r", encoding="utf-8") as f:
+        with open("src/metadata/graphql_usernames.json", "r", encoding="utf-8") as f:
             names_data = json.load(f)
 
         self.MALE_USERNAMES = names_data["MALE_USERNAMES"]
