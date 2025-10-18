@@ -16,7 +16,7 @@ import re
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
-nltk.download('averaged_perceptron_tagger_eng')
+# nltk.download('averaged_perceptron_tagger_eng')
 from collections import defaultdict, Counter
 from pathlib import Path
 import warnings
@@ -32,7 +32,7 @@ class BlogTopicClustering:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
-        self.base_path = f"src/processed_data/{self.platform}/csv_cleaned"
+        self.base_path = f"src/processed_data/{self.platform}/02_with_links_and_gender"
         self.blog_posts = []
         self.tfidf_matrix = None
         self.vectorizer = None
@@ -559,7 +559,7 @@ class BlogTopicClustering:
         
         return self.bow_matrix
 
-    def lda_topic_coherence_test(self, i=5, topic_range=range(10, 56, 5), n_samples=None):
+    def lda_topic_coherence_test(self, i=5, topic_range=range(15, 66, 5), n_samples=None):
         """Test different numbers of topics with multiple metrics including coherence"""
         print("Testing LDA with perplexity, log-likelihood, AND coherence...")
         
@@ -1020,7 +1020,7 @@ def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: s
         if test:
             lda_coherence_results = analyzer.lda_topic_coherence_test(
                 i=2,
-                topic_range=range(10, 56, 5),
+                topic_range=range(55, 81, 5),
             )
             # Choose based on coherence, not perplexity!
             optimal_topics = lda_coherence_results['optimal_topics_coherence']
