@@ -469,7 +469,7 @@ class EmbeddingTopicModeling:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         print(f"Visualization saved to {output_path}")
-        plt.show()
+        #plt.show()
     
     def visualize_topic_hierarchy(self):
         """Visualize hierarchical structure of topics"""
@@ -597,22 +597,42 @@ class EmbeddingTopicModeling:
 
     def compute_diversity_from_model(self, top_n_words=10):
         topics = self.topic_model.get_topics()
-        top_words_per_topic = [
-            [w for w, _ in ws][:top_n_words] for tid, ws in topics.items() if tid != -1
-        ]
-        all_words = [w for t in top_words_per_topic for w in t]
-        return (len(set(all_words)) / len(all_words)) if all_words else 0.0
-
-    def compute_coherence_from_docs(self, docs, top_n_words=10):
-        tokenized_docs = [d.split() for d in docs]
-        dictionary = Dictionary(tokenized_docs)
-        topics = self.topic_model.get_topics()
-        top_words_per_topic = [
-            [w for w, _ in ws][:top_n_words] for tid, ws in topics.items() if tid != -1
-        ]
+        top_words_per_topic = self.get_top_words_safe(topics, top_n_words=top_n_words)
         if not top_words_per_topic:
             return 0.0
-        cm = CoherenceModel(topics=top_words_per_topic, texts=tokenized_docs, dictionary=dictionary, coherence="c_v")
+        
+        all_words = [w for t in top_words_per_topic for w in t]
+        return (len(set(all_words)) / len(all_words)) if all_words else 0.0
+    
+    def get_top_words_safe(self, topics, top_n_words=10):
+        top_words_per_topic = []
+        for tid, ws in topics.items():
+            if tid == -1 or not ws:
+                continue
+            words = []
+            for item in ws:
+                # Skip if item is not tuple/list
+                if not isinstance(item, (tuple, list)):
+                    continue
+                # Take first element if string
+                if len(item) > 0 and isinstance(item[0], str) and item[0].strip():
+                    words.append(item[0].strip())
+            if words:
+                top_words_per_topic.append(words[:top_n_words])
+        return top_words_per_topic
+
+    def compute_coherence_from_docs(self, docs, top_n_words=10):
+        analyzer = self.topic_model.vectorizer_model.build_analyzer()
+        tokenized_docs = [analyzer(d) for d in docs]
+        dictionary = Dictionary(tokenized_docs)
+        top_words_per_topic = self.get_top_words_safe(self.topic_model.get_topics(), top_n_words=top_n_words)
+        
+        cm = CoherenceModel(
+            topics=top_words_per_topic,
+            texts=tokenized_docs,
+            dictionary=dictionary,
+            coherence="c_v"
+        )
         return cm.get_coherence()
 
     def sweep_parameters(self,
@@ -631,6 +651,7 @@ class EmbeddingTopicModeling:
         # prepare outputs and so on... 
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         csv_path = Path(output_dir) / f"sweep_{int(time.time())}.csv"
+        sentence_model = SentenceTransformer(model_name)
 
         # Use a representative subset for sweeps to save time
         docs_all = [p["text"] for p in self.blog_posts]
@@ -640,17 +661,8 @@ class EmbeddingTopicModeling:
         for nn in n_neighbors_list:
             for mts in min_topic_size_list:
                 print(f"\n--- SWEEP: n_neighbors={nn}, min_topic_size={mts} ---")
-                # Build UMAP & HDBSCAN & BERTopic with these params
-                from umap import UMAP
-                from hdbscan import HDBSCAN
-                from sentence_transformers import SentenceTransformer
-                from bertopic import BERTopic
-                from sklearn.feature_extraction.text import CountVectorizer
-                from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance
-
                 # optionally reuse embedding model if set in self (expensive otherwise)
                 model_name = embedding_model or getattr(self, "embedding_model_name", "all-MiniLM-L6-v2")
-                sentence_model = SentenceTransformer(model_name)
 
                 umap_model = UMAP(n_neighbors=nn, n_components=n_components, min_dist=0.0, metric="cosine", random_state=42)
                 hdbscan_model = HDBSCAN(min_cluster_size=mts, min_samples=max(1, mts//10), metric='euclidean', prediction_data=True)
@@ -730,17 +742,15 @@ class EmbeddingTopicModeling:
         print("EVALUATING TOPIC MODEL")
         print("=" * 80)
 
-        # topic diversity
-        topics = model.get_topics()
-        top_words_per_topic = [
-            [word for word, _ in words] for tid, words in topics.items() if tid != -1
-        ]
+        top_words_per_topic = self.get_top_words_safe(self.topic_model.get_topics(), top_n_words=10)
+        
         all_words = [w for topic in top_words_per_topic for w in topic]
         unique_words = set(all_words)
         topic_diversity = len(unique_words) / len(all_words) if all_words else 0.0
 
         # coherence score (c_v)
-        tokenized_docs = [d.split() for d in docs]
+        analyzer = self.topic_model.vectorizer_model.build_analyzer()
+        tokenized_docs = [analyzer(d) for d in docs]
         dictionary = Dictionary(tokenized_docs)
 
         cm = CoherenceModel(
@@ -810,7 +820,7 @@ def main(platform, max_posts=None):
     analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
         min_topic_size_list=[50,100,200],
-        embedding_model="all-mpnet-base-v2",   # optional; slow but better
+        embedding_model="all-MiniLM-L6-v2",   # optional; slow but better
         max_posts_for_sweep=None,
         output_dir="sweep_results_run1"
     )
@@ -819,7 +829,7 @@ def main(platform, max_posts=None):
     analyzer.train_topic_model(
         min_topic_size=100,
         min_cluster_size=100,
-        n_neighbors=15,            # tighter local density, more separation
+        n_neighbors=25,            # tighter local density, more separation
         n_components=5,
         embedding_model='all-MiniLM-L6-v2',
         nr_topics='auto',
