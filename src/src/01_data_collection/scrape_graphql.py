@@ -82,8 +82,8 @@ class ScrapeLesswrong:
         """
 
     def get_and_save_articles(self):
-        start_date = datetime(2015, 1, 1)
-        end_date = datetime(2024, 12, 31)
+        start_date = datetime(2009, 1, 1) if self.platform == 'lesswrong' else datetime(2015, 1, 1)
+        end_date = datetime(2025, 6, 30)
         last_month = start_date
         all_results = []
         files_opened = 0

@@ -1,0 +1,1130 @@
+================================================================================
+HIERARCHICAL LDA RESULTS
+================================================================================
+
+MODEL PARAMETERS
+--------------------------------------------------------------------------------
+Depth: 2
+Alpha: 5.0
+Eta: 0.1
+Gamma: 0.5
+Coherence Score: 0.5350
+Log-likelihood per word: -7.8441
+Number of documents: 494
+Vocabulary size: 3000
+Number of live topics: 47
+
+================================================================================
+TOPICS BY HIERARCHY LEVEL
+================================================================================
+
+================================================================================
+LEVEL 0
+================================================================================
+
+Topic 0
+--------------------------------------------------------------------------------
+   1. people               (prob: 0.0135)
+   2. like                 (prob: 0.0114)
+   3. make                 (prob: 0.0111)
+   4. think                (prob: 0.0104)
+   5. good                 (prob: 0.0097)
+   6. do                   (prob: 0.0086)
+   7. time                 (prob: 0.0084)
+   8. don                  (prob: 0.0078)
+   9. want                 (prob: 0.0078)
+  10. thing                (prob: 0.0078)
+  11. just                 (prob: 0.0077)
+  12. say                  (prob: 0.0076)
+  13. know                 (prob: 0.0076)
+  14. work                 (prob: 0.0070)
+  15. use                  (prob: 0.0069)
+
+================================================================================
+LEVEL 1
+================================================================================
+
+Topic 8 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. post                 (prob: 0.0158)
+   2. value                (prob: 0.0142)
+   3. control              (prob: 0.0126)
+   4. model                (prob: 0.0103)
+   5. human                (prob: 0.0101)
+   6. comment              (prob: 0.0073)
+   7. rationality          (prob: 0.0066)
+   8. thread               (prob: 0.0057)
+   9. quote                (prob: 0.0050)
+  10. reference            (prob: 0.0048)
+  11. level                (prob: 0.0047)
+  12. goal                 (prob: 0.0047)
+  13. system               (prob: 0.0046)
+  14. behavior             (prob: 0.0046)
+  15. discussion           (prob: 0.0044)
+
+Topic 9 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. harry                (prob: 0.0407)
+   2. say                  (prob: 0.0314)
+   3. professor            (prob: 0.0173)
+   4. potter               (prob: 0.0103)
+   5. know                 (prob: 0.0086)
+   6. hermione             (prob: 0.0085)
+   7. quirrell             (prob: 0.0085)
+   8. look                 (prob: 0.0082)
+   9. voice                (prob: 0.0080)
+  10. think                (prob: 0.0079)
+  11. just                 (prob: 0.0072)
+  12. draco                (prob: 0.0071)
+  13. like                 (prob: 0.0063)
+  14. didn                 (prob: 0.0055)
+  15. go                   (prob: 0.0054)
+
+Topic 10 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. meetup               (prob: 0.0380)
+   2. 2015                 (prob: 0.0316)
+   3. meetups              (prob: 0.0190)
+   4. post                 (prob: 0.0172)
+   5. february             (prob: 0.0123)
+   6. january              (prob: 0.0117)
+   7. thread               (prob: 0.0113)
+   8. new                  (prob: 0.0113)
+   9. list                 (prob: 0.0092)
+  10. march                (prob: 0.0088)
+  11. open                 (prob: 0.0087)
+  12. city                 (prob: 0.0073)
+  13. discussion           (prob: 0.0065)
+  14. regular              (prob: 0.0057)
+  15. start                (prob: 0.0055)
+
+Topic 11 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. harry                (prob: 0.0448)
+   2. say                  (prob: 0.0330)
+   3. draco                (prob: 0.0144)
+   4. professor            (prob: 0.0120)
+   5. know                 (prob: 0.0104)
+   6. just                 (prob: 0.0091)
+   7. dumbledore           (prob: 0.0088)
+   8. look                 (prob: 0.0077)
+   9. potter               (prob: 0.0077)
+  10. go                   (prob: 0.0064)
+  11. like                 (prob: 0.0064)
+  12. didn                 (prob: 0.0063)
+  13. think                (prob: 0.0062)
+  14. dark                 (prob: 0.0057)
+  15. do                   (prob: 0.0057)
+
+Topic 12 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. dr__cameron          (prob: 0.1090)
+   2. island               (prob: 0.1085)
+   3. let                  (prob: 0.0106)
+   4. yes                  (prob: 0.0056)
+   5. kill                 (prob: 0.0056)
+   6. don                  (prob: 0.0053)
+   7. feel                 (prob: 0.0048)
+   8. verify               (prob: 0.0048)
+   9. lie                  (prob: 0.0048)
+  10. okay                 (prob: 0.0046)
+  11. box                  (prob: 0.0041)
+  12. human                (prob: 0.0038)
+  13. threat               (prob: 0.0036)
+  14. poop                 (prob: 0.0036)
+  15. think                (prob: 0.0033)
+
+Topic 13 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. stranger             (prob: 0.0399)
+   2. humanity             (prob: 0.0122)
+   3. gatekeeper           (prob: 0.0122)
+   4. want                 (prob: 0.0104)
+   5. box                  (prob: 0.0104)
+   6. death                (prob: 0.0087)
+   7. yeah                 (prob: 0.0077)
+   8. die                  (prob: 0.0073)
+   9. let                  (prob: 0.0073)
+  10. human                (prob: 0.0073)
+  11. strange              (prob: 0.0073)
+  12. suffer               (prob: 0.0063)
+  13. preference           (prob: 0.0059)
+  14. estimate             (prob: 0.0056)
+  15. care                 (prob: 0.0056)
+
+Topic 14 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. agent                (prob: 0.0237)
+   2. action               (prob: 0.0139)
+   3. utility              (prob: 0.0130)
+   4. decision             (prob: 0.0129)
+   5. problem              (prob: 0.0126)
+   6. oracle               (prob: 0.0117)
+   7. udt                  (prob: 0.0112)
+   8. probability          (prob: 0.0096)
+   9. use                  (prob: 0.0082)
+  10. modal                (prob: 0.0079)
+  11. theory               (prob: 0.0075)
+  12. universe             (prob: 0.0072)
+  13. post                 (prob: 0.0069)
+  14. function             (prob: 0.0066)
+  15. program              (prob: 0.0061)
+
+Topic 15 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. terrorist            (prob: 0.0076)
+   2. box                  (prob: 0.0059)
+   3. terrorism            (prob: 0.0055)
+   4. freedom              (prob: 0.0055)
+   5. group                (prob: 0.0051)
+   6. islamic              (prob: 0.0051)
+   7. attack               (prob: 0.0034)
+   8. 2000                 (prob: 0.0030)
+   9. muslim               (prob: 0.0030)
+  10. religion             (prob: 0.0030)
+  11. nation               (prob: 0.0030)
+  12. act                  (prob: 0.0026)
+  13. american             (prob: 0.0026)
+  14. enemy                (prob: 0.0026)
+  15. qaeda                (prob: 0.0021)
+
+Topic 16 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. tribe                (prob: 0.0106)
+   2. men                  (prob: 0.0072)
+   3. woman                (prob: 0.0072)
+   4. mannfolk             (prob: 0.0065)
+   5. fight                (prob: 0.0065)
+   6. maletopia            (prob: 0.0062)
+   7. raid                 (prob: 0.0052)
+   8. fighter              (prob: 0.0052)
+   9. war                  (prob: 0.0048)
+  10. mentsh               (prob: 0.0041)
+  11. real                 (prob: 0.0038)
+  12. violence             (prob: 0.0035)
+  13. hobby                (prob: 0.0035)
+  14. largely              (prob: 0.0031)
+  15. sport                (prob: 0.0031)
+
+Topic 17 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. ability              (prob: 0.0087)
+   2. group                (prob: 0.0075)
+   3. emulation            (prob: 0.0064)
+   4. value                (prob: 0.0064)
+   5. attractiveness       (prob: 0.0061)
+   6. people               (prob: 0.0058)
+   7. model                (prob: 0.0058)
+   8. cost                 (prob: 0.0056)
+   9. high                 (prob: 0.0056)
+  10. average              (prob: 0.0051)
+  11. post                 (prob: 0.0051)
+  12. math                 (prob: 0.0049)
+  13. long                 (prob: 0.0046)
+  14. discussion           (prob: 0.0045)
+  15. chapter              (prob: 0.0045)
+
+Topic 18 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. agent                (prob: 0.0170)
+   2. reason               (prob: 0.0125)
+   3. problem              (prob: 0.0121)
+   4. human                (prob: 0.0105)
+   5. research             (prob: 0.0077)
+   6. system               (prob: 0.0063)
+   7. machine              (prob: 0.0063)
+   8. paper                (prob: 0.0063)
+   9. model                (prob: 0.0058)
+  10. formal               (prob: 0.0056)
+  11. intelligence         (prob: 0.0054)
+  12. logical              (prob: 0.0054)
+  13. discuss              (prob: 0.0049)
+  14. uncertainty          (prob: 0.0049)
+  15. environment          (prob: 0.0044)
+
+Topic 19 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. income               (prob: 0.0082)
+   2. miri                 (prob: 0.0064)
+   3. feminism             (prob: 0.0050)
+   4. number               (prob: 0.0050)
+   5. warm                 (prob: 0.0045)
+   6. alien                (prob: 0.0045)
+   7. social               (prob: 0.0045)
+   8. age                  (prob: 0.0045)
+   9. abortion             (prob: 0.0042)
+  10. basic                (prob: 0.0042)
+  11. ratio                (prob: 0.0040)
+  12. yes                  (prob: 0.0040)
+  13. partner              (prob: 0.0040)
+  14. tax                  (prob: 0.0037)
+  15. correlate            (prob: 0.0037)
+
+Topic 20 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. meetup               (prob: 0.0622)
+   2. discussion           (prob: 0.0274)
+   3. article              (prob: 0.0231)
+   4. 2015                 (prob: 0.0132)
+   5. 00pm                 (prob: 0.0106)
+   6. game                 (prob: 0.0097)
+   7. group                (prob: 0.0083)
+   8. february             (prob: 0.0074)
+   9. rationality          (prob: 0.0072)
+  10. meet                 (prob: 0.0070)
+  11. book                 (prob: 0.0066)
+  12. wrong                (prob: 0.0062)
+  13. talk                 (prob: 0.0060)
+  14. sequence             (prob: 0.0057)
+  15. meetups              (prob: 0.0056)
+
+Topic 21 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. page                 (prob: 0.0188)
+   2. color                (prob: 0.0123)
+   3. year                 (prob: 0.0114)
+   4. decline              (prob: 0.0108)
+   5. wikipedia            (prob: 0.0097)
+   6. mobile               (prob: 0.0091)
+   7. pageviews            (prob: 0.0083)
+   8. foundation           (prob: 0.0077)
+   9. 2013                 (prob: 0.0057)
+  10. country              (prob: 0.0054)
+  11. 2014                 (prob: 0.0054)
+  12. create               (prob: 0.0052)
+  13. trend                (prob: 0.0049)
+  14. vipul                (prob: 0.0043)
+  15. philanthropic        (prob: 0.0043)
+
+Topic 22 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. god                  (prob: 0.0072)
+   2. earth                (prob: 0.0062)
+   3. galilei              (prob: 0.0059)
+   4. religion             (prob: 0.0048)
+   5. religious            (prob: 0.0041)
+   6. scientist            (prob: 0.0041)
+   7. sun                  (prob: 0.0041)
+   8. argument             (prob: 0.0041)
+   9. catholic             (prob: 0.0038)
+  10. heliocentrism        (prob: 0.0035)
+  11. scientific           (prob: 0.0035)
+  12. proof                (prob: 0.0035)
+  13. galileo              (prob: 0.0031)
+  14. christian            (prob: 0.0031)
+  15. view                 (prob: 0.0031)
+
+Topic 23 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. fund                 (prob: 0.0130)
+   2. stock                (prob: 0.0124)
+   3. company              (prob: 0.0093)
+   4. invest               (prob: 0.0087)
+   5. market               (prob: 0.0081)
+   6. pay                  (prob: 0.0068)
+   7. money                (prob: 0.0068)
+   8. investment           (prob: 0.0065)
+   9. job                  (prob: 0.0056)
+  10. superstar            (prob: 0.0056)
+  11. salary               (prob: 0.0056)
+  12. 000                  (prob: 0.0056)
+  13. risk                 (prob: 0.0053)
+  14. index                (prob: 0.0050)
+  15. buy                  (prob: 0.0050)
+
+Topic 24 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. harry                (prob: 0.0293)
+   2. voldemort            (prob: 0.0150)
+   3. wand                 (prob: 0.0105)
+   4. say                  (prob: 0.0103)
+   5. professor            (prob: 0.0093)
+   6. lord                 (prob: 0.0093)
+   7. quirrell             (prob: 0.0072)
+   8. dark                 (prob: 0.0064)
+   9. voice                (prob: 0.0064)
+  10. shall                (prob: 0.0060)
+  11. death                (prob: 0.0056)
+  12. master               (prob: 0.0053)
+  13. hand                 (prob: 0.0053)
+  14. potter               (prob: 0.0047)
+  15. tell                 (prob: 0.0047)
+
+Topic 25 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. elect                (prob: 0.0110)
+   2. algorithm            (prob: 0.0095)
+   3. nuke                 (prob: 0.0083)
+   4. hillary              (prob: 0.0076)
+   5. prediction           (prob: 0.0068)
+   6. market               (prob: 0.0065)
+   7. decision             (prob: 0.0061)
+   8. attack               (prob: 0.0061)
+   9. jeb                  (prob: 0.0053)
+  10. probability          (prob: 0.0053)
+  11. contract             (prob: 0.0053)
+  12. election             (prob: 0.0049)
+  13. forecaster           (prob: 0.0046)
+  14. human                (prob: 0.0046)
+  15. outcome              (prob: 0.0042)
+
+Topic 26 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. risk                 (prob: 0.0106)
+   2. death                (prob: 0.0105)
+   3. health               (prob: 0.0095)
+   4. fat                  (prob: 0.0089)
+   5. cancer               (prob: 0.0089)
+   6. disease              (prob: 0.0087)
+   7. increase             (prob: 0.0084)
+   8. cause                (prob: 0.0075)
+   9. study                (prob: 0.0075)
+  10. mortality            (prob: 0.0067)
+  11. decrease             (prob: 0.0057)
+  12. food                 (prob: 0.0054)
+  13. age                  (prob: 0.0052)
+  14. meta                 (prob: 0.0048)
+  15. radiation            (prob: 0.0048)
+
+Topic 27 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. model                (prob: 0.0048)
+   2. environment          (prob: 0.0048)
+   3. study                (prob: 0.0039)
+   4. level                (prob: 0.0035)
+   5. variable             (prob: 0.0035)
+   6. analysis             (prob: 0.0035)
+   7. assume               (prob: 0.0031)
+   8. environmental        (prob: 0.0031)
+   9. gene                 (prob: 0.0026)
+  10. function             (prob: 0.0026)
+  11. property             (prob: 0.0026)
+  12. cycle                (prob: 0.0026)
+  13. reductionist         (prob: 0.0026)
+  14. bias                 (prob: 0.0026)
+  15. wimsatt              (prob: 0.0026)
+
+Topic 28 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. fruit                (prob: 0.0098)
+   2. meal                 (prob: 0.0071)
+   3. food                 (prob: 0.0055)
+   4. bread                (prob: 0.0051)
+   5. veggie               (prob: 0.0051)
+   6. dinner               (prob: 0.0047)
+   7. batch                (prob: 0.0047)
+   8. protein              (prob: 0.0043)
+   9. eat                  (prob: 0.0043)
+  10. salmon               (prob: 0.0040)
+  11. chicken              (prob: 0.0040)
+  12. day                  (prob: 0.0036)
+  13. healthy              (prob: 0.0036)
+  14. item                 (prob: 0.0036)
+  15. quick                (prob: 0.0036)
+
+Topic 29 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. life                 (prob: 0.0305)
+   2. save                 (prob: 0.0145)
+   3. dragon               (prob: 0.0098)
+   4. thousand             (prob: 0.0094)
+   5. villager             (prob: 0.0082)
+   6. price                (prob: 0.0075)
+   7. value                (prob: 0.0051)
+   8. dollar               (prob: 0.0051)
+   9. press                (prob: 0.0051)
+  10. worth                (prob: 0.0047)
+  11. movie                (prob: 0.0047)
+  12. button               (prob: 0.0039)
+  13. gap                  (prob: 0.0036)
+  14. ticket               (prob: 0.0036)
+  15. gold                 (prob: 0.0036)
+
+Topic 30 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. political            (prob: 0.0060)
+   2. politics             (prob: 0.0055)
+   3. villain              (prob: 0.0035)
+   4. topic                (prob: 0.0030)
+   5. community            (prob: 0.0025)
+   6. defeat               (prob: 0.0025)
+   7. participant          (prob: 0.0025)
+   8. norm                 (prob: 0.0020)
+   9. fantasy              (prob: 0.0020)
+  10. attract              (prob: 0.0015)
+  11. sauron               (prob: 0.0015)
+  12. debate               (prob: 0.0015)
+  13. novel                (prob: 0.0010)
+  14. ideal                (prob: 0.0010)
+  15. contribute           (prob: 0.0010)
+
+Topic 31 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. skill                (prob: 0.0120)
+   2. book                 (prob: 0.0058)
+   3. useful               (prob: 0.0055)
+   4. soft                 (prob: 0.0051)
+   5. telekinesis          (prob: 0.0048)
+   6. minute               (prob: 0.0048)
+   7. visualize            (prob: 0.0044)
+   8. example              (prob: 0.0040)
+   9. workshop             (prob: 0.0040)
+  10. head                 (prob: 0.0037)
+  11. wish                 (prob: 0.0033)
+  12. problem              (prob: 0.0033)
+  13. task                 (prob: 0.0029)
+  14. noise                (prob: 0.0029)
+  15. tone                 (prob: 0.0029)
+
+Topic 32 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. status               (prob: 0.0163)
+   2. skill                (prob: 0.0081)
+   3. generic              (prob: 0.0043)
+   4. elite                (prob: 0.0043)
+   5. specialist           (prob: 0.0043)
+   6. belt                 (prob: 0.0039)
+   7. efficient            (prob: 0.0039)
+   8. signal               (prob: 0.0039)
+   9. environment          (prob: 0.0039)
+  10. sum                  (prob: 0.0039)
+  11. improve              (prob: 0.0035)
+  12. zero                 (prob: 0.0035)
+  13. ability              (prob: 0.0035)
+  14. competition          (prob: 0.0026)
+  15. specialize           (prob: 0.0026)
+
+Topic 33 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. hero                 (prob: 0.0087)
+   2. sidekick             (prob: 0.0082)
+   3. frodo                (prob: 0.0051)
+   4. samwise              (prob: 0.0041)
+   5. aura                 (prob: 0.0026)
+   6. destiny              (prob: 0.0026)
+   7. nurse                (prob: 0.0021)
+   8. kenzi                (prob: 0.0021)
+   9. aesthetic            (prob: 0.0016)
+  10. brienne              (prob: 0.0016)
+  11. dragon               (prob: 0.0016)
+  12. loyal                (prob: 0.0016)
+  13. ambitious            (prob: 0.0011)
+  14. fuck                 (prob: 0.0011)
+  15. community            (prob: 0.0011)
+
+Topic 34 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. scale                (prob: 0.0081)
+   2. galaxy               (prob: 0.0054)
+   3. music                (prob: 0.0045)
+   4. key                  (prob: 0.0041)
+   5. chord                (prob: 0.0036)
+   6. exam                 (prob: 0.0036)
+   7. notation             (prob: 0.0027)
+   8. auction              (prob: 0.0027)
+   9. transpose            (prob: 0.0027)
+  10. bang                 (prob: 0.0027)
+  11. light                (prob: 0.0023)
+  12. construct            (prob: 0.0023)
+  13. 2014                 (prob: 0.0023)
+  14. physic               (prob: 0.0023)
+  15. universe             (prob: 0.0023)
+
+Topic 35 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. movement             (prob: 0.0145)
+   2. list                 (prob: 0.0127)
+   3. question             (prob: 0.0091)
+   4. statement            (prob: 0.0073)
+   5. common               (prob: 0.0068)
+   6. sin                  (prob: 0.0050)
+   7. sense                (prob: 0.0050)
+   8. identity             (prob: 0.0041)
+   9. agreement            (prob: 0.0041)
+  10. controversial        (prob: 0.0037)
+  11. bos                  (prob: 0.0037)
+  12. person1              (prob: 0.0037)
+  13. movement1            (prob: 0.0037)
+  14. percentage           (prob: 0.0037)
+  15. identify             (prob: 0.0032)
+
+Topic 36 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. universe             (prob: 0.0138)
+   2. human                (prob: 0.0134)
+   3. value                (prob: 0.0127)
+   4. god                  (prob: 0.0101)
+   5. consciousness        (prob: 0.0064)
+   6. category             (prob: 0.0052)
+   7. job                  (prob: 0.0049)
+   8. create               (prob: 0.0045)
+   9. happy                (prob: 0.0041)
+  10. fai                  (prob: 0.0041)
+  11. terminal             (prob: 0.0038)
+  12. ai                   (prob: 0.0034)
+  13. say                  (prob: 0.0034)
+  14. friendly             (prob: 0.0030)
+  15. ffai                 (prob: 0.0026)
+
+Topic 37 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. train                (prob: 0.0086)
+   2. grossman             (prob: 0.0052)
+   3. control              (prob: 0.0043)
+   4. violence             (prob: 0.0039)
+   5. apparently           (prob: 0.0035)
+   6. training             (prob: 0.0030)
+   7. breathe              (prob: 0.0030)
+   8. experience           (prob: 0.0026)
+   9. game                 (prob: 0.0022)
+  10. combat               (prob: 0.0022)
+  11. memory               (prob: 0.0022)
+  12. motor                (prob: 0.0022)
+  13. event                (prob: 0.0022)
+  14. breathing            (prob: 0.0022)
+  15. situation            (prob: 0.0022)
+
+Topic 38 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. piano                (prob: 0.0067)
+   2. feel                 (prob: 0.0060)
+   3. hard                 (prob: 0.0060)
+   4. math                 (prob: 0.0060)
+   5. ramanujan            (prob: 0.0049)
+   6. brother              (prob: 0.0049)
+   7. innate               (prob: 0.0049)
+   8. ability              (prob: 0.0041)
+   9. practice             (prob: 0.0038)
+  10. god                  (prob: 0.0038)
+  11. music                (prob: 0.0038)
+  12. talent               (prob: 0.0034)
+  13. musk                 (prob: 0.0034)
+  14. intellectual         (prob: 0.0030)
+  15. servant              (prob: 0.0030)
+
+Topic 39 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. action               (prob: 0.0059)
+   2. maximize             (prob: 0.0047)
+   3. moral                (prob: 0.0042)
+   4. morally              (prob: 0.0038)
+   5. satisficers          (prob: 0.0034)
+   6. maximizers           (prob: 0.0034)
+   7. satisfice            (prob: 0.0034)
+   8. utilitarianism       (prob: 0.0030)
+   9. psychological        (prob: 0.0026)
+  10. contrast             (prob: 0.0026)
+  11. epistemic            (prob: 0.0026)
+  12. existential          (prob: 0.0021)
+  13. deontology           (prob: 0.0021)
+  14. ethical              (prob: 0.0021)
+  15. optimal              (prob: 0.0017)
+
+Topic 40 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. belief               (prob: 0.0071)
+   2. equality             (prob: 0.0066)
+   3. liberty              (prob: 0.0062)
+   4. arguably             (prob: 0.0057)
+   5. oakeshott            (prob: 0.0040)
+   6. recipe               (prob: 0.0035)
+   7. big                  (prob: 0.0035)
+   8. rationalism          (prob: 0.0031)
+   9. murder               (prob: 0.0027)
+  10. horse                (prob: 0.0022)
+  11. criminal             (prob: 0.0022)
+  12. liberal              (prob: 0.0022)
+  13. entitle              (prob: 0.0018)
+  14. luther               (prob: 0.0018)
+  15. book                 (prob: 0.0018)
+
+Topic 41 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. model                (prob: 0.0391)
+   2. reality              (prob: 0.0204)
+   3. correspondence       (prob: 0.0144)
+   4. truth                (prob: 0.0104)
+   5. world                (prob: 0.0080)
+   6. theory               (prob: 0.0052)
+   7. context              (prob: 0.0044)
+   8. evaluation           (prob: 0.0040)
+   9. pragmatic            (prob: 0.0040)
+  10. success              (prob: 0.0036)
+  11. correspond           (prob: 0.0036)
+  12. coherence            (prob: 0.0036)
+  13. goal                 (prob: 0.0032)
+  14. access               (prob: 0.0032)
+  15. causal               (prob: 0.0032)
+
+Topic 42 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. barista              (prob: 0.0133)
+   2. counter              (prob: 0.0114)
+   3. say                  (prob: 0.0096)
+   4. go                   (prob: 0.0078)
+   5. coffee               (prob: 0.0069)
+   6. ask                  (prob: 0.0055)
+   7. order                (prob: 0.0046)
+   8. value                (prob: 0.0028)
+   9. muffin               (prob: 0.0028)
+  10. seasonal             (prob: 0.0028)
+  11. espresso             (prob: 0.0023)
+  12. hegel                (prob: 0.0023)
+  13. socrates             (prob: 0.0023)
+  14. walk                 (prob: 0.0019)
+  15. sip                  (prob: 0.0019)
+
+Topic 43 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. bitcoin              (prob: 0.0190)
+   2. price                (prob: 0.0138)
+   3. cost                 (prob: 0.0119)
+   4. energy               (prob: 0.0089)
+   5. money                (prob: 0.0063)
+   6. market               (prob: 0.0060)
+   7. value                (prob: 0.0056)
+   8. mining               (prob: 0.0056)
+   9. resource             (prob: 0.0052)
+  10. card                 (prob: 0.0045)
+  11. equipment            (prob: 0.0045)
+  12. exchange             (prob: 0.0045)
+  13. electricity          (prob: 0.0037)
+  14. probability          (prob: 0.0037)
+  15. bitcoins             (prob: 0.0034)
+
+Topic 44 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. argument             (prob: 0.0162)
+   2. issue                (prob: 0.0115)
+   3. abortion             (prob: 0.0105)
+   4. fetus                (prob: 0.0091)
+   5. moral                (prob: 0.0081)
+   6. qalys                (prob: 0.0074)
+   7. expert               (prob: 0.0058)
+   8. ea                   (prob: 0.0058)
+   9. abort                (prob: 0.0054)
+  10. permissible          (prob: 0.0051)
+  11. uncertainty          (prob: 0.0051)
+  12. sen                  (prob: 0.0047)
+  13. morally              (prob: 0.0047)
+  14. child                (prob: 0.0044)
+  15. controversial        (prob: 0.0044)
+
+Topic 45 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. diet                 (prob: 0.0062)
+   2. animal               (prob: 0.0052)
+   3. agent                (prob: 0.0036)
+   4. factory              (prob: 0.0031)
+   5. farm                 (prob: 0.0026)
+   6. ethical              (prob: 0.0026)
+   7. pasture              (prob: 0.0021)
+   8. mealsquares          (prob: 0.0021)
+   9. vegan                (prob: 0.0021)
+  10. health               (prob: 0.0021)
+  11. shellfish            (prob: 0.0016)
+  12. willpower            (prob: 0.0016)
+  13. ea                   (prob: 0.0011)
+  14. pure                 (prob: 0.0011)
+  15. agi                  (prob: 0.0011)
+
+Topic 46 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. network              (prob: 0.0077)
+   2. neural               (prob: 0.0051)
+   3. search               (prob: 0.0036)
+   4. deep                 (prob: 0.0031)
+   5. convolutional        (prob: 0.0031)
+   6. evaluation           (prob: 0.0021)
+   7. program              (prob: 0.0021)
+   8. game                 (prob: 0.0021)
+   9. carlo                (prob: 0.0016)
+  10. performance          (prob: 0.0016)
+  11. monte                (prob: 0.0016)
+  12. mcts                 (prob: 0.0016)
+  13. accuracy             (prob: 0.0016)
+  14. aspect               (prob: 0.0011)
+  15. fuego                (prob: 0.0011)
+
+Topic 47 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. poverty              (prob: 0.0046)
+   2. child                (prob: 0.0037)
+   3. sustainability       (prob: 0.0037)
+   4. spend                (prob: 0.0037)
+   5. wine                 (prob: 0.0032)
+   6. effective            (prob: 0.0032)
+   7. ressources           (prob: 0.0032)
+   8. sci                  (prob: 0.0032)
+   9. water                (prob: 0.0032)
+  10. charity              (prob: 0.0028)
+  11. everyday             (prob: 0.0023)
+  12. co_2                 (prob: 0.0023)
+  13. givewell             (prob: 0.0023)
+  14. sustainable          (prob: 0.0019)
+  15. meetup               (prob: 0.0019)
+
+Topic 48 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. brain                (prob: 0.0085)
+   2. nervous              (prob: 0.0025)
+   3. serotonin            (prob: 0.0025)
+   4. body                 (prob: 0.0025)
+   5. upload               (prob: 0.0020)
+   6. chemistry            (prob: 0.0020)
+   7. personality          (prob: 0.0020)
+   8. emulation            (prob: 0.0020)
+   9. thoracic             (prob: 0.0020)
+  10. emotion              (prob: 0.0020)
+  11. sympathectomy        (prob: 0.0015)
+  12. neurotransmitter     (prob: 0.0015)
+  13. centredness          (prob: 0.0015)
+  14. example              (prob: 0.0015)
+  15. uploading            (prob: 0.0015)
+
+Topic 49 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. holiday              (prob: 0.0061)
+   2. memory               (prob: 0.0061)
+   3. experience           (prob: 0.0057)
+   4. solstice             (prob: 0.0052)
+   5. editor               (prob: 0.0047)
+   6. vacation             (prob: 0.0043)
+   7. story                (prob: 0.0043)
+   8. summer               (prob: 0.0033)
+   9. reward               (prob: 0.0029)
+  10. photo                (prob: 0.0029)
+  11. humanist             (prob: 0.0024)
+  12. reasoning            (prob: 0.0024)
+  13. controller           (prob: 0.0024)
+  14. justification        (prob: 0.0019)
+  15. winter               (prob: 0.0019)
+
+Topic 50 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. plant                (prob: 0.0054)
+   2. leaf                 (prob: 0.0044)
+   3. sporophyte           (prob: 0.0044)
+   4. fern                 (prob: 0.0025)
+   5. root                 (prob: 0.0025)
+   6. spore                (prob: 0.0025)
+   7. grow                 (prob: 0.0020)
+   8. seed                 (prob: 0.0020)
+   9. season               (prob: 0.0015)
+  10. young                (prob: 0.0015)
+  11. germination          (prob: 0.0015)
+  12. chromosome           (prob: 0.0015)
+  13. lycopod              (prob: 0.0015)
+  14. pryer                (prob: 0.0015)
+  15. surface              (prob: 0.0015)
+
+Topic 51 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. 000                  (prob: 0.0022)
+   2. cell                 (prob: 0.0022)
+   3. organ                (prob: 0.0017)
+   4. rationally           (prob: 0.0011)
+   5. metuselah            (prob: 0.0011)
+   6. atala                (prob: 0.0006)
+   7. enriquez             (prob: 0.0006)
+   8. juan                 (prob: 0.0006)
+   9. gorger               (prob: 0.0006)
+  10. cryonicists          (prob: 0.0006)
+  11. immortalist          (prob: 0.0006)
+  12. longevist            (prob: 0.0006)
+  13. invasive             (prob: 0.0006)
+  14. pricy                (prob: 0.0006)
+  15. garan                (prob: 0.0006)
+
+Topic 52 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. prestige             (prob: 0.0083)
+   2. virtue               (prob: 0.0067)
+   3. entry                (prob: 0.0037)
+   4. league               (prob: 0.0031)
+   5. famous               (prob: 0.0026)
+   6. club                 (prob: 0.0026)
+   7. virtuous             (prob: 0.0026)
+   8. requirement          (prob: 0.0026)
+   9. strict               (prob: 0.0021)
+  10. member               (prob: 0.0021)
+  11. alice                (prob: 0.0021)
+  12. award                (prob: 0.0021)
+  13. activist             (prob: 0.0016)
+  14. convey               (prob: 0.0016)
+  15. injustice            (prob: 0.0011)
+
+Topic 53 (Parent: Topic 0)
+--------------------------------------------------------------------------------
+   1. meetup               (prob: 0.0041)
+   2. lesswrong            (prob: 0.0021)
+   3. wir                  (prob: 0.0021)
+   4. wenn                 (prob: 0.0021)
+   5. frankfurt            (prob: 0.0021)
+   6. und                  (prob: 0.0016)
+   7. weird_random         (prob: 0.0016)
+   8. treffen              (prob: 0.0016)
+   9. gmail                (prob: 0.0011)
+  10. skype                (prob: 0.0011)
+  11. mail                 (prob: 0.0011)
+  12. potter               (prob: 0.0011)
+  13. com                  (prob: 0.0011)
+  14. die                  (prob: 0.0011)
+  15. harry                (prob: 0.0011)
+
+================================================================================
+HIERARCHICAL TREE STRUCTURE
+================================================================================
+
+├─ Topic 0 (Level 0)
+   people, like, make, think, good
+
+  ├─ Topic 8 (Level 1) [Parent: 0]
+     post, value, control, model, human
+
+  ├─ Topic 9 (Level 1) [Parent: 0]
+     harry, say, professor, potter, know
+
+  ├─ Topic 10 (Level 1) [Parent: 0]
+     meetup, 2015, meetups, post, february
+
+  ├─ Topic 11 (Level 1) [Parent: 0]
+     harry, say, draco, professor, know
+
+  ├─ Topic 12 (Level 1) [Parent: 0]
+     dr__cameron, island, let, yes, kill
+
+  ├─ Topic 13 (Level 1) [Parent: 0]
+     stranger, humanity, gatekeeper, want, box
+
+  ├─ Topic 14 (Level 1) [Parent: 0]
+     agent, action, utility, decision, problem
+
+  ├─ Topic 15 (Level 1) [Parent: 0]
+     terrorist, box, terrorism, freedom, group
+
+  ├─ Topic 16 (Level 1) [Parent: 0]
+     tribe, men, woman, mannfolk, fight
+
+  ├─ Topic 17 (Level 1) [Parent: 0]
+     ability, group, emulation, value, attractiveness
+
+  ├─ Topic 18 (Level 1) [Parent: 0]
+     agent, reason, problem, human, research
+
+  ├─ Topic 19 (Level 1) [Parent: 0]
+     income, miri, feminism, number, warm
+
+  ├─ Topic 20 (Level 1) [Parent: 0]
+     meetup, discussion, article, 2015, 00pm
+
+  ├─ Topic 21 (Level 1) [Parent: 0]
+     page, color, year, decline, wikipedia
+
+  ├─ Topic 22 (Level 1) [Parent: 0]
+     god, earth, galilei, religion, religious
+
+  ├─ Topic 23 (Level 1) [Parent: 0]
+     fund, stock, company, invest, market
+
+  ├─ Topic 24 (Level 1) [Parent: 0]
+     harry, voldemort, wand, say, professor
+
+  ├─ Topic 25 (Level 1) [Parent: 0]
+     elect, algorithm, nuke, hillary, prediction
+
+  ├─ Topic 26 (Level 1) [Parent: 0]
+     risk, death, health, fat, cancer
+
+  ├─ Topic 27 (Level 1) [Parent: 0]
+     model, environment, study, level, variable
+
+  ├─ Topic 28 (Level 1) [Parent: 0]
+     fruit, meal, food, bread, veggie
+
+  ├─ Topic 29 (Level 1) [Parent: 0]
+     life, save, dragon, thousand, villager
+
+  ├─ Topic 30 (Level 1) [Parent: 0]
+     political, politics, villain, topic, community
+
+  ├─ Topic 31 (Level 1) [Parent: 0]
+     skill, book, useful, soft, telekinesis
+
+  ├─ Topic 32 (Level 1) [Parent: 0]
+     status, skill, generic, elite, specialist
+
+  ├─ Topic 33 (Level 1) [Parent: 0]
+     hero, sidekick, frodo, samwise, aura
+
+  ├─ Topic 34 (Level 1) [Parent: 0]
+     scale, galaxy, music, key, chord
+
+  ├─ Topic 35 (Level 1) [Parent: 0]
+     movement, list, question, statement, common
+
+  ├─ Topic 36 (Level 1) [Parent: 0]
+     universe, human, value, god, consciousness
+
+  ├─ Topic 37 (Level 1) [Parent: 0]
+     train, grossman, control, violence, apparently
+
+  ├─ Topic 38 (Level 1) [Parent: 0]
+     piano, feel, hard, math, ramanujan
+
+  ├─ Topic 39 (Level 1) [Parent: 0]
+     action, maximize, moral, morally, satisficers
+
+  ├─ Topic 40 (Level 1) [Parent: 0]
+     belief, equality, liberty, arguably, oakeshott
+
+  ├─ Topic 41 (Level 1) [Parent: 0]
+     model, reality, correspondence, truth, world
+
+  ├─ Topic 42 (Level 1) [Parent: 0]
+     barista, counter, say, go, coffee
+
+  ├─ Topic 43 (Level 1) [Parent: 0]
+     bitcoin, price, cost, energy, money
+
+  ├─ Topic 44 (Level 1) [Parent: 0]
+     argument, issue, abortion, fetus, moral
+
+  ├─ Topic 45 (Level 1) [Parent: 0]
+     diet, animal, agent, factory, farm
+
+  ├─ Topic 46 (Level 1) [Parent: 0]
+     network, neural, search, deep, convolutional
+
+  ├─ Topic 47 (Level 1) [Parent: 0]
+     poverty, child, sustainability, spend, wine
+
+  ├─ Topic 48 (Level 1) [Parent: 0]
+     brain, nervous, serotonin, body, upload
+
+  ├─ Topic 49 (Level 1) [Parent: 0]
+     holiday, memory, experience, solstice, editor
+
+  ├─ Topic 50 (Level 1) [Parent: 0]
+     plant, leaf, sporophyte, fern, root
+
+  ├─ Topic 51 (Level 1) [Parent: 0]
+     000, cell, organ, rationally, metuselah
+
+  ├─ Topic 52 (Level 1) [Parent: 0]
+     prestige, virtue, entry, league, famous
+
+  ├─ Topic 53 (Level 1) [Parent: 0]
+     meetup, lesswrong, wir, wenn, frankfurt
+
+================================================================================
+SAMPLE DOCUMENT PATHS (first 10 documents)
+================================================================================
+
+Document 0:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 38: piano, feel, hard, math, ramanujan
+
+Document 1:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 49: holiday, memory, experience, solstice, editor
+
+Document 2:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 8: post, value, control, model, human
+
+Document 3:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 10: meetup, 2015, meetups, post, february
+
+Document 4:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 32: status, skill, generic, elite, specialist
+
+Document 5:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 18: agent, reason, problem, human, research
+
+Document 6:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 20: meetup, discussion, article, 2015, 00pm
+
+Document 7:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 25: elect, algorithm, nuke, hillary, prediction
+
+Document 8:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 11: harry, say, draco, professor, know
+
+Document 9:
+--------------------------------------------------------------------------------
+  Level 0 → Topic 0: people, like, make, think, good
+  Level 1 → Topic 18: agent, reason, problem, human, research
+
+================================================================================
+TOPIC STATISTICS
+================================================================================
+
+Documents assigned to each topic:
+--------------------------------------------------------------------------------
+  Topic   0 (Level 0):   494 docs (100.00%)
+  Topic   8 (Level 1):    70 docs (14.17%)
+  Topic   9 (Level 1):    48 docs ( 9.72%)
+  Topic  10 (Level 1):    28 docs ( 5.67%)
+  Topic  11 (Level 1):    18 docs ( 3.64%)
+  Topic  12 (Level 1):     1 docs ( 0.20%)
+  Topic  13 (Level 1):     6 docs ( 1.21%)
+  Topic  14 (Level 1):    57 docs (11.54%)
+  Topic  15 (Level 1):     5 docs ( 1.01%)
+  Topic  16 (Level 1):     2 docs ( 0.40%)
+  Topic  17 (Level 1):    28 docs ( 5.67%)
+  Topic  18 (Level 1):    16 docs ( 3.24%)
+  Topic  19 (Level 1):     2 docs ( 0.40%)
+  Topic  20 (Level 1):   116 docs (23.48%)
+  Topic  21 (Level 1):     2 docs ( 0.40%)
+  Topic  22 (Level 1):     2 docs ( 0.40%)
+  Topic  23 (Level 1):     5 docs ( 1.01%)
+  Topic  24 (Level 1):     4 docs ( 0.81%)
+  Topic  25 (Level 1):     6 docs ( 1.21%)
+  Topic  26 (Level 1):     7 docs ( 1.42%)
+  Topic  27 (Level 1):     1 docs ( 0.20%)
+  Topic  28 (Level 1):     2 docs ( 0.40%)
+  Topic  29 (Level 1):     2 docs ( 0.40%)
+  Topic  30 (Level 1):     3 docs ( 0.61%)
+  Topic  31 (Level 1):     5 docs ( 1.01%)
+  Topic  32 (Level 1):     4 docs ( 0.81%)
+  Topic  33 (Level 1):     2 docs ( 0.40%)
+  Topic  34 (Level 1):     6 docs ( 1.21%)
+  Topic  35 (Level 1):     4 docs ( 0.81%)
+  Topic  36 (Level 1):     6 docs ( 1.21%)
+  Topic  37 (Level 1):     2 docs ( 0.40%)
+  Topic  38 (Level 1):     1 docs ( 0.20%)
+  Topic  39 (Level 1):     1 docs ( 0.20%)
+  Topic  40 (Level 1):     7 docs ( 1.42%)
+  Topic  41 (Level 1):     2 docs ( 0.40%)
+  Topic  42 (Level 1):     1 docs ( 0.20%)
+  Topic  43 (Level 1):     4 docs ( 0.81%)
+  Topic  44 (Level 1):     3 docs ( 0.61%)
+  Topic  45 (Level 1):     1 docs ( 0.20%)
+  Topic  46 (Level 1):     1 docs ( 0.20%)
+  Topic  47 (Level 1):     3 docs ( 0.61%)
+  Topic  48 (Level 1):     1 docs ( 0.20%)
+  Topic  49 (Level 1):     4 docs ( 0.81%)
+  Topic  50 (Level 1):     1 docs ( 0.20%)
+  Topic  51 (Level 1):     1 docs ( 0.20%)
+  Topic  52 (Level 1):     2 docs ( 0.40%)
+  Topic  53 (Level 1):     1 docs ( 0.20%)
+
+================================================================================
+END OF REPORT
+================================================================================

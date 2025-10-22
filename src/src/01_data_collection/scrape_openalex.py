@@ -15,8 +15,8 @@ class AIScholarshipAnalyzer:
         self.session.headers.update(self.headers)
         
     def get_and_save_articles(self, topic_id: str = "T10883", 
-                             start_year: int = 2015, 
-                             end_year: int = 2024) -> Dict[str, int]:
+                            start_date: datetime = datetime(2000, 1, 1), 
+                            end_date: datetime = datetime(2025, 6, 30)) -> Dict[str, int]:
         """
         Fetch ALL papers by iterating year-by-year (or month-by-month if needed).
         This bypasses the 10,000 result limit.
@@ -27,7 +27,11 @@ class AIScholarshipAnalyzer:
         total_papers = 0
         saved_counts = {}
         
-        for year in range(start_year, end_year + 1):
+        for year in range(start_date.year, end_date.year + 1):
+            if year == end_date.year:
+                last_month = end_date.month
+            else:
+                last_month = 12
             print(f"\n{'='*60}")
             print(f"Processing year {year}...")
             print(f"{'='*60}")
@@ -39,7 +43,7 @@ class AIScholarshipAnalyzer:
             if count > 10000:
                 # If more than 10k, iterate by month
                 print(f"⚠️  Year {year} has {count} papers (>10k limit). Splitting by month...")
-                year_counts = self._fetch_year_by_month(topic_id, year)
+                year_counts = self._fetch_year_by_month(topic_id, year, max_month=last_month)
             else:
                 # Otherwise fetch the whole year at once
                 year_counts = self._fetch_year(topic_id, year)
@@ -124,11 +128,11 @@ class AIScholarshipAnalyzer:
         
         return self._save_papers_by_month(papers_by_month)
     
-    def _fetch_year_by_month(self, topic_id: str, year: int) -> Dict[str, int]:
+    def _fetch_year_by_month(self, topic_id: str, year: int, max_month: int = 12) -> Dict[str, int]:
         """Fetch papers month-by-month for years with >10k papers"""
         all_saved_counts = {}
         
-        for month in range(1, 13):
+        for month in range(1, max_month + 1):
             month_str = f"{month:02d}"
             year_month = f"{year}-{month_str}"
             

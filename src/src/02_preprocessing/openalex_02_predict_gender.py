@@ -33,7 +33,7 @@ class OpenAlexCSVProcessor:
             try:
                 self.process_single_csv(csv_file)
             except Exception as e:
-                print(f"  ✗ Error processing {csv_file}: {e}")
+                print(f"❌ Error processing {csv_file}: {e}")
                 continue
     
     def process_single_csv(self, filepath: str):

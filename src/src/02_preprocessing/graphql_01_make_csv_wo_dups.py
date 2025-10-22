@@ -30,7 +30,11 @@ class LesswrongJsonToCsv:
         return m
 
     def transform(self):
-        for year in range(2015, 2025): 
+        years = sorted([
+            int(name) for name in os.listdir(self.input_base)
+            if os.path.isdir(os.path.join(self.input_base, name)) and name.isdigit()
+        ])
+        for year in years:
             year_folder = os.path.join(self.input_base, str(year))
             if not os.path.exists(year_folder):
                 continue

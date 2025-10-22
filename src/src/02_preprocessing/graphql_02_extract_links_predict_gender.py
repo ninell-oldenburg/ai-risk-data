@@ -333,7 +333,11 @@ def main(forum):
     gender_dist = Counter()
 
     csv_file_pairs = []
-    for year in range(2015, 2025):
+    years = sorted([
+        int(name) for name in os.listdir(base_path_in)
+        if os.path.isdir(os.path.join(base_path_in, name)) and name.isdigit()
+    ])
+    for year in years:
         input_dir = os.path.join(base_path_in, str(year))
         output_dir = os.path.join(base_path_out, str(year))
         

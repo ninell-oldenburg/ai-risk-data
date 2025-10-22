@@ -34,14 +34,18 @@ class OptimizedHierarchicalLDA:
         self.blog_posts = []
         self.hdp_results = {}
         
-    def load_csv_files(self, start_year=2015, end_year=2024, max_posts=None):
+    def load_csv_files(self, max_posts=None):
         """Load all CSV files"""
-        print(f"Loading CSV files from {start_year} to {end_year}...")
+        print(f"Loading CSV files ...")
         
         all_posts = []
         file_count = 0
         
-        for year in range(start_year, end_year + 1):
+        years = sorted([
+            int(name) for name in os.listdir(self.base_path)
+            if os.path.isdir(os.path.join(self.base_path, name)) and name.isdigit()
+        ])
+        for year in years:
             year_path = Path(self.base_path) / str(year)
             
             if not year_path.exists():
