@@ -571,6 +571,6 @@ if __name__ == "__main__":
     
     platform = sys.argv[1]
     max_posts = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] != 'None' else None
-    min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 15
+    min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 400
     
     main(platform, max_posts, min_topic_size)
