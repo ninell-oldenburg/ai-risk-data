@@ -2,8 +2,9 @@
 *.csv
 *.pdf
 *.png
+*.pkl
+*.npy
 
-src/metadata/embeddings/
 src/hidden
 
 __pycache__/
