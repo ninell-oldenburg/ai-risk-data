@@ -107,33 +107,33 @@ class EmbeddingTopicModeling:
         return len(self.blog_posts) > 0
     
     def train_topic_model(self, 
-                         min_topic_size=15,
-                         n_neighbors=15,
+                         min_topic_size=400,
+                         n_neighbors=25,
                          n_components=5,
-                         min_cluster_size=15,
+                         min_cluster_size=400,
                          embedding_model='all-MiniLM-L6-v2',
                          nr_topics='auto',
+                         reduce_outliers=True,
                          verbose=True):
         """
         Train BERTopic model
         
         Parameters:
         -----------
-        min_topic_size : int (default: 15)
-            Minimum documents per topic
-        n_neighbors : int (default: 15)
-            UMAP n_neighbors - controls local vs global structure
+        min_topic_size : int (default: 400)
+            Minimum documents per topic - HIGH VALUES = fewer topics
+        n_neighbors : int (default: 25)
+            UMAP n_neighbors - HIGHER = broader, fewer topics (try 25-50)
         n_components : int (default: 5)
             UMAP dimensions
-        min_cluster_size : int (default: 15)
-            HDBSCAN minimum cluster size
+        min_cluster_size : int (default: 400)
+            HDBSCAN minimum cluster size - MUST match min_topic_size
         embedding_model : str
-            Sentence transformer model:
-            - 'all-MiniLM-L6-v2' (fast, good quality) - RECOMMENDED
-            - 'all-mpnet-base-v2' (slower, best quality)
-            - 'paraphrase-multilingual-MiniLM-L12-v2' (multilingual)
+            Sentence transformer model
         nr_topics : int or 'auto'
-            Number of topics (or 'auto' for automatic)
+            Target number of topics to reduce to (recommended: 15-30)
+        reduce_outliers : bool
+            Whether to reduce outliers
         """
         print(f"\n{'='*60}")
         print(f"TRAINING BERTOPIC MODEL")
@@ -159,10 +159,11 @@ class EmbeddingTopicModeling:
         print(f"3. Configuring HDBSCAN (min_cluster_size={min_cluster_size})")
         hdbscan_model = HDBSCAN(
             min_cluster_size=min_cluster_size,
-            min_samples=10,
+            min_samples=max(10, min_cluster_size // 10),  # Scale with cluster size
             metric='euclidean',
             cluster_selection_method='eom',
-            prediction_data=True
+            prediction_data=True,
+            cluster_selection_epsilon=0.0  # More aggressive merging
         )
         
         # 4. Vectorizer - custom stop words for AI/rationality content
@@ -218,8 +219,46 @@ class EmbeddingTopicModeling:
         print(f"MODEL TRAINING COMPLETE")
         print(f"{'='*60}")
         print(f"Topics discovered: {n_topics}")
-        print(f"Outliers (topic -1): {sum(topics == -1)} documents")
-        print(f"Documents with topics: {sum(topics != -1)} documents")
+        print(f"Outliers (topic -1): {sum(t == -1 for t in topics)} documents")
+        print(f"Documents with topics: {sum(t != -1 for t in topics)} documents")
+        
+        # Optionally reduce outliers
+        if reduce_outliers and sum(t == -1 for t in topics) > 0:
+            print(f"\nReducing outliers...")
+            new_topics = self.topic_model.reduce_outliers(docs, topics)
+            print(f"  Outliers after reduction: {sum(t == -1 for t in new_topics)}")
+            topics = new_topics
+            
+            # Update probabilities
+            probs = self.topic_model.probabilities_
+        
+        # Calculate reasonable number of topics based on corpus size
+        docs_per_topic = len(docs) // 30  # Aim for ~30 topics
+        recommended_topics = max(15, min(40, len(docs) // min_cluster_size))
+        
+        # Auto-reduce if we have too many topics
+        if nr_topics == 'auto':
+            if n_topics > 50:
+                target = min(30, recommended_topics)
+                print(f"\n⚠️  {n_topics} topics is quite high!")
+                print(f"   With {len(docs)} docs and min_topic_size={min_topic_size},")
+                print(f"   Automatically reducing to {target} topics...")
+                self.topic_model.reduce_topics(docs, nr_topics=target)
+                topics = self.topic_model.topics_
+                probs = self.topic_model.probabilities_
+                
+                n_topics = len(self.topic_model.get_topic_info()) - 1
+                print(f"   ✓ Topics after reduction: {n_topics}")
+            else:
+                print(f"   {n_topics} topics seems reasonable for this corpus")
+        elif isinstance(nr_topics, int):
+            print(f"\nReducing to {nr_topics} topics...")
+            self.topic_model.reduce_topics(docs, nr_topics=nr_topics)
+            topics = self.topic_model.topics_
+            probs = self.topic_model.probabilities_
+            
+            n_topics = len(self.topic_model.get_topic_info()) - 1
+            print(f"   ✓ Topics after reduction: {n_topics}")
         
         # Add topic assignments to blog posts
         for i, post in enumerate(self.blog_posts):
@@ -506,14 +545,15 @@ class EmbeddingTopicModeling:
         print(f"Embeddings saved to {embeddings_path}")
 
 
-def main(platform, max_posts=None, min_topic_size=15, embedding_model='all-MiniLM-L6-v2'):
+def main(platform, max_posts=None, min_topic_size=400, nr_topics=25, embedding_model='all-MiniLM-L6-v2'):
     """
     Main function to run BERTopic analysis
     
     Args:
         platform: 'lw' or 'af'
         max_posts: Limit number of posts (None = all)
-        min_topic_size: Minimum documents per topic
+        min_topic_size: Minimum documents per topic (400+ for large corpora)
+        nr_topics: Target number of topics (15-30 is reasonable)
         embedding_model: Which sentence transformer to use
     """
     print("\n" + "="*80)
@@ -531,8 +571,11 @@ def main(platform, max_posts=None, min_topic_size=15, embedding_model='all-MiniL
     analyzer.train_topic_model(
         min_topic_size=min_topic_size,
         embedding_model=embedding_model,
-        n_neighbors=15,
-        n_components=5
+        n_neighbors=25,  # Higher for broader topics
+        n_components=5,
+        min_cluster_size=min_topic_size,  # Must match min_topic_size
+        #nr_topics=nr_topics,  # Will auto-reduce if too many found
+        reduce_outliers=True
     )
     
     # Optional: reduce topics if too many were discovered
@@ -558,19 +601,26 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) < 2:
-        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [MIN_TOPIC_SIZE]")
+        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [MIN_TOPIC_SIZE] [NR_TOPICS]")
         print("\nParameters:")
         print("  FORUM: 'lw' or 'af' (required)")
         print("  MAX_POSTS: Limit posts for testing (default: None = all)")
-        print("  MIN_TOPIC_SIZE: Minimum documents per topic (default: 15)")
+        print("  MIN_TOPIC_SIZE: Minimum documents per topic (default: 400)")
+        print("  NR_TOPICS: Target number of topics (default: 25)")
         print("\nExamples:")
-        print("  python bertopic_analyzer.py lw 1000 10    # Test with 1000 posts")
-        print("  python bertopic_analyzer.py af None 20    # All posts, min 20 per topic")
+        print("  python bertopic_analyzer.py lw None 400 25  # 400 docs/topic, reduce to 25")
+        print("  python bertopic_analyzer.py af None 500 20  # 500 docs/topic, reduce to 20")
+        print("  python bertopic_analyzer.py lw 5000 100 15  # Test with 5k posts")
+        print("\n⚠️  If you still get too many topics:")
+        print("  • SET nr_topics lower (15-20)")
+        print("  • INCREASE min_topic_size (500-1000)")
+        print("  • Edit code: increase n_neighbors to 30-50")
         print("\nNote: First run will download the embedding model (~80MB)")
         sys.exit(1)
     
     platform = sys.argv[1]
     max_posts = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] != 'None' else None
     min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 400
+    nr_topics = int(sys.argv[4]) if len(sys.argv) > 4 else 25
     
-    main(platform, max_posts, min_topic_size)
+    main(platform, max_posts, min_topic_size, nr_topics)
