@@ -628,7 +628,7 @@ class EmbeddingTopicModeling:
         retrain model for each combo, and record: n_neighbors, min_topic_size,
         num_topics, coherence (c_v), diversity.
         """
-        # prepare output
+        # prepare outputs and so on... 
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         csv_path = Path(output_dir) / f"sweep_{int(time.time())}.csv"
 
@@ -700,7 +700,7 @@ class EmbeddingTopicModeling:
                 if old_model is not None:
                     self.topic_model = old_model
 
-        # After sweep, plot coherence vs diversity
+        # plot outputs
         import pandas as pd
         df = pd.read_csv(csv_path)
         plt.figure(figsize=(8,6))
