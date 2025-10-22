@@ -86,7 +86,7 @@ class ScrapeLesswrong:
         end_date = datetime(2025, 6, 30)
         last_month = start_date
         all_results = []
-        files_opened = 0
+        n_posts = 0
 
         print(f"\n{'='*60}")
         print(f"Processing year {start_date.year}...")
@@ -116,6 +116,7 @@ class ScrapeLesswrong:
                 
             data = response.json()
             results = data.get("data", {}).get("posts", {}).get("results", [])
+            n_posts += len(results)
             
             # Create directory structure if it doesn't exist
             year_dir = f"src/raw_data/{self.platform}/json/{start_date.year}"
@@ -129,7 +130,6 @@ class ScrapeLesswrong:
             
             with open(filepath, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
-                files_opened += 1
 
             print(f"✅ Saved {len(results)} posts to {filepath}")
 
@@ -138,15 +138,14 @@ class ScrapeLesswrong:
 
             last_month = start_date
             start_date = next_month
-
-        return len(all_results), files_opened
+        
+        return n_posts, len(all_results)
 
 def main(platform):
     scraper = ScrapeLesswrong(platform=platform)
     n_posts, n_files = scraper.get_and_save_articles()
     print(f"\n{'='*60}")
-    print(f"✓ COMPLETE: Retrieved {n_posts} papers total")
-    print(f"✓ Saved across {len(n_files)} files")
+    print(f"✅ COMPLETE: Saved {n_posts} papers across {n_files} files")
     print(f"{'='*60}")
 
 if __name__ == "__main__":
