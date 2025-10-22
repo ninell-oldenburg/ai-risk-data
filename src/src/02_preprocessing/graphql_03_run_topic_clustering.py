@@ -8,6 +8,8 @@ import warnings
 import pickle
 from collections import Counter
 import re
+import io
+import sys
 
 # BERTopic and dependencies
 from bertopic import BERTopic
@@ -15,8 +17,9 @@ from sentence_transformers import SentenceTransformer
 from umap import UMAP
 from hdbscan import HDBSCAN
 from sklearn.feature_extraction.text import CountVectorizer
-from bertopic.vectorizers import ClassTfidfTransformer
 from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance
+from bertopic.representation import KeyBERTInspired
+from gensim.models.coherencemodel import CoherenceModel
 
 warnings.filterwarnings('ignore')
 
@@ -107,14 +110,14 @@ class EmbeddingTopicModeling:
         return len(self.blog_posts) > 0
     
     def train_topic_model(self, 
-                         min_topic_size=400,
-                         n_neighbors=25,
-                         n_components=5,
-                         min_cluster_size=400,
-                         embedding_model='all-MiniLM-L6-v2',
-                         nr_topics='auto',
-                         reduce_outliers=True,
-                         verbose=True):
+                        min_topic_size=None,
+                        n_neighbors=25,
+                        n_components=5,
+                        min_cluster_size=None,
+                        embedding_model='all-MiniLM-L6-v2',
+                        nr_topics='auto',
+                        reduce_outliers=True,
+                        verbose=True):
         """
         Train BERTopic model
         
@@ -135,11 +138,22 @@ class EmbeddingTopicModeling:
         reduce_outliers : bool
             Whether to reduce outliers
         """
+         
         print(f"\n{'='*60}")
         print(f"TRAINING BERTOPIC MODEL")
         print(f"{'='*60}")
-        
+
         docs = [post['text'] for post in self.blog_posts]
+        self.docs = docs  # store for later evaluation
+
+        # === Auto-adjust cluster size ===
+        if min_topic_size is None:
+            min_topic_size = max(20, int(len(docs) * 0.01))  # 1% of corpus, but at least 20
+            print(f"Auto-set min_topic_size to {min_topic_size} (1% of {len(docs)})")
+
+        if min_cluster_size is None:
+            min_cluster_size = min_topic_size
+            print(f"Auto-set min_cluster_size to {min_cluster_size}")
         
         # 1. Embedding Model
         print(f"\n1. Loading embedding model: {embedding_model}")
@@ -176,8 +190,8 @@ class EmbeddingTopicModeling:
         vectorizer_model = CountVectorizer(
             ngram_range=(1, 2),
             stop_words='english',
-            min_df=5,
-            max_df=0.7
+            min_df=1, 
+            max_df=1.0
         )
         
         # 5. Representation models for better topic descriptions
@@ -263,7 +277,14 @@ class EmbeddingTopicModeling:
         # Add topic assignments to blog posts
         for i, post in enumerate(self.blog_posts):
             post['topic'] = int(topics[i])
-            post['topic_probability'] = float(probs[i]) if probs is not None else 0.0
+            if probs is not None:
+                topic_id = topics[i]
+                if topic_id != -1:
+                    post['topic_probability'] = float(probs[i][topic_id])
+                else:
+                    post['topic_probability'] = 0.0
+            else:
+                post['topic_probability'] = 0.0
         
         return topics, probs
     
@@ -478,6 +499,27 @@ class EmbeddingTopicModeling:
             print(f"Topic space saved to {output_path}")
         except Exception as e:
             print(f"Could not create topic space: {e}")
+
+    def save_detailed_topics(self, output_path=None, n_topics=10):
+        """
+        Save the same output as print_detailed_topics() to a text file.
+        """
+        if output_path is None:
+            output_path = f"src/metadata/clustering_results/{self.platform}/detailed_topics.txt"
+
+        # Capture printed output
+        buffer = io.StringIO()
+        old_stdout = sys.stdout
+        sys.stdout = buffer
+
+        try:
+            self.print_detailed_topics(n_topics=n_topics)
+        finally:
+            sys.stdout = old_stdout
+
+        content = buffer.getvalue()
+        Path(output_path).write_text(content, encoding="utf-8")
+        print(f"✅ Saved detailed topics to: {output_path}")
     
     def print_detailed_topics(self, n_topics=10):
         """Print detailed information about top topics"""
@@ -544,8 +586,74 @@ class EmbeddingTopicModeling:
         np.save(embeddings_path, self.embeddings)
         print(f"Embeddings saved to {embeddings_path}")
 
+    def evaluate_topics(self):
+        """
+        Compute and print topic coherence (C_v) and diversity for the current model.
+        """
+        model = self.topic_model
+        docs = self.docs if hasattr(self, "docs") else [p["processed_text"] for p in self.blog_posts]
 
-def main(platform, max_posts=None, min_topic_size=400, nr_topics=25, embedding_model='all-MiniLM-L6-v2'):
+        # --- Topic Diversity ---
+        topic_diversity = self.compute_topic_diversity(top_n_words=10)
+
+        # --- Topic Coherence (C_v) ---
+        topics = model.get_topics()
+        top_words = [[word for word, _ in topics[t]] for t in topics if t != -1]
+
+        cm = CoherenceModel(
+            topics=top_words,
+            texts=[d.split() for d in docs],
+            coherence="c_v"
+        )
+        topic_coherence = cm.get_coherence()
+
+        print("\n--- TOPIC MODEL EVALUATION ---")
+        print(f"Topic Coherence (C_v): {topic_coherence:.3f}")
+        print(f"Topic Diversity: {topic_diversity:.3f}")
+        print("--------------------------------\n")
+
+        self.topic_coherence = topic_coherence
+        self.topic_diversity = topic_diversity
+        return topic_coherence, topic_diversity
+
+    def plot_topic_distribution(self, output_path=None):
+        """
+        Create and save a bar plot of the number of posts per topic.
+        """
+        if output_path is None:
+            output_path = f"{self.platform}_topic_distribution.png"
+
+        topic_info = self.topic_model.get_topic_info()
+        topic_info = topic_info[topic_info.Topic != -1]
+        topic_info = topic_info.sort_values("Count", ascending=False)
+
+        plt.figure(figsize=(10, 6))
+        plt.bar(range(len(topic_info)), topic_info["Count"])
+        plt.xticks(range(len(topic_info)), topic_info["Topic"], rotation=90)
+        plt.xlabel("Topic ID")
+        plt.ylabel("Number of Posts")
+        plt.title(f"Topic Distribution ({self.platform.upper()})")
+        plt.tight_layout()
+        plt.savefig(output_path, dpi=300)
+        plt.close()
+
+        print(f"📊 Saved topic distribution plot: {output_path}")
+
+    def compute_topic_diversity(self, top_n_words=10):
+        topics = self.topic_model.get_topics()
+        all_words = []
+        for tid, words_scores in topics.items():
+            if tid == -1:  # skip outliers
+                continue
+            words = [w for w, _ in words_scores[:top_n_words]]
+            all_words.extend(words)
+        unique_words = set(all_words)
+        diversity = len(unique_words) / len(all_words)
+        print(f"Topic Diversity (manual): {diversity:.3f}")
+        self.topic_diversity = diversity
+        return diversity
+
+def main(platform, max_posts=None):
     """
     Main function to run BERTopic analysis
     
@@ -569,12 +677,12 @@ def main(platform, max_posts=None, min_topic_size=400, nr_topics=25, embedding_m
     
     # Train model
     analyzer.train_topic_model(
-        min_topic_size=min_topic_size,
-        embedding_model=embedding_model,
-        n_neighbors=25,  # Higher for broader topics
+        min_topic_size=100,
+        min_cluster_size=100,
+        n_neighbors=15,            # tighter local density, more separation
         n_components=5,
-        min_cluster_size=min_topic_size,  # Must match min_topic_size
-        #nr_topics=nr_topics,  # Will auto-reduce if too many found
+        embedding_model='all-MiniLM-L6-v2',
+        nr_topics='auto',
         reduce_outliers=True
     )
     
@@ -583,7 +691,10 @@ def main(platform, max_posts=None, min_topic_size=400, nr_topics=25, embedding_m
     
     # Analysis
     analyzer.print_detailed_topics(n_topics=10)
+    analyzer.save_detailed_topics(n_topics=10)
     analyzer.visualize_topics()
+    analyzer.evaluate_topics()
+    analyzer.plot_topic_distribution()
     
     # Interactive visualizations (saved as HTML)
     analyzer.visualize_topic_hierarchy()
@@ -623,4 +734,4 @@ if __name__ == "__main__":
     min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 400
     nr_topics = int(sys.argv[4]) if len(sys.argv) > 4 else 25
     
-    main(platform, max_posts, min_topic_size, nr_topics)
+    main(platform, max_posts)
