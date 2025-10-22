@@ -680,8 +680,8 @@ class EmbeddingTopicModeling:
 
                 # Compute metrics
                 num_topics = len(topic_model.get_topic_info()) - 1
-                diversity = self.compute_diversity_from_model(self, top_n_words=top_n_words)
-                coherence = self.compute_coherence_from_docs(self, docs, top_n_words=top_n_words)
+                diversity = self.compute_diversity_from_model(top_n_words=top_n_words)
+                coherence = self.compute_coherence_from_docs(docs, top_n_words=top_n_words)
 
                 print(f"-> topics: {num_topics}, coherence: {coherence:.3f}, diversity: {diversity:.3f}")
 
