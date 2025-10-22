@@ -397,9 +397,8 @@ def main(forum):
     print('Inferred gender distribution of posts:')
     for key, value in gender_dist.items():
         print(f'{key}: {value}')
-
-    """ 
-    # UNCOMMENT THIS TO SEE SINGLE NAME - GENDER MAPPING
+     
+    """# UNCOMMENT THIS TO SEE SINGLE NAME - GENDER MAPPING
     for key, value in user_gender_map.items():
         print(f'{key}: {value}')
     """

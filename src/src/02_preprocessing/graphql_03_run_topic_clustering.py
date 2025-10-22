@@ -1,46 +1,51 @@
-import os
-import pandas as pd
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
-from sklearn.metrics import silhouette_score
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
-from sklearn.decomposition import LatentDirichletAllocation
-from sklearn.feature_extraction.text import CountVectorizer
-import pyLDAvis
-import pyLDAvis.lda_model
-import sys
-import re
-import nltk
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import wordnet
-# nltk.download('averaged_perceptron_tagger_eng')
-from collections import defaultdict, Counter
+import seaborn as sns
 from pathlib import Path
+import os
 import warnings
-warnings.filterwarnings('ignore')
-from gensim.models.coherencemodel import CoherenceModel
-from gensim.corpora import Dictionary
-import gensim
+import pickle
+from collections import Counter
+import re
 
-class BlogTopicClustering:
+# BERTopic and dependencies
+from bertopic import BERTopic
+from sentence_transformers import SentenceTransformer
+from umap import UMAP
+from hdbscan import HDBSCAN
+from sklearn.feature_extraction.text import CountVectorizer
+from bertopic.vectorizers import ClassTfidfTransformer
+from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance
+
+warnings.filterwarnings('ignore')
+
+class EmbeddingTopicModeling:
+    """
+    BERTopic-based topic modeling with embeddings
+    
+    Advantages over LDA:
+    - Captures semantic meaning (not just word co-occurrence)
+    - Works better with technical/specialized vocabulary
+    - Automatic topic number selection
+    - Better coherence for modern text
+    """
+    
     def __init__(self, platform):
         try:
             if platform in ['lw', 'af']:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
+        
         self.base_path = f"src/processed_data/{self.platform}/02_with_links_and_gender"
         self.blog_posts = []
-        self.tfidf_matrix = None
-        self.vectorizer = None
-        self.cluster_results = {}
+        self.topic_model = None
+        self.embeddings = None
         
-    def load_csv_files(self):
-        """Load all CSV files from the specified year range"""
-        print(f"Loading CSV files ...")
+    def load_csv_files(self, max_posts=None):
+        """Load all CSV files"""
+        print(f"Loading CSV files from {self.platform}...")
         
         all_posts = []
         file_count = 0
@@ -49,11 +54,11 @@ class BlogTopicClustering:
             int(name) for name in os.listdir(self.base_path)
             if os.path.isdir(os.path.join(self.base_path, name)) and name.isdigit()
         ])
+        
         for year in years:
             year_path = Path(self.base_path) / str(year)
             
             if not year_path.exists():
-                print(f"Warning: Directory {year_path} does not exist")
                 continue
                 
             for month in range(1, 13):
@@ -63,8 +68,6 @@ class BlogTopicClustering:
                 if csv_path.exists():
                     try:
                         df = pd.read_csv(csv_path)
-                        
-                        # Clean column names (remove whitespace)
                         df.columns = df.columns.str.strip()
             
                         for _, row in df.iterrows():
@@ -74,7 +77,7 @@ class BlogTopicClustering:
                             if pd.notna(row['cleaned_htmlBody']):
                                 text_content += str(row['cleaned_htmlBody'])
                         
-                            if text_content.strip():
+                            if text_content.strip() and len(text_content.strip()) > 100:
                                 all_posts.append({
                                     '_id': str(row['_id']),
                                     'text': text_content.strip(),
@@ -85,405 +88,395 @@ class BlogTopicClustering:
                                 })
                         
                         file_count += 1
-                        print(f"Loaded {len(df)} posts from {csv_path}")
+                        print(f"  Loaded {len(df)} posts from {year}-{month_str}")
+                        
+                        if max_posts and len(all_posts) >= max_posts:
+                            break
                             
                     except Exception as e:
-                        print(f"Error reading {csv_path}: {e}")
+                        print(f"  Error reading {csv_path}: {e}")
+                
+                if max_posts and len(all_posts) >= max_posts:
+                    break
+            
+            if max_posts and len(all_posts) >= max_posts:
+                break
 
-        
-        self.blog_posts = all_posts
-        print(f"\nTotal: Loaded {len(all_posts)} blog posts from {file_count} files")
-        
-        if len(all_posts) == 0:
-            print("No blog posts loaded! Please check your file structure and column names.")
-            return False
-        
-        return True
+        self.blog_posts = all_posts[:max_posts] if max_posts else all_posts
+        print(f"\nTotal: Loaded {len(self.blog_posts)} blog posts from {file_count} files")
+        return len(self.blog_posts) > 0
     
-    def preprocess_text(self, text):
-        """Clean and preprocess text"""
-        if pd.isna(text):
-            return ""
+    def train_topic_model(self, 
+                         min_topic_size=15,
+                         n_neighbors=15,
+                         n_components=5,
+                         min_cluster_size=15,
+                         embedding_model='all-MiniLM-L6-v2',
+                         nr_topics='auto',
+                         verbose=True):
+        """
+        Train BERTopic model
         
-        # Convert to string and lowercase
-        text = str(text).lower()
+        Parameters:
+        -----------
+        min_topic_size : int (default: 15)
+            Minimum documents per topic
+        n_neighbors : int (default: 15)
+            UMAP n_neighbors - controls local vs global structure
+        n_components : int (default: 5)
+            UMAP dimensions
+        min_cluster_size : int (default: 15)
+            HDBSCAN minimum cluster size
+        embedding_model : str
+            Sentence transformer model:
+            - 'all-MiniLM-L6-v2' (fast, good quality) - RECOMMENDED
+            - 'all-mpnet-base-v2' (slower, best quality)
+            - 'paraphrase-multilingual-MiniLM-L12-v2' (multilingual)
+        nr_topics : int or 'auto'
+            Number of topics (or 'auto' for automatic)
+        """
+        print(f"\n{'='*60}")
+        print(f"TRAINING BERTOPIC MODEL")
+        print(f"{'='*60}")
         
-        # Remove HTML tags
-        text = re.sub(r'<[^>]+>', ' ', text)
+        docs = [post['text'] for post in self.blog_posts]
         
-        # Remove special characters but keep spaces
-        text = re.sub(r'[^a-zA-Z\s]', ' ', text)
+        # 1. Embedding Model
+        print(f"\n1. Loading embedding model: {embedding_model}")
+        sentence_model = SentenceTransformer(embedding_model)
         
-        # Remove extra whitespace
-        text = re.sub(r'\s+', ' ', text).strip()
+        # 2. UMAP for dimensionality reduction
+        print(f"2. Configuring UMAP (n_neighbors={n_neighbors}, n_components={n_components})")
+        umap_model = UMAP(
+            n_neighbors=n_neighbors,
+            n_components=n_components,
+            min_dist=0.0,
+            metric='cosine',
+            random_state=42
+        )
         
-        return text
-    
-    def get_wordnet_pos(self, treebank_tag):
-        """Convert treebank POS tags to WordNet POS tags"""
-        if treebank_tag.startswith('J'):
-            return wordnet.ADJ
-        elif treebank_tag.startswith('V'):
-            return wordnet.VERB
-        elif treebank_tag.startswith('N'):
-            return wordnet.NOUN
-        elif treebank_tag.startswith('R'):
-            return wordnet.ADV
-        else:
-            return wordnet.NOUN
-
-    def preprocess_text(self, text):
-        """Preprocess text with lemmatization"""
-        # Basic cleaning
-        text = text.lower()
-        text = re.sub(r'http\S+|www.\S+', '', text)
-        text = re.sub(r'[^\w\s]', ' ', text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        # 3. HDBSCAN for clustering
+        print(f"3. Configuring HDBSCAN (min_cluster_size={min_cluster_size})")
+        hdbscan_model = HDBSCAN(
+            min_cluster_size=min_cluster_size,
+            min_samples=10,
+            metric='euclidean',
+            cluster_selection_method='eom',
+            prediction_data=True
+        )
         
-        # Tokenize
-        tokens = text.split()
-        
-        # POS tagging for better lemmatization
-        pos_tags = nltk.pos_tag(tokens)
-        
-        # Lemmatize with POS tags
-        lemmatizer = WordNetLemmatizer()
-        lemmatized_tokens = [
-            lemmatizer.lemmatize(token, self.get_wordnet_pos(pos)) 
-            for token, pos in pos_tags
+        # 4. Vectorizer - custom stop words for AI/rationality content
+        custom_stop_words = [
+            'think', 'like', 'want', 'know', 'people', 'thing', 'things',
+            'good', 'better', 'make', 'way', 'just', 'really', 'dont',
+            'thats', 'im', 'youre', 'ive', 'lot', 'probably', 'basically'
         ]
         
-        return ' '.join(lemmatized_tokens)
-    
-    def split_train_test(self, test_size=0.2, random_state=42):
-        """Split data into train and test sets"""
-        from sklearn.model_selection import train_test_split
-        
-        n_docs = self.bow_matrix.shape[0]
-        indices = np.arange(n_docs)
-        
-        train_idx, test_idx = train_test_split(
-            indices, 
-            test_size=test_size, 
-            random_state=random_state
+        vectorizer_model = CountVectorizer(
+            ngram_range=(1, 2),
+            stop_words='english',
+            min_df=5,
+            max_df=0.7
         )
         
-        self.train_bow = self.bow_matrix[train_idx]
-        self.test_bow = self.bow_matrix[test_idx]
-        self.train_posts = [self.blog_posts[i] for i in train_idx]
-        self.test_posts = [self.blog_posts[i] for i in test_idx]
+        # 5. Representation models for better topic descriptions
+        # KeyBERT-inspired: extract keywords semantically similar to topic
+        keybert_model = KeyBERTInspired()
         
-        print(f"Train set: {len(train_idx)} documents")
-        print(f"Test set: {len(test_idx)} documents")
-    
-        return train_idx, test_idx
-
-    def create_tfidf_matrix(self, max_features=5000, min_df=2, max_df=0.95):
-        """Create TF-IDF matrix from blog posts with lemmatization"""
-        print("Creating TF-IDF matrix with lemmatization...")
+        # MMR: diverse keywords (avoid redundancy)
+        mmr_model = MaximalMarginalRelevance(diversity=0.3)
         
-        # Preprocess all texts (now includes lemmatization)
-        texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
-        
-        # Remove empty texts
-        valid_texts = []
-        valid_indices = []
-        for i, text in enumerate(texts):
-            if len(text.split()) >= 5:  # At least 5 words
-                valid_texts.append(text)
-                valid_indices.append(i)
-        
-        print(f"Using {len(valid_texts)} posts having sufficient text content")
-        
-        # Create TF-IDF vectorizer
-        self.vectorizer = TfidfVectorizer(
-            max_features=max_features,
-            min_df=min_df,
-            max_df=max_df,
-            stop_words=list(ENGLISH_STOP_WORDS),
-            ngram_range=(1, 2) # unigrams & bigrams
+        # 6. Create BERTopic model
+        print(f"4. Creating BERTopic model")
+        self.topic_model = BERTopic(
+            embedding_model=sentence_model,
+            umap_model=umap_model,
+            hdbscan_model=hdbscan_model,
+            vectorizer_model=vectorizer_model,
+            representation_model=[keybert_model, mmr_model],
+            top_n_words=10,
+            min_topic_size=min_topic_size,
+            nr_topics=nr_topics,
+            calculate_probabilities=True,
+            verbose=verbose
         )
         
-        # Fit and transform
-        self.tfidf_matrix = self.vectorizer.fit_transform(valid_texts)
+        # 7. Fit model and generate embeddings
+        print(f"\n5. Generating embeddings for {len(docs)} documents...")
+        print("   (This may take a few minutes...)")
         
-        # Update blog_posts to only include valid ones
-        self.blog_posts = [self.blog_posts[i] for i in valid_indices]
+        topics, probs = self.topic_model.fit_transform(docs)
         
-        print(f"TF-IDF matrix shape: {self.tfidf_matrix.shape}")
-        print(f"Vocabulary size: {len(self.vectorizer.vocabulary_)}")
+        # Get embeddings (useful for visualization)
+        self.embeddings = sentence_model.encode(docs, show_progress_bar=True)
         
-        return self.tfidf_matrix
-    
-    def elbow_test(self, k_range=range(2, 21), n_samples=None):
-        """Perform elbow test to find optimal number of clusters"""
-        print("Performing elbow test...")
+        # 8. Store results
+        topic_info = self.topic_model.get_topic_info()
+        n_topics = len(topic_info) - 1  # Exclude outlier topic (-1)
         
-        # Use subset for efficiency if dataset is large
-        if n_samples and len(self.blog_posts) > n_samples:
-            indices = np.random.choice(len(self.blog_posts), n_samples, replace=False)
-            X = self.tfidf_matrix[indices]
-        else:
-            X = self.tfidf_matrix
+        print(f"\n{'='*60}")
+        print(f"MODEL TRAINING COMPLETE")
+        print(f"{'='*60}")
+        print(f"Topics discovered: {n_topics}")
+        print(f"Outliers (topic -1): {sum(topics == -1)} documents")
+        print(f"Documents with topics: {sum(topics != -1)} documents")
         
-        inertias = []
-        silhouette_scores = []
-        
-        for k in k_range:
-            print(f"Testing k={k}...")
-            kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
-            cluster_labels = kmeans.fit_predict(X)
-            
-            inertias.append(kmeans.inertia_)
-            
-            # Calculate silhouette score (skip for k=1)
-            if k > 1:
-                sil_score = silhouette_score(X, cluster_labels)
-                silhouette_scores.append(sil_score)
-            else:
-                silhouette_scores.append(0)
-        
-        # Find elbow using the elbow method
-        # Calculate the rate of change of inertias
-        if len(inertias) >= 3:
-            diffs = np.diff(inertias)
-            diff_ratios = np.diff(diffs)
-            optimal_k_idx = np.argmax(diff_ratios) + 2  # +2 because we start from k=2 and take second diff
-            optimal_k = k_range[optimal_k_idx] if optimal_k_idx < len(k_range) else k_range[len(k_range)//2]
-        else:
-            optimal_k = k_range[len(k_range)//2]  # Default to middle value
-        
-        # Also find k with best silhouette score
-        best_sil_k = k_range[np.argmax(silhouette_scores)] if silhouette_scores else optimal_k
-        
-        # Plot elbow curve
-        plt.figure(figsize=(15, 5))
-        
-        plt.subplot(1, 3, 1)
-        plt.plot(k_range, inertias, 'bo-')
-        plt.axvline(x=optimal_k, color='r', linestyle='--', label=f'Elbow at k={optimal_k}')
-        plt.xlabel('Number of Clusters (k)')
-        plt.ylabel('Within-Cluster Sum of Squares')
-        plt.title('Elbow Method')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        
-        plt.subplot(1, 3, 2)
-        plt.plot(k_range, silhouette_scores, 'go-')
-        plt.axvline(x=best_sil_k, color='r', linestyle='--', label=f'Best silhouette at k={best_sil_k}')
-        plt.xlabel('Number of Clusters (k)')
-        plt.ylabel('Silhouette Score')
-        plt.title('Silhouette Score')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        
-        # Combined plot
-        plt.subplot(1, 3, 3)
-        ax1 = plt.gca()
-        ax2 = ax1.twinx()
-        
-        line1 = ax1.plot(k_range, inertias, 'bo-', label='Inertia')
-        ax1.set_xlabel('Number of Clusters (k)')
-        ax1.set_ylabel('Inertia', color='b')
-        ax1.tick_params(axis='y', labelcolor='b')
-        
-        line2 = ax2.plot(k_range, silhouette_scores, 'go-', label='Silhouette')
-        ax2.set_ylabel('Silhouette Score', color='g')
-        ax2.tick_params(axis='y', labelcolor='g')
-        
-        plt.title('Combined Metrics')
-        
-        # Add legends
-        lines1, labels1 = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, labels1 + labels2, loc='center right')
-        
-        plt.tight_layout()
-        plt.show()
-        
-        print(f"Suggested optimal k (elbow method): {optimal_k}")
-        print(f"Best k (silhouette score): {best_sil_k}")
-        
-        return {
-            'k_range': list(k_range),
-            'inertias': inertias,
-            'silhouette_scores': silhouette_scores,
-            'optimal_k_elbow': optimal_k,
-            'optimal_k_silhouette': best_sil_k
-        }
-    
-    def perform_clustering(self, n_clusters):
-        """Perform K-means clustering"""
-        print(f"Performing K-means clustering with {n_clusters} clusters...")
-        
-        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
-        cluster_labels = kmeans.fit_predict(self.tfidf_matrix)
-        
-        # Add cluster labels to blog posts
+        # Add topic assignments to blog posts
         for i, post in enumerate(self.blog_posts):
-            post['cluster'] = cluster_labels[i]
+            post['topic'] = int(topics[i])
+            post['topic_probability'] = float(probs[i]) if probs is not None else 0.0
         
-        # Get feature names
-        feature_names = self.vectorizer.get_feature_names_out()
+        return topics, probs
+    
+    def reduce_topics(self, nr_topics):
+        """
+        Reduce number of topics by merging similar ones
+        Useful if automatic detection creates too many topics
+        """
+        if self.topic_model is None:
+            print("Train model first!")
+            return
         
-        # Get top terms for each cluster
-        cluster_terms = {}
-        for cluster_id in range(n_clusters):
-            # Get centroid for this cluster
-            centroid = kmeans.cluster_centers_[cluster_id]
+        print(f"\nReducing to {nr_topics} topics...")
+        docs = [post['text'] for post in self.blog_posts]
+        
+        self.topic_model.reduce_topics(docs, nr_topics=nr_topics)
+        
+        # Update topic assignments
+        new_topics = self.topic_model.topics_
+        for i, post in enumerate(self.blog_posts):
+            post['topic'] = int(new_topics[i])
+        
+        print(f"Topics after reduction: {len(self.topic_model.get_topic_info()) - 1}")
+    
+    def get_topic_statistics(self):
+        """Calculate detailed topic statistics"""
+        if self.topic_model is None:
+            return None
+        
+        topic_info = self.topic_model.get_topic_info()
+        topics = [post['topic'] for post in self.blog_posts]
+        
+        stats = []
+        for topic_id in sorted(set(topics)):
+            if topic_id == -1:  # Skip outliers
+                continue
             
-            # Get top terms (highest TF-IDF scores)
-            top_indices = centroid.argsort()[-20:][::-1]  # Top 20 terms
-            top_terms = [(feature_names[i], centroid[i]) for i in top_indices]
-            
-            cluster_terms[cluster_id] = top_terms
-        
-        # Calculate cluster statistics
-        cluster_stats = {}
-        for cluster_id in range(n_clusters):
-            cluster_posts = [post for post in self.blog_posts if post['cluster'] == cluster_id]
+            topic_posts = [p for p in self.blog_posts if p['topic'] == topic_id]
             
             # Year distribution
-            year_dist = Counter([post['year'] for post in cluster_posts])
+            year_dist = Counter([p['year'] for p in topic_posts])
             
-            cluster_stats[cluster_id] = {
-                'size': len(cluster_posts),
-                'percentage': len(cluster_posts) / len(self.blog_posts) * 100,
+            # Average probability
+            avg_prob = np.mean([p['topic_probability'] for p in topic_posts])
+            
+            # Get top words
+            topic_words = self.topic_model.get_topic(topic_id)
+            
+            stats.append({
+                'topic_id': topic_id,
+                'size': len(topic_posts),
+                'percentage': len(topic_posts) / len(self.blog_posts) * 100,
+                'avg_probability': avg_prob,
                 'year_distribution': dict(year_dist),
-                'top_terms': cluster_terms[cluster_id]
-            }
+                'top_words': topic_words,
+                'representative_docs': self._get_representative_docs(topic_id, n=3)
+            })
         
-        self.cluster_results = {
-            'n_clusters': n_clusters,
-            'labels': cluster_labels,
-            'kmeans': kmeans,
-            'cluster_stats': cluster_stats,
-            'silhouette_score': silhouette_score(self.tfidf_matrix, cluster_labels)
-        }
-        
-        return self.cluster_results
+        return sorted(stats, key=lambda x: x['size'], reverse=True)
     
-    def visualize_clusters(self, n_components=2):
-        """Visualize clusters using PCA"""
-        if not self.cluster_results:
-            print("No clustering results available. Run perform_clustering() first.")
+    def _get_representative_docs(self, topic_id, n=3):
+        """Get most representative documents for a topic"""
+        topic_posts = [(i, p) for i, p in enumerate(self.blog_posts) if p['topic'] == topic_id]
+        
+        # Sort by probability
+        topic_posts.sort(key=lambda x: x[1]['topic_probability'], reverse=True)
+        
+        return [{'title': p['title'], 'prob': p['topic_probability']} 
+                for i, p in topic_posts[:n]]
+    
+    def visualize_topics(self):
+        """Create comprehensive visualizations"""
+        if self.topic_model is None:
+            print("Train model first!")
             return
         
-        print("Creating cluster visualization...")
+        print("\nCreating visualizations...")
         
-        # Perform PCA for visualization
-        pca = PCA(n_components=n_components)
-        pca_result = pca.fit_transform(self.tfidf_matrix.toarray())
+        stats = self.get_topic_statistics()
+        topics = [p['topic'] for p in self.blog_posts]
         
-        # Create DataFrame for plotting
-        plot_df = pd.DataFrame({
-            'PC1': pca_result[:, 0],
-            'PC2': pca_result[:, 1],
-            'Cluster': self.cluster_results['labels'],
-            'Year': [post['year'] for post in self.blog_posts]
-        })
+        fig, axes = plt.subplots(2, 3, figsize=(20, 12))
         
-        plt.figure(figsize=(15, 10))
+        # 1. Topic sizes
+        ax1 = axes[0, 0]
+        topic_ids = [s['topic_id'] for s in stats]
+        sizes = [s['size'] for s in stats]
         
-        # Main cluster plot
-        plt.subplot(2, 2, 1)
-        scatter = plt.scatter(plot_df['PC1'], plot_df['PC2'], 
-                            c=plot_df['Cluster'], cmap='tab10', alpha=0.6)
-        plt.colorbar(scatter)
-        plt.xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.2%} variance)')
-        plt.ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.2%} variance)')
-        plt.title('Blog Posts Clusters (PCA Visualization)')
+        bars = ax1.bar(range(len(sizes)), sizes, color='steelblue', alpha=0.7)
+        ax1.set_xlabel('Topic ID', fontsize=12)
+        ax1.set_ylabel('Number of Documents', fontsize=12)
+        ax1.set_title(f'Topic Sizes ({len(stats)} topics)', fontsize=14, fontweight='bold')
         
-        # Cluster sizes
-        plt.subplot(2, 2, 2)
-        cluster_sizes = [self.cluster_results['cluster_stats'][i]['size'] 
-                        for i in range(self.cluster_results['n_clusters'])]
-        plt.bar(range(len(cluster_sizes)), cluster_sizes)
-        plt.xlabel('Cluster')
-        plt.ylabel('Number of Posts')
-        plt.title('Cluster Sizes')
+        if len(topic_ids) <= 30:
+            ax1.set_xticks(range(len(topic_ids)))
+            ax1.set_xticklabels(topic_ids, rotation=45)
         
-        # Year distribution across clusters
-        plt.subplot(2, 2, 3)
-        years = sorted(plot_df['Year'].unique())
-        cluster_year_matrix = np.zeros((self.cluster_results['n_clusters'], len(years)))
+        # 2. Topic distribution pie chart (top 10)
+        ax2 = axes[0, 1]
+        top_10 = stats[:10]
+        other_size = sum(s['size'] for s in stats[10:])
         
-        for i, cluster_id in enumerate(range(self.cluster_results['n_clusters'])):
-            year_dist = self.cluster_results['cluster_stats'][cluster_id]['year_distribution']
+        pie_sizes = [s['size'] for s in top_10]
+        pie_labels = [f"T{s['topic_id']}" for s in top_10]
+        
+        if other_size > 0:
+            pie_sizes.append(other_size)
+            pie_labels.append('Other')
+        
+        ax2.pie(pie_sizes, labels=pie_labels, autopct='%1.1f%%', startangle=90)
+        ax2.set_title('Topic Distribution (Top 10)', fontsize=14, fontweight='bold')
+        
+        # 3. Topics over time
+        ax3 = axes[0, 2]
+        years = sorted(set(p['year'] for p in self.blog_posts))
+        
+        # Create matrix: topics x years
+        n_topics_to_show = min(10, len(stats))
+        topic_year_matrix = np.zeros((n_topics_to_show, len(years)))
+        
+        for i, s in enumerate(stats[:n_topics_to_show]):
             for j, year in enumerate(years):
-                cluster_year_matrix[i, j] = year_dist.get(year, 0)
+                topic_year_matrix[i, j] = s['year_distribution'].get(year, 0)
         
-        im = plt.imshow(cluster_year_matrix, cmap='YlOrRd', aspect='auto')
-        plt.colorbar(im)
-        plt.yticks(range(self.cluster_results['n_clusters']), 
-                  [f'Cluster {i}' for i in range(self.cluster_results['n_clusters'])])
-        plt.xticks(range(len(years)), years, rotation=45)
-        plt.xlabel('Year')
-        plt.ylabel('Cluster')
-        plt.title('Posts Distribution by Year and Cluster')
+        im = ax3.imshow(topic_year_matrix, cmap='YlOrRd', aspect='auto')
+        plt.colorbar(im, ax=ax3, label='# Documents')
         
-        # Silhouette score info
-        plt.subplot(2, 2, 4)
-        plt.text(0.1, 0.8, f"Number of Clusters: {self.cluster_results['n_clusters']}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        plt.text(0.1, 0.7, f"Silhouette Score: {self.cluster_results['silhouette_score']:.3f}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        plt.text(0.1, 0.6, f"Total Posts: {len(self.blog_posts)}", 
-                fontsize=12, transform=plt.gca().transAxes)
+        ax3.set_xticks(range(len(years)))
+        ax3.set_xticklabels(years, rotation=45)
+        ax3.set_yticks(range(n_topics_to_show))
+        ax3.set_yticklabels([f"T{s['topic_id']}" for s in stats[:n_topics_to_show]])
+        ax3.set_xlabel('Year', fontsize=12)
+        ax3.set_ylabel('Topic', fontsize=12)
+        ax3.set_title('Topic Trends Over Time', fontsize=14, fontweight='bold')
         
-        # Show top terms for each cluster
-        y_pos = 0.4
-        for cluster_id in range(min(3, self.cluster_results['n_clusters'])):  # Show top 3 clusters
-            top_terms = [term[0] for term in self.cluster_results['cluster_stats'][cluster_id]['top_terms'][:5]]
-            plt.text(0.1, y_pos, f"Cluster {cluster_id}: {', '.join(top_terms)}", 
-                    fontsize=10, transform=plt.gca().transAxes)
-            y_pos -= 0.08
+        # 4. Topic quality (size vs probability)
+        ax4 = axes[1, 0]
+        x_sizes = [s['size'] for s in stats]
+        y_probs = [s['avg_probability'] for s in stats]
         
-        plt.axis('off')
-        plt.title('Clustering Summary')
+        scatter = ax4.scatter(x_sizes, y_probs, s=100, alpha=0.6, c=range(len(stats)), cmap='viridis')
+        ax4.set_xlabel('Topic Size', fontsize=12)
+        ax4.set_ylabel('Average Probability', fontsize=12)
+        ax4.set_title('Topic Quality: Size vs Confidence', fontsize=14, fontweight='bold')
+        ax4.grid(True, alpha=0.3)
+        
+        # 5. Top topics summary
+        ax5 = axes[1, 1]
+        summary_text = f"BERTopic Results\n\n"
+        summary_text += f"Total Topics: {len(stats)}\n"
+        summary_text += f"Total Documents: {len(self.blog_posts)}\n"
+        summary_text += f"Outliers: {sum(t == -1 for t in topics)}\n\n"
+        summary_text += f"Top 5 Topics:\n\n"
+        
+        for i, s in enumerate(stats[:5], 1):
+            top_words = ', '.join([w[0] for w in s['top_words'][:5]])
+            summary_text += f"{i}. Topic {s['topic_id']} ({s['size']} docs, {s['percentage']:.1f}%)\n"
+            summary_text += f"   {top_words}\n\n"
+        
+        ax5.text(0.05, 0.95, summary_text, transform=ax5.transAxes, 
+                fontsize=9, verticalalignment='top', fontfamily='monospace',
+                bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
+        ax5.axis('off')
+        
+        # 6. Size distribution histogram
+        ax6 = axes[1, 2]
+        ax6.hist(sizes, bins=min(30, len(sizes)), edgecolor='black', alpha=0.7)
+        ax6.set_xlabel('Topic Size', fontsize=12)
+        ax6.set_ylabel('Frequency', fontsize=12)
+        ax6.set_title('Topic Size Distribution', fontsize=14, fontweight='bold')
+        ax6.axvline(np.median(sizes), color='red', linestyle='--', 
+                   label=f'Median: {np.median(sizes):.0f}')
+        ax6.legend()
         
         plt.tight_layout()
-        output_path = f"src/metadata/img/{self.platform}/kmeans_{self.lda_results['n_topics']}.pdf"
-        output_dir = os.path.dirname(output_path)
-        os.makedirs(output_dir, exist_ok=True)
+        
+        # Save
+        output_path = f"src/metadata/img/{self.platform}/bertopic_results.pdf"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        print(f"Visualization saved to {output_path}")
         plt.show()
     
-    def print_cluster_summary(self):
-        """Print detailed cluster summary"""
-        if not self.cluster_results:
-            print("No clustering results available. Run perform_clustering() first.")
+    def visualize_topic_hierarchy(self):
+        """Visualize hierarchical structure of topics"""
+        if self.topic_model is None:
             return
         
-        print(f"\n{'='*50}")
-        print(f"CLUSTER ANALYSIS SUMMARY")
-        print(f"{'='*50}")
-        print(f"Number of clusters: {self.cluster_results['n_clusters']}")
-        print(f"Total posts analyzed: {len(self.blog_posts)}")
-        print(f"Silhouette score: {self.cluster_results['silhouette_score']:.3f}")
-        
-        for cluster_id in range(self.cluster_results['n_clusters']):
-            stats = self.cluster_results['cluster_stats'][cluster_id]
-            print(f"\n{'-'*40}")
-            print(f"CLUSTER {cluster_id}")
-            print(f"{'-'*40}")
-            print(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)")
+        print("Creating topic hierarchy visualization...")
+        try:
+            fig = self.topic_model.visualize_hierarchy()
             
-            print(f"\nTop terms:")
-            for i, (term, score) in enumerate(stats['top_terms'][:10], 1):
-                print(f"  {i:2d}. {term} ({score:.3f})")
-            
-            print(f"\nYear distribution:")
-            year_dist = stats['year_distribution']
-            for year in sorted(year_dist.keys()):
-                print(f"  {year}: {year_dist[year]} posts")
+            output_path = f"src/metadata/img/{self.platform}/topic_hierarchy.html"
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            fig.write_html(output_path)
+            print(f"Hierarchy saved to {output_path}")
+        except Exception as e:
+            print(f"Could not create hierarchy: {e}")
     
-    def save_results(self, output_file='clustering_results.csv'):
-        """Save clustering results to CSV"""
-        if not self.cluster_results:
-            print("No clustering results available. Run perform_clustering() first.")
+    def visualize_topic_space(self):
+        """Visualize topics in 2D space (interactive)"""
+        if self.topic_model is None:
             return
-
-        # Prepare data for CSV
+        
+        print("Creating topic space visualization...")
+        try:
+            fig = self.topic_model.visualize_topics()
+            
+            output_path = f"src/metadata/img/{self.platform}/topic_space.html"
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            fig.write_html(output_path)
+            print(f"Topic space saved to {output_path}")
+        except Exception as e:
+            print(f"Could not create topic space: {e}")
+    
+    def print_detailed_topics(self, n_topics=10):
+        """Print detailed information about top topics"""
+        stats = self.get_topic_statistics()
+        
+        print(f"\n{'='*80}")
+        print(f"DETAILED TOPIC ANALYSIS (Top {min(n_topics, len(stats))} topics)")
+        print(f"{'='*80}")
+        
+        for i, s in enumerate(stats[:n_topics], 1):
+            print(f"\n{'─'*80}")
+            print(f"Topic {s['topic_id']}: {s['size']} documents ({s['percentage']:.2f}%)")
+            print(f"Average probability: {s['avg_probability']:.3f}")
+            
+            print(f"\nTop words:")
+            for word, score in s['top_words'][:10]:
+                print(f"  • {word:20s} ({score:.4f})")
+            
+            print(f"\nRepresentative documents:")
+            for j, doc in enumerate(s['representative_docs'], 1):
+                print(f"  {j}. {doc['title'][:70]}... (prob: {doc['prob']:.3f})")
+            
+            print(f"\nTemporal distribution:")
+            year_items = sorted(s['year_distribution'].items())
+            for year, count in year_items:
+                bar = '█' * int(count / max(s['year_distribution'].values()) * 30)
+                print(f"  {year}: {bar} {count}")
+    
+    def save_results(self, output_file=None):
+        """Save results to CSV and pickle model"""
+        if self.topic_model is None:
+            print("No model to save!")
+            return
+        
+        if output_file is None:
+            output_file = f'src/metadata/clustering_results/{self.platform}/bertopic_results.csv'
+        
+        # Prepare data
         results_data = []
         for post in self.blog_posts:
             results_data.append({
@@ -491,600 +484,93 @@ class BlogTopicClustering:
                 'title': post['title'],
                 'year': post['year'],
                 'month': post['month'],
-                'cluster': post['cluster'],
+                'topic': post['topic'],
+                'topic_probability': post['topic_probability'],
                 'file': post['file']
             })
-
+        
+        # Save CSV
         df = pd.DataFrame(results_data)
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         df.to_csv(output_file, index=False)
-        print(f"Results saved to {output_file}")
-            
-        # Save cluster summaries
-        summary_file = output_file.replace('.csv', '_summary.txt')
-        with open(summary_file, 'w') as f:
-            f.write(f"CLUSTER ANALYSIS SUMMARY\n")
-            f.write(f"{'='*50}\n")
-            f.write(f"Number of clusters: {self.cluster_results['n_clusters']}\n")
-            f.write(f"Total posts analyzed: {len(self.blog_posts)}\n")
-            f.write(f"Silhouette score: {self.cluster_results['silhouette_score']:.3f}\n\n")
-            
-            for cluster_id in range(self.cluster_results['n_clusters']):
-                stats = self.cluster_results['cluster_stats'][cluster_id]
-                f.write(f"CLUSTER {cluster_id}\n")
-                f.write(f"{'-'*40}\n")
-                f.write(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)\n\n")
-                
-                f.write(f"Top terms:\n")
-                for i, (term, score) in enumerate(stats['top_terms'][:15], 1):
-                    f.write(f"  {i:2d}. {term} ({score:.3f})\n")
-                
-                f.write(f"\nYear distribution:\n")
-                year_dist = stats['year_distribution']
-                for year in sorted(year_dist.keys()):
-                    f.write(f"  {year}: {year_dist[year]} posts\n")
-                f.write(f"\n")
+        print(f"\nResults saved to {output_file}")
         
-        print(f"Cluster summary saved to {summary_file}")
+        # Save model
+        model_path = output_file.replace('.csv', '_model.pkl')
+        self.topic_model.save(model_path)
+        print(f"Model saved to {model_path}")
+        
+        # Save embeddings
+        embeddings_path = output_file.replace('.csv', '_embeddings.npy')
+        np.save(embeddings_path, self.embeddings)
+        print(f"Embeddings saved to {embeddings_path}")
 
-    def create_bow_matrix(self, max_features=3000, min_df=3, max_df=0.9):
-        """Create Bag-of-Words matrix for LDA with lemmatization (LDA works better with count data than TF-IDF)"""
-        print("Creating Bag-of-Words matrix for LDA with lemmatization...")
-        
-        # Preprocess all texts (now includes lemmatization)
-        texts = [self.preprocess_text(post['text']) for post in self.blog_posts]
-        
-        # Remove empty texts
-        valid_texts = []
-        valid_indices = []
-        for i, text in enumerate(texts):
-            if len(text.split()) >= 5:  # At least 5 words
-                valid_texts.append(text)
-                valid_indices.append(i)
-        
-        print(f"Using {len(valid_texts)} posts having sufficient text content")
-        
-        # Create CountVectorizer for LDA
-        self.count_vectorizer = CountVectorizer(
-            max_features=max_features,
-            min_df=min_df,
-            max_df=max_df,
-            stop_words=list(ENGLISH_STOP_WORDS),
-            ngram_range=(1, 2)  # Include unigrams and bigrams
-        )
-        
-        # Fit and transform
-        self.bow_matrix = self.count_vectorizer.fit_transform(valid_texts)
-        
-        # Update blog_posts to only include valid ones
-        self.blog_posts = [self.blog_posts[i] for i in valid_indices]
-        
-        print(f"Bag-of-Words matrix shape: {self.bow_matrix.shape}")
-        print(f"Vocabulary size: {len(self.count_vectorizer.vocabulary_)}")
-        
-        return self.bow_matrix
 
-    def lda_topic_coherence_test(self, i=5, topic_range=range(15, 66, 5), n_samples=None):
-        """Test different numbers of topics with multiple metrics including coherence"""
-        print("Testing LDA with perplexity, log-likelihood, AND coherence...")
-        
-        if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            _ = self.create_bow_matrix()
-        
-        # Split into train/test
-        train_idx, test_idx = self.split_train_test(test_size=0.2)
-        
-        # Prepare texts for coherence calculation
-        texts = [self.preprocess_text(post['text']).split() for post in self.blog_posts]
-        train_texts = [texts[n] for n in train_idx]
-        
-        # Create Gensim dictionary for coherence
-        dictionary = Dictionary(train_texts)
-        
-        train_perplexities = []
-        test_perplexities = []
-        log_likelihoods = []
-        coherence_scores = []
-        
-        for n_topics in topic_range:
-            print(f"\nTesting {n_topics} topics...")
-            
-            lda = LatentDirichletAllocation(
-                n_components=n_topics,
-                random_state=42,
-                max_iter=10,
-                learning_method='online',
-                doc_topic_prior=0.1,
-                topic_word_prior=0.01,
-                n_jobs=-1
-            )
-            
-            # Fit on training data
-            lda.fit(self.train_bow)
-            
-            # Calculate metrics
-            train_perp = lda.perplexity(self.train_bow)
-            test_perp = lda.perplexity(self.test_bow)
-            log_lik = lda.score(self.train_bow)
-            
-            train_perplexities.append(train_perp)
-            test_perplexities.append(test_perp)
-            log_likelihoods.append(log_lik)
-            
-            # Calculate coherence using Gensim
-            # Convert sklearn LDA to gensim format for coherence
-            feature_names = self.count_vectorizer.get_feature_names_out()
-            topics_words = []
-            for topic_idx in range(n_topics):
-                topic = lda.components_[topic_idx]
-                top_indices = topic.argsort()[-20:][::-1]  # Top 20 words
-                topic_words = [feature_names[i] for i in top_indices]
-                topics_words.append(topic_words)
-            
-            # Calculate C_v coherence
-            cm = CoherenceModel(
-                topics=topics_words,
-                texts=train_texts,
-                dictionary=dictionary,
-                coherence='c_v'
-            )
-            coherence = cm.get_coherence()
-            coherence_scores.append(coherence)
-            
-            print(f"  Train Perplexity: {train_perp:.2f}")
-            print(f"  Test Perplexity: {test_perp:.2f}")
-            print(f"  Log-likelihood: {log_lik:.2f}")
-            print(f"  Coherence (C_v): {coherence:.4f}")
-        
-        # Find optimal k
-        optimal_coherence = topic_range[np.argmax(coherence_scores)]
-        optimal_test_perp = topic_range[np.argmin(test_perplexities)]
-        
-        # Plot results - THIS IS YOUR KEY FIGURE FOR NATURE
-        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
-        
-        # Train vs Test Perplexity
-        ax1 = axes[0, 0]
-        ax1.plot(topic_range, train_perplexities, 'bo-', label='Train Perplexity', linewidth=2)
-        ax1.plot(topic_range, test_perplexities, 'ro-', label='Test Perplexity', linewidth=2)
-        ax1.axvline(x=optimal_test_perp, color='g', linestyle='--', 
-                    label=f'Min test perplexity at {optimal_test_perp}')
-        ax1.set_xlabel('Number of Topics', fontsize=12)
-        ax1.set_ylabel('Perplexity', fontsize=12)
-        ax1.set_title('Model Perplexity (Train vs Test)', fontsize=14, fontweight='bold')
-        ax1.legend()
-        ax1.grid(True, alpha=0.3)
-        
-        # Log Likelihood
-        ax2 = axes[0, 1]
-        ax2.plot(topic_range, log_likelihoods, 'go-', linewidth=2)
-        ax2.set_xlabel('Number of Topics', fontsize=12)
-        ax2.set_ylabel('Log Likelihood', fontsize=12)
-        ax2.set_title('Model Log Likelihood', fontsize=14, fontweight='bold')
-        ax2.grid(True, alpha=0.3)
-        
-        # Coherence Score - CRITICAL FOR NATURE
-        ax3 = axes[1, 0]
-        ax3.plot(topic_range, coherence_scores, 'mo-', linewidth=2)
-        ax3.axvline(x=optimal_coherence, color='g', linestyle='--', 
-                    label=f'Max coherence at {optimal_coherence}')
-        ax3.set_xlabel('Number of Topics', fontsize=12)
-        ax3.set_ylabel('Coherence Score (C_v)', fontsize=12)
-        ax3.set_title('Topic Coherence', fontsize=14, fontweight='bold')
-        ax3.legend()
-        ax3.grid(True, alpha=0.3)
-        
-        # Combined metrics (normalized)
-        ax4 = axes[1, 1]
-        # Normalize metrics to 0-1 for comparison
-        norm_coherence = (np.array(coherence_scores) - np.min(coherence_scores)) / \
-                        (np.max(coherence_scores) - np.min(coherence_scores))
-        norm_test_perp = 1 - (np.array(test_perplexities) - np.min(test_perplexities)) / \
-                        (np.max(test_perplexities) - np.min(test_perplexities))  # Invert: lower is better
-        
-        ax4.plot(topic_range, norm_coherence, 'mo-', label='Coherence (normalized)', linewidth=2)
-        ax4.plot(topic_range, norm_test_perp, 'ro-', label='Test Perplexity (normalized, inverted)', linewidth=2)
-        ax4.set_xlabel('Number of Topics', fontsize=12)
-        ax4.set_ylabel('Normalized Score', fontsize=12)
-        ax4.set_title('Combined Metrics (Normalized)', fontsize=14, fontweight='bold')
-        ax4.legend()
-        ax4.grid(True, alpha=0.3)
-        
-        plt.tight_layout()
-        
-        # Save the figure
-        output_path = f"src/metadata/img/{self.platform}/lda_model_selection_{i}.pdf"
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
-        print(f"\nModel selection figure saved to {output_path}")
-        #plt.show()
-        
-        print(f"\n{'='*60}")
-        print(f"OPTIMAL TOPIC SELECTION")
-        print(f"{'='*60}")
-        print(f"Best coherence: {optimal_coherence} topics (C_v = {max(coherence_scores):.4f})")
-        print(f"Best test perplexity: {optimal_test_perp} topics (perplexity = {min(test_perplexities):.2f})")
-        print(f"\nRECOMMENDATION: Choose k based on coherence plateau and interpretability")
-        
-        return {
-            'topic_range': list(topic_range),
-            'train_perplexities': train_perplexities,
-            'test_perplexities': test_perplexities,
-            'log_likelihoods': log_likelihoods,
-            'coherence_scores': coherence_scores,
-            'optimal_topics_coherence': optimal_coherence,
-            'optimal_topics_test_perplexity': optimal_test_perp
-        }
-
-    def perform_lda(self, n_topics, max_iter=50, use_full_data=True):
-        """Perform LDA topic modeling"""
-        print(f"Performing LDA topic modeling with {n_topics} topics...")
-        
-        if not hasattr(self, 'bow_matrix') or self.bow_matrix is None:
-            _ = self.create_bow_matrix()
-        
-        # Use full data or train data
-        if use_full_data:
-            X = self.bow_matrix
-            posts = self.blog_posts
-        else:
-            if not hasattr(self, 'train_bow'):
-                self.split_train_test()
-            X = self.train_bow
-            posts = self.train_posts
-        
-        # Initialize LDA model
-        lda_model = LatentDirichletAllocation(
-            n_components=n_topics,
-            random_state=42,
-            max_iter=max_iter,
-            learning_method='batch',
-            doc_topic_prior=0.1,
-            topic_word_prior=0.01,
-            verbose=1
-        )
-            
-        # Fit the model
-        doc_topic_dist = lda_model.fit_transform(self.bow_matrix)
-        
-        # Get topic assignments (dominant topic for each document)
-        topic_assignments = np.argmax(doc_topic_dist, axis=1)
-        
-        # Add topic assignments to blog posts
-        for i, post in enumerate(self.blog_posts):
-            post['lda_topic'] = topic_assignments[i]
-            post['topic_probabilities'] = doc_topic_dist[i]
-        
-        # Get feature names
-        feature_names = self.count_vectorizer.get_feature_names_out()
-        
-        # Extract top words for each topic
-        topic_words = {}
-        for topic_idx in range(n_topics):
-            # Get word weights for this topic
-            topic_weights = lda_model.components_[topic_idx]
-            
-            # Get top words
-            top_word_indices = topic_weights.argsort()[-20:][::-1]  # Top 20 words
-            top_words = [(feature_names[i], topic_weights[i]) for i in top_word_indices]
-            
-            topic_words[topic_idx] = top_words
-        
-        # Calculate topic statistics
-        topic_stats = {}
-        for topic_id in range(n_topics):
-            topic_posts = [post for post in self.blog_posts if post['lda_topic'] == topic_id]
-            
-            # Year distribution
-            year_dist = Counter([post['year'] for post in topic_posts])
-            
-            # Calculate average topic probability for posts assigned to this topic
-            avg_prob = np.mean([post['topic_probabilities'][topic_id] for post in topic_posts]) if topic_posts else 0
-            
-            topic_stats[topic_id] = {
-                'size': len(topic_posts),
-                'percentage': len(topic_posts) / len(self.blog_posts) * 100,
-                'average_probability': avg_prob,
-                'year_distribution': dict(year_dist),
-                'top_words': topic_words[topic_id]
-            }
-        
-        self.lda_results = {
-            'n_topics': n_topics,
-            'model': lda_model,
-            'doc_topic_dist': doc_topic_dist,
-            'topic_assignments': topic_assignments,
-            'topic_stats': topic_stats,
-            'perplexity': lda_model.perplexity(self.bow_matrix),
-            'log_likelihood': lda_model.score(self.bow_matrix)
-        }
-        
-        return self.lda_results
-
-    def visualize_lda_topics(self):
-        """Visualize LDA topics using pyLDAvis and custom plots"""
-        if not hasattr(self, 'lda_results') or not self.lda_results:
-            print("No LDA results available. Run perform_lda() first.")
-            return
-        
-        print("Creating LDA visualizations...")
-        
-        try:
-                vis_data = pyLDAvis.lda_model.prepare(
-                    self.lda_results['model'], 
-                    self.bow_matrix, 
-                    self.count_vectorizer,
-                    mds='tsne'  # Use t-SNE for dimensionality reduction
-                )
-                pyLDAvis.display(vis_data)
-                print("Interactive topic visualization displayed above.")
-        except Exception as e:
-                print(f"Could not create interactive visualization: {e}")
-        
-        # Custom visualizations
-        plt.figure(figsize=(20, 12))
-        
-        # Topic sizes
-        plt.subplot(2, 3, 1)
-        topic_sizes = [self.lda_results['topic_stats'][i]['size'] 
-                    for i in range(self.lda_results['n_topics'])]
-        plt.bar(range(len(topic_sizes)), topic_sizes)
-        plt.xlabel('Topic')
-        plt.ylabel('Number of Posts')
-        plt.title('Topic Sizes (LDA)')
-        plt.xticks(rotation=45)
-        
-        # Topic probability distribution
-        plt.subplot(2, 3, 2)
-        avg_probs = [self.lda_results['topic_stats'][i]['average_probability'] 
-                    for i in range(self.lda_results['n_topics'])]
-        plt.bar(range(len(avg_probs)), avg_probs)
-        plt.xlabel('Topic')
-        plt.ylabel('Average Topic Probability')
-        plt.title('Average Topic Probabilities')
-        plt.xticks(rotation=45)
-        
-        # Year distribution across topics
-        plt.subplot(2, 3, 3)
-        years = sorted(set(post['year'] for post in self.blog_posts))
-        topic_year_matrix = np.zeros((self.lda_results['n_topics'], len(years)))
-        
-        for i, topic_id in enumerate(range(self.lda_results['n_topics'])):
-            year_dist = self.lda_results['topic_stats'][topic_id]['year_distribution']
-            for j, year in enumerate(years):
-                topic_year_matrix[i, j] = year_dist.get(year, 0)
-        
-        im = plt.imshow(topic_year_matrix, cmap='YlOrRd', aspect='auto')
-        plt.colorbar(im)
-        plt.yticks(range(self.lda_results['n_topics']), 
-                [f'Topic {i}' for i in range(self.lda_results['n_topics'])])
-        plt.xticks(range(len(years)), years, rotation=45)
-        plt.xlabel('Year')
-        plt.ylabel('Topic')
-        plt.title('Posts Distribution by Year and Topic (LDA)')
-        
-        # Document-topic probability heatmap (sample)
-        plt.subplot(2, 3, 4)
-        sample_size = min(50, len(self.blog_posts))
-        sample_indices = np.random.choice(len(self.blog_posts), sample_size, replace=False)
-        sample_doc_topic = self.lda_results['doc_topic_dist'][sample_indices]
-        
-        im2 = plt.imshow(sample_doc_topic.T, cmap='Blues', aspect='auto')
-        plt.colorbar(im2)
-        plt.xlabel(f'Documents (sample of {sample_size})')
-        plt.ylabel('Topics')
-        plt.title('Document-Topic Probability Matrix (Sample)')
-        
-        # Model metrics
-        plt.subplot(2, 3, 5)
-        plt.text(0.1, 0.8, f"Number of Topics: {self.lda_results['n_topics']}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        plt.text(0.1, 0.7, f"Perplexity: {self.lda_results['perplexity']:.2f}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        plt.text(0.1, 0.6, f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        plt.text(0.1, 0.5, f"Total Posts: {len(self.blog_posts)}", 
-                fontsize=12, transform=plt.gca().transAxes)
-        
-        # Show top words for each topic (first few topics)
-        y_pos = 0.35
-        for topic_id in range(min(4, self.lda_results['n_topics'])):
-            top_words = [word[0] for word in self.lda_results['topic_stats'][topic_id]['top_words'][:5]]
-            plt.text(0.1, y_pos, f"Topic {topic_id}: {', '.join(top_words)}", 
-                    fontsize=9, transform=plt.gca().transAxes)
-            y_pos -= 0.06
-        
-        plt.axis('off')
-        plt.title('LDA Model Summary')
-        
-        # Topic coherence visualization
-        plt.subplot(2, 3, 6)
-        # Calculate topic coherence (simplified - top word co-occurrence)
-        coherence_scores = []
-        for topic_id in range(self.lda_results['n_topics']):
-            # Simple coherence measure based on topic size and average probability
-            size = self.lda_results['topic_stats'][topic_id]['size']
-            avg_prob = self.lda_results['topic_stats'][topic_id]['average_probability']
-            coherence = size * avg_prob  # Simple coherence proxy
-            coherence_scores.append(coherence)
-        
-        plt.bar(range(len(coherence_scores)), coherence_scores)
-        plt.xlabel('Topic')
-        plt.ylabel('Coherence Score (Size × Avg Prob)')
-        plt.title('Topic Coherence Scores')
-        plt.xticks(rotation=45)
-        
-        plt.tight_layout()
-        output_path = f"src/metadata/img/{self.platform}/lda_{self.lda_results['n_topics']}.pdf"
-        output_dir = os.path.dirname(output_path)
-        os.makedirs(output_dir, exist_ok=True)
-        plt.savefig(output_path)
-        #plt.show()
-
-    def print_lda_summary(self):
-        """Print detailed LDA topic summary"""
-        if not hasattr(self, 'lda_results') or not self.lda_results:
-            print("No LDA results available. Run perform_lda() first.")
-            return
-        
-        print(f"\n{'='*50}")
-        print(f"LDA TOPIC MODELING SUMMARY")
-        print(f"{'='*50}")
-        print(f"Number of topics: {self.lda_results['n_topics']}")
-        print(f"Total posts analyzed: {len(self.blog_posts)}")
-        print(f"Perplexity: {self.lda_results['perplexity']:.2f}")
-        print(f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}")
-        
-        for topic_id in range(self.lda_results['n_topics']):
-            stats = self.lda_results['topic_stats'][topic_id]
-            print(f"\n{'-'*40}")
-            print(f"TOPIC {topic_id}")
-            print(f"{'-'*40}")
-            print(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)")
-            print(f"Average topic probability: {stats['average_probability']:.3f}")
-            
-            print(f"\nTop words:")
-            for i, (word, weight) in enumerate(stats['top_words'][:10], 1):
-                print(f"  {i:2d}. {word} ({weight:.4f})")
-            
-            print(f"\nYear distribution:")
-            year_dist = stats['year_distribution']
-            for year in sorted(year_dist.keys()):
-                print(f"  {year}: {year_dist[year]} posts")
-
-    def save_lda_results(self, output_file='lda_results.csv'):
-        """Save LDA results to CSV"""
-        if not hasattr(self, 'lda_results') or not self.lda_results:
-            print("No LDA results available. Run perform_lda() first.")
-            return
-
-        # Prepare data for CSV
-        results_data = []
-        for i, post in enumerate(self.blog_posts):
-            # Get topic probabilities as separate columns
-            topic_probs = {f'topic_{j}_prob': post['topic_probabilities'][j] 
-                        for j in range(self.lda_results['n_topics'])}
-            
-            row_data = {
-                '_id': post['_id'],
-                'title': post['title'],
-                'year': post['year'],
-                'month': post['month'],
-                'dominant_topic': post['lda_topic'],
-                'file': post['file']
-            }
-            row_data.update(topic_probs)
-            results_data.append(row_data)
-
-        df = pd.DataFrame(results_data)
-        df.to_csv(output_file, index=False)
-        print(f"LDA results saved to {output_file}")
-            
-        # Save topic summaries
-        summary_file = output_file.replace('.csv', '_summary.txt')
-        with open(summary_file, 'w') as f:
-            f.write(f"LDA TOPIC MODELING SUMMARY\n")
-            f.write(f"{'='*50}\n")
-            f.write(f"Number of topics: {self.lda_results['n_topics']}\n")
-            f.write(f"Total posts analyzed: {len(self.blog_posts)}\n")
-            f.write(f"Perplexity: {self.lda_results['perplexity']:.2f}\n")
-            f.write(f"Log Likelihood: {self.lda_results['log_likelihood']:.2f}\n\n")
-            
-            for topic_id in range(self.lda_results['n_topics']):
-                stats = self.lda_results['topic_stats'][topic_id]
-                f.write(f"TOPIC {topic_id}\n")
-                f.write(f"{'-'*40}\n")
-                f.write(f"Size: {stats['size']} posts ({stats['percentage']:.1f}%)\n")
-                f.write(f"Average topic probability: {stats['average_probability']:.3f}\n\n")
-                
-                f.write(f"Top words:\n")
-                for i, (word, weight) in enumerate(stats['top_words'][:15], 1):
-                    f.write(f"  {i:2d}. {word} ({weight:.4f})\n")
-                
-                f.write(f"\nYear distribution:\n")
-                year_dist = stats['year_distribution']
-                for year in sorted(year_dist.keys()):
-                    f.write(f"  {year}: {year_dist[year]} posts\n")
-                f.write(f"\n")
-        
-        print(f"LDA topic summary saved to {summary_file}")
-
-# Main execution
-def main(platform, test: bool = False, optimal_topics: int = 25, type_cluster: str = 'lda'):
-    analyzer = BlogTopicClustering(platform)
+def main(platform, max_posts=None, min_topic_size=15, embedding_model='all-MiniLM-L6-v2'):
+    """
+    Main function to run BERTopic analysis
     
-    success = analyzer.load_csv_files()
-    if not success:
+    Args:
+        platform: 'lw' or 'af'
+        max_posts: Limit number of posts (None = all)
+        min_topic_size: Minimum documents per topic
+        embedding_model: Which sentence transformer to use
+    """
+    print("\n" + "="*80)
+    print("BERTOPIC - EMBEDDING-BASED TOPIC MODELING")
+    print("="*80)
+    
+    analyzer = EmbeddingTopicModeling(platform)
+    
+    # Load data
+    if not analyzer.load_csv_files(max_posts=max_posts):
+        print("Failed to load data!")
         return
-
-    if type_cluster == 'lda' or type_cluster == 'both':
-        print("\n" + "="*60)
-        print("PERFORMING LDA TOPIC MODELING")
-        print("="*60)
-        
-        if test:
-            lda_coherence_results = analyzer.lda_topic_coherence_test(
-                i=2,
-                topic_range=range(55, 81, 5),
-            )
-            # Choose based on coherence, not perplexity!
-            optimal_topics = lda_coherence_results['optimal_topics_coherence']
-            print(f"\nUsing {optimal_topics} topics for LDA based on coherence")
-        
-        # Train final model with optimal topics
-        lda_results = analyzer.perform_lda(n_topics=optimal_topics, use_full_data=True)
-        analyzer.print_lda_summary()
-        analyzer.visualize_lda_topics()
-        output_path = f'src/metadata/clustering_results/{analyzer.platform}/lda_{optimal_topics}.csv'
-        output_dir = os.path.dirname(output_path)
-        os.makedirs(output_dir, exist_ok=True)
-        analyzer.save_lda_results(output_path)
     
-    if type_cluster == 'kmeans' or type_cluster == 'both':
-        # K MEANS
-        print("\n" + "="*60)
-        print("PERFORMING K-MEANS CLUSTERING")
-        print("="*60)
-        
-        if test:
-            # elbow test
-            elbow_results = analyzer.elbow_test(k_range=range(35, 46), n_samples=2000)  # Sample for speed
-            # optimal number of clusters according to
-            # 'optimal_k_silhouette' or 'optimal_k_elbow'
-            optimal_topics = elbow_results['optimal_k_silhouette'] # change for test method
-            print(f"\nUsing k={optimal_topics} clusters based on silhouette score")
-        
-        results = analyzer.perform_clustering(n_clusters=optimal_topics)
-        analyzer.print_cluster_summary()
-        analyzer.visualize_clusters()
-        output_path = f'src/metadata/clustering_results/{analyzer.platform}/kmeans_{optimal_topics}.csv'
-        output_dir = os.path.dirname(output_path)
-        os.makedirs(output_dir, exist_ok=True)
-        analyzer.save_results(output_path)
-        
-    print("\nAnalysis complete!")
-    return optimal_topics
+    # Train model
+    analyzer.train_topic_model(
+        min_topic_size=min_topic_size,
+        embedding_model=embedding_model,
+        n_neighbors=15,
+        n_components=5
+    )
+    
+    # Optional: reduce topics if too many were discovered
+    # analyzer.reduce_topics(nr_topics=20)
+    
+    # Analysis
+    analyzer.print_detailed_topics(n_topics=10)
+    analyzer.visualize_topics()
+    
+    # Interactive visualizations (saved as HTML)
+    analyzer.visualize_topic_hierarchy()
+    analyzer.visualize_topic_space()
+    
+    # Save
+    analyzer.save_results()
+    
+    print("\n" + "="*80)
+    print("ANALYSIS COMPLETE!")
+    print("="*80)
+
 
 if __name__ == "__main__":
-    """
-    Params:
-        test: bool = False (default), True // whether to perform testing, 
-                                  define what ints of topics to test this on in the main()
-        optimal_topics: int = 20 (default), // amount of topics to cluster into
-        type_cluster: str = 'lda' (default), 'kmeans', 'both' // which clustering method to use
-    """        
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
-    else:
-        print("USAGE: python graphql_03_run_topic_clustering.py <FORUM> <TEST (optional)> <OPTIMAL_TOPICS (optional)> <TYPE_CLUSTER (optional)>")
-        print("\nParams:")
-        print("  FORUM: Required input file/forum name")
-        print("  TEST: Optional boolean (True/False) - whether to perform testing (default: False)")
-        print("  OPTIMAL_TOPICS: Optional int - number of topics to cluster into (default: 20)")
-        print("  TYPE_CLUSTER: Optional str ('lda', 'kmeans', 'both') - clustering method (default: 'lda')")
-        sys.exit(1)
-
-    test = sys.argv[2] if len(sys.argv) > 2 else False
-    optimal_topics = int(sys.argv[3]) if len(sys.argv) > 3 else 55
-    type_cluster = sys.argv[4] if len(sys.argv) > 4 else 'lda'
+    import sys
     
-    main(input_file, test=test, optimal_topics=optimal_topics, type_cluster=type_cluster)
+    if len(sys.argv) < 2:
+        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [MIN_TOPIC_SIZE]")
+        print("\nParameters:")
+        print("  FORUM: 'lw' or 'af' (required)")
+        print("  MAX_POSTS: Limit posts for testing (default: None = all)")
+        print("  MIN_TOPIC_SIZE: Minimum documents per topic (default: 15)")
+        print("\nExamples:")
+        print("  python bertopic_analyzer.py lw 1000 10    # Test with 1000 posts")
+        print("  python bertopic_analyzer.py af None 20    # All posts, min 20 per topic")
+        print("\nNote: First run will download the embedding model (~80MB)")
+        sys.exit(1)
+    
+    platform = sys.argv[1]
+    max_posts = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] != 'None' else None
+    min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 15
+    
+    main(platform, max_posts, min_topic_size)
