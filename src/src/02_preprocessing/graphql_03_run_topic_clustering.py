@@ -7,9 +7,9 @@ import os
 import warnings
 import pickle
 from collections import Counter
-import re
-import io
 import sys
+import time
+import csv
 
 # BERTopic and dependencies
 from bertopic import BERTopic
@@ -20,6 +20,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance
 from bertopic.representation import KeyBERTInspired
 from gensim.models.coherencemodel import CoherenceModel
+from gensim.models import CoherenceModel
+from gensim.corpora import Dictionary
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 warnings.filterwarnings('ignore')
 
@@ -123,13 +126,13 @@ class EmbeddingTopicModeling:
         
         Parameters:
         -----------
-        min_topic_size : int (default: 400)
+        min_topic_size : int (default 1% of the input posts)
             Minimum documents per topic - HIGH VALUES = fewer topics
-        n_neighbors : int (default: 25)
+        n_neighbors : int (default: 15)
             UMAP n_neighbors - HIGHER = broader, fewer topics (try 25-50)
         n_components : int (default: 5)
             UMAP dimensions
-        min_cluster_size : int (default: 400)
+        min_cluster_size : int (default 1% of the input posts)
             HDBSCAN minimum cluster size - MUST match min_topic_size
         embedding_model : str
             Sentence transformer model
@@ -148,7 +151,7 @@ class EmbeddingTopicModeling:
 
         # === Auto-adjust cluster size ===
         if min_topic_size is None:
-            min_topic_size = max(20, int(len(docs) * 0.01))  # 1% of corpus, but at least 20
+            min_topic_size = int(len(docs) * 0.02)  # 2% of corpus, but at least 20
             print(f"Auto-set min_topic_size to {min_topic_size} (1% of {len(docs)})")
 
         if min_cluster_size is None:
@@ -508,6 +511,7 @@ class EmbeddingTopicModeling:
             output_path = f"src/metadata/clustering_results/{self.platform}/detailed_topics.txt"
 
         # Capture printed output
+        import io, sys
         buffer = io.StringIO()
         old_stdout = sys.stdout
         sys.stdout = buffer
@@ -518,7 +522,12 @@ class EmbeddingTopicModeling:
             sys.stdout = old_stdout
 
         content = buffer.getvalue()
-        Path(output_path).write_text(content, encoding="utf-8")
+        
+        # Make sure folder exists
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(content, encoding="utf-8")
+
         print(f"✅ Saved detailed topics to: {output_path}")
     
     def print_detailed_topics(self, n_topics=10):
@@ -586,34 +595,171 @@ class EmbeddingTopicModeling:
         np.save(embeddings_path, self.embeddings)
         print(f"Embeddings saved to {embeddings_path}")
 
+    def compute_diversity_from_model(self, top_n_words=10):
+        topics = self.topic_model.get_topics()
+        top_words_per_topic = [
+            [w for w, _ in ws][:top_n_words] for tid, ws in topics.items() if tid != -1
+        ]
+        all_words = [w for t in top_words_per_topic for w in t]
+        return (len(set(all_words)) / len(all_words)) if all_words else 0.0
+
+    def compute_coherence_from_docs(self, docs, top_n_words=10):
+        tokenized_docs = [d.split() for d in docs]
+        dictionary = Dictionary(tokenized_docs)
+        topics = self.topic_model.get_topics()
+        top_words_per_topic = [
+            [w for w, _ in ws][:top_n_words] for tid, ws in topics.items() if tid != -1
+        ]
+        if not top_words_per_topic:
+            return 0.0
+        cm = CoherenceModel(topics=top_words_per_topic, texts=tokenized_docs, dictionary=dictionary, coherence="c_v")
+        return cm.get_coherence()
+
+    def sweep_parameters(self,
+                        n_neighbors_list=[10,15,25,50],
+                        min_topic_size_list=[50,100,200],
+                        n_components=5,
+                        embedding_model=None,
+                        top_n_words=10,
+                        max_posts_for_sweep=5000,
+                        output_dir="sweep_results"):
+        """
+        Sweep UMAP n_neighbors and BERTopic min_topic_size (and min_cluster_size),
+        retrain model for each combo, and record: n_neighbors, min_topic_size,
+        num_topics, coherence (c_v), diversity.
+        """
+        # Prepare outputs
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        csv_path = Path(output_dir) / f"sweep_{int(time.time())}.csv"
+
+        # Use a representative subset for sweeps to save time
+        docs_all = [p["text"] for p in self.blog_posts]
+        docs = docs_all[:max_posts_for_sweep] if max_posts_for_sweep and len(docs_all) > max_posts_for_sweep else docs_all
+
+        # If embedding_model provided, use it; otherwise reuse trained embedding if present
+        for nn in n_neighbors_list:
+            for mts in min_topic_size_list:
+                print(f"\n--- SWEEP: n_neighbors={nn}, min_topic_size={mts} ---")
+                # Build UMAP & HDBSCAN & BERTopic with these params
+                from umap import UMAP
+                from hdbscan import HDBSCAN
+                from sentence_transformers import SentenceTransformer
+                from bertopic import BERTopic
+                from sklearn.feature_extraction.text import CountVectorizer
+                from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance
+
+                # optionally reuse embedding model if set in self (expensive otherwise)
+                model_name = embedding_model or getattr(self, "embedding_model_name", "all-MiniLM-L6-v2")
+                sentence_model = SentenceTransformer(model_name)
+
+                umap_model = UMAP(n_neighbors=nn, n_components=n_components, min_dist=0.0, metric="cosine", random_state=42)
+                hdbscan_model = HDBSCAN(min_cluster_size=mts, min_samples=max(1, mts//10), metric='euclidean', prediction_data=True)
+
+                vectorizer_model = CountVectorizer(ngram_range=(1,2), stop_words='english', min_df=2, max_df=0.95)
+                keybert_model = KeyBERTInspired()
+                mmr_model = MaximalMarginalRelevance(diversity=0.3)
+
+                topic_model = BERTopic(embedding_model=sentence_model,
+                                    umap_model=umap_model,
+                                    hdbscan_model=hdbscan_model,
+                                    vectorizer_model=vectorizer_model,
+                                    representation_model=[keybert_model, mmr_model],
+                                    top_n_words=top_n_words,
+                                    min_topic_size=mts,
+                                    nr_topics='auto',
+                                    calculate_probabilities=False,
+                                    verbose=False)
+
+                # Fit (this is the expensive step)
+                topics, probs = topic_model.fit_transform(docs)
+
+                # Attach to self temporarily so compute functions work
+                old_model = getattr(self, "topic_model", None)
+                self.topic_model = topic_model
+                self.docs = docs
+
+                # Compute metrics
+                num_topics = len(topic_model.get_topic_info()) - 1
+                diversity = self.compute_diversity_from_model(self, top_n_words=top_n_words)
+                coherence = self.compute_coherence_from_docs(self, docs, top_n_words=top_n_words)
+
+                print(f"-> topics: {num_topics}, coherence: {coherence:.3f}, diversity: {diversity:.3f}")
+
+                # Write CSV row (append)
+                header = ['n_neighbors', 'min_topic_size', 'n_topics', 'coherence_c_v', 'diversity', 'time_s']
+                if not csv_path.exists():
+                    with open(csv_path, 'w', newline='') as f:
+                        writer = csv.writer(f)
+                        writer.writerow(header)
+
+                with open(csv_path, 'a', newline='') as f:
+                    writer = csv.writer(f)
+                    writer.writerow([nn, mts, num_topics, round(coherence, 4), round(diversity, 4), int(time.time())])
+
+                # restore old model if present
+                if old_model is not None:
+                    self.topic_model = old_model
+
+        # After sweep, plot coherence vs diversity
+        import pandas as pd
+        df = pd.read_csv(csv_path)
+        plt.figure(figsize=(8,6))
+        sc = plt.scatter(df['diversity'], df['coherence_c_v'], s=df['n_topics']*2, cmap='viridis')
+        for idx, row in df.iterrows():
+            plt.text(row['diversity']+0.001, row['coherence_c_v']+0.001, f"nn={row['n_neighbors']},mts={row['min_topic_size']}", fontsize=8)
+        plt.xlabel('Diversity')
+        plt.ylabel('Coherence (C_v)')
+        plt.title('Sweep: Diversity vs Coherence (marker ~ #topics)')
+        plt.grid(True)
+        plot_path = Path(output_dir) / "sweep_coherence_vs_diversity.png"
+        plt.tight_layout()
+        plt.savefig(plot_path, dpi=300)
+        plt.close()
+        print(f"Sweep finished. CSV: {csv_path}, Plot: {plot_path}")
+        return csv_path, plot_path
+
     def evaluate_topics(self):
         """
         Compute and print topic coherence (C_v) and diversity for the current model.
+        Works for any BERTopic version.
         """
         model = self.topic_model
-        docs = self.docs if hasattr(self, "docs") else [p["processed_text"] for p in self.blog_posts]
+        docs = getattr(self, "docs", [p["text"] for p in self.blog_posts])
 
-        # --- Topic Diversity ---
-        topic_diversity = self.compute_topic_diversity(top_n_words=10)
+        print("\n" + "=" * 80)
+        print("EVALUATING TOPIC MODEL")
+        print("=" * 80)
 
-        # --- Topic Coherence (C_v) ---
+        # topic diversity
         topics = model.get_topics()
-        top_words = [[word for word, _ in topics[t]] for t in topics if t != -1]
+        top_words_per_topic = [
+            [word for word, _ in words] for tid, words in topics.items() if tid != -1
+        ]
+        all_words = [w for topic in top_words_per_topic for w in topic]
+        unique_words = set(all_words)
+        topic_diversity = len(unique_words) / len(all_words) if all_words else 0.0
+
+        # coherence score (c_v)
+        tokenized_docs = [d.split() for d in docs]
+        dictionary = Dictionary(tokenized_docs)
 
         cm = CoherenceModel(
-            topics=top_words,
-            texts=[d.split() for d in docs],
+            topics=top_words_per_topic,
+            texts=tokenized_docs,
+            dictionary=dictionary,
             coherence="c_v"
         )
         topic_coherence = cm.get_coherence()
 
-        print("\n--- TOPIC MODEL EVALUATION ---")
+        # --- 3️⃣ Print results ---
         print(f"Topic Coherence (C_v): {topic_coherence:.3f}")
         print(f"Topic Diversity: {topic_diversity:.3f}")
-        print("--------------------------------\n")
+        print("-" * 80)
 
+        # Store for reuse in summaries
         self.topic_coherence = topic_coherence
         self.topic_diversity = topic_diversity
+
         return topic_coherence, topic_diversity
 
     def plot_topic_distribution(self, output_path=None):
@@ -639,20 +785,6 @@ class EmbeddingTopicModeling:
 
         print(f"📊 Saved topic distribution plot: {output_path}")
 
-    def compute_topic_diversity(self, top_n_words=10):
-        topics = self.topic_model.get_topics()
-        all_words = []
-        for tid, words_scores in topics.items():
-            if tid == -1:  # skip outliers
-                continue
-            words = [w for w, _ in words_scores[:top_n_words]]
-            all_words.extend(words)
-        unique_words = set(all_words)
-        diversity = len(unique_words) / len(all_words)
-        print(f"Topic Diversity (manual): {diversity:.3f}")
-        self.topic_diversity = diversity
-        return diversity
-
 def main(platform, max_posts=None):
     """
     Main function to run BERTopic analysis
@@ -674,6 +806,14 @@ def main(platform, max_posts=None):
     if not analyzer.load_csv_files(max_posts=max_posts):
         print("Failed to load data!")
         return
+    
+    analyzer.sweep_parameters(
+        n_neighbors_list=[10,15,25,50],
+        min_topic_size_list=[50,100,200],
+        embedding_model="all-mpnet-base-v2",   # optional; slow but better
+        max_posts_for_sweep=None,
+        output_dir="sweep_results_run1"
+    )
     
     # Train model
     analyzer.train_topic_model(

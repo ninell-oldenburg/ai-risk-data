@@ -1,0 +1,337 @@
+
+================================================================================
+DETAILED TOPIC ANALYSIS (Top 10 topics)
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 0: 1230 documents (29.65%)
+Average probability: 0.387
+
+Top words:
+  • ai alignment         (0.6467)
+  • alignment research   (0.5548)
+  • ai                   (0.5374)
+  • ai systems           (0.4818)
+  • alignment            (0.3617)
+  • agents               (0.3613)
+  • agent                (0.3468)
+  • human values         (0.3040)
+  • goals                (0.3034)
+  • learning             (0.2974)
+
+Representative documents:
+  1. What do we need value learning for?... (prob: 1.000)
+  2. A sketch of a value-learning sovereign... (prob: 1.000)
+  3. The overfitting utility problem for value learning AIs... (prob: 1.000)
+
+Temporal distribution:
+  2015: █ 15
+  2016: ███ 31
+  2017: █████ 41
+  2018: ████████████ 97
+  2019: ███████████████████████ 186
+  2020: ████████████████████ 159
+  2021: ████████████████████████ 188
+  2022: ██████████████████████████████ 235
+  2023: █████████████████████ 165
+  2024: ███████ 59
+  2025: ██████ 54
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 1: 635 documents (15.30%)
+Average probability: 0.391
+
+Top words:
+  • ai safety            (0.6611)
+  • ai                   (0.5278)
+  • ai systems           (0.5018)
+  • ais                  (0.4586)
+  • risks                (0.3159)
+  • risk                 (0.3125)
+  • safety               (0.2984)
+  • agents               (0.2863)
+  • capabilities         (0.2743)
+  • security             (0.2703)
+
+Representative documents:
+  1. Idea: Open Access AI Safety Journal... (prob: 1.000)
+  2. Avoiding AI Races Through Self-Regulation... (prob: 1.000)
+  3. Three AI Safety Related Ideas... (prob: 1.000)
+
+Temporal distribution:
+  2015: █ 8
+  2016: ██ 10
+  2017: ██ 9
+  2018: █████ 23
+  2019: ████████ 37
+  2020: ██████████████ 61
+  2021: ████████████████ 68
+  2022: ████████████████████████ 102
+  2023: ██████████████████████████████ 124
+  2024: ██████████████████████████ 111
+  2025: ███████████████████ 82
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 3: 539 documents (12.99%)
+Average probability: 0.382
+
+Top words:
+  • language models      (0.4725)
+  • ai                   (0.4057)
+  • models               (0.3716)
+  • deception            (0.3610)
+  • learning             (0.3444)
+  • adversarial          (0.3441)
+  • alignment            (0.3402)
+  • model                (0.3076)
+  • deceptive            (0.3066)
+  • behavior             (0.2923)
+
+Representative documents:
+  1. Will transparency help catch deception? Perhaps not... (prob: 1.000)
+  2. Does SGD Produce Deceptive Alignment?... (prob: 1.000)
+  3. [Linkpost] Treacherous turns in the wild... (prob: 1.000)
+
+Temporal distribution:
+  2015:  2
+  2016:  1
+  2017:  3
+  2018: █ 5
+  2019: ███ 17
+  2020: ██████ 32
+  2021: ███████████ 55
+  2022: ████████████████████ 103
+  2023: ██████████████████████████████ 148
+  2024: ████████████████████ 100
+  2025: ██████████████ 73
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 4: 449 documents (10.82%)
+Average probability: 0.373
+
+Top words:
+  • abstractions         (0.5500)
+  • abstraction          (0.5279)
+  • ai                   (0.4196)
+  • agents               (0.3872)
+  • concepts             (0.3844)
+  • agent                (0.3774)
+  • knowledge            (0.3726)
+  • belief               (0.3721)
+  • theory               (0.3651)
+  • actions              (0.3600)
+
+Representative documents:
+  1. Vingean Reflection: Open Problems... (prob: 1.000)
+  2. Maximally efficient agents will probably have an anti-daemon immune sy... (prob: 1.000)
+  3. The Alignment Newsletter #1: 04/09/18... (prob: 1.000)
+
+Temporal distribution:
+  2015:  2
+  2016: ██ 8
+  2017: █████ 15
+  2018: █████████ 29
+  2019: ████████████████ 47
+  2020: ████████████████████████ 73
+  2021: ██████████████████████████████ 88
+  2022: ████████████████████ 60
+  2023: █████████████████████ 64
+  2024: ████████████ 37
+  2025: ████████ 26
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 2: 406 documents (9.79%)
+Average probability: 0.642
+
+Top words:
+  • mechanistic interpretability (0.7109)
+  • interpretability     (0.6238)
+  • learning             (0.3932)
+  • understanding        (0.3654)
+  • neural               (0.3624)
+  • neural networks      (0.3433)
+  • models               (0.3425)
+  • mechanistic          (0.3302)
+  • attention            (0.3235)
+  • trained              (0.3204)
+
+Representative documents:
+  1. What is Interpretability?... (prob: 1.000)
+  2. Sparsity and interpretability?... (prob: 1.000)
+  3. Interpretability in ML: A Broad Overview... (prob: 1.000)
+
+Temporal distribution:
+  2018:  2
+  2019: █ 6
+  2020: ███ 16
+  2021: █████ 24
+  2022: █████████████████ 86
+  2023: ██████████████████████████████ 144
+  2024: ██████████████████ 87
+  2025: ████████ 41
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 5: 210 documents (5.06%)
+Average probability: 0.647
+
+Top words:
+  • counterfactuals      (0.5723)
+  • counterfactual       (0.5449)
+  • decision theories    (0.4950)
+  • decision theory      (0.4035)
+  • reasoning            (0.3724)
+  • theories             (0.3576)
+  • causal               (0.3503)
+  • cdt edt              (0.3206)
+  • beliefs              (0.2841)
+  • cdt                  (0.2622)
+
+Representative documents:
+  1. An Introduction to Löb's Theorem in MIRI Research... (prob: 1.000)
+  2. The odd counterfactuals of playing chicken... (prob: 1.000)
+  3. A different angle on UDT... (prob: 1.000)
+
+Temporal distribution:
+  2015: ██████████████████████████████ 32
+  2016: ████████ 9
+  2017: █████████████████████████████ 31
+  2018: ████████████████████████████ 30
+  2019: █████████████████████████████ 31
+  2020: ████████████████ 18
+  2021: ████████████████ 18
+  2022: ████████ 9
+  2023: ███████████████████ 21
+  2024: ████████ 9
+  2025: █ 2
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 7: 189 documents (4.56%)
+Average probability: 0.714
+
+Top words:
+  • solomonoff induction (0.3142)
+  • theorem              (0.2854)
+  • arbitrary            (0.2776)
+  • theory               (0.2661)
+  • lemma                (0.2654)
+  • infradistributions   (0.2300)
+  • computable           (0.2249)
+  • compact              (0.2241)
+  • turing               (0.2154)
+  • measure              (0.2021)
+
+Representative documents:
+  1. Multibit reflective oracles... (prob: 1.000)
+  2. Oracle machines for automated philosophy... (prob: 1.000)
+  3. Forum Digest: Reflective Oracles... (prob: 1.000)
+
+Temporal distribution:
+  2015: ██████████████████████████████ 54
+  2016: ███████████ 21
+  2017: ████████ 16
+  2018: █████████████████████ 39
+  2019: ██ 5
+  2020: ██████████ 19
+  2021: ████████ 15
+  2022: ██ 5
+  2023: ███ 6
+  2024: ██ 5
+  2025: ██ 4
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 8: 186 documents (4.48%)
+Average probability: 0.670
+
+Top words:
+  • utility functions    (0.5794)
+  • utility function     (0.5541)
+  • utility              (0.5126)
+  • expected utility     (0.4461)
+  • optimal              (0.4240)
+  • optimiser            (0.3905)
+  • maximise             (0.3701)
+  • optimisation         (0.3613)
+  • maximising           (0.3535)
+  • ai                   (0.3463)
+
+Representative documents:
+  1. Orthogonality: action counterfactuals... (prob: 1.000)
+  2. Resource gathering agent... (prob: 1.000)
+  3. Utility vs Probability: idea synthesis... (prob: 1.000)
+
+Temporal distribution:
+  2015: ███████████████████ 22
+  2016: █████████████████████ 24
+  2017: ██████████████████████████████ 34
+  2018: █████████████████ 20
+  2019: ██████████████████████ 25
+  2020: █████████ 11
+  2021: ████████ 10
+  2022: ███████████████ 17
+  2023: ███████████████ 18
+  2024: ███ 4
+  2025:  1
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 6: 168 documents (4.05%)
+Average probability: 0.772
+
+Top words:
+  • agi safety           (0.7071)
+  • agi                  (0.5300)
+  • like agi             (0.4739)
+  • agis                 (0.4699)
+  • safety               (0.3957)
+  • ai                   (0.3606)
+  • intelligence         (0.2973)
+  • research             (0.2927)
+  • brain                (0.2639)
+  • discussion           (0.2472)
+
+Representative documents:
+  1. Factored Cognition... (prob: 1.000)
+  2. 1hr talk: Intro to AGI safety... (prob: 1.000)
+  3. AGI will drastically increase economies of scale... (prob: 1.000)
+
+Temporal distribution:
+  2016:  1
+  2018: █ 2
+  2019: ███████ 13
+  2020: ███████████████ 27
+  2021: ██████████████ 25
+  2022: ██████████████████████████████ 53
+  2023: ██████████████████ 32
+  2024: ████ 8
+  2025: ███ 7
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 9: 137 documents (3.30%)
+Average probability: 0.825
+
+Top words:
+  • ai progress          (0.5563)
+  • ai                   (0.4824)
+  • future               (0.4250)
+  • ais                  (0.4204)
+  • forecasting          (0.4011)
+  • timelines            (0.3562)
+  • agi                  (0.3303)
+  • algorithmic          (0.3129)
+  • estimates            (0.2912)
+  • progress             (0.2814)
+
+Representative documents:
+  1. Arguments about fast takeoff... (prob: 1.000)
+  2. Reasons compute may not drive AI capabilities growth... (prob: 1.000)
+  3. Soft takeoff can still lead to decisive strategic advantage... (prob: 1.000)
+
+Temporal distribution:
+  2017:  1
+  2018: ██ 3
+  2019: ███ 4
+  2020: ████████████████████ 23
+  2021: ██████████████████████████████ 34
+  2022: █████████████████████████████ 33
+  2023: ███████████ 13
+  2024: █████ 6
+  2025: █████████████████ 20
