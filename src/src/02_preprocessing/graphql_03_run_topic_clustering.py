@@ -628,7 +628,7 @@ class EmbeddingTopicModeling:
         retrain model for each combo, and record: n_neighbors, min_topic_size,
         num_topics, coherence (c_v), diversity.
         """
-        # Prepare outputs
+        # prepare output
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         csv_path = Path(output_dir) / f"sweep_{int(time.time())}.csv"
 
