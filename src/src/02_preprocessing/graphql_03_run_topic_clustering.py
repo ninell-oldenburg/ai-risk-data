@@ -651,7 +651,7 @@ class EmbeddingTopicModeling:
         # prepare outputs and so on... 
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         csv_path = Path(output_dir) / f"sweep_{int(time.time())}.csv"
-        sentence_model = SentenceTransformer(model_name)
+        sentence_model = SentenceTransformer(embedding_model)
 
         # Use a representative subset for sweeps to save time
         docs_all = [p["text"] for p in self.blog_posts]
@@ -689,6 +689,10 @@ class EmbeddingTopicModeling:
                 old_model = getattr(self, "topic_model", None)
                 self.topic_model = topic_model
                 self.docs = docs
+
+                new_topics = self.topic_model.reduce_outliers(docs, topics)
+                print(f"  Outliers after reduction: {sum(t == -1 for t in new_topics)}")
+                topics = new_topics
 
                 # Compute metrics
                 num_topics = len(topic_model.get_topic_info()) - 1
@@ -819,8 +823,8 @@ def main(platform, max_posts=None):
     
     analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
-        min_topic_size_list=[50,100,200],
-        embedding_model="all-MiniLM-L6-v2",   # optional; slow but better
+        min_topic_size_list=[50,100,200, 400],
+        embedding_model="all-MiniLM-L6-v2",
         max_posts_for_sweep=None,
         output_dir="sweep_results_run1"
     )
@@ -829,9 +833,9 @@ def main(platform, max_posts=None):
     analyzer.train_topic_model(
         min_topic_size=100,
         min_cluster_size=100,
-        n_neighbors=25,            # tighter local density, more separation
+        n_neighbors=25,
         n_components=5,
-        embedding_model='all-MiniLM-L6-v2',
+        embedding_model='all-mpnet-base-v2',
         nr_topics='auto',
         reduce_outliers=True
     )
