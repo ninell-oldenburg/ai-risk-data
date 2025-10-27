@@ -1,158 +1,91 @@
 
 ================================================================================
-DETAILED TOPIC ANALYSIS (Top 7 topics)
+DETAILED TOPIC ANALYSIS (Top 3 topics)
 ================================================================================
 
 ────────────────────────────────────────────────────────────────────────────────
-Topic 0: 1265 documents (30.49%)
-Average probability: 0.666
+Topic 0: 2161 documents (52.08%)
+Average probability: 0.700
 
 Top words:
-  • ai                   (0.5030)
-  • corrigibility        (0.3647)
-  • agents               (0.3494)
-  • policies             (0.3463)
-  • policy               (0.3400)
-  • agent                (0.3194)
-  • values               (0.3083)
-  • human                (0.2873)
-  • sense                (0.2613)
-  • actions              (0.2511)
-
-Representative documents:
-  1. Multibit reflective oracles... (prob: 1.000)
-  2. Orthogonality: action counterfactuals... (prob: 1.000)
-  3. Oracle machines for automated philosophy... (prob: 1.000)
-
-Temporal distribution:
-  2015: ██████████████████████ 124
-  2016: ███████████████ 84
-  2017: ██████████████████████ 126
-  2018: █████████████████████████ 142
-  2019: ██████████████████████████████ 167
-  2020: ████████████████████████████ 159
-  2021: █████████████████████████ 142
-  2022: ████████████████████ 115
-  2023: ████████████████████ 115
-  2024: ██████████ 57
-  2025: ██████ 34
-
-────────────────────────────────────────────────────────────────────────────────
-Topic 1: 984 documents (23.72%)
-Average probability: 0.264
-
-Top words:
-  • ai alignment         (0.7141)
-  • alignment research   (0.5865)
-  • ai                   (0.5121)
-  • ai systems           (0.4907)
-  • alignment            (0.4373)
-  • aligned              (0.3743)
-  • agi                  (0.2704)
-  • agents               (0.2594)
-  • optimizer            (0.2457)
-  • learning             (0.2434)
+  • ai                   (0.5650)
+  • ai systems           (0.5377)
+  • ais                  (0.5201)
+  • agi                  (0.3552)
+  • agents               (0.3192)
+  • alignment            (0.3046)
+  • agent                (0.2995)
+  • aligned              (0.2784)
+  • learning             (0.2745)
+  • safety               (0.2642)
 
 Representative documents:
   1. Meta- the goals of this forum... (prob: 1.000)
   2. Slack Chat... (prob: 1.000)
-  3. Meta: IAFF vs LessWrong... (prob: 1.000)
+  3. Autopoietic systems and difficulty of AGI alignment... (prob: 1.000)
 
 Temporal distribution:
-  2015:  2
-  2016:  7
-  2017:  8
-  2018: ███████ 66
-  2019: █████████████ 116
-  2020: ██████████████ 119
-  2021: ███████████████████ 165
-  2022: ██████████████████████████████ 252
-  2023: ████████████████ 141
-  2024: ██████ 58
-  2025: █████ 50
+  2015:  5
+  2016:  12
+  2017: █ 16
+  2018: █████ 86
+  2019: █████████ 150
+  2020: ██████████████ 221
+  2021: ███████████████████ 297
+  2022: ██████████████████████████████ 453
+  2023: ████████████████████████████ 432
+  2024: █████████████████ 267
+  2025: ██████████████ 222
 
 ────────────────────────────────────────────────────────────────────────────────
-Topic 2: 644 documents (15.52%)
-Average probability: 0.428
+Topic 1: 1553 documents (37.43%)
+Average probability: 0.715
 
 Top words:
-  • ai safety            (0.7437)
-  • ai systems           (0.5445)
-  • ai                   (0.5174)
-  • ais                  (0.4817)
-  • intelligence         (0.3344)
-  • adversarial          (0.3264)
-  • risks                (0.3040)
-  • dangerous            (0.2916)
-  • agents               (0.2875)
-  • humanity             (0.2874)
+  • ai                   (0.4454)
+  • behavior             (0.3313)
+  • theory               (0.3286)
+  • agents               (0.3171)
+  • agent                (0.2771)
+  • policy               (0.2620)
+  • human                (0.2614)
+  • proposition          (0.2527)
+  • learning             (0.2483)
+  • actions              (0.2284)
 
 Representative documents:
-  1. Idea: Open Access AI Safety Journal... (prob: 1.000)
-  2. An Untrollable Mathematician Illustrated... (prob: 1.000)
-  3. Project Proposal: Considerations for trading off capabilities and safe... (prob: 1.000)
+  1. Multibit reflective oracles... (prob: 1.000)
+  2. Oracle machines for automated philosophy... (prob: 1.000)
+  3. An implementation of modal UDT... (prob: 1.000)
 
 Temporal distribution:
-  2015: █ 7
-  2016: ██ 11
-  2017: ██ 11
-  2018: █████ 23
-  2019: ██████████ 42
-  2020: █████████████ 58
-  2021: ███████████████ 63
-  2022: █████████████████████████ 108
-  2023: ██████████████████████████████ 126
-  2024: █████████████████████████ 109
-  2025: ████████████████████ 86
+  2015: ██████████████████ 130
+  2016: █████████████ 93
+  2017: ██████████████████ 134
+  2018: ██████████████████████ 161
+  2019: ██████████████████████████████ 213
+  2020: ████████████████████████████ 199
+  2021: ████████████████████████████ 201
+  2022: ████████████████████ 147
+  2023: █████████████████████ 153
+  2024: ██████████ 74
+  2025: ██████ 48
 
 ────────────────────────────────────────────────────────────────────────────────
-Topic 4: 434 documents (10.46%)
-Average probability: 0.469
+Topic 2: 435 documents (10.48%)
+Average probability: 0.615
 
 Top words:
-  • language models      (0.5926)
-  • language model       (0.5513)
-  • ai                   (0.4728)
-  • language             (0.3534)
-  • learning             (0.3044)
-  • alignment            (0.2901)
-  • model                (0.2789)
-  • accuracy             (0.2489)
-  • models               (0.2478)
-  • output               (0.2467)
-
-Representative documents:
-  1. Cognitive Biases in Large Language Models... (prob: 1.000)
-  2. How truthful is GPT-3? A benchmark for language models... (prob: 1.000)
-  3. How do new models from OpenAI, DeepMind and Anthropic perform on Truth... (prob: 1.000)
-
-Temporal distribution:
-  2015:  1
-  2017:  1
-  2018:  1
-  2019: █ 6
-  2020: █████ 23
-  2021: █████████ 43
-  2022: █████████████████ 75
-  2023: ██████████████████████████████ 131
-  2024: ███████████████████ 86
-  2025: ███████████████ 67
-
-────────────────────────────────────────────────────────────────────────────────
-Topic 3: 410 documents (9.88%)
-Average probability: 0.543
-
-Top words:
-  • interpretability     (0.6543)
-  • interpretable        (0.5554)
-  • neural networks      (0.4260)
-  • neural               (0.3570)
-  • mechanistic          (0.3253)
-  • neurons              (0.2945)
-  • understanding        (0.2924)
-  • learning             (0.2806)
-  • mlp                  (0.2774)
-  • activations          (0.2664)
+  • interpretability     (0.6199)
+  • interpretable        (0.5319)
+  • neural networks      (0.4443)
+  • neural               (0.3964)
+  • ai                   (0.3911)
+  • mechanistic          (0.3520)
+  • neurons              (0.3480)
+  • understanding        (0.3029)
+  • learning             (0.3000)
+  • mlp                  (0.2799)
 
 Representative documents:
   1. What is Interpretability?... (prob: 1.000)
@@ -160,76 +93,11 @@ Representative documents:
   3. [AN #147]: An overview of the interpretability landscape... (prob: 1.000)
 
 Temporal distribution:
-  2018:  1
-  2019: █ 5
-  2020: ███ 17
-  2021: █████ 25
-  2022: ██████████████████ 89
-  2023: ██████████████████████████████ 148
+  2018:  3
+  2019: █ 8
+  2020: ███ 19
+  2021: █████ 27
+  2022: ████████████████████ 103
+  2023: ██████████████████████████████ 150
   2024: █████████████████ 85
   2025: ████████ 40
-
-────────────────────────────────────────────────────────────────────────────────
-Topic 5: 255 documents (6.15%)
-Average probability: 0.714
-
-Top words:
-  • natural abstractions (0.7030)
-  • abstraction          (0.6421)
-  • abstractions         (0.6137)
-  • ai                   (0.4378)
-  • goal directedness    (0.4254)
-  • concepts             (0.4131)
-  • directedness         (0.4073)
-  • structure            (0.3598)
-  • agency               (0.3343)
-  • concept              (0.3307)
-
-Representative documents:
-  1. Welcome, new contributors!... (prob: 1.000)
-  2. Notes from a conversation on act-based and goal-directed systems... (prob: 1.000)
-  3. On motivations for MIRI's highly reliable agent design research... (prob: 1.000)
-
-Temporal distribution:
-  2015:  1
-  2016: █ 3
-  2017: ██ 4
-  2018: ████████ 14
-  2019: ██████████████████ 30
-  2020: █████████████████████ 35
-  2021: █████████████████████████████ 49
-  2022: ████████████████████ 34
-  2023: ██████████████████████████████ 50
-  2024: ████████████ 21
-  2025: ████████ 14
-
-────────────────────────────────────────────────────────────────────────────────
-Topic 6: 157 documents (3.78%)
-Average probability: 0.760
-
-Top words:
-  • ai                   (0.5115)
-  • ais                  (0.4404)
-  • intelligence         (0.3459)
-  • future               (0.3109)
-  • timelines            (0.2933)
-  • forecasting          (0.2813)
-  • algorithmic          (0.2792)
-  • agi                  (0.2612)
-  • compute              (0.2531)
-  • estimates            (0.2380)
-
-Representative documents:
-  1. Arguments about fast takeoff... (prob: 1.000)
-  2. Switching hosting providers today, there probably will be some hiccups... (prob: 1.000)
-  3. Reasons compute may not drive AI capabilities growth... (prob: 1.000)
-
-Temporal distribution:
-  2018: ██ 3
-  2019: ███ 5
-  2020: ██████████████████████ 28
-  2021: ██████████████████████████████ 38
-  2022: ███████████████████████ 30
-  2023: ██████████████████ 24
-  2024: ███████ 10
-  2025: ███████████████ 19

@@ -1,0 +1,404 @@
+
+================================================================================
+DETAILED TOPIC ANALYSIS (Top 10 topics)
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 1: 5573 documents (12.59%)
+Average probability: 0.356
+
+Top words:
+  • ai safety            (0.6183)
+  • ai                   (0.6121)
+  • ai systems           (0.5456)
+  • ais                  (0.5340)
+  • openai               (0.4547)
+  • intelligence         (0.4446)
+  • agi                  (0.3771)
+  • technology           (0.3308)
+  • capabilities         (0.3239)
+  • compute              (0.3229)
+
+Representative documents:
+  1. Introducing CADIE... (prob: 1.000)
+  2. A Nightmare for Eliezer... (prob: 1.000)
+  3. The Curve of Capability... (prob: 1.000)
+
+Temporal distribution:
+  2009:  12
+  2010:  33
+  2011: █ 82
+  2012: ██ 114
+  2013: █ 76
+  2014: █ 89
+  2015: ██ 97
+  2016:  48
+  2017: █ 73
+  2018: ██ 112
+  2019: ███ 164
+  2020: ████ 210
+  2021: █████ 258
+  2022: ██████████████ 711
+  2023: ██████████████████████████████ 1441
+  2024: ███████████████████████ 1115
+  2025: ███████████████████ 938
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 0: 5073 documents (11.46%)
+Average probability: 0.530
+
+Top words:
+  • meetups              (0.5878)
+  • article meetup       (0.5742)
+  • meetup               (0.5681)
+  • acx meetups          (0.5288)
+  • acx meetup           (0.5028)
+  • meetup area          (0.4996)
+  • meeting              (0.4592)
+  • weekly               (0.3898)
+  • mailing list         (0.3834)
+  • meet                 (0.3721)
+
+Representative documents:
+  1. Tell Your Rationalist Origin Story... at Less Wrong... (prob: 1.000)
+  2. What Do We Mean By "Rationality"?... (prob: 1.000)
+  3. Taboo "rationality," please.... (prob: 1.000)
+
+Temporal distribution:
+  2009: ████ 83
+  2010: ████ 86
+  2011: ████████████████████████ 506
+  2012: ██████████████████████████████ 619
+  2013: ████████████████████████ 505
+  2014: ██████████████████████ 468
+  2015: █████████████████████ 434
+  2016: ███████████████ 318
+  2017: ████████ 173
+  2018: ███████ 146
+  2019: █████████ 192
+  2020: ███ 68
+  2021: ████████████ 248
+  2022: ██████████████ 290
+  2023: ████████████████ 345
+  2024: ██████████████████ 382
+  2025: ██████████ 210
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 10: 4063 documents (9.18%)
+Average probability: 0.099
+
+Top words:
+  • procrastination      (0.5263)
+  • motivation           (0.5167)
+  • productivity         (0.4810)
+  • tasks                (0.4188)
+  • habits               (0.3917)
+  • willpower            (0.3861)
+  • task                 (0.3816)
+  • work                 (0.3431)
+  • advice               (0.3322)
+  • therapy              (0.3303)
+
+Representative documents:
+  1. Schools Proliferating Without Evidence... (prob: 1.000)
+  2. Happiness is a Heuristic... (prob: 1.000)
+  3. Anti-Akrasia Technique: Structured Procrastination... (prob: 1.000)
+
+Temporal distribution:
+  2009: ██████ 92
+  2010: ████████ 124
+  2011: ██████████████████ 266
+  2012: ████████████ 174
+  2013: ███████████ 169
+  2014: █████████ 142
+  2015: ██████████ 153
+  2016: ██████ 95
+  2017: ████████████ 182
+  2018: ██████████████████ 258
+  2019: ██████████████████ 263
+  2020: █████████████████████████ 367
+  2021: ███████████████████████████ 391
+  2022: ██████████████████████████████ 427
+  2023: █████████████████████████ 369
+  2024: ██████████████████████████ 374
+  2025: ███████████████ 217
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 2: 3506 documents (7.92%)
+Average probability: 0.219
+
+Top words:
+  • ai alignment         (0.7028)
+  • ai                   (0.5665)
+  • ai systems           (0.5450)
+  • alignment research   (0.5136)
+  • ais                  (0.4715)
+  • alignment            (0.4029)
+  • agents               (0.3398)
+  • aligned              (0.3342)
+  • human values         (0.3064)
+  • agent                (0.3053)
+
+Representative documents:
+  1. The mathematics of reduced impact: help needed... (prob: 1.000)
+  2. Reduced impact AI: no back channels... (prob: 1.000)
+  3. Introducing Corrigibility (an FAI research subfield)... (prob: 1.000)
+
+Temporal distribution:
+  2009:  12
+  2010: █ 26
+  2011: ██ 61
+  2012: ██ 56
+  2013: █ 29
+  2014: ██ 48
+  2015: ████ 105
+  2016: ████ 90
+  2017: █████ 131
+  2018: █████████ 211
+  2019: ████████████ 281
+  2020: ███████████ 263
+  2021: █████████████ 304
+  2022: █████████████████████████████ 665
+  2023: ██████████████████████████████ 669
+  2024: ██████████████ 315
+  2025: ██████████ 240
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 3: 2751 documents (6.21%)
+Average probability: 0.176
+
+Top words:
+  • lesswrong            (0.5238)
+  • discussion           (0.4188)
+  • moderation           (0.4144)
+  • rationality          (0.4138)
+  • forum                (0.4015)
+  • community            (0.3463)
+  • comments             (0.3410)
+  • wiki                 (0.3393)
+  • content              (0.3372)
+  • blog                 (0.3325)
+
+Representative documents:
+  1. LessWrong anti-kibitzer (hides comment authors and vote counts)... (prob: 1.000)
+  2. LessWrong Boo Vote (Stochastic Downvoting)... (prob: 1.000)
+  3. Welcome to Less Wrong!... (prob: 1.000)
+
+Temporal distribution:
+  2009: ██████ 79
+  2010: ████████ 100
+  2011: ██████████████████████████████ 373
+  2012: █████████████████████████ 322
+  2013: ███████████ 142
+  2014: ████████ 106
+  2015: ████████ 109
+  2016: █████ 68
+  2017: ██████████ 125
+  2018: ███████████ 146
+  2019: ██████████████ 178
+  2020: █████████████████ 215
+  2021: ████████████ 160
+  2022: ████████████████ 207
+  2023: ██████████████████ 224
+  2024: ██████████ 128
+  2025: █████ 69
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 4: 2215 documents (5.00%)
+Average probability: 0.348
+
+Top words:
+  • interpretability     (0.6911)
+  • ai                   (0.4523)
+  • language models      (0.3665)
+  • neural               (0.3565)
+  • understanding        (0.3294)
+  • learning             (0.3107)
+  • attention            (0.2851)
+  • information          (0.2709)
+  • understand           (0.2679)
+  • context              (0.2668)
+
+Representative documents:
+  1. Using rot13 too much doesn't work... (prob: 1.000)
+  2. Meetup : NLP for large scale sentiment detection... (prob: 1.000)
+  3. The Building Blocks of Interpretability... (prob: 1.000)
+
+Temporal distribution:
+  2009:  3
+  2010:  9
+  2011:  6
+  2012:  3
+  2013:  5
+  2014:  7
+  2015:  10
+  2016:  4
+  2017:  13
+  2018:  14
+  2019: ██ 59
+  2020: ████ 98
+  2021: █████ 125
+  2022: ██████████████ 334
+  2023: ██████████████████████████████ 673
+  2024: █████████████████████ 481
+  2025: ████████████████ 371
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 8: 1280 documents (2.89%)
+Average probability: 0.234
+
+Top words:
+  • consciousness        (0.6250)
+  • conscious            (0.5019)
+  • qualia               (0.4125)
+  • awareness            (0.3913)
+  • brain                (0.3831)
+  • brains               (0.3602)
+  • theories             (0.3597)
+  • mind                 (0.3591)
+  • knowledge            (0.3419)
+  • existence            (0.3328)
+
+Representative documents:
+  1. Why Many-Worlds Is Not The Rationally Favored Interpretation... (prob: 1.000)
+  2. Link: PRISMs, Gom Jabbars, and Consciousness (Peter Watts)... (prob: 1.000)
+  3. Request For Article: Many-Worlds Quantum Computing... (prob: 1.000)
+
+Temporal distribution:
+  2009: ██████ 29
+  2010: ████████████ 61
+  2011: ███████████████████ 95
+  2012: ██████████████████████████ 128
+  2013: ██████████ 50
+  2014: ██████████ 49
+  2015: ██████████ 50
+  2016: ██████ 32
+  2017: ██████ 30
+  2018: ███████████ 54
+  2019: ███████████████ 77
+  2020: ███████████████ 76
+  2021: ██████████████████ 91
+  2022: █████████████████████████ 121
+  2023: █████████████████████████ 125
+  2024: ██████████████████████████████ 145
+  2025: █████████████ 67
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 13: 1271 documents (2.87%)
+Average probability: 0.122
+
+Top words:
+  • productivity         (0.4023)
+  • economy              (0.4002)
+  • society              (0.3928)
+  • progress             (0.3736)
+  • industry             (0.3600)
+  • economic             (0.3564)
+  • labor                (0.3557)
+  • revolution           (0.3546)
+  • government           (0.3424)
+  • social               (0.3345)
+
+Representative documents:
+  1. [LINK] John Baez Interview with astrophysicist Gregory Benford... (prob: 1.000)
+  2. Recent updates to gwern.net (2011)... (prob: 1.000)
+  3. The Yudkowsky Ambition Scale... (prob: 1.000)
+
+Temporal distribution:
+  2009: ███ 18
+  2010: ████ 28
+  2011: ██████████ 61
+  2012: ██████ 38
+  2013: ███████ 41
+  2014: █████ 30
+  2015: ████ 25
+  2016: ███ 19
+  2017: ██████ 37
+  2018: ████████ 47
+  2019: ████████████ 74
+  2020: ████████████████████ 117
+  2021: ███████████████████████████ 160
+  2022: ██████████████████████████████ 175
+  2023: █████████████████████████████ 171
+  2024: ██████████████████████████ 154
+  2025: █████████████ 76
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 7: 1258 documents (2.84%)
+Average probability: 0.238
+
+Top words:
+  • philanthropy         (0.6924)
+  • effective altruism   (0.6919)
+  • charity              (0.6184)
+  • charities            (0.5884)
+  • altruism             (0.5826)
+  • altruists            (0.5648)
+  • donating             (0.5528)
+  • donations            (0.5504)
+  • donation             (0.5456)
+  • donate               (0.5103)
+
+Representative documents:
+  1. Altruist Coordination -- Central Station... (prob: 1.000)
+  2. Why Our Kind Can't Cooperate... (prob: 1.000)
+  3. Purchase Fuzzies and Utilons Separately... (prob: 1.000)
+
+Temporal distribution:
+  2009: █████ 25
+  2010: ██████ 29
+  2011: ██████████████████████ 99
+  2012: ████████████████ 73
+  2013: ████████████████████ 91
+  2014: █████████████████████████ 111
+  2015: ███████████████████ 84
+  2016: █████████ 42
+  2017: ██████████ 45
+  2018: ██████████ 48
+  2019: ██████████████ 62
+  2020: ███████████████ 69
+  2021: ██████████████████ 82
+  2022: ██████████████████████████████ 131
+  2023: █████████████████████████████ 128
+  2024: ███████████████████████ 101
+  2025: ████████ 38
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 6: 1211 documents (2.74%)
+Average probability: 0.272
+
+Top words:
+  • prediction markets   (0.6639)
+  • prediction market    (0.6221)
+  • predictions          (0.5523)
+  • forecasts            (0.5391)
+  • forecasting          (0.5368)
+  • prediction           (0.5179)
+  • forecasters          (0.4746)
+  • forecast             (0.4616)
+  • markets              (0.4043)
+  • inflation            (0.3871)
+
+Representative documents:
+  1. Programmatic Prediction markets... (prob: 1.000)
+  2. Arbitrage of prediction markets... (prob: 1.000)
+  3. Hayekian Prediction Markets?... (prob: 1.000)
+
+Temporal distribution:
+  2009: ██ 15
+  2010: ███ 19
+  2011: ██████ 36
+  2012: ██████ 35
+  2013: ███████ 44
+  2014: ████████ 45
+  2015: █████ 33
+  2016: ██ 14
+  2017: ██████ 34
+  2018: █████ 30
+  2019: █████████████ 76
+  2020: ██████████████████████████████ 168
+  2021: ████████████████████████████ 157
+  2022: ██████████████████████████ 150
+  2023: ███████████████████████████ 152
+  2024: ███████████████████████ 129
+  2025: █████████████ 74
