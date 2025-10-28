@@ -1049,11 +1049,6 @@ class EmbeddingTopicModeling:
                 format='pdf', transparent=False)
         print(f"✓ Main figure saved: {output_path}")
         
-        # Also save as high-res PNG for preview
-        png_path = output_path.replace('.pdf', '.png')
-        plt.savefig(png_path, dpi=300, bbox_inches='tight')
-        print(f"✓ Preview saved: {png_path}")
-        
         plt.close()
 
 

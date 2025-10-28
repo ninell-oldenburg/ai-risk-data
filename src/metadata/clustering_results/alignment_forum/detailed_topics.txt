@@ -1,103 +1,69 @@
 
 ================================================================================
-DETAILED TOPIC ANALYSIS (Top 3 topics)
+DETAILED TOPIC ANALYSIS (Top 2 topics)
 ================================================================================
 
 ────────────────────────────────────────────────────────────────────────────────
-Topic 0: 2161 documents (52.08%)
-Average probability: 0.700
+Topic 0: 3727 documents (89.83%)
+Average probability: 0.824
 
 Top words:
-  • ai                   (0.5650)
-  • ai systems           (0.5377)
-  • ais                  (0.5201)
-  • agi                  (0.3552)
-  • agents               (0.3192)
-  • alignment            (0.3046)
-  • agent                (0.2995)
-  • aligned              (0.2784)
-  • learning             (0.2745)
-  • safety               (0.2642)
-
-Representative documents:
-  1. Meta- the goals of this forum... (prob: 1.000)
-  2. Slack Chat... (prob: 1.000)
-  3. Autopoietic systems and difficulty of AGI alignment... (prob: 1.000)
-
-Temporal distribution:
-  2015:  5
-  2016:  12
-  2017: █ 16
-  2018: █████ 86
-  2019: █████████ 150
-  2020: ██████████████ 221
-  2021: ███████████████████ 297
-  2022: ██████████████████████████████ 453
-  2023: ████████████████████████████ 432
-  2024: █████████████████ 267
-  2025: ██████████████ 222
-
-────────────────────────────────────────────────────────────────────────────────
-Topic 1: 1553 documents (37.43%)
-Average probability: 0.715
-
-Top words:
-  • ai                   (0.4454)
-  • behavior             (0.3313)
-  • theory               (0.3286)
-  • agents               (0.3171)
-  • agent                (0.2771)
-  • policy               (0.2620)
-  • human                (0.2614)
-  • proposition          (0.2527)
-  • learning             (0.2483)
-  • actions              (0.2284)
+  • ai                   (0.5700)
+  • ais                  (0.5439)
+  • agents               (0.3329)
+  • alignment            (0.3269)
+  • agi                  (0.3233)
+  • safety               (0.3136)
+  • agent                (0.3014)
+  • policy               (0.2924)
+  • learning             (0.2710)
+  • systems              (0.2572)
 
 Representative documents:
   1. Multibit reflective oracles... (prob: 1.000)
-  2. Oracle machines for automated philosophy... (prob: 1.000)
-  3. An implementation of modal UDT... (prob: 1.000)
+  2. Orthogonality: action counterfactuals... (prob: 1.000)
+  3. Oracle machines for automated philosophy... (prob: 1.000)
 
 Temporal distribution:
-  2015: ██████████████████ 130
-  2016: █████████████ 93
-  2017: ██████████████████ 134
-  2018: ██████████████████████ 161
-  2019: ██████████████████████████████ 213
-  2020: ████████████████████████████ 199
-  2021: ████████████████████████████ 201
-  2022: ████████████████████ 147
-  2023: █████████████████████ 153
-  2024: ██████████ 74
-  2025: ██████ 48
+  2015: ██████ 135
+  2016: █████ 105
+  2017: ███████ 150
+  2018: ████████████ 247
+  2019: █████████████████ 360
+  2020: ████████████████████ 422
+  2021: ████████████████████████ 498
+  2022: ██████████████████████████████ 608
+  2023: █████████████████████████████ 589
+  2024: ████████████████ 342
+  2025: █████████████ 271
 
 ────────────────────────────────────────────────────────────────────────────────
-Topic 2: 435 documents (10.48%)
-Average probability: 0.615
+Topic 1: 422 documents (10.17%)
+Average probability: 0.977
 
 Top words:
-  • interpretability     (0.6199)
-  • interpretable        (0.5319)
-  • neural networks      (0.4443)
-  • neural               (0.3964)
-  • ai                   (0.3911)
-  • mechanistic          (0.3520)
-  • neurons              (0.3480)
-  • understanding        (0.3029)
-  • learning             (0.3000)
-  • mlp                  (0.2799)
+  • interpretability     (0.7113)
+  • ai                   (0.4402)
+  • neural networks      (0.4295)
+  • neural               (0.3677)
+  • understanding        (0.3253)
+  • neurons              (0.2998)
+  • understand           (0.2984)
+  • mechanistic          (0.2861)
+  • learning             (0.2833)
+  • language             (0.2719)
 
 Representative documents:
-  1. What is Interpretability?... (prob: 1.000)
-  2. Interpretability in ML: A Broad Overview... (prob: 1.000)
-  3. [AN #147]: An overview of the interpretability landscape... (prob: 1.000)
+  1. Alignment Newsletter #17... (prob: 1.000)
+  2. Alignment Newsletter #15: 07/16/18... (prob: 1.000)
+  3. Mechanistic Transparency for Machine Learning... (prob: 1.000)
 
 Temporal distribution:
   2018:  3
-  2019: █ 8
-  2020: ███ 19
+  2019: ██ 11
+  2020: ███ 17
   2021: █████ 27
-  2022: ████████████████████ 103
-  2023: ██████████████████████████████ 150
-  2024: █████████████████ 85
-  2025: ████████ 40
+  2022: ███████████████████ 95
+  2023: ██████████████████████████████ 146
+  2024: █████████████████ 84
+  2025: ████████ 39

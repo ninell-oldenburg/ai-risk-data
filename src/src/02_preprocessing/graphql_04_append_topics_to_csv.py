@@ -1,12 +1,7 @@
 import pandas as pd
 import sys
-
-# define manually!
-CLUSTER_TOPICS = {
-        0: 'Rationality: Probability & Bayesian Reasoning', 
-        1: 'AI: Research Agendas & Infrastructure',
-        2: 'Community: Meetups & Events',
-    }
+import json
+import os
 
 class TopicsToCsv:
     def __init__(self, platform, ntopics):
@@ -16,16 +11,41 @@ class TopicsToCsv:
                 self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
         except ValueError:
             print("FORUM variable has to be 'lw' or 'af'")
-        self.input_base = f'src/processed_data/data/{self.platform}/02_with_links_and_gender/'
+        self.input_base = f'src/processed_data/{self.platform}/02_with_links_and_gender/'
         self.output_base = f'src/processed_data/{self.platform}/03_with_topics/'
+        
+        # Load topic labels from JSON
+        self.topic_labels = self._load_topic_labels()
 
+    def _load_topic_labels(self):
+        """Load topic labels from JSON file."""
+        json_path = 'src/metadata/topic_label.json'
+        try:
+            with open(json_path, 'r') as f:
+                all_labels = json.load(f)
+            
+            # Get labels for current platform
+            if self.platform not in all_labels:
+                raise ValueError(f"Platform '{self.platform}' not found in topic_label.json")
+            
+            platform_labels = all_labels[self.platform]
+            
+            # Convert string keys to integers
+            return {int(k): v for k, v in platform_labels.items()}
+        
+        except FileNotFoundError:
+            print(f"ERROR: Could not find {json_path}")
+            sys.exit(1)
+        except json.JSONDecodeError:
+            print(f"ERROR: Invalid JSON in {json_path}")
+            sys.exit(1)
 
     def append_topics_to_csv(self):
         """
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
         """
-        clustering_results_csv = f'src/metadata/clustering_results/{self.platform}/lda_{self.ntopics}.csv'
+        clustering_results_csv = f'src/metadata/clustering_results/{self.platform}/bertopic_results.csv'
 
         print(f"Loading clustering results from {clustering_results_csv}...")
         results_df = pd.read_csv(clustering_results_csv)
@@ -34,32 +54,31 @@ class TopicsToCsv:
         updated_files = 0
         total_matches = 0
 
-        # human-readable topic labels
-        results_df["topic_label"] = results_df["dominant_topic"].map(CLUSTER_TOPICS)
+        # human-readable topic labels using loaded JSON
+        results_df["topic_label"] = results_df["topic"].map(self.topic_labels)
 
         for file_path, group in results_df.groupby("file"):
             print(f"\nProcessing {file_path}...")
 
             try:
                 # just the filename and build correct path
-                import os
                 filename = os.path.basename(file_path)  # gets just "2025-01.csv"
-                correct_file_path = self.input_base + f'{file_path.split(f"src/graphql/data/{self.platform}/csv_cleaned/")[1]}'
+                correct_file_path = f'{file_path.split()[0]}'
 
                 # original file with correct path
                 df = pd.read_csv(correct_file_path)
                 original_count = len(df)
 
-                merge_data = group[["_id", "dominant_topic", "topic_label"]]
+                merge_data = group[["_id", "topic", "topic_label"]]
                 merged = df.merge(merge_data, how="left", on="_id")
 
                 # rename cluster column
-                merged.rename(columns={"dominant_topic": "topic_cluster_id"}, inplace=True)
+                merged.rename(columns={"topic": "topic_cluster_id"}, inplace=True)
 
                 merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
                 merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
 
-                output_path = self.output_base + f'{file_path.split("csv_cleaned/")[1]}'
+                output_path = self.output_base + f'{file_path.split("02_with_topic/")[0]}'
                 
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 
@@ -84,7 +103,7 @@ def main(platform, topics):
 
 if __name__ == "__main__":
     if not len(sys.argv) == 3:
-        print("Usage: python graphql_04_append_topics_to_csv.py <forum>")
+        print("Usage: python graphql_04_append_topics_to_csv.py <forum> <ntopics>")
         print("Where <forum> is 'lw' or 'af'")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
