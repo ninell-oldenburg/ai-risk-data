@@ -6,6 +6,7 @@
 *.npy
 
 src/hidden
+src/metadata/img/
 
 __pycache__/
 *.pyc

@@ -10,6 +10,12 @@ from collections import Counter
 import sys
 import time
 import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pathlib import Path
+import matplotlib.patches as mpatches
 
 # BERTopic and dependencies
 from bertopic import BERTopic
@@ -23,6 +29,35 @@ from gensim.models.coherencemodel import CoherenceModel
 from gensim.models import CoherenceModel
 from gensim.corpora import Dictionary
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# Nature figure specifications
+# - Single column: 89mm (3.5 inches)
+# - Double column: 183mm (7.2 inches)  
+# - Max height: 247mm (9.7 inches)
+# - Resolution: 300-600 DPI
+# - Fonts: Arial or Helvetica, min 5-7pt final size
+# - Line weights: 0.5-1pt
+
+# Set Nature style
+plt.rcParams.update({
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
+    'font.size': 7,
+    'axes.labelsize': 7,
+    'axes.titlesize': 8,
+    'xtick.labelsize': 6,
+    'ytick.labelsize': 6,
+    'legend.fontsize': 6,
+    'figure.titlesize': 8,
+    'axes.linewidth': 0.5,
+    'grid.linewidth': 0.5,
+    'lines.linewidth': 1.0,
+    'patch.linewidth': 0.5,
+    'xtick.major.width': 0.5,
+    'ytick.major.width': 0.5,
+    'xtick.minor.width': 0.3,
+    'ytick.minor.width': 0.3,
+})
 
 warnings.filterwarnings('ignore')
 
@@ -643,7 +678,7 @@ class EmbeddingTopicModeling:
                         top_n_words=10,
                         max_posts_for_sweep=None,  # Changed: use ALL by default
                         apply_auto_reduction=True,  # NEW: match main logic
-                        output_dir="sweep_results"):
+                        output_dir="src/hidden/sweep_results"):
         """
         Sweep parameters to find optimal settings.
         Set apply_auto_reduction=True to match train_topic_model() behavior.
@@ -768,7 +803,7 @@ class EmbeddingTopicModeling:
         plt.ylabel('Coherence (C_v)')
         plt.title('Sweep: Diversity vs Coherence (marker ~ #topics)')
         plt.grid(True)
-        plot_path = Path(output_dir) / "sweep_coherence_vs_diversity.png"
+        plot_path = Path(output_dir) / "sweep_coherence_vs_diversity.pdf"
         plt.tight_layout()
         plt.savefig(plot_path, dpi=300)
         plt.close()
@@ -822,7 +857,7 @@ class EmbeddingTopicModeling:
         Create and save a bar plot of the number of posts per topic.
         """
         if output_path is None:
-            output_path = f"{self.platform}_topic_distribution.png"
+            output_path = f"src/metadata/img/{self.platform}/topic_distribution.pdf"
 
         topic_info = self.topic_model.get_topic_info()
         topic_info = topic_info[topic_info.Topic != -1]
@@ -839,6 +874,341 @@ class EmbeddingTopicModeling:
         plt.close()
 
         print(f"📊 Saved topic distribution plot: {output_path}")
+
+    def create_nature_figure_main_analysis(self):
+        """
+        Create main analysis figure (double column, multi-panel)
+        Nature prefers: a, b, c, d labeling for panels
+        """
+        if self.topic_model is None:
+            print("Train model first!")
+            return
+        
+        print("\nCreating Nature-quality main analysis figure...")
+        
+        stats = self.get_topic_statistics()
+        topics = [p['topic'] for p in self.blog_posts]
+        
+        # Create figure with 2x2 layout (double column width)
+        fig = plt.figure(figsize=(7.2, 7))  # 183mm wide, square aspect
+        
+        # Use GridSpec for better control
+        import matplotlib.gridspec as gridspec
+        gs = gridspec.GridSpec(2, 2, figure=fig, hspace=0.35, wspace=0.35,
+                            left=0.08, right=0.97, top=0.95, bottom=0.08)
+        
+        # Panel labels
+        panel_labels = ['a', 'b', 'c', 'd']
+        
+        # ===== PANEL A: Topic Distribution (Bar plot) =====
+        ax1 = fig.add_subplot(gs[0, 0])
+        
+        topic_ids = [s['topic_id'] for s in stats[:15]]  # Top 15 topics
+        sizes = [s['size'] for s in stats[:15]]
+        percentages = [s['percentage'] for s in stats[:15]]
+        
+        # Nature prefers clean, simple bars
+        bars = ax1.barh(range(len(sizes)), sizes, height=0.7, 
+                        color='#2166AC', edgecolor='black', linewidth=0.5)
+        
+        ax1.set_yticks(range(len(topic_ids)))
+        ax1.set_yticklabels([f'T{tid}' for tid in topic_ids])
+        ax1.set_xlabel('Number of documents', fontsize=7)
+        ax1.set_ylabel('Topic', fontsize=7)
+        ax1.invert_yaxis()  # Largest at top
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        
+        # Add percentage labels
+        for i, (bar, pct) in enumerate(zip(bars, percentages)):
+            width = bar.get_width()
+            ax1.text(width + max(sizes)*0.01, i, f'{pct:.1f}%', 
+                    va='center', ha='left', fontsize=5.5)
+        
+        # Panel label
+        ax1.text(-0.12, 1.05, panel_labels[0], transform=ax1.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        # ===== PANEL B: Topic Evolution Over Time =====
+        ax2 = fig.add_subplot(gs[0, 1])
+        
+        years = sorted(set(p['year'] for p in self.blog_posts))
+        
+        # Select top 8 topics for clarity
+        n_topics_show = min(8, len(stats))
+        
+        # Create stacked area chart (Nature prefers these for temporal data)
+        topic_year_data = []
+        for s in stats[:n_topics_show]:
+            year_counts = [s['year_distribution'].get(year, 0) for year in years]
+            topic_year_data.append(year_counts)
+        
+        # Nature color palette (colorblind-friendly)
+        colors = ['#2166AC', '#4393C3', '#92C5DE', '#D1E5F0', 
+                '#FDDBC7', '#F4A582', '#D6604D', '#B2182B']
+        
+        ax2.stackplot(years, *topic_year_data, 
+                    labels=[f'T{stats[i]["topic_id"]}' for i in range(n_topics_show)],
+                    colors=colors[:n_topics_show], alpha=0.8, linewidth=0.5,
+                    edgecolor='white')
+        
+        ax2.set_xlabel('Year', fontsize=7)
+        ax2.set_ylabel('Number of documents', fontsize=7)
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+        ax2.legend(loc='upper left', frameon=False, ncol=2, 
+                columnspacing=0.5, handlelength=1.5)
+        
+        # Panel label
+        ax2.text(-0.12, 1.05, panel_labels[1], transform=ax2.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        # ===== PANEL C: Topic Quality Metrics =====
+        ax3 = fig.add_subplot(gs[1, 0])
+        
+        sizes_all = [s['size'] for s in stats]
+        probs = [s['avg_probability'] for s in stats]
+        
+        # Scatter with size encoding
+        scatter = ax3.scatter(sizes_all, probs, s=30, alpha=0.6, 
+                            c='#2166AC', edgecolors='black', linewidth=0.3)
+        
+        ax3.set_xlabel('Topic size (documents)', fontsize=7)
+        ax3.set_ylabel('Average assignment probability', fontsize=7)
+        ax3.spines['top'].set_visible(False)
+        ax3.spines['right'].set_visible(False)
+        ax3.grid(True, alpha=0.2, linewidth=0.3)
+        
+        # Add trend line
+        z = np.polyfit(sizes_all, probs, 1)
+        p = np.poly1d(z)
+        x_trend = np.linspace(min(sizes_all), max(sizes_all), 100)
+        ax3.plot(x_trend, p(x_trend), "--", color='#D6604D', 
+                linewidth=1, alpha=0.8, label=f'Linear fit')
+        ax3.legend(frameon=False, loc='best')
+        
+        # Panel label
+        ax3.text(-0.12, 1.05, panel_labels[2], transform=ax3.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        # ===== PANEL D: Summary Statistics =====
+        ax4 = fig.add_subplot(gs[1, 1])
+        ax4.axis('off')
+        
+        # Create clean summary table
+        n_topics_total = len(stats)
+        n_docs_total = len(self.blog_posts)
+        n_outliers = sum(t == -1 for t in topics)
+        
+        # Get coherence and diversity if available
+        coherence = getattr(self, 'topic_coherence', 'N/A')
+        diversity = getattr(self, 'topic_diversity', 'N/A')
+        
+        summary_data = [
+            ['Metric', 'Value'],
+            ['Total topics', f'{n_topics_total}'],
+            ['Total documents', f'{n_docs_total:,}'],
+            ['Outlier documents', f'{n_outliers} ({n_outliers/n_docs_total*100:.1f}%)'],
+            ['Coherence (C_v)', f'{coherence:.3f}' if coherence != 'N/A' else 'N/A'],
+            ['Topic diversity', f'{diversity:.3f}' if diversity != 'N/A' else 'N/A'],
+            ['', ''],
+            ['Top 3 topics', ''],
+        ]
+        
+        for i, s in enumerate(stats[:3], 1):
+            top_words = ', '.join([w[0] for w in s['top_words'][:4]])
+            summary_data.append([f'  T{s["topic_id"]}', 
+                            f'{s["size"]} docs ({s["percentage"]:.1f}%)'])
+            summary_data.append(['', f'{top_words}'])
+        
+        # Create table
+        table = ax4.table(cellText=summary_data, cellLoc='left',
+                        bbox=[0, 0, 1, 1], edges='horizontal')
+        
+        # Style table
+        table.auto_set_font_size(False)
+        table.set_fontsize(6)
+        
+        for i, key in enumerate(table.get_celld().keys()):
+            cell = table.get_celld()[key]
+            cell.set_linewidth(0.5)
+            if key[0] == 0:  # Header
+                cell.set_facecolor('#E0E0E0')
+                cell.set_text_props(weight='bold')
+            else:
+                cell.set_facecolor('white')
+        
+        # Panel label
+        ax4.text(-0.12, 1.05, panel_labels[3], transform=ax4.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        # Save figure
+        output_path = f"src/metadata/clustering_results/{self.platform}/figure_topic_analysis.pdf"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        plt.savefig(output_path, dpi=600, bbox_inches='tight', 
+                format='pdf', transparent=False)
+        print(f"✓ Main figure saved: {output_path}")
+        
+        # Also save as high-res PNG for preview
+        png_path = output_path.replace('.pdf', '.png')
+        plt.savefig(png_path, dpi=300, bbox_inches='tight')
+        print(f"✓ Preview saved: {png_path}")
+        
+        plt.close()
+
+
+    def create_nature_figure_heatmap(self):
+        """
+        Create topic-year heatmap (single column)
+        """
+        if self.topic_model is None:
+            return
+        
+        print("\nCreating Nature-quality heatmap...")
+        
+        stats = self.get_topic_statistics()
+        years = sorted(set(p['year'] for p in self.blog_posts))
+        
+        # Select topics that cover at least 2% of corpus
+        selected_stats = [s for s in stats if s['percentage'] >= 2.0][:20]
+        
+        if not selected_stats:
+            selected_stats = stats[:15]
+        
+        # Create matrix
+        matrix = np.zeros((len(selected_stats), len(years)))
+        for i, s in enumerate(selected_stats):
+            for j, year in enumerate(years):
+                matrix[i, j] = s['year_distribution'].get(year, 0)
+        
+        # Normalize by year (to show relative proportions)
+        matrix_norm = matrix / (matrix.sum(axis=0) + 1e-10) * 100
+        
+        # Create figure (single column)
+        fig, ax = plt.subplots(figsize=(3.5, 5), dpi=300)
+        
+        # Use Nature-appropriate colormap
+        cmap = plt.cm.get_cmap('RdYlBu_r')
+        im = ax.imshow(matrix_norm, aspect='auto', cmap=cmap, 
+                    interpolation='nearest')
+        
+        # Axes
+        ax.set_xticks(range(len(years)))
+        ax.set_xticklabels(years, rotation=45, ha='right')
+        ax.set_yticks(range(len(selected_stats)))
+        
+        # Create informative labels
+        y_labels = []
+        for s in selected_stats:
+            top_words = ', '.join([w[0] for w in s['top_words'][:3]])
+            label = f"T{s['topic_id']}: {top_words[:30]}..."
+            y_labels.append(label)
+        
+        ax.set_yticklabels(y_labels, fontsize=5.5)
+        ax.set_xlabel('Year', fontsize=7)
+        ax.set_ylabel('Topic', fontsize=7)
+        
+        # Colorbar
+        cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+        cbar.set_label('Proportion (%)', fontsize=6, rotation=270, labelpad=12)
+        cbar.ax.tick_params(labelsize=5.5)
+        
+        # Remove spines
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+        
+        plt.tight_layout()
+        
+        output_path = f"src/metadata/clustering_results/{self.platform}/figure_topic_heatmap.pdf"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        plt.savefig(output_path, dpi=600, bbox_inches='tight', format='pdf')
+        print(f"✓ Heatmap saved: {output_path}")
+        
+        plt.close()
+
+
+    def create_nature_figure_parameter_sweep(self,csv_path):
+        """
+        Create parameter sweep visualization (single column)
+        """
+        print("\nCreating Nature-quality parameter sweep figure...")
+        
+        df = pd.read_csv(csv_path)
+        
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.2, 3), dpi=300)
+        
+        # Panel A: Coherence vs Diversity scatter
+        scatter = ax1.scatter(df['diversity'], df['coherence_c_v'], 
+                            s=df['n_topics']*3, alpha=0.6,
+                            c=df['n_topics'], cmap='viridis',
+                            edgecolors='black', linewidth=0.3)
+        
+        # Add configuration labels for best performers
+        best_idx = df.nlargest(3, 'coherence_c_v').index
+        for idx in best_idx:
+            row = df.loc[idx]
+            ax1.annotate(f"n={row['n_neighbors']}\nm={row['min_topic_size']}", 
+                        xy=(row['diversity'], row['coherence_c_v']),
+                        xytext=(5, 5), textcoords='offset points',
+                        fontsize=4.5, alpha=0.8,
+                        bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
+                                edgecolor='gray', linewidth=0.3, alpha=0.8))
+        
+        ax1.set_xlabel('Topic diversity', fontsize=7)
+        ax1.set_ylabel('Topic coherence (C_v)', fontsize=7)
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.grid(True, alpha=0.2, linewidth=0.3)
+        
+        # Colorbar
+        cbar1 = plt.colorbar(scatter, ax=ax1, fraction=0.046, pad=0.04)
+        cbar1.set_label('Number of topics', fontsize=6, rotation=270, labelpad=12)
+        cbar1.ax.tick_params(labelsize=5.5)
+        
+        # Panel label
+        ax1.text(-0.15, 1.05, 'a', transform=ax1.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        # Panel B: Parameter effects heatmap
+        pivot = df.pivot_table(values='coherence_c_v', 
+                            index='min_topic_size', 
+                            columns='n_neighbors',
+                            aggfunc='mean')
+        
+        im = ax2.imshow(pivot.values, aspect='auto', cmap='RdYlGn', 
+                        interpolation='nearest')
+        
+        ax2.set_xticks(range(len(pivot.columns)))
+        ax2.set_xticklabels(pivot.columns)
+        ax2.set_yticks(range(len(pivot.index)))
+        ax2.set_yticklabels(pivot.index)
+        ax2.set_xlabel('n_neighbors (UMAP)', fontsize=7)
+        ax2.set_ylabel('min_topic_size (HDBSCAN)', fontsize=7)
+        
+        # Add values to cells
+        for i in range(len(pivot.index)):
+            for j in range(len(pivot.columns)):
+                val = pivot.values[i, j]
+                if not np.isnan(val):
+                    ax2.text(j, i, f'{val:.2f}', ha='center', va='center',
+                            fontsize=5, color='black' if val > pivot.values.mean() else 'white')
+        
+        # Colorbar
+        cbar2 = plt.colorbar(im, ax=ax2, fraction=0.046, pad=0.04)
+        cbar2.set_label('Coherence (C_v)', fontsize=6, rotation=270, labelpad=12)
+        cbar2.ax.tick_params(labelsize=5.5)
+        
+        # Panel label
+        ax2.text(-0.15, 1.05, 'b', transform=ax2.transAxes,
+                fontsize=10, fontweight='bold', va='top')
+        
+        plt.tight_layout()
+        
+        output_path = csv_path.parent / "figure_parameter_sweep.pdf"
+        plt.savefig(output_path, dpi=600, bbox_inches='tight', format='pdf')
+        print(f"✓ Parameter sweep figure saved: {output_path}")
+        
+        plt.close()
 
 def main(platform, max_posts=None):
     """
@@ -863,19 +1233,19 @@ def main(platform, max_posts=None):
         print("Failed to load data!")
         return
     
-    analyzer.sweep_parameters(
+    """analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
         min_topic_size_list=[50,100,200,400],
         embedding_model=EMBEDDING_MODEL,
         max_posts_for_sweep=None,
         output_dir="sweep_results_run1"
-    )
+    )"""
     
     # Train model
     analyzer.train_topic_model(
-        min_topic_size=100,
-        min_cluster_size=100,
-        n_neighbors=25,
+        min_topic_size=400,
+        min_cluster_size=400,
+        n_neighbors=15,
         n_components=5,
         embedding_model=EMBEDDING_MODEL,
         nr_topics='auto',
@@ -891,6 +1261,8 @@ def main(platform, max_posts=None):
     analyzer.visualize_topics()
     analyzer.evaluate_topics()
     analyzer.plot_topic_distribution()
+    analyzer.create_nature_figure_main_analysis()
+    analyzer.create_nature_figure_heatmap()
     
     # Interactive visualizations (saved as HTML)
     analyzer.visualize_topic_hierarchy()
