@@ -80,9 +80,9 @@ class TopicsToCsv:
                     total_matches += matches
 
                     if forum == 'lesswrong':
-                        matches_lw += 1  
+                        matches_lw += matches
                     else: 
-                        matches_af += 1
+                        matches_af += matches
 
                     print(f"  SUCCESS: {matches}/{original_count} posts matched")
 
