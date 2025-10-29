@@ -34,26 +34,8 @@ class ExtractLinksAndGender:
         self.nqgmodel = nqg.NBGC()
         self.nqgmodel.threshold = .2
         self.arxiv_data = {}
-        self.arxiv_pattern = re.compile(r'arxiv\.org/(?:abs/|pdf/)?([0-9]{4}\.[0-9]{4,5}(?:v[0-9]+)?)', re.IGNORECASE)
-        self.doi_pattern = re.compile(r'(?:doi:|doi\.org/|dx\.doi\.org/)([0-9]{2}\.[0-9]{4,}/[^\s,;)]+)', re.IGNORECASE)
-
-    def is_linkpost(self, row) -> bool:
-        """Check if a post is marked as a linkpost by looking for 'this is a linkpost' at the beginning"""
-        html_content = row.get('htmlBody')
-        if pd.isna(html_content):
-            return False
-        
-        try:
-            # parse HTML and get text content
-            soup = BeautifulSoup(html_content, 'html.parser')
-            text_content = soup.get_text().strip().lower()
-            
-            # check if it starts with "this is a linkpost"
-            return ('this is a linkpost') in text_content
-        
-        except Exception as e:
-            print(f"Error checking linkpost status: {e}")
-            return False
+        self.arxiv_pattern = re.compile(r'(arxiv\.org/)', re.IGNORECASE)
+        self.doi_pattern = re.compile(r'10\.\d{4,9}/[^\s;<>"]+', re.IGNORECASE)
     
     def clean_html(self, html_content: str) -> str:
         """Extract plain text from HTML, removing all tags and styling"""
@@ -280,7 +262,6 @@ class ExtractLinksAndGender:
             df = pd.read_csv(in_filepath)
             
             # add new columns for link information
-            df['is_linkpost'] = df.apply(self.is_linkpost, axis=1)
             df['extracted_links'] = ''
             df['cleaned_htmlBody'] = ''
             df['user_gender'] = ''
@@ -302,7 +283,7 @@ class ExtractLinksAndGender:
                 html_links = self.extract_links_from_html(row.get('htmlBody'))
                 
                 # if it's a linkpost, skip the first link
-                if row['is_linkpost'] and html_links:
+                if html_links:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links[1:])  # Skip first link
                 else:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links)
@@ -314,9 +295,8 @@ class ExtractLinksAndGender:
             
             # return counts for summary
             posts_with_links = (df['extracted_links'] != '').sum()
-            linkposts = df['is_linkpost'].sum()
             
-            return posts_with_links, linkposts, usrs, gender_dist
+            return posts_with_links, usrs, gender_dist
         
         except Exception as e:
             print(f"Error processing {in_filepath}: {e}")
@@ -358,14 +338,13 @@ def main(forum):
     # Process each pair
     for i, (csv_file_in, csv_file_out) in enumerate(sorted(csv_file_pairs)):
         print(f"Processing {i+1}/{len(csv_file_pairs)}: {csv_file_in} -> {csv_file_out}")
-        posts_with_links, linkposts, file_usrs, gender_dict = extractor.process_csv_file(csv_file_in, csv_file_out)
+        posts_with_links, file_usrs, gender_dict = extractor.process_csv_file(csv_file_in, csv_file_out)
         usrs += file_usrs
         gender_dist += gender_dict
         
         total_posts_with_links += posts_with_links
-        total_linkposts += linkposts
         files_processed += 1
-        print(f"✅ Updated with {posts_with_links} posts with links, {linkposts} linkposts")
+        print(f"✅ Updated with {posts_with_links} posts with links")
 
     print("\n" + "="*60)
     print("SUMMARY REPORT")
@@ -375,7 +354,6 @@ def main(forum):
     print(f"Total posts with extracted links: {total_posts_with_links}")
     print(f"Total linkposts identified: {total_linkposts}")
     print(f"\nEach CSV file now has these new columns added:")
-    print(f"  - 'is_linkpost': Boolean for linkpost detection")
     print(f"  - 'extracted_links': Citation links (semicolon-separated)")
     print(f"  - 'cleaned_htmlBody': Plain text with all HTML removed")
 
