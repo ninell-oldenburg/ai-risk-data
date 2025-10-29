@@ -6,7 +6,7 @@
 *.npy
 
 src/hidden
-src/metadata/img/
+notebooks/
 
 __pycache__/
 *.pyc

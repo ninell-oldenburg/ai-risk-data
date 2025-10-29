@@ -722,8 +722,8 @@ def main(platform, max_posts=None):
     
     # Train model
     analyzer.train_topic_model(
-        min_topic_size=200,
-        min_cluster_size=200,
+        min_topic_size=400,
+        min_cluster_size=400,
         n_neighbors=15,
         n_components=5,
         embedding_model=EMBEDDING_MODEL,
@@ -734,13 +734,9 @@ def main(platform, max_posts=None):
     # Optional: reduce topics if too many were discovered
     # analyzer.reduce_topics(nr_topics=20)
     
-    # Analysis
     analyzer.print_detailed_topics(n_topics=10)
     analyzer.save_detailed_topics(n_topics=10)
-    analyzer.visualize_topics()
     analyzer.evaluate_topics()
-    
-    # Save
     analyzer.save_results()
     
     print("\n" + "="*80)

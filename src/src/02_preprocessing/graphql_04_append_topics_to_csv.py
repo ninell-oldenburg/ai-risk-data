@@ -4,31 +4,18 @@ import json
 import os
 
 class TopicsToCsv:
-    def __init__(self, platform, ntopics):
-        self.ntopics = ntopics
-        try:
-            if platform in ['lw', 'af']:
-                self.platform = 'lesswrong' if platform == 'lw' else 'alignment_forum'
-        except ValueError:
-            print("FORUM variable has to be 'lw' or 'af'")
-        self.input_base = f'src/processed_data/{self.platform}/02_with_links_and_gender/'
-        self.output_base = f'src/processed_data/{self.platform}/03_with_topics/'
-        
-        # Load topic labels from JSON
-        self.topic_labels = self._load_topic_labels()
-
-    def _load_topic_labels(self):
+    def _load_topic_labels(self, forum):
         """Load topic labels from JSON file."""
-        json_path = 'src/metadata/topic_label.json'
+        json_path = 'src/metadata/topic_labels.json'
         try:
             with open(json_path, 'r') as f:
                 all_labels = json.load(f)
             
             # Get labels for current platform
-            if self.platform not in all_labels:
-                raise ValueError(f"Platform '{self.platform}' not found in topic_label.json")
+            if forum not in all_labels:
+                raise ValueError(f"Platform '{forum}' not found in topic_labels.json")
             
-            platform_labels = all_labels[self.platform]
+            platform_labels = all_labels[forum]
             
             # Convert string keys to integers
             return {int(k): v for k, v in platform_labels.items()}
@@ -45,65 +32,72 @@ class TopicsToCsv:
         Append topic columns (cluster index + label) to LW CSV files 
         using clustering results.
         """
-        clustering_results_csv = f'src/metadata/clustering_results/{self.platform}/bertopic_results.csv'
-
-        print(f"Loading clustering results from {clustering_results_csv}...")
-        results_df = pd.read_csv(clustering_results_csv)
-        print(f"Loaded {len(results_df)} clustered posts")
-
         updated_files = 0
         total_matches = 0
 
-        # human-readable topic labels using loaded JSON
-        results_df["topic_label"] = results_df["topic"].map(self.topic_labels)
+        matches_lw = 0
+        matches_af = 0
 
-        for file_path, group in results_df.groupby("file"):
-            print(f"\nProcessing {file_path}...")
+        forums = ['lesswrong','alignment_forum']
+        for forum in forums:
+            clustering_result = f'src/metadata/clustering_results/{forum}/bertopic_results.csv'
 
-            try:
-                # just the filename and build correct path
-                filename = os.path.basename(file_path)  # gets just "2025-01.csv"
-                correct_file_path = f'{file_path.split()[0]}'
+            print(f"Loading clustering results from {clustering_result}...")
+            results_df = pd.read_csv(clustering_result)
+            print(f"Loaded {len(results_df)} clustered {forum} posts")
 
-                # original file with correct path
-                df = pd.read_csv(correct_file_path)
-                original_count = len(df)
+            # human-readable topic labels using loaded JSON
+            topic_labels = self._load_topic_labels(forum)
+            results_df["topic_label"] = results_df["topic"].map(topic_labels)
 
-                merge_data = group[["_id", "topic", "topic_label"]]
-                merged = df.merge(merge_data, how="left", on="_id")
+            for file_path, group in results_df.groupby("file"):
+                print(f"\nProcessing {file_path}...")
 
-                # rename cluster column
-                merged.rename(columns={"topic": "topic_cluster_id"}, inplace=True)
+                try:
+                    # just the filename and build correct path
+                    filename = os.path.basename(file_path)  # gets just "2025-01.csv"
+                    correct_file_path = f'{file_path.split()[0]}'
 
-                merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
-                merged["topic_label"] = merged["topic_label"].fillna("Misc: No Topic")
+                    # original file with correct path
+                    df = pd.read_csv(correct_file_path)
+                    original_count = len(df)
 
-                output_path = self.output_base + f'{file_path.split("02_with_topic/")[0]}'
-                
-                os.makedirs(os.path.dirname(output_path), exist_ok=True)
-                
-                merged.to_csv(output_path, index=False)
+                    merge_data = group[["_id", "topic", "topic_label"]]
+                    merged = df.merge(merge_data, how="left", on="_id")
 
-                matches = (merged["topic_cluster_id"] != -1).sum()
-                updated_files += 1
-                total_matches += matches
+                    # rename cluster column
+                    merged.rename(columns={"topic": "topic_cluster_id"}, inplace=True)
+                    merged["topic_cluster_id"] = merged["topic_cluster_id"].fillna(-1).astype(int)
 
-                print(f"  SUCCESS: {matches}/{original_count} posts matched")
+                    output_path = file_path.replace('02_with_links_and_gender', '03_with_topics')
+                    
+                    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                    
+                    merged.to_csv(output_path, index=False)
 
-            except Exception as e:
-                print(f'Error processing {file_path}: {e}')
-                print(f'Error type: {type(e).__name__}')
+                    matches = (merged["topic_cluster_id"] != -1).sum()
+                    updated_files += 1
+                    total_matches += matches
+
+                    if forum == 'lesswrong':
+                        matches_lw += 1  
+                    else: 
+                        matches_af += 1
+
+                    print(f"  SUCCESS: {matches}/{original_count} posts matched")
+
+                except Exception as e:
+                    print(f'Error processing {file_path}: {e}')
+                    print(f'Error type: {type(e).__name__}')
 
         print()
         print(f'TOTAL MATCHES: {total_matches}')
+        print(f'LESSWRONG MATCHES: {matches_lw}')
+        print(f'ALIGNMENT FORUM MATCHES: {matches_af}')
 
-def main(platform, topics):
-    converter = TopicsToCsv(platform=platform, ntopics=topics)
+def main():
+    converter = TopicsToCsv()
     converter.append_topics_to_csv()
 
 if __name__ == "__main__":
-    if not len(sys.argv) == 3:
-        print("Usage: python graphql_04_append_topics_to_csv.py <forum> <ntopics>")
-        print("Where <forum> is 'lw' or 'af'")
-        sys.exit(1)
-    main(sys.argv[1], sys.argv[2])
+    main()

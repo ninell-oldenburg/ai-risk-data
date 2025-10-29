@@ -46,16 +46,20 @@ class ForumGraphBuilder:
         all_posts = []
         
         for forum in ['lesswrong', 'alignment_forum']:
-            forum_path = self.forum_data_dir / forum / '03_with_topics'
+            forum_path = self.forum_data_dir / forum / '03_with_topics/'
             
             if not forum_path.exists():
                 print(f"Warning: {forum_path} does not exist, skipping {forum}")
                 continue
                 
-            # Iterate through year directories
             for year_dir in sorted(forum_path.glob('*')):
                 if not year_dir.is_dir():
                     continue
+                
+                # Add this: iterate through CSV files in the year directory
+                for csv_file in year_dir.glob('*.csv'):
+                    df = pd.read_csv(csv_file)
+                    all_posts.append(df)
                     
                 # Load all month CSVs in this year
                 for csv_file in sorted(year_dir.glob('*.csv')):
@@ -483,25 +487,25 @@ class ForumGraphBuilder:
         
         # Step 1: Load data
         print("\n[1/7] Loading forum data...")
-        # forum_df = self.load_forum_data()
+        forum_df = self.load_forum_data()
         
         print("\n[2/7] Loading OpenAlex data...")
         openalex_df = self.load_openalex_data()
         
         # Step 2: Standardize columns
         print("\n[3/7] Standardizing column names...")
-        #forum_df = self.standardize_forum_columns(forum_df)
+        forum_df = self.standardize_forum_columns(forum_df)
         
         # Step 3: Create node tables
         print("\n[4/7] Creating nodes_posts.csv...")
-        #nodes_posts = self.create_nodes_posts(forum_df)
-        #nodes_posts.to_csv(self.output_dir / 'nodes_posts.csv', index=False)
-        #print(f"  → Saved {len(nodes_posts)} posts")
+        nodes_posts = self.create_nodes_posts(forum_df)
+        nodes_posts.to_csv(self.output_dir / 'nodes_posts.csv', index=False)
+        print(f"  → Saved {len(nodes_posts)} posts")
         
         print("\n[5/7] Creating nodes_authors.csv...")
-        #nodes_authors = self.create_nodes_authors(forum_df)
-        #nodes_authors.to_csv(self.output_dir / 'nodes_authors.csv', index=False)
-        #print(f"  → Saved {len(nodes_authors)} authors")
+        nodes_authors = self.create_nodes_authors(forum_df)
+        nodes_authors.to_csv(self.output_dir / 'nodes_authors.csv', index=False)
+        print(f"  → Saved {len(nodes_authors)} authors")
         
         print("\n[6/7] Creating nodes_openalex_works.csv...")
         nodes_openalex = self.create_nodes_openalex_works(openalex_df)
@@ -517,12 +521,12 @@ class ForumGraphBuilder:
         print("\n[7/7] Creating edge tables...")
         
         print("  - Extracting post-to-post citations...")
-        #edges_citations = self.create_edges_post_citations(forum_df)
-        #edges_citations.to_csv(self.output_dir / 'edges_post_citations.csv', index=False)
+        edges_citations = self.create_edges_post_citations(forum_df)
+        edges_citations.to_csv(self.output_dir / 'edges_post_citations.csv', index=False)
         
         print("  - Extracting post-to-OpenAlex citations...")
-        #edges_openalex = self.create_edges_post_openalex(forum_df, openalex_df)
-        #edges_openalex.to_csv(self.output_dir / 'edges_post_openalex.csv', index=False)
+        edges_openalex = self.create_edges_post_openalex(forum_df, openalex_df)
+        edges_openalex.to_csv(self.output_dir / 'edges_post_openalex.csv', index=False)
         
         print("  - Extracting OpenAlex authorship edges...")
         edges_authorship = self.create_edges_openalex_authorship(openalex_df)
