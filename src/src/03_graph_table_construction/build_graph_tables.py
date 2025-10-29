@@ -218,26 +218,44 @@ class ForumGraphBuilder:
         if not isinstance(url, str):
             return None
         
+        original_url = url  # Save for debugging
+        
         # Sequences format: /s/{sequence_id}/p/{post_id}
         sequences = re.search(r'/s/[^/]+/p/([^/\?#]+)', url)
         if sequences:
-            return sequences.group(1)
+            result = sequences.group(1)
+            if 'grue' in url:
+                print(f"  [extract] Matched sequences: {result}")
+            return result
         
         # New format: extract post_id
-        for pattern in [r'lesswrong\.com/posts/([^/\?#]+)',
-                        r'lesserwrong\.com/posts/([^/\?#]+)',
-                        r'alignmentforum\.org/posts/([^/\?#]+)']:
-            match = re.search(pattern, url)
-            if match:
-                return match.group(1)
+        new_format = re.search(r'/posts/([^/\?#]+)', url)
+        if new_format:
+            result = new_format.group(1)
+            if 'grue' in url:
+                print(f"  [extract] Matched new format: {result}")
+            return result
         
-        # Old LW format: lesswrong.com/lw/XX/slug_with_underscores/
-        old_format = re.search(r'lesswrong\.com/lw/[^/]+/([^/\?#]+)', url)
+        # Discussion format: /r/discussion/lw/XX/slug
+        discussion = re.search(r'/r/discussion/lw/[^/]+/([^/\?#]+)', url)
+        if discussion:
+            slug = discussion.group(1).rstrip('/')
+            slug = slug.replace('_', '-')
+            if 'grue' in url:
+                print(f"  [extract] Matched discussion: {slug}")
+            return slug
+        
+        # Old LW format: /lw/XX/slug
+        old_format = re.search(r'/lw/[^/]+/([^/\?#]+)', url)
         if old_format:
             slug = old_format.group(1).rstrip('/')
             slug = slug.replace('_', '-')
+            if 'grue' in url:
+                print(f"  [extract] Matched old format: {slug}")
             return slug
         
+        if 'grue' in url:
+            print(f"  [extract] NO MATCH for: {url}")
         return None
     
     def is_forum_post_link(self, url):
@@ -245,22 +263,39 @@ class ForumGraphBuilder:
         if not isinstance(url, str):
             return False
         
-        if not re.search(r'(lesswrong|lesserwrong|alignmentforum)\.(com|org)', url, re.IGNORECASE):
+        # Accept both lesswrong and lesserwrong
+        if not re.search(r'(lesserwrong|lesswrong|alignmentforum)\.(com|org)', url, re.IGNORECASE):
             return False
         
-        # Include sequences format
+        # Exclude non-post patterns first
+        exclude_patterns = [
+            r'wiki\.lesswrong',
+            r'/user/',
+            r'/tag/',
+            r'/rationality/',
+            r'/comments/?$',
+            r'/recentposts',
+            r'/top\?',
+            r'/message/',
+            r'google\.(com|ie)/url',
+            r'%20',
+            r'/r/[^/]+-drafts/',  # Exclude personal draft sections
+        ]
+        
+        for pattern in exclude_patterns:
+            if re.search(pattern, url, re.IGNORECASE):
+                return False
+        
+        # Include post formats
         if re.search(r'/s/[^/]+/p/', url):
             return True
-        
-        # Include standard post formats
         if re.search(r'/posts/', url):
             return True
-        
-        # Include old LW format
-        if re.search(r'/lw/[^/]+/', url):
+        if re.search(r'/r/discussion/lw/', url):
+            return True
+        if re.search(r'/lw/[^/]+/[^/]+', url):  # Old format with slug
             return True
         
-        # Exclude everything else
         return False
     
     def extract_doi(self, url):
@@ -347,9 +382,11 @@ class ForumGraphBuilder:
                 
                 forum_links += 1
                 cited_id = None
-
-                # Try matching by post_id first
+                
+                # Extract FIRST
                 post_id_or_slug = self.extract_forum_post_id(link)
+                
+                # Then do matching
                 if post_id_or_slug:
                     if post_id_or_slug in postid_lookup:
                         cited_id = postid_lookup[post_id_or_slug]
