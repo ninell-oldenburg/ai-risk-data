@@ -54,11 +54,11 @@ class OpenAlexCSVProcessor:
     
     def extract_first_author_gender(self, paper_id: str, author_names: str) -> str:
         if pd.isna(author_names) or not author_names:
-            return '–'
+            return '-'
         
         authors = author_names.split(';')
         if not authors:
-            return '–'
+            return '-'
         
         author_genders = self.nqgmodel.classify(authors)
         for i, name in enumerate(authors):

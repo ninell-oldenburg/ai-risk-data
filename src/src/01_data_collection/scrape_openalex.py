@@ -5,6 +5,14 @@ from typing import List, Dict
 import requests
 import pandas as pd
 import glob
+import matplotlib.pyplot as plt
+from collections import Counter
+
+TOPIC_IDS = {
+    "Ethics & Social Impacts of AI": "T10883",
+    "Adversarial Robustness in ML": "T11689",
+    "Explainable AI": "T12026"
+}
 
 class AIScholarshipAnalyzer:
     def __init__(self, email: str):
@@ -13,6 +21,46 @@ class AIScholarshipAnalyzer:
         self.headers = {'User-Agent': f'mailto:{email}'}
         self.session = requests.Session()
         self.session.headers.update(self.headers)
+
+    def get_top_concepts_by_topic(self, start_year=2000, end_year=2025, top_n=10):
+        for topic_name, topic_id in TOPIC_IDS.items():
+            print(f"\nFetching papers for topic: {topic_name} ({topic_id})")
+            
+            all_papers = []
+            for year in range(start_year, end_year + 1):
+                # Fetch papers for the year
+                year_counts = self._fetch_year(topic_id, year)
+                
+                # Load the CSVs created for this year
+                for filepath in year_counts.keys():
+                    df = pd.read_csv(filepath)
+                    all_papers.append(df)
+            
+            if not all_papers:
+                print(f"⚠️ No papers found for {topic_name}")
+                continue
+            
+            df_all = pd.concat(all_papers, ignore_index=True)
+            
+            # Flatten all concepts
+            concept_list = []
+            for concepts_str in df_all['concepts'].dropna():
+                concept_list.extend([c.strip() for c in concepts_str.split(';') if c.strip()])
+            
+            counter = Counter(concept_list)
+            top_concepts = counter.most_common(top_n)
+            print(f"Top {top_n} concepts for {topic_name}:")
+            for concept, count in top_concepts:
+                print(f"  {concept}: {count}")
+            
+            # Plot
+            concepts, counts = zip(*top_concepts)
+            plt.figure(figsize=(10,6))
+            plt.barh(concepts[::-1], counts[::-1], color='skyblue')
+            plt.title(f"Top {top_n} Concepts in {topic_name}")
+            plt.xlabel("Frequency")
+            plt.tight_layout()
+            plt.show()
         
     def get_and_save_articles(self, topic_id: str = "T10883", 
                             start_date: datetime = datetime(2000, 1, 1), 
@@ -405,4 +453,5 @@ class AIScholarshipAnalyzer:
 if __name__ == "__main__":
     # Initialize analyzer with your email
     analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com") 
-    analyzer.get_and_save_articles()
+    analyzer.get_top_concepts_by_topic()
+    #analyzer.get_and_save_articles()
