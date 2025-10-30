@@ -282,7 +282,6 @@ class ExtractLinksAndGender:
                 # extract links from htmlBody
                 html_links = self.extract_links_from_html(row.get('htmlBody'))
                 
-                # if it's a linkpost, skip the first link
                 if html_links:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links[1:])  # Skip first link
                 else:
@@ -307,7 +306,6 @@ def main(forum):
     base_path_in = f"src/processed_data/{extractor.platform}/01_cleaned_csv"
     base_path_out = f"src/processed_data/{extractor.platform}/02_with_links_and_gender"
     total_posts_with_links = 0
-    total_linkposts = 0
     files_processed = 0
     usrs = Counter()
     gender_dist = Counter()
@@ -352,7 +350,6 @@ def main(forum):
     print(f"\nCompleted!")
     print(f"Files processed: {files_processed}/{len(csv_file_pairs)}")
     print(f"Total posts with extracted links: {total_posts_with_links}")
-    print(f"Total linkposts identified: {total_linkposts}")
     print(f"\nEach CSV file now has these new columns added:")
     print(f"  - 'extracted_links': Citation links (semicolon-separated)")
     print(f"  - 'cleaned_htmlBody': Plain text with all HTML removed")
