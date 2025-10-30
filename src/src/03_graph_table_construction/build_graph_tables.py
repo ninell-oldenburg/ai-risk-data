@@ -299,32 +299,50 @@ class ForumGraphBuilder:
         return False
     
     def extract_doi(self, url):
-        """Extract DOI from a URL"""
+        """Extract DOI from a URL or string"""
         if not isinstance(url, str):
             return None
-            
+        
+        # Pattern that matches DOIs starting with 10.
+        # More permissive about what comes after the slash
         doi_patterns = [
-            r'doi\.org/(10\.\d+/[^\s\?#]+)',
-            r'dx\.doi\.org/(10\.\d+/[^\s\?#]+)',
-            r'doi:\s*(10\.\d+/[^\s]+)',
+            r'doi\.org/(10\.\d+/[^\s\?#<>"]+)',
+            r'dx\.doi\.org/(10\.\d+/[^\s\?#<>"]+)',
+            r'doi:\s*(10\.\d+/[^\s<>"]+)',
+            r'\b(10\.\d{4,9}/[^\s;<>"]+)',  # Bare DOI in text
         ]
         
         for pattern in doi_patterns:
             match = re.search(pattern, url, re.IGNORECASE)
             if match:
-                return match.group(1).strip()
+                doi = match.group(1).strip()
+                # Clean up trailing punctuation that's not part of DOI
+                doi = re.sub(r'[.,;)\]]+$', '', doi)
+                return doi
         return None
-    
+
     def normalize_doi(self, doi):
         """Normalize DOI for matching"""
         if not doi or pd.isna(doi):
             return None
         
         doi_str = str(doi).lower().strip()
+        
         # Remove common prefixes
         doi_str = doi_str.replace('https://doi.org/', '')
         doi_str = doi_str.replace('http://doi.org/', '')
+        doi_str = doi_str.replace('https://dx.doi.org/', '')
+        doi_str = doi_str.replace('http://dx.doi.org/', '')
         doi_str = doi_str.replace('doi:', '')
+        
+        # Remove URL fragments and common suffixes
+        doi_str = re.sub(r'#.*$', '', doi_str)  # Remove #fragments
+        doi_str = re.sub(r'/abstract$', '', doi_str)  # Remove /abstract
+        doi_str = re.sub(r'/full$', '', doi_str)  # Remove /full
+        doi_str = re.sub(r'/pdf$', '', doi_str)  # Remove /pdf
+        
+        # Remove trailing punctuation
+        doi_str = re.sub(r'[.,;)\]]+$', '', doi_str)
         
         return doi_str.strip()
     
@@ -446,31 +464,37 @@ class ForumGraphBuilder:
                     doi_lookup[doi] = openalex_id
         
         print(f"Built DOI lookup with {len(doi_lookup)} entries")
+        sample_dois = list(doi_lookup.keys())[:5]
+        print(f"Sample OpenAlex DOIs: {sample_dois}")
         
         # Track stats
         total_dois_found = 0
         matched_dois = 0
+        dois_extracted_from_column = 0
+        dois_extracted_from_links = 0
+        sample_unmatched_dois = []
         
         # Extract citations
         for _, row in forum_df.iterrows():
             citing_id = row['post_id']
             dois = []
             
-            # Try extracted_dois first (if available and not empty)
+            # Try extracted_dois first
             if has_extracted_dois:
                 dois_str = row.get('extracted_dois')
                 if pd.notna(dois_str) and dois_str != '' and dois_str != '[]':
-                    # Parse as list
                     if isinstance(dois_str, str):
-                        # Could be semicolon or comma separated, or JSON list
                         if dois_str.startswith('['):
-                            dois = self.parse_list_field(dois_str)
+                            dois_from_col = self.parse_list_field(dois_str)
                         else:
-                            dois = [d.strip() for d in dois_str.split(';') if d.strip()]
+                            dois_from_col = [d.strip() for d in dois_str.split(';') if d.strip()]
                     else:
-                        dois = self.parse_list_field(dois_str)
+                        dois_from_col = self.parse_list_field(dois_str)
+                    
+                    dois.extend(dois_from_col)
+                    dois_extracted_from_column += len(dois_from_col)
             
-            # If no DOIs found and we have extracted_links, try extracting from links
+            # If no DOIs found, try extracting from links
             if not dois and has_extracted_links:
                 links_str = row.get('extracted_links')
                 if pd.notna(links_str) and links_str != '':
@@ -484,6 +508,7 @@ class ForumGraphBuilder:
                             doi = self.extract_doi(link)
                             if doi:
                                 dois.append(doi)
+                                dois_extracted_from_links += 1
             
             total_dois_found += len(dois)
             
@@ -491,7 +516,7 @@ class ForumGraphBuilder:
             for doi in dois:
                 if not doi:
                     continue
-                    
+                
                 doi_clean = self.normalize_doi(doi)
                 if doi_clean and doi_clean in doi_lookup:
                     matched_dois += 1
@@ -501,15 +526,27 @@ class ForumGraphBuilder:
                         'openalex_id': openalex_id,
                         'openalex_doi': doi_clean
                     })
+                else:
+                    # Track unmatched
+                    if len(sample_unmatched_dois) < 10 and doi_clean:
+                        sample_unmatched_dois.append((doi, doi_clean))
         
         print(f"Total DOIs found in posts: {total_dois_found}")
+        print(f"DOIs from extracted_dois column: {dois_extracted_from_column}")
+        print(f"DOIs from extracted_links: {dois_extracted_from_links}")
         print(f"Successfully matched to OpenAlex: {matched_dois}")
+        
+        print(f"\nSample unmatched DOIs:")
+        for orig, normalized in sample_unmatched_dois:
+            print(f"  Original: {orig}")
+            print(f"  Normalized: {normalized}")
+            print(f"  In lookup: {normalized in doi_lookup}")
         
         edges_df = pd.DataFrame(edges)
         if not edges_df.empty:
             edges_df = edges_df.drop_duplicates()
         
-        print(f"Found {len(edges_df)} unique post-to-OpenAlex citations")
+        print(f"\nFound {len(edges_df)} unique post-to-OpenAlex citations")
         return edges_df
     
     def create_nodes_openalex_works(self, openalex_df):
