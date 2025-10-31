@@ -322,7 +322,10 @@ class ForumGraphBuilder:
         return None
 
     def normalize_doi(self, doi):
-        """Normalize DOI for matching"""
+        """
+        Comprehensive DOI normalization for matching.
+        Handles all edge cases discovered during testing.
+        """
         if not doi or pd.isna(doi):
             return None
         
@@ -335,16 +338,40 @@ class ForumGraphBuilder:
         doi_str = doi_str.replace('http://dx.doi.org/', '')
         doi_str = doi_str.replace('doi:', '')
         
-        # Remove URL fragments and common suffixes
-        doi_str = re.sub(r'#.*$', '', doi_str)  # Remove #fragments
-        doi_str = re.sub(r'/abstract$', '', doi_str)  # Remove /abstract
-        doi_str = re.sub(r'/full$', '', doi_str)  # Remove /full
-        doi_str = re.sub(r'/pdf$', '', doi_str)  # Remove /pdf
+        # Remove URL fragments (e.g., #page-1, #.u14eh_ldvjm)
+        doi_str = re.sub(r'#.*$', '', doi_str)
+        
+        # Remove query parameters (e.g., ?uid=...)
+        if '?' in doi_str:
+            doi_str = doi_str.split('?')[0]
+        
+        # Remove &amp; and other HTML entities
+        doi_str = doi_str.replace('&amp;', '').replace('&amp', '')
+        
+        # Remove common path suffixes
+        doi_str = re.sub(r'/abstract$', '', doi_str)
+        doi_str = re.sub(r'/full$', '', doi_str)
+        doi_str = re.sub(r'/pdf$', '', doi_str)
+        doi_str = re.sub(r'/epdf$', '', doi_str)
+        doi_str = re.sub(r'/issuetoc$', '', doi_str)
+        
+        # Remove version indicators (v1.full, v2.full, etc.)
+        doi_str = re.sub(r'v\d+\.full$', '', doi_str)
+        
+        # Remove weird caret suffixes (.^node, .^b, .^f, etc.)
+        doi_str = re.sub(r'\.\^[a-z]+$', '', doi_str, flags=re.IGNORECASE)
+        
+        # Remove bracket artifacts and anything after them
+        doi_str = re.sub(r'\[[^\]]*$', '', doi_str)
+        
+        # Remove trailing parentheses that look incomplete
+        if doi_str.endswith('('):
+            doi_str = doi_str[:-1]
         
         # Remove trailing punctuation
-        doi_str = re.sub(r'[.,;)\]]+$', '', doi_str)
+        doi_str = re.sub(r'[.,;:!?\)]+$', '', doi_str)
         
-        return doi_str.strip()
+        return doi_str.strip() if doi_str else None
     
     def create_edges_post_citations(self, df):
         """Extract citations between forum posts"""
