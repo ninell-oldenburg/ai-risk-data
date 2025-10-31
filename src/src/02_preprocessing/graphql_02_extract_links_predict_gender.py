@@ -35,7 +35,7 @@ class ExtractLinksAndGender:
         self.nqgmodel.threshold = .2
         self.arxiv_data = {}
         self.arxiv_pattern = re.compile(r'(arxiv\.org/)', re.IGNORECASE)
-        self.doi_pattern = re.compile(r'\b(10\.\d{4,9}/[^\s;<>"]+)', re.IGNORECASE)
+        self.doi_pattern = re.compile(r'10\.\d{4,}/[^\s,;|\]}\)"\'\><\n]+', re.IGNORECASE)
     
     def clean_html(self, html_content: str) -> str:
         """Extract plain text from HTML, removing all tags and styling"""
