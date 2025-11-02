@@ -712,24 +712,24 @@ def main(platform, max_posts=None):
         print("Failed to load data!")
         return
     
-    analyzer.sweep_parameters(
+    """analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
         min_topic_size_list=[50,100,200,400],
         embedding_model=EMBEDDING_MODEL,
         max_posts_for_sweep=None,
         output_dir="sweep_results_run1"
-    )
+    )"""
     
     # Train model
-    """analyzer.train_topic_model(
-        min_topic_size=200,
-        min_cluster_size=200,
-        n_neighbors=15,
+    analyzer.train_topic_model(
+        min_topic_size=400,
+        min_cluster_size=400,
+        n_neighbors=25,
         n_components=5,
         embedding_model=EMBEDDING_MODEL,
         nr_topics='auto',
         reduce_outliers=True
-    )"""
+    )
     
     # Optional: reduce topics if too many were discovered
     # analyzer.reduce_topics(nr_topics=20)
