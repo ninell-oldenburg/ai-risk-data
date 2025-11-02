@@ -128,7 +128,7 @@ class ExtractLinksAndGender:
         clean_ids = [match.split('v')[0] for match in matches]
         return list(set(clean_ids))
     
-    def clean_doi(self, doi):
+    def clean_doi(doi):
         """
         Comprehensive DOI cleaning for matching.
         Handles all the weird edge cases we've found.
@@ -138,73 +138,79 @@ class ExtractLinksAndGender:
         
         doi = str(doi).strip()
         
-        # Remove URL prefixes (in case they're there)
         doi = doi.replace('https://doi.org/', '')
         doi = doi.replace('http://doi.org/', '')
         doi = doi.replace('https://dx.doi.org/', '')
         doi = doi.replace('http://dx.doi.org/', '')
         doi = doi.replace('doi:', '')
+
+        doi = re.sub(r'\.full$', '', doi) 
         
-        # Remove URL fragments (e.g., #page-1, #.u14eh_ldvjm)
         if '#' in doi:
             doi = doi.split('#')[0]
         
-        # Remove query parameters (e.g., ?uid=...)
         if '?' in doi:
             doi = doi.split('?')[0]
         
-        # Remove &amp; and other HTML entities
         doi = doi.replace('&amp;', '').replace('&amp', '')
         
-        # Remove common path suffixes
         doi = re.sub(r'/abstract$', '', doi)
         doi = re.sub(r'/full$', '', doi)
         doi = re.sub(r'/pdf$', '', doi)
         doi = re.sub(r'/epdf$', '', doi)
         doi = re.sub(r'/issuetoc$', '', doi)
         
-        # Remove version indicators (v1.full, v2.full, etc.)
         doi = re.sub(r'v\d+\.full$', '', doi)
         
-        # Remove weird caret suffixes (.^node, .^b, .^f, etc.)
-        doi = re.sub(r'\.\^[a-z]+$', '', doi, flags=re.IGNORECASE)
+        doi = re.sub(r'[\.\^][a-z]+$', '', doi, flags=re.IGNORECASE)
         
-        # Remove bracket artifacts and anything after them
         doi = re.sub(r'\[[^\]]*$', '', doi)
+
+        doi = re.sub(r'\^[a-z]$', '', doi, flags=re.IGNORECASE)
+
+        doi = re.sub(r'\.\^["\']+[a-z]+$', '', doi, flags=re.IGNORECASE)
+
+        doi = re.sub(r'\.\^[a-z]{5,}$', '', doi, flags=re.IGNORECASE)
+
+        doi = re.sub(r'[a-z]{8,}$', '', doi) 
         
-        # Remove trailing parentheses that look incomplete
         if doi.endswith('('):
             doi = doi[:-1]
         
-        # Remove trailing punctuation
         doi = doi.rstrip('/.,;:!?')
+
+        if doi.endswith('('):
+            doi = doi[:-1]
         
-        # Lowercase for consistency
+        doi = re.sub(r'[a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿłćśźż]{6,}$', '', doi, flags=re.IGNORECASE)
+
+        doi = re.sub(r'\([^)]{1,3}$', '', doi)
+        
         doi = doi.lower()
         
         return doi.strip() if doi else None
-    
+        
     def extract_direct_dois(self, text: str) -> List[str]:
-        """
-        Extract DOIs directly from text.
-        
-        Args:
-            text (str): Text potentially containing DOI links
+            """
+            Extract DOIs directly from text.
             
-        Returns:
-            List[str]: List of extracted DOIs
-        """
-        if pd.isna(text) or not isinstance(text, str):
-            return []
-        
-        matches = self.doi_pattern.findall(text)
-        cleaned_dois = []
-        for doi in matches:
-            cleaned_doi = self.clean_doi(doi)
-            if re.match(r'^10\.\d{4,}/.+', cleaned_doi):
-                cleaned_dois.append(doi)
-        
-        return list(set(cleaned_dois)) 
+            Args:
+                text (str): Text potentially containing DOI links
+                
+            Returns:
+                List[str]: List of extracted DOIs
+            """
+            if pd.isna(text) or not isinstance(text, str):
+                return []
+            
+            matches = self.doi_pattern.findall(text)
+            cleaned_dois = []
+            for doi in matches:
+                cleaned_doi = self.clean_doi(doi)
+                if re.match(r'^10\.\d{4,}/.+', cleaned_doi):
+                    cleaned_dois.append(doi)
+            
+            return list(set(cleaned_dois)) 
     
     def extract_all_dois(self, text: str) -> List[str]:
         """
