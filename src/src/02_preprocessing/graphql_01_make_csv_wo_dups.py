@@ -28,21 +28,6 @@ class LesswrongJsonToCsv:
         for word in text.split():
             m.update(word.encode('utf8'))
         return m
-    
-    def _clean_title(self, title):
-        """Clean title by removing line breaks and surrounding quotes."""
-        if pd.isna(title):
-            return ""
-        
-        title = str(title)
-        # Remove line breaks
-        title = title.replace('\n', ' ').replace('\r', ' ')
-        # Remove multiple spaces
-        title = ' '.join(title.split())
-        # Remove surrounding quotes
-        title = title.strip('"').strip("'")
-        
-        return title.strip()
 
     def _clean_body(self, body):
         """Clean body text."""
@@ -83,8 +68,6 @@ class LesswrongJsonToCsv:
                 df = pd.json_normalize(posts)
                 columns_to_remove = ['user', 'url']
                 df = df.drop(columns=[col for col in columns_to_remove if col in df.columns])
-
-                df['title'] = df['title'].apply(self._clean_title)
 
                 # Near duplicate removal
                 if self.deduplicate and 'title' in df.columns and 'htmlBody' in df.columns:

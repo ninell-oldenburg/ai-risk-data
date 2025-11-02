@@ -298,6 +298,22 @@ class ExtractLinksAndGender:
                     gender = self.GENDER_TERMS[prediction]
         
         return '-'
+    
+    def _clean_title(self, title):
+        """Clean title by removing line breaks and surrounding quotes."""
+        if pd.isna(title):
+            return ""
+        
+        title = str(title)
+        # Remove line breaks and tabs
+        title = title.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
+        # Remove multiple spaces
+        title = ' '.join(title.split())
+        # Remove surrounding quotes (both single and double)
+        while title and title[0] in ('"', "'") and title[-1] in ('"', "'"):
+            title = title[1:-1].strip()
+        
+        return title.strip()
 
     def _split_username(self, username: str) -> str:
         """Split username into individual components and return as lowercase string"""
@@ -338,7 +354,8 @@ class ExtractLinksAndGender:
             gender_dist = Counter()
             
             for idx, row in df.iterrows():
-                # clean the HTML content to plain text
+                df.at[idx, 'title'] = self._clean_title(row.get('title'))
+                
                 cleaned_text = self.clean_html(row.get('htmlBody'))
                 df.at[idx, 'cleaned_htmlBody'] = cleaned_text
                 
@@ -356,8 +373,10 @@ class ExtractLinksAndGender:
                 else:
                     df.at[idx, 'extracted_links'] = '; '.join(html_links)
 
-            df['extracted_dois'] = df['extracted_links'].apply(self.extract_all_dois)
-            
+            df['extracted_dois'] = df['extracted_links'].apply(
+                lambda links: '; '.join(self.extract_all_dois(links)) if links else ''
+            )
+
             # save back to the same file
             df.to_csv(out_filepath, index=False)
             
