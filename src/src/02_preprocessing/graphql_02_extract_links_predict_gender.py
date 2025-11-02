@@ -159,20 +159,27 @@ class ExtractLinksAndGender:
         doi = re.sub(r'/pdf$', '', doi)
         doi = re.sub(r'/epdf$', '', doi)
         doi = re.sub(r'/issuetoc$', '', doi)
+        doi = re.sub(r'/full/html$', '', doi)
         
         doi = re.sub(r'v\d+\.full$', '', doi)
+
+        doi = re.sub(r'v\d+$', '', doi)
         
         doi = re.sub(r'[\.\^][a-z]+$', '', doi, flags=re.IGNORECASE)
         
         doi = re.sub(r'\[[^\]]*$', '', doi)
-
+        
         doi = re.sub(r'\^[a-z]$', '', doi, flags=re.IGNORECASE)
+        
+        doi = re.sub(r'\.\^[a-z]+', '', doi, flags=re.IGNORECASE)
 
         doi = re.sub(r'\.\^["\']+[a-z]+$', '', doi, flags=re.IGNORECASE)
 
         doi = re.sub(r'\.\^[a-z]{5,}$', '', doi, flags=re.IGNORECASE)
 
         doi = re.sub(r'[a-z]{8,}$', '', doi) 
+
+        doi = re.sub(r'\.\^[^a-z0-9]*$', '', doi, flags=re.IGNORECASE)
         
         if doi.endswith('('):
             doi = doi[:-1]

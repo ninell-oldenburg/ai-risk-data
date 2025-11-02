@@ -722,9 +722,9 @@ def main(platform, max_posts=None):
     
     # Train model
     analyzer.train_topic_model(
-        min_topic_size=400,
-        min_cluster_size=400,
-        n_neighbors=25,
+        min_topic_size=200,
+        min_cluster_size=200,
+        n_neighbors=10,
         n_components=5,
         embedding_model=EMBEDDING_MODEL,
         nr_topics='auto',

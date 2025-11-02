@@ -28,6 +28,27 @@ class LesswrongJsonToCsv:
         for word in text.split():
             m.update(word.encode('utf8'))
         return m
+    
+    def _clean_title(self, title):
+        """Clean title by removing line breaks and surrounding quotes."""
+        if pd.isna(title):
+            return ""
+        
+        title = str(title)
+        # Remove line breaks
+        title = title.replace('\n', ' ').replace('\r', ' ')
+        # Remove multiple spaces
+        title = ' '.join(title.split())
+        # Remove surrounding quotes
+        title = title.strip('"').strip("'")
+        
+        return title.strip()
+
+    def _clean_body(self, body):
+        """Clean body text."""
+        if pd.isna(body):
+            return ""
+        return str(body)
 
     def transform(self):
         years = sorted([
@@ -63,22 +84,22 @@ class LesswrongJsonToCsv:
                 columns_to_remove = ['user', 'url']
                 df = df.drop(columns=[col for col in columns_to_remove if col in df.columns])
 
-                # ✅ Near duplicate removal
-                if self.deduplicate and 'title' in df.columns and 'body' in df.columns:
+                df['title'] = df['title'].apply(self._clean_title)
+
+                # Near duplicate removal
+                if self.deduplicate and 'title' in df.columns and 'htmlBody' in df.columns:
                     unique_rows = []
                     for idx, row in df.iterrows():
-                        text = f"{row['title']} {row['body']}"
+                        text = f"{row['title']} {row['htmlBody']}"
                         mh = self._get_minhash(text)
-                        # Check if similar post already exists
                         dup = self.lsh.query(mh)
                         if not dup:
-                            # Add new post
                             key = f"{year}-{filename}-{idx}"
                             self.lsh.insert(key, mh)
                             self.minhashes[key] = mh
                             unique_rows.append(row)
                     df = pd.DataFrame(unique_rows)
-                    print(f"🧹 Deduplicated to {len(df)} unique posts in {filename}")
+                    print(f"Deduplicated to {len(df)} unique posts in {filename}")
 
                 if len(df) == 0:
                     continue
