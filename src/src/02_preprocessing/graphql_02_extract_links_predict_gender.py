@@ -368,14 +368,13 @@ class ExtractLinksAndGender:
                 # extract links from htmlBody
                 html_links = self.extract_links_from_html(row.get('htmlBody'))
                 
-                if html_links:
-                    df.at[idx, 'extracted_links'] = '; '.join(html_links[1:])  # Skip first link
-                else:
-                    df.at[idx, 'extracted_links'] = '; '.join(html_links)
+                df.at[idx, 'extracted_links'] = '; '.join(html_links) if html_links else ''
 
             df['extracted_dois'] = df['extracted_links'].apply(
                 lambda links: '; '.join(self.extract_all_dois(links)) if links else ''
             )
+
+            df = df.drop(columns=['htmlBody'])
 
             # save back to the same file
             df.to_csv(out_filepath, index=False)

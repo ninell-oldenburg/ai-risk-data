@@ -393,7 +393,7 @@ class EmbeddingTopicModeling:
         return [{'title': p['title'], 'prob': p['topic_probability']} 
                 for i, p in topic_posts[:n]]
 
-    def save_detailed_topics(self, output_path=None, n_topics=10):
+    def save_detailed_topics(self, output_path=None, n_topics=None):
         """
         Save the same output as print_detailed_topics() to a text file.
         """
@@ -420,13 +420,16 @@ class EmbeddingTopicModeling:
 
         print(f"✅ Saved detailed topics to: {output_path}")
     
-    def print_detailed_topics(self, n_topics=10):
+    def print_detailed_topics(self, n_topics=None):
         """Print detailed information about top topics"""
         stats = self.get_topic_statistics()
         
         print(f"\n{'='*80}")
         print(f"DETAILED TOPIC ANALYSIS (Top {min(n_topics, len(stats))} topics)")
         print(f"{'='*80}")
+
+        if n_topics == None:
+            n_topics = len(stats)
         
         for i, s in enumerate(stats[:n_topics], 1):
             print(f"\n{'─'*80}")
@@ -734,8 +737,8 @@ def main(platform, max_posts=None):
     # Optional: reduce topics if too many were discovered
     # analyzer.reduce_topics(nr_topics=20)
     
-    analyzer.print_detailed_topics(n_topics=10)
-    analyzer.save_detailed_topics(n_topics=10)
+    analyzer.print_detailed_topics()
+    analyzer.save_detailed_topics()
     analyzer.evaluate_topics()
     analyzer.save_results()
     
