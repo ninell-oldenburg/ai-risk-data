@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 import matplotlib.patches as mpatches
+import json
 
 # BERTopic and dependencies
 from bertopic import BERTopic
@@ -694,6 +695,46 @@ class EmbeddingTopicModeling:
         self.topic_diversity = topic_diversity
 
         return topic_coherence, topic_diversity
+    
+def load_config(platform, config_path="src/metadata/config_topic_modeling.json"):
+    """
+    Load topic modeling configuration from JSON file.
+    
+    Args:
+        platform: 'lw' or 'af'
+        config_path: Path to config JSON file
+        
+    Returns:
+        dict: Configuration parameters for the specified platform
+    """
+    # Map short codes to full names
+    platform_map = {
+        'lw': 'lesswrong',
+        'af': 'alignment_forum'
+    }
+    
+    platform_key = platform_map.get(platform, platform)
+    
+    # Load config
+    if not os.path.exists(config_path):
+        print(f"⚠️  Config file not found: {config_path}")
+        print("Using default parameters...")
+        return None
+    
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    
+    if platform_key not in config:
+        print(f"⚠️  No configuration found for platform: {platform_key}")
+        print("Using default parameters...")
+        return None
+    
+    platform_config = config[platform_key]
+    print(f"\n✓ Loaded configuration for {platform_key}:")
+    for key, value in platform_config.items():
+        print(f"  - {key}: {value}")
+    
+    return platform_config
 
 def main(platform, max_posts=None):
     """
@@ -712,29 +753,50 @@ def main(platform, max_posts=None):
     
     analyzer = EmbeddingTopicModeling(platform)
     EMBEDDING_MODEL = 'all-mpnet-base-v2'
+
+    config_path = "srtc/metadata/config_topic_modeling.json"
+    config = load_config(platform, config_path)
+
+    n_neighbors = config.get('n_neighbors', 10)
+    min_topic_size = config.get('min_topic_size', 200)
+    min_cluster_size = config.get('min_cluster_size', 200)
+    n_components = config.get('n_components', 5)
+    nr_topics = config.get('nr_topics', 'auto')
+    reduce_outliers = config.get('reduce_outliers', True)
+    embedding_model = config.get('embedding_model', 'all-mpnet-base-v2')
     
     # Load data
     if not analyzer.load_csv_files(max_posts=max_posts):
         print("Failed to load data!")
         return
     
-    """analyzer.sweep_parameters(
+    """
+    analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
         min_topic_size_list=[50,100,200,400],
         embedding_model=EMBEDDING_MODEL,
         max_posts_for_sweep=None,
         output_dir="sweep_results_run1"
-    )"""
+    )
+    """
     
-    # Train model
+    print(f"\nTraining model with parameters:")
+    print(f"  - n_neighbors: {n_neighbors}")
+    print(f"  - min_topic_size: {min_topic_size}")
+    print(f"  - min_cluster_size: {min_cluster_size}")
+    print(f"  - n_components: {n_components}")
+    print(f"  - nr_topics: {nr_topics}")
+    print(f"  - reduce_outliers: {reduce_outliers}")
+    print(f"  - embedding_model: {embedding_model}")
+    
     analyzer.train_topic_model(
-        min_topic_size=200,
-        min_cluster_size=200,
-        n_neighbors=10,
-        n_components=5,
-        embedding_model=EMBEDDING_MODEL,
-        nr_topics='auto',
-        reduce_outliers=True
+        min_topic_size=min_topic_size,
+        min_cluster_size=min_cluster_size,
+        n_neighbors=n_neighbors,
+        n_components=n_components,
+        embedding_model=embedding_model,
+        nr_topics=nr_topics,
+        reduce_outliers=reduce_outliers
     )
     
     # Optional: reduce topics if too many were discovered
@@ -749,31 +811,27 @@ def main(platform, max_posts=None):
     print("ANALYSIS COMPLETE!")
     print("="*80)
 
-
 if __name__ == "__main__":
     import sys
     
     if len(sys.argv) < 2:
-        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [MIN_TOPIC_SIZE] [NR_TOPICS]")
+        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [CONFIG_PATH]")
         print("\nParameters:")
         print("  FORUM: 'lw' or 'af' (required)")
         print("  MAX_POSTS: Limit posts for testing (default: None = all)")
-        print("  MIN_TOPIC_SIZE: Minimum documents per topic (default: 400)")
-        print("  NR_TOPICS: Target number of topics (default: 25)")
+        print("  CONFIG_PATH: Path to config JSON (default: topic_modeling_config.json)")
         print("\nExamples:")
-        print("  python bertopic_analyzer.py lw None 400 25  # 400 docs/topic, reduce to 25")
-        print("  python bertopic_analyzer.py af None 500 20  # 500 docs/topic, reduce to 20")
-        print("  python bertopic_analyzer.py lw 5000 100 15  # Test with 5k posts")
-        print("\n⚠️  If you still get too many topics:")
-        print("  • SET nr_topics lower (15-20)")
-        print("  • INCREASE min_topic_size (500-1000)")
-        print("  • Edit code: increase n_neighbors to 30-50")
+        print("  python bertopic_analyzer.py lw")
+        print("  python bertopic_analyzer.py af None custom_config.json")
+        print("  python bertopic_analyzer.py lw 5000  # Test with 5k posts")
+        print("\nConfiguration:")
+        print("  Edit 'topic_modeling_config.json' to change parameters")
+        print("  Parameters include: n_neighbors, min_topic_size, embedding_model, etc.")
         print("\nNote: First run will download the embedding model (~80MB)")
         sys.exit(1)
     
     platform = sys.argv[1]
     max_posts = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] != 'None' else None
-    min_topic_size = int(sys.argv[3]) if len(sys.argv) > 3 else 400
-    nr_topics = int(sys.argv[4]) if len(sys.argv) > 4 else 25
+    config_path = sys.argv[3] if len(sys.argv) > 3 else "topic_modeling_config.json"
     
-    main(platform, max_posts)
+    main(platform, max_posts, config_path)
