@@ -34,7 +34,7 @@ class ExtractLinksAndGender:
         self.nqgmodel = nqg.NBGC()
         self.nqgmodel.threshold = .2
         self.arxiv_data = {}
-        self.arxiv_pattern = re.compile(r'(arxiv\.org/)', re.IGNORECASE)
+        self.arxiv_pattern = re.compile(r'arxiv\.org/(?:abs|pdf|ps|html|format)/([a-z\-]+/\d+|\d+\.\d+)', re.IGNORECASE)
         self.doi_pattern = re.compile(r'10\.\d{4,}/[^\s,;|\]}\)"\'\><\n]+', re.IGNORECASE)
     
     def clean_html(self, html_content: str) -> str:
@@ -120,6 +120,7 @@ class ExtractLinksAndGender:
         logger.info(f"Loaded {len(self.arxiv_data)} arXiv papers")
     
     def extract_arxiv_ids(self, text: str) -> List[str]:
+        """Extract arXiv IDs from text"""
         if pd.isna(text) or not isinstance(text, str):
             return []
         
@@ -128,7 +129,7 @@ class ExtractLinksAndGender:
         clean_ids = [match.split('v')[0] for match in matches]
         return list(set(clean_ids))
     
-    def clean_doi(doi):
+    def clean_doi(self, doi):
         """
         Comprehensive DOI cleaning for matching.
         Handles all the weird edge cases we've found.
@@ -198,26 +199,26 @@ class ExtractLinksAndGender:
         return doi.strip() if doi else None
         
     def extract_direct_dois(self, text: str) -> List[str]:
-            """
-            Extract DOIs directly from text.
+        """
+        Extract DOIs directly from text.
+        
+        Args:
+            text (str): Text potentially containing DOI links
             
-            Args:
-                text (str): Text potentially containing DOI links
-                
-            Returns:
-                List[str]: List of extracted DOIs
-            """
-            if pd.isna(text) or not isinstance(text, str):
-                return []
-            
-            matches = self.doi_pattern.findall(text)
-            cleaned_dois = []
-            for doi in matches:
-                cleaned_doi = self.clean_doi(doi)
-                if re.match(r'^10\.\d{4,}/.+', cleaned_doi):
-                    cleaned_dois.append(doi)
-            
-            return list(set(cleaned_dois)) 
+        Returns:
+            List[str]: List of extracted DOIs
+        """
+        if pd.isna(text) or not isinstance(text, str):
+            return []
+        
+        matches = self.doi_pattern.findall(text)
+        cleaned_dois = []
+        for doi in matches:
+            cleaned_doi = self.clean_doi(doi)
+            if cleaned_doi and re.match(r'^10\.\d{4,}/.+', cleaned_doi):
+                cleaned_dois.append(cleaned_doi)
+        
+        return list(set(cleaned_dois)) 
     
     def extract_all_dois(self, text: str) -> List[str]:
         """
@@ -277,25 +278,34 @@ class ExtractLinksAndGender:
                 elif name in self.MALE_USERNAMES:
                     return 'gm'
         
+        # Try username first
         split_username = self._split_username(str(username))
         gender = self.nqgmodel.classify(split_username)
         if gender[0] != '-':
             return gender[0]
-        else:
-            prediction, prob = chgender.guess(name)
-            if prob > 0.8: 
-                gender = self.GENDER_TERMS[prediction]
         
-        # If no parts matched, try display name parts
+        # If username didn't work, try chgender on split username parts
+        try:
+            prediction, prob = chgender.guess(split_username)
+            if prob > 0.8: 
+                return self.GENDER_TERMS[prediction]
+        except:
+            pass
+        
+        # If no luck with username, try display name
         if pd.notna(display_name):
             split_displayname = self._split_username(str(display_name))
             gender = self.nqgmodel.classify(split_displayname)
             if gender[0] != '-':
                 return gender[0]
-            else:
-                prediction, prob = chgender.guess(name)
+            
+            # Try chgender on display name
+            try:
+                prediction, prob = chgender.guess(split_displayname)
                 if prob > 0.8: 
-                    gender = self.GENDER_TERMS[prediction]
+                    return self.GENDER_TERMS[prediction]
+            except:
+                pass
         
         return '-'
     
@@ -350,13 +360,18 @@ class ExtractLinksAndGender:
             df['extracted_links'] = ''
             df['cleaned_htmlBody'] = ''
             df['user_gender'] = ''
+            df['extracted_dois'] = ''
             usrs = Counter()
             gender_dist = Counter()
             
             for idx, row in df.iterrows():
                 df.at[idx, 'title'] = self._clean_title(row.get('title'))
                 
-                cleaned_text = self.clean_html(row.get('htmlBody'))
+                # Get the HTML content
+                html_content = row.get('htmlBody')
+                
+                # Extract cleaned text
+                cleaned_text = self.clean_html(html_content)
                 df.at[idx, 'cleaned_htmlBody'] = cleaned_text
                 
                 # extract gender from username
@@ -365,34 +380,53 @@ class ExtractLinksAndGender:
                 gender_dist[gender] += 1
                 usrs[row.get('user.username')] += 1
                 
-                # extract links from htmlBody
-                html_links = self.extract_links_from_html(row.get('htmlBody'))
+                # Extract links from HTML
+                html_links = self.extract_links_from_html(html_content)
                 
-                df.at[idx, 'extracted_links'] = '; '.join(html_links) if html_links else ''
+                # Store links as JSON list
+                df.at[idx, 'extracted_links'] = json.dumps(html_links) if html_links else '[]'
+                
+                # Extract DOIs from the ORIGINAL HTML content (not from the links list)
+                # Combine both HTML and cleaned text to catch all DOI references
+                combined_text = str(html_content) + ' ' + cleaned_text
+                dois = self.extract_all_dois(combined_text)
+                
+                # Store DOIs as JSON list
+                df.at[idx, 'extracted_dois'] = json.dumps(dois) if dois else '[]'
 
-            df['extracted_dois'] = df['extracted_links'].apply(
-                lambda links: '; '.join(self.extract_all_dois(links)) if links else ''
-            )
+            # Remove the htmlBody column since we now have cleaned_htmlBody and extracted_links
+            df = df.drop(columns=['htmlBody'], errors='ignore')
 
-            df = df.drop(columns=['htmlBody'])
-
-            # save back to the same file
+            # save to output file
             df.to_csv(out_filepath, index=False)
             
             # return counts for summary
-            posts_with_links = (df['extracted_links'] != '').sum()
+            posts_with_links = (df['extracted_links'] != '[]').sum()
+            posts_with_dois = (df['extracted_dois'] != '[]').sum()
             
-            return posts_with_links, usrs, gender_dist
+            return posts_with_links, posts_with_dois, usrs, gender_dist
         
         except Exception as e:
             print(f"Error processing {in_filepath}: {e}")
-            return 0, 0, 0, 0
+            import traceback
+            traceback.print_exc()
+            return 0, 0, Counter(), Counter()
         
 def main(forum):
     extractor = ExtractLinksAndGender(platform=forum)
+    
+    # Load arXiv dataset if needed (uncomment if you want arXiv->DOI mapping)
+    try:
+        arxiv_path = extractor.download_arxiv_dataset()
+        extractor.load_arxiv_data(arxiv_path)
+    except Exception as e:
+        logger.warning(f"Could not load arXiv dataset: {e}")
+        logger.warning("Continuing without arXiv->DOI mapping")
+    
     base_path_in = f"src/processed_data/{extractor.platform}/01_cleaned_csv"
     base_path_out = f"src/processed_data/{extractor.platform}/02_with_links_and_gender"
     total_posts_with_links = 0
+    total_posts_with_dois = 0
     files_processed = 0
     usrs = Counter()
     gender_dist = Counter()
@@ -423,13 +457,14 @@ def main(forum):
     # Process each pair
     for i, (csv_file_in, csv_file_out) in enumerate(sorted(csv_file_pairs)):
         print(f"Processing {i+1}/{len(csv_file_pairs)}: {csv_file_in} -> {csv_file_out}")
-        posts_with_links, file_usrs, gender_dict = extractor.process_csv_file(csv_file_in, csv_file_out)
+        posts_with_links, posts_with_dois, file_usrs, gender_dict = extractor.process_csv_file(csv_file_in, csv_file_out)
         usrs += file_usrs
         gender_dist += gender_dict
         
         total_posts_with_links += posts_with_links
+        total_posts_with_dois += posts_with_dois
         files_processed += 1
-        print(f"✅ Updated with {posts_with_links} posts with links")
+        print(f"✅ Updated with {posts_with_links} posts with links, {posts_with_dois} posts with DOIs")
 
     print("\n" + "="*60)
     print("SUMMARY REPORT")
@@ -437,9 +472,13 @@ def main(forum):
     print(f"\nCompleted!")
     print(f"Files processed: {files_processed}/{len(csv_file_pairs)}")
     print(f"Total posts with extracted links: {total_posts_with_links}")
+    print(f"Total posts with extracted DOIs: {total_posts_with_dois}")
     print(f"\nEach CSV file now has these new columns added:")
-    print(f"  - 'extracted_links': Citation links (semicolon-separated)")
+    print(f"  - 'extracted_links': All links as JSON list")
+    print(f"  - 'extracted_dois': DOIs as JSON list")
     print(f"  - 'cleaned_htmlBody': Plain text with all HTML removed")
+    print(f"  - 'user_gender': Predicted gender")
+    print(f"\nThe 'htmlBody' column has been removed.")
 
     print()
 

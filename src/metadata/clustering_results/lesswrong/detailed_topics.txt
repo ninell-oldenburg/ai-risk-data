@@ -1,6 +1,6 @@
 
 ================================================================================
-DETAILED TOPIC ANALYSIS (Top 10 topics)
+DETAILED TOPIC ANALYSIS (Top 17 topics)
 ================================================================================
 
 ────────────────────────────────────────────────────────────────────────────────
@@ -421,3 +421,289 @@ Temporal distribution:
   2023: ██████████████████████████████ 115
   2024: ███████████████████████ 90
   2025: █████████ 35
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 10: 691 documents (1.54%)
+Average probability: 0.480
+
+Top words:
+  • nuclear war          (0.5596)
+  • existential risk     (0.5199)
+  • nuclear weapons      (0.4551)
+  • nuclear              (0.4415)
+  • catastrophes         (0.4376)
+  • climate change       (0.4337)
+  • catastrophe          (0.3760)
+  • extinction           (0.3657)
+  • war                  (0.3586)
+  • climate              (0.3486)
+
+Representative documents:
+  1. Conference on Global Catastrophic Risks... (prob: 1.000)
+  2. Let’s discuss the weather... (prob: 1.000)
+  3. Why safety is not safe... (prob: 1.000)
+
+Temporal distribution:
+  2007:  1
+  2008:  4
+  2009: █ 8
+  2010: ███ 14
+  2011: ████████ 36
+  2012: ███████ 31
+  2013: ██████████ 45
+  2014: ██████ 29
+  2015: █████ 23
+  2016: ████ 20
+  2017: ████ 21
+  2018: ███ 16
+  2019: █████████ 41
+  2020: ████████ 39
+  2021: █████████████ 59
+  2022: ██████████████████████████████ 132
+  2023: ███████████████ 69
+  2024: █████████████ 61
+  2025: █████████ 42
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 15: 461 documents (1.03%)
+Average probability: 0.506
+
+Top words:
+  • dating               (0.5906)
+  • relationships        (0.4446)
+  • date                 (0.4367)
+  • single               (0.4121)
+  • relationship         (0.3952)
+  • attractiveness       (0.3902)
+  • marriage             (0.3860)
+  • dates                (0.3606)
+  • social               (0.3491)
+  • women                (0.3143)
+
+Representative documents:
+  1. 2-Place and 1-Place Words... (prob: 1.000)
+  2. Changing Emotions... (prob: 1.000)
+  3. My Way... (prob: 1.000)
+
+Temporal distribution:
+  2007: █ 3
+  2008: █ 2
+  2009: ████████████████████ 31
+  2010: ██████████████████████ 35
+  2011: ██████████████████████████ 40
+  2012: █████████████ 20
+  2013: █████████████████████ 33
+  2014: ███████ 12
+  2015: ███████████ 17
+  2016: ████████ 13
+  2017: █████████ 15
+  2018: █████████ 15
+  2019: █████████████ 21
+  2020: █████████████████████ 33
+  2021: ████████████████ 25
+  2022: ██████████████████████████████ 46
+  2023: ██████████████████████████ 41
+  2024: ██████████████████████ 34
+  2025: ████████████████ 25
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 11: 454 documents (1.01%)
+Average probability: 0.835
+
+Top words:
+  • secular solstice     (0.5717)
+  • solstice             (0.5329)
+  • ritual               (0.5202)
+  • winter solstice      (0.5010)
+  • events               (0.3677)
+  • secular              (0.3398)
+  • winter               (0.3197)
+  • event                (0.3127)
+  • dances               (0.2744)
+  • dancing              (0.2485)
+
+Representative documents:
+  1. Thanksgiving Prayer... (prob: 1.000)
+  2. You don't need barefoot shoes to start walking differently.... (prob: 1.000)
+  3. Newtonmas Meetup, 12/25/2010... (prob: 1.000)
+
+Temporal distribution:
+  2008:  1
+  2009:  1
+  2010: █ 3
+  2011: ████ 13
+  2012: ███ 9
+  2013: ████████ 22
+  2014: ████ 12
+  2015: ████ 13
+  2016: ███ 9
+  2017: ██ 8
+  2018: ███████ 19
+  2019: ███████████ 32
+  2020: █████████████████ 46
+  2021: ███████████ 30
+  2022: ██████████████████████ 62
+  2023: ███████████████████████ 64
+  2024: ██████████████████████████████ 81
+  2025: ██████████ 29
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 12: 387 documents (0.86%)
+Average probability: 0.597
+
+Top words:
+  • harry said           (0.5336)
+  • harry                (0.4986)
+  • mr potter            (0.4957)
+  • professor mcgonagall (0.4916)
+  • said harry           (0.4846)
+  • hermione             (0.4840)
+  • potter               (0.4809)
+  • harry potter         (0.4626)
+  • hermione granger     (0.4547)
+  • ravenclaw            (0.4347)
+
+Representative documents:
+  1. Harry Potter and the Methods of Rationality discussion thread... (prob: 1.000)
+  2. Harry Potter and the Methods of Rationality discussion thread, part 3... (prob: 1.000)
+  3. Harry Potter and the Methods of Rationality discussion thread, part 2... (prob: 1.000)
+
+Temporal distribution:
+  2007:  2
+  2008:  2
+  2009: █ 6
+  2010: ██ 11
+  2011: ████ 22
+  2012: ██████ 33
+  2013: ███████ 37
+  2014: █ 9
+  2015: ██████████████████████████████ 154
+  2016:  2
+  2017: █ 6
+  2018: █ 7
+  2019: █ 7
+  2020: ███ 18
+  2021: █████ 29
+  2022: ███ 16
+  2023:  4
+  2024: █ 6
+  2025: ███ 16
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 14: 327 documents (0.73%)
+Average probability: 0.647
+
+Top words:
+  • open thread          (0.5419)
+  • threads              (0.5109)
+  • open threads         (0.4931)
+  • threads posted       (0.4806)
+  • thread               (0.4658)
+  • threads start        (0.4653)
+  • thread posting       (0.4222)
+  • threads page         (0.4080)
+  • list threads         (0.3964)
+  • posted discussion    (0.3893)
+
+Representative documents:
+  1. Open Thread: October 2009... (prob: 1.000)
+  2. Open Thread: August 2011... (prob: 1.000)
+  3. Open Thread: September 2011... (prob: 1.000)
+
+Temporal distribution:
+  2007:  1
+  2009: ██ 4
+  2010: █████████ 18
+  2011: █████ 11
+  2012: ████████████ 25
+  2013: ███████████████████ 38
+  2014: ██████████████████████████████ 59
+  2015: ████████████████████████████ 57
+  2016: ██████████████████████████ 53
+  2017: ██████████████████████ 45
+  2018: █████ 10
+  2019: █ 3
+  2022: █ 2
+  2023:  1
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 13: 308 documents (0.69%)
+Average probability: 0.748
+
+Top words:
+  • cryonics             (0.6538)
+  • signed cryonics      (0.6268)
+  • cryonicists          (0.6128)
+  • signing cryonics     (0.6100)
+  • cryopreservation     (0.6022)
+  • sign cryonics        (0.5817)
+  • cryopreserved        (0.5805)
+  • cryo                 (0.5367)
+  • brain preservation   (0.4737)
+  • frozen               (0.3325)
+
+Representative documents:
+  1. Congratulations to Paris Hilton... (prob: 1.000)
+  2. You Only Live Twice... (prob: 1.000)
+  3. Rationality, Cryonics and Pascal's Wager... (prob: 1.000)
+
+Temporal distribution:
+  2007:  1
+  2008:  1
+  2009: ██ 5
+  2010: ████████████████ 30
+  2011: ██████████████████████████████ 55
+  2012: ████████████████████████████ 52
+  2013: ████████████ 23
+  2014: █████████ 17
+  2015: █████████ 18
+  2016: █████ 10
+  2017: █ 2
+  2018: ██ 4
+  2019: ██ 5
+  2020: ██████ 12
+  2021: ██████████████████ 34
+  2022: ██████ 12
+  2023: ███████ 14
+  2024: █████ 10
+  2025: █ 3
+
+────────────────────────────────────────────────────────────────────────────────
+Topic 16: 254 documents (0.57%)
+Average probability: 0.851
+
+Top words:
+  • affordable housing   (0.6640)
+  • housing              (0.5433)
+  • houses               (0.4654)
+  • apartments           (0.4611)
+  • homes                (0.4500)
+  • rent control         (0.4370)
+  • house                (0.3914)
+  • buildings            (0.3897)
+  • apartment            (0.3740)
+  • zoning               (0.3673)
+
+Representative documents:
+  1. Advertise while honoring the dead... (prob: 1.000)
+  2. NYC Rationalist Community... (prob: 1.000)
+  3. Room for rent in North Berkeley house... (prob: 1.000)
+
+Temporal distribution:
+  2008:  1
+  2010: █████ 7
+  2011: ██████████ 13
+  2012: ████████ 11
+  2013: ███ 5
+  2014: ███ 4
+  2015: ███ 5
+  2016:  1
+  2017: ███ 4
+  2018: ████ 6
+  2019: ██████████████████ 24
+  2020: ███████████████████ 25
+  2021: ███████████████████████████ 35
+  2022: █████████████████████ 27
+  2023: ████████████████████████████ 36
+  2024: ██████████████████████████████ 38
+  2025: █████████ 12

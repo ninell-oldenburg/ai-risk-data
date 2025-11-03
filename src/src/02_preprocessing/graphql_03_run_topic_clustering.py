@@ -423,6 +423,9 @@ class EmbeddingTopicModeling:
     def print_detailed_topics(self, n_topics=None):
         """Print detailed information about top topics"""
         stats = self.get_topic_statistics()
+
+        if n_topics == None:
+            n_topics = len(stats)
         
         print(f"\n{'='*80}")
         print(f"DETAILED TOPIC ANALYSIS (Top {min(n_topics, len(stats))} topics)")
