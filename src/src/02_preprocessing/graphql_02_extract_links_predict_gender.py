@@ -139,62 +139,145 @@ class ExtractLinksAndGender:
         
         doi = str(doi).strip()
         
+        # === STEP 1: Remove URL prefixes (do this first) ===
         doi = doi.replace('https://doi.org/', '')
         doi = doi.replace('http://doi.org/', '')
         doi = doi.replace('https://dx.doi.org/', '')
         doi = doi.replace('http://dx.doi.org/', '')
         doi = doi.replace('doi:', '')
 
-        doi = re.sub(r'\.full$', '', doi) 
-        
+        # === STEP 2: Remove fragments and query parameters (before other cleaning) ===
         if '#' in doi:
             doi = doi.split('#')[0]
-        
         if '?' in doi:
             doi = doi.split('?')[0]
         
+        # === STEP 3: Remove HTML entities and special characters ===
         doi = doi.replace('&amp;', '').replace('&amp', '')
+        # Normalize en-dashes and em-dashes to regular hyphens (but not at the end)
+        doi = doi.replace('–', '-').replace('—', '-')
+        doi = re.sub(r'%[0-9a-f]{2}', '', doi, flags=re.IGNORECASE)  # URL-encoded chars
+        # Remove incomplete parenthetical patterns that remain after decoding
+        doi = re.sub(r'\(\d{2}\)$', '', doi)
+        doi = re.sub(r'[†‌—]', '', doi)  # Special Unicode
+        doi = re.sub(r'&type=.*$', '', doi)
+        doi = re.sub(r'&.*$', '', doi)
+        # Remove sequences of dashes (en-dash, em-dash, regular dash)
+        doi = re.sub(r'\.?[-—–]{2,}$', '', doi)
+        # Remove trailing spaces (encoded or not)
+        doi = doi.strip()
+        # Remove zero-width and other invisible Unicode characters
+        doi = re.sub(r'[\u200b-\u200f\u202a-\u202e\u2060\ufeff]', '', doi)
         
+        # === STEP 4: Remove file extensions and path suffixes ===
+        doi = re.sub(r'\.pdf.*$', '', doi)  # .pdf with any trailing stuff
+        doi = re.sub(r'\.(full\.pdf|pdf\.full).*$', '', doi)  # Compound suffixes
         doi = re.sub(r'/abstract$', '', doi)
-        doi = re.sub(r'/full$', '', doi)
         doi = re.sub(r'/pdf$', '', doi)
         doi = re.sub(r'/epdf$', '', doi)
+        doi = re.sub(r'/full$', '', doi)
         doi = re.sub(r'/issuetoc$', '', doi)
         doi = re.sub(r'/full/html$', '', doi)
+        doi = re.sub(r'/meta$', '', doi)
+        doi = re.sub(r'/tables/\d+$', '', doi)
+        doi = re.sub(r'/suppl_file/.*$', '', doi)
+        doi = re.sub(r'/full\.pdf$', '', doi)
         
-        doi = re.sub(r'v\d+\.full$', '', doi)
-
+        # === STEP 5: Remove version indicators ===
+        doi = re.sub(r'v\d+\.full.*$', '', doi)  # v1.full.pdf etc
+        doi = re.sub(r'v\d+\.full$', '', doi)    # v1.full
+        doi = re.sub(r'v\d+$', '', doi)          # v1
+        
+        # === STEP 6: Remove bracket and parenthesis artifacts ===
+        doi = re.sub(r'\[[^\]]*$', '', doi)  # Incomplete brackets
+        doi = re.sub(r'\([^)]*$', '', doi)   # Incomplete parentheses
+        if doi.endswith('('):
+            doi = doi[:-1]
+        
+        # === STEP 7: Remove duplicate acprof segments ===
+        # Remove duplicate segments in Oxford reference DOIs (acrefore, acref)
+        if '/acrefore/' in doi or '/acref/' in doi:
+            # Pattern: /acrefore/ID/acrefore-ID-... -> keep only /acrefore/ID
+            # Match everything up to and including the book ID, before the duplicate
+            match = re.match(r'(10\.1093/acr(?:efore|ef)/\d+(?:\.\d+)*)', doi)
+            if match:
+                doi = match.group(1)
+        
+        # === STEP 8: Remove caret suffixes ===
+        doi = re.sub(r'\.\^.*$', '', doi)
+        doi = re.sub(r'\^.*$', '', doi)
+        
+        # === STEP 9: Remove trailing text patterns ===
+        # Multiple hyphenated words (titles/author names)
+        doi = re.sub(r'/[a-z]+-[a-z]+-[a-z]+-.*$', '', doi, flags=re.IGNORECASE)
+        # Single hyphenated fragment
+        doi = re.sub(r'/[a-z]+-[a-z]+-?$', '', doi, flags=re.IGNORECASE)
+        # Word suffixes (gödel, kraft, etc.)
+        doi = re.sub(r'\.?[a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿłćśźżğ]{4,}$', '', doi, flags=re.IGNORECASE)
+        # Remove text concatenated after digit endings (no separator)
+        doi = re.sub(r'(\d)[a-z]{4,}(-[a-z]+)*$', r'\1', doi, flags=re.IGNORECASE)
+        # Remove trailing lone hyphens
+        doi = doi.rstrip('-')
+        # Remove footnote markers
+        doi = re.sub(r'\.footnotes\*\d+$', '', doi)
+        # Remove possessive markers and contractions at the end
+        doi = re.sub(r"(what's|that's|it's|what’s|that’s|it’s|[a-z]+'s?)$", '', doi, flags=re.IGNORECASE)
+        # Remove .cross- and similar suffix patterns
+        doi = re.sub(r'\.cross-$', '', doi)
+        # Remove 2-3 letter word fragments at the end (but not legitimate suffixes like .x or .e1234)
+        doi = re.sub(r'\.([a-z]{2,3})$', lambda m: '' if not any(c.isdigit() for c in m.group(1)) else m.group(0), doi, flags=re.IGNORECASE)
+        # Remove article title paths (pattern: /numbers/long-title-text)
+        doi = re.sub(r'/\d+/[a-z][a-z-]+-[a-z-]+$', '', doi, flags=re.IGNORECASE)
+        # Remove 2-3 letter author initials concatenated after numbers
+        doi = re.sub(r'(\d)([a-z]{2,3})$', r'\1', doi, flags=re.IGNORECASE)
+        
+        # === STEP 10: Clean last segment after final slash ===
+        parts = doi.split('/')
+        if len(parts) >= 2:
+            last_part = parts[-1]
+            last_part = re.sub(r'[a-z]{3,}$', '', last_part, flags=re.IGNORECASE)
+            parts[-1] = last_part
+            doi = '/'.join(parts)
+        
+        # === STEP 11: Remove trailing special characters ===
+        doi = re.sub(r'[\.&]+$', '', doi)  # Ampersands and periods
+        # Remove trailing underscores (multiple)
+        doi = re.sub(r'_+$', '', doi)
+        # Remove /full one more time before final cleanup
+        doi = re.sub(r'/full$', '', doi)
+        doi = doi.rstrip("/.,;:!?_+'\"‘")  # Add quotes to the list
+        
+        # === STEP 12: Final version check (after all other cleaning) ===
         doi = re.sub(r'v\d+$', '', doi)
-        
-        doi = re.sub(r'[\.\^][a-z]+$', '', doi, flags=re.IGNORECASE)
-        
-        doi = re.sub(r'\[[^\]]*$', '', doi)
-        
-        doi = re.sub(r'\^[a-z]$', '', doi, flags=re.IGNORECASE)
-        
-        doi = re.sub(r'\.\^[a-z]+', '', doi, flags=re.IGNORECASE)
 
-        doi = re.sub(r'\.\^["\']+[a-z]+$', '', doi, flags=re.IGNORECASE)
+        # Final /full removal (catch any stragglers)
+        doi = re.sub(r'/full$', '', doi)
 
-        doi = re.sub(r'\.\^[a-z]{5,}$', '', doi, flags=re.IGNORECASE)
-
-        doi = re.sub(r'[a-z]{8,}$', '', doi) 
-
-        doi = re.sub(r'\.\^[^a-z0-9]*$', '', doi, flags=re.IGNORECASE)
+        # Final cleanup of version patterns
+        doi = re.sub(r'v\d+\.full$', '', doi)
         
-        if doi.endswith('('):
-            doi = doi[:-1]
-        
-        doi = doi.rstrip('/.,;:!?')
-
-        if doi.endswith('('):
-            doi = doi[:-1]
-        
-        doi = re.sub(r'[a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿłćśźż]{6,}$', '', doi, flags=re.IGNORECASE)
-
-        doi = re.sub(r'\([^)]{1,3}$', '', doi)
-        
+        # === STEP 13: Lowercase ===
         doi = doi.lower()
+        
+        # === STEP 14: Validate completeness ===
+        # Filter out DOIs that end with a lone hyphen (likely incomplete)
+        if doi.endswith('-'):
+            return None
+        
+        if '/' in doi:
+            parts = doi.split('/')
+            if len(parts[-1]) < 2:
+                return None
+            
+        # Filter out DOIs that are just the prefix (no suffix after slash)
+        if '/' not in doi or doi.split('/')[-1] == '':
+            return None
+        
+        # Filter out DOIs where the last part looks incomplete (2 chars or ends with hyphen)
+        if '/' in doi:
+            last_part = doi.split('/')[-1]
+            if len(last_part) <= 2 or last_part.endswith('-'):
+                return None
         
         return doi.strip() if doi else None
         
