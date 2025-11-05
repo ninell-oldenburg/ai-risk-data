@@ -1,11 +1,12 @@
 import os
 import time
 from datetime import datetime
-from typing import List, Dict, Tuple, Set
+from typing import List, Dict, Tuple
 import requests
 import pandas as pd
 import json
 from collections import Counter
+from itertools import combinations
 
 # ==============================================================================
 # TOPIC DEFINITIONS
