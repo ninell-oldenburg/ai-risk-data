@@ -9,7 +9,12 @@ Usage:
 import time
 from typing import List, Dict, Tuple
 import requests
+import re
 import json
+import os
+
+CACHE_DIR = "cache"
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 # ==============================================================================
 # TOPIC CONFIGURATIONS
@@ -95,7 +100,7 @@ COMPREHENSIVE_KEYWORDS = [
     
     # Interpretability
     'interpretability', 'interpretable', 'explainability', 'explainable',
-    'transparency', 'transparent', 'xai',
+    'transparency', 'transparent', 'xai', 'feature visualization',
     'feature attribution', 'saliency', 'attention visualization',
     'lime', 'shap', 'circuits', 'mechanistic interpretability',
     'model card', 'datasheet', 'documentation',
@@ -103,7 +108,7 @@ COMPREHENSIVE_KEYWORDS = [
     # Robustness
     'robust', 'robustness', 'adversarial', 'adversarial example',
     'adversarial attack', 'adversarial training', 'certified defense',
-    'poisoning attack', 'backdoor attack',
+    'poisoning attack', 'backdoor attack', 'benchmark',
     'distributional shift', 'out-of-distribution',
     
     # Governance & Risk
@@ -122,25 +127,26 @@ COMPREHENSIVE_KEYWORDS = [
 
 # Boolean search terms
 AI_TERMS = [
-    'artificial intelligence', 'machine learning', 'deep learning',
-    'neural network', 'reinforcement learning', 'language model',
-    'ai', 'ml', 'llm', 'nlp',
+    'artificial intelligence', 'machine learning', 'deep learning', 'reward function',
+    'neural network', 'reinforcement learning', 'language model', 'language models',
+    'ai', 'ml', 'llm', 'nlp', 'agi', 'artificial general intelligence',
 ]
 
 SAFETY_TERMS = [
-    'safety', 'alignment', 'fairness', 'bias',
-    'interpretability', 'explainability', 'robustness',
-    'adversarial', 'ethics', 'governance', 'risk',
-    'trustworthy', 'responsible', 'cooperation',
+    'safety', 'alignment', 'fairness', 'bias', 'cooperative', 'red teaming',
+    'interpretability', 'explainability', 'robustness', 'human feedback', 'risks',
+    'adversarial', 'ethics', 'governance', 'risk', 'human preference', 'malicious use',
+    'trustworthy', 'responsible', 'cooperation', 'circuits', 'policy', 'governance',
+    'dangers', 'amplification',  'capabilities',
 ]
 
 # Targeted keywords for hybrid approach
 TARGETED_KEYWORDS = [
-    'alignment problem', 'cooperative ai', 'malicious use',
-    'model evaluation', 'extreme risk', 'circuits',
+    'alignment problem', 'cooperative ai', 'malicious use', 'rlhf',
+    'model evaluation', 'circuits', 'reinforcement learning from human feedback',
     'mechanistic interpretability', 'feature visualization',
-    'existential risk', 'benchmark', 'mesa-optimization',
-    'value alignment', 'catastrophic risk'
+    'existential risk', 'benchmark', 'mesa-optimization', 'cooperative ai',
+    'value alignment', 'catastrophic risk', 'artificial general intelligence'
 ]
 
 # Validation set - known AI safety papers that SHOULD be captured
@@ -167,7 +173,7 @@ VALIDATION_PAPERS = {
     "10.48550/arxiv.2303.12712": "Sparks of Artificial General Intelligence: Early experiments with GPT-4",
     
     # ========================================
-    # INTERPRETABILITY & TRANSPARENCY (10 papers)
+    # INTERPRETABILITY & TRANSPARENCY (8 papers)
     # ========================================
     "10.23915/distill.00007": "Feature Visualization (Olah)",
     "10.23915/distill.00010": "The Building Blocks of Interpretability (Olah)",
@@ -175,8 +181,6 @@ VALIDATION_PAPERS = {
     "10.48550/arxiv.2211.00593": "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 small",
     "10.48550/arxiv.1602.04938": "Why Should I Trust You? LIME",
     "10.48550/arxiv.1705.07874": "A Unified Approach to Interpreting Model Predictions (SHAP)",
-    "10.48550/arxiv.2210.12440": "BERT: Pre-training of Deep Bidirectional Transformers",
-    "10.48550/arxiv.2005.14165": "Language Models are Few-Shot Learners (GPT-3)",
     "10.48550/arxiv.1902.10186": "Attention is not Explanation",
     "10.48550/arxiv.2202.05262": "Locating and Editing Factual Associations in GPT",
     
@@ -192,7 +196,7 @@ VALIDATION_PAPERS = {
     "10.48550/arxiv.2307.02483": "Jailbroken: How Does LLM Safety Training Fail?",
     
     # ========================================
-    # CRITICAL AI ETHICS / FAIRNESS (28 papers)
+    # CRITICAL AI ETHICS / FAIRNESS (27 papers)
     # ========================================
     "10.1145/3442188.3445922": "On the Dangers of Stochastic Parrots (Bender et al.)",
     "10.1145/3287560.3287598": "Fairness and Abstraction in Sociotechnical Systems",
@@ -217,7 +221,6 @@ VALIDATION_PAPERS = {
     "10.1145/3442188.3445901": "Measurement and Fairness",
     "10.1177/20539517211035955": "On the Genealogy of Machine Learning Datasets",
     "10.48550/arxiv.1906.02243": "Energy and Policy Considerations for Deep Learning in NLP",
-    "10.48550/arxiv.2112.04359": "Ethical and social risks of harm from LLMs (Weidinger)",
     "10.18653/v1/2021.findings-emnlp.210": "Challenges in Detoxifying Language Models",
     "10.18653/v1/2021.emnlp-main.98": "Documenting Large Webtext Corpora (C4)",
     "10.48550/arxiv.2211.09110": "Holistic Evaluation of Language Models",
@@ -237,186 +240,249 @@ VALIDATION_PAPERS = {
 # VALIDATION FUNCTIONS
 # ==============================================================================
 
-def test_topic_coverage(topic_ids: List[str], email: str = "your-email@example.com") -> Tuple[float, List[str]]:
+def get_topic_count(topic_id, email):
+    """Return total papers for an OpenAlex topic ID."""
+    url = "https://api.openalex.org/works"
+    params = {
+        'filter': f'topics.id:{topic_id}',
+        'per-page': 1,
+        'mailto': email
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        return response.json().get('meta', {}).get('count', 0)
+    else:
+        print(f"Error fetching count for topic {topic_id}: {response.status_code}")
+        return 0
+
+
+def get_keyword_count(keyword, email):
+    """
+    Returns the total number of papers that match a keyword in OpenAlex.
+    """
+    endpoint = "https://api.openalex.org/works"
+
+    params = {
+        'search': keyword,  # searches title, abstract, etc.
+        'mailto': email,
+        'per-page': 1       # only need the count
+    }
+
+    response = requests.get(endpoint, params=params)
+    data = response.json()
+
+    total_count = data.get('meta', {}).get('count', 0)
+    return total_count
+
+def get_boolean_count(terms1, terms2, email):
+    """
+    Get count of papers matching Boolean AND of two sets of terms.
+    """
+    query1 = " OR ".join(f'"{t}"' for t in terms1)
+    query2 = " OR ".join(f'"{t}"' for t in terms2)
+    query = f"({query1}) AND ({query2})"
+
+    params = {
+        'search': query,
+        'mailto': email,
+        'per-page': 1  # we only need the meta count
+    }
+
+    response = requests.get("https://api.openalex.org/works", params=params)
+    if response.status_code == 200:
+        return response.json().get('meta', {}).get('count', 0)
+    else:
+        print(f"Warning: Boolean count API failed with status {response.status_code}")
+        return 0
+
+def test_topic_coverage(topic_ids: List[str], email: str = "your-email@example.com",
+                        debug: bool = False) -> Tuple[float, List[str]]:
     """
     Test coverage of a topic configuration against validation set.
-    
-    Args:
-        topic_ids: List of OpenAlex topic IDs (e.g., ['T10883', 'T11689'])
-        email: Email for OpenAlex API (polite pool access)
-    
-    Returns:
-        (coverage_rate, list_of_missing_papers)
+    debug: if True, print metadata for first few missing papers.
     """
     base_url = "https://api.openalex.org"
     headers = {'User-Agent': f'mailto:{email}'}
     session = requests.Session()
     session.headers.update(headers)
-    
+
     found = 0
     missing = []
-    
+    effective_total = 0
+    debug_count = 0
+
     print(f"  Testing {len(topic_ids)} topics...")
-    
+
     for doi, paper_name in VALIDATION_PAPERS.items():
         clean_doi = doi.replace('https://doi.org/', '')
         url = f"{base_url}/works/doi:{clean_doi}"
-        
+
         try:
             response = session.get(url, timeout=10)
             if response.status_code == 404:
+                # Paper not in OpenAlex -> exclude from denominator
                 continue
-            
+
             response.raise_for_status()
             paper = response.json()
-            
-            paper_topics = [t['id'].split('/')[-1] for t in paper.get('topics', [])]
-            
+            effective_total += 1  # count only papers we actually retrieved
+
+            paper_topics = [t.get('id', '').split('/')[-1] for t in paper.get('topics', [])]
             if any(tid in paper_topics for tid in topic_ids):
                 found += 1
             else:
                 missing.append(paper_name)
-            
+                if debug and debug_count < 5:
+                    debug_count += 1
+                    print(f"\n  DEBUG MISS: {paper_name}")
+                    print(f"    DOI: {doi}")
+                    print(f"    Title: {paper.get('title')}")
+                    print(f"    Topics: {paper_topics}")
+                    print(f"    Concepts: {[c.get('display_name') for c in paper.get('concepts', [])][:8]}")
+
+            # polite wait
             time.sleep(0.05)
-            
+
         except Exception as e:
             print(f"    Error checking {paper_name}: {e}")
             continue
-    
-    coverage = found / len(VALIDATION_PAPERS)
-    print(f"    Coverage: {coverage:.1%} ({found}/{len(VALIDATION_PAPERS)} papers)")
-    
+
+    coverage = found / effective_total if effective_total else 0
+    print(f"    Coverage: {coverage:.1%} ({found}/{effective_total} papers)")
+
     return coverage, missing
 
-
-def test_keyword_coverage(keywords: List[str], email: str = "your-email@example.com") -> Tuple[float, List[str]]:
+def test_keyword_coverage(keywords: List[str], email: str = "your-email@example.com",
+                         debug: bool = False) -> Tuple[float, List[str]]:
     """
     Test coverage using keyword matching in title, abstract, and concepts.
-    
-    Args:
-        keywords: List of keywords to search for
-        email: Email for OpenAlex API
-    
-    Returns:
-        (coverage_rate, list_of_missing_papers)
+    Uses substring matching (case-insensitive) but you can also switch to regex if desired.
     """
     base_url = "https://api.openalex.org"
     headers = {'User-Agent': f'mailto:{email}'}
     session = requests.Session()
     session.headers.update(headers)
-    
+
     found = 0
     missing = []
-    
+    effective_total = 0
+    debug_count = 0
+
     print(f"  Testing {len(keywords)} keywords...")
-    
+
     for doi, paper_name in VALIDATION_PAPERS.items():
         clean_doi = doi.replace('https://doi.org/', '')
         url = f"{base_url}/works/doi:{clean_doi}"
-        
+
         try:
             response = session.get(url, timeout=10)
             if response.status_code == 404:
                 continue
-            
             response.raise_for_status()
             paper = response.json()
-            
-            # Get searchable text
-            title = paper.get('title', '').lower()
+            effective_total += 1
+
+            title = (paper.get('title') or "").lower()
             abstract_inv = paper.get('abstract_inverted_index', {})
             abstract = ''
             if abstract_inv:
                 words = [(pos, word.lower()) for word, positions in abstract_inv.items() for pos in positions]
                 words.sort()
                 abstract = ' '.join([w[1] for w in words])
-            concepts = ' '.join([c['display_name'].lower() for c in paper.get('concepts', [])])
-            
+            concepts = ' '.join([c.get('display_name', '').lower() for c in paper.get('concepts', [])])
+
             text = f"{title} {abstract} {concepts}"
-            
-            # Check if any keyword matches
-            if any(kw in text for kw in keywords):
+
+            # keyword matching (substring). If you want stricter matching, switch to regex word boundaries.
+            if any(kw.lower() in text for kw in keywords):
                 found += 1
             else:
                 missing.append(paper_name)
-            
+                if debug and debug_count < 5:
+                    debug_count += 1
+                    print(f"\n  DEBUG MISS: {paper_name}")
+                    print(f"    DOI: {doi}")
+                    print(f"    Title: {paper.get('title')}")
+                    print(f"    Snippet: {text[:300]}...")
+                    print(f"    Concepts: {[c.get('display_name') for c in paper.get('concepts', [])][:8]}")
+
             time.sleep(0.05)
-            
+
         except Exception as e:
             print(f"    Error checking {paper_name}: {e}")
             continue
-    
-    coverage = found / len(VALIDATION_PAPERS)
-    print(f"    Coverage: {coverage:.1%} ({found}/{len(VALIDATION_PAPERS)} papers)")
-    
+
+    coverage = found / effective_total if effective_total else 0
+    print(f"    Coverage: {coverage:.1%} ({found}/{effective_total} papers)")
+
     return coverage, missing
 
 
-def test_boolean_coverage(ai_terms: List[str], safety_terms: List[str], 
-                         email: str = "your-email@example.com") -> Tuple[float, List[str]]:
+def test_boolean_coverage(ai_terms: List[str], safety_terms: List[str],
+                         email: str = "your-email@example.com",
+                         debug: bool = False) -> Tuple[float, List[str]]:
     """
     Test coverage using Boolean search: (AI terms) AND (Safety terms).
-    
-    Args:
-        ai_terms: List of AI-related terms
-        safety_terms: List of safety-related terms
-        email: Email for OpenAlex API
-    
-    Returns:
-        (coverage_rate, list_of_missing_papers)
+    Uses regex word-boundary matching for robustness.
     """
     base_url = "https://api.openalex.org"
     headers = {'User-Agent': f'mailto:{email}'}
     session = requests.Session()
     session.headers.update(headers)
-    
+
     found = 0
     missing = []
-    
+    effective_total = 0
+    debug_count = 0
+
     print(f"  Testing Boolean: {len(ai_terms)} AI terms AND {len(safety_terms)} safety terms...")
-    
+
     for doi, paper_name in VALIDATION_PAPERS.items():
         clean_doi = doi.replace('https://doi.org/', '')
         url = f"{base_url}/works/doi:{clean_doi}"
-        
+
         try:
             response = session.get(url, timeout=10)
             if response.status_code == 404:
                 continue
-            
             response.raise_for_status()
             paper = response.json()
-            
-            # Get searchable text
-            title = paper.get('title', '').lower()
+            effective_total += 1
+
+            title = (paper.get('title') or "").lower()
             abstract_inv = paper.get('abstract_inverted_index', {})
             abstract = ''
             if abstract_inv:
                 words = [(pos, word.lower()) for word, positions in abstract_inv.items() for pos in positions]
                 words.sort()
                 abstract = ' '.join([w[1] for w in words])
-            concepts = ' '.join([c['display_name'].lower() for c in paper.get('concepts', [])])
-            
+            concepts = ' '.join([c.get('display_name', '').lower() for c in paper.get('concepts', [])])
             text = f"{title} {abstract} {concepts}"
-            
-            # Check Boolean: has AI term AND has safety term
-            has_ai = any(term in text for term in ai_terms)
-            has_safety = any(term in text for term in safety_terms)
-            
+
+            has_ai = any(re.search(rf'\b{re.escape(term.lower())}\b', text) for term in ai_terms)
+            has_safety = any(re.search(rf'\b{re.escape(term.lower())}\b', text) for term in safety_terms)
+
             if has_ai and has_safety:
                 found += 1
             else:
                 missing.append(paper_name)
-            
+                if debug and debug_count < 5:
+                    debug_count += 1
+                    print(f"\n  DEBUG MISS: {paper_name}")
+                    print(f"    DOI: {doi}")
+                    print(f"    Title: {paper.get('title')}")
+                    print(f"    Snippet: {text[:300]}...")
+                    print(f"    has_ai: {has_ai}, has_safety: {has_safety}")
+
             time.sleep(0.05)
-            
+
         except Exception as e:
             print(f"    Error checking {paper_name}: {e}")
             continue
-    
-    coverage = found / len(VALIDATION_PAPERS)
-    print(f"    Coverage: {coverage:.1%} ({found}/{len(VALIDATION_PAPERS)} papers)")
-    
+
+    coverage = found / effective_total if effective_total else 0
+    print(f"    Coverage: {coverage:.1%} ({found}/{effective_total} papers)")
+
     return coverage, missing
 
 
@@ -444,12 +510,19 @@ def test_hybrid_coverage(topic_ids: List[str], keywords: List[str],
         url = f"{base_url}/works/doi:{clean_doi}"
         
         try:
-            response = session.get(url, timeout=10)
-            if response.status_code == 404:
-                continue
-            
-            response.raise_for_status()
-            paper = response.json()
+            cache_file = os.path.join(CACHE_DIR, f"{clean_doi.replace('/', '_')}.json")
+            if os.path.exists(cache_file):
+                with open(cache_file, 'r') as cf:
+                    paper = json.load(cf)
+            else:
+                response = session.get(url, timeout=10)
+                if response.status_code == 404:
+                    continue
+
+                response.raise_for_status()
+                paper = response.json()
+                with open(cache_file, 'w') as cf:
+                    json.dump(paper, cf)
             
             # Check topics
             paper_topics = [t['id'].split('/')[-1] for t in paper.get('topics', [])]
@@ -497,87 +570,222 @@ def test_hybrid_coverage(topic_ids: List[str], keywords: List[str],
     
     return coverage, details
 
+def test_topics_boolean_coverage(topic_ids: List[str],
+                                 ai_terms: List[str],
+                                 safety_terms: List[str],
+                                 email: str = "your-email@example.com") -> Tuple[float, Dict]:
+    """
+    Test hybrid coverage using (Topics) OR ((AI term) AND (Safety term)).
+    Returns (coverage_rate, details_dict)
+    """
+    import re
+    base_url = "https://api.openalex.org"
+    headers = {'User-Agent': f'mailto:{email}'}
+    session = requests.Session()
+    session.headers.update(headers)
+
+    found_by_topics = 0
+    found_by_boolean = 0
+    missing = []
+    effective_total = 0
+
+    print(f"  Testing hybrid: {len(topic_ids)} topics + Boolean (AI × Safety)...")
+
+    for doi, paper_name in VALIDATION_PAPERS.items():
+        clean_doi = doi.replace('https://doi.org/', '')
+        url = f"{base_url}/works/doi:{clean_doi}"
+
+        try:
+            response = session.get(url, timeout=10)
+            if response.status_code == 404:
+                continue
+            response.raise_for_status()
+            paper = response.json()
+            effective_total += 1
+
+            # --- topic check ---
+            paper_topics = [t['id'].split('/')[-1] for t in paper.get('topics', [])]
+            has_topic = any(tid in paper_topics for tid in topic_ids)
+
+            # --- boolean check ---
+            title = paper.get('title', '').lower()
+            abstract_inv = paper.get('abstract_inverted_index', {})
+            abstract = ''
+            if abstract_inv:
+                words = [(pos, word.lower()) for word, positions in abstract_inv.items() for pos in positions]
+                words.sort()
+                abstract = ' '.join([w[1] for w in words])
+            concepts = ' '.join([c['display_name'].lower() for c in paper.get('concepts', [])])
+            text = f"{title} {abstract} {concepts}"
+
+            has_ai = any(re.search(rf'\b{re.escape(term)}\b', text) for term in ai_terms)
+            has_safety = any(re.search(rf'\b{re.escape(term)}\b', text) for term in safety_terms)
+            has_boolean = has_ai and has_safety
+
+            # --- classification ---
+            if has_topic:
+                found_by_topics += 1
+            elif has_boolean:
+                found_by_boolean += 1
+            else:
+                missing.append(paper_name)
+
+            time.sleep(0.05)
+
+        except Exception as e:
+            print(f"    Error checking {paper_name}: {e}")
+            continue
+
+    total_found = found_by_topics + found_by_boolean
+    coverage = total_found / effective_total if effective_total else 0
+
+    details = {
+        'coverage': coverage,
+        'found_by_topics': found_by_topics,
+        'found_by_boolean': found_by_boolean,
+        'missing': missing
+    }
+
+    print(f"    Coverage: {coverage:.1%} ({total_found}/{effective_total} papers)")
+    print(f"      Via topics: {found_by_topics}")
+    print(f"      Via Boolean: {found_by_boolean}")
+
+    return coverage, details
+
+def analyze_missing_papers(missing_list: List[str], email: str = "your-email@example.com") -> Dict[str, Dict]:
+    """
+    Analyze why specific papers were missed — e.g., no topics, sparse metadata, or weak keyword presence.
+    Returns a dict summarizing issues for each paper.
+    """
+    base_url = "https://api.openalex.org"
+    headers = {'User-Agent': f'mailto:{email}'}
+    session = requests.Session()
+    session.headers.update(headers)
+
+    analysis = {}
+
+    for doi, title in VALIDATION_PAPERS.items():
+        if title not in missing_list:
+            continue
+
+        clean_doi = doi.replace('https://doi.org/', '')
+        url = f"{base_url}/works/doi:{clean_doi}"
+        try:
+            response = session.get(url, timeout=10)
+            if response.status_code == 404:
+                analysis[title] = {"issue": "Not found in OpenAlex"}
+                continue
+            paper = response.json()
+            reasons = []
+            if not paper.get("topics"):
+                reasons.append("No topics assigned")
+            if not paper.get("abstract_inverted_index"):
+                reasons.append("No abstract text")
+            if not paper.get("concepts"):
+                reasons.append("No concept metadata")
+            if not reasons:
+                reasons = ["Unknown cause (possibly keyword mismatch)"]
+            analysis[title] = {"doi": doi, "issues": reasons}
+            time.sleep(0.05)
+        except Exception as e:
+            analysis[title] = {"error": str(e)}
+
+    print("\nMissing Paper Analysis:")
+    for title, info in analysis.items():
+        print(f"  - {title}: {', '.join(info.get('issues', info.get('error', [])))}")
+
+    return analysis
+
 
 # ==============================================================================
 # MAIN VALIDATION
 # ==============================================================================
 
 def main():
-    """Run full validation comparison."""
+    """Run full validation comparison with counts and hybrid summary."""
     print("""
     ═══════════════════════════════════════════════════════════════
     AI Safety Corpus Validation
     ═══════════════════════════════════════════════════════════════
-    
+
+    ```
     This script validates different sampling strategies against
-    67 canonical AI safety papers.
-    
+    65 canonical AI safety papers.
+
     Please provide your email for OpenAlex API access:
     """)
-    
+
     email = input("Email: ").strip()
     if not email:
         print("Email required for OpenAlex API. Exiting.")
         return
-    
+
     results = {}
-    
+
     # Test topic-based approaches
     print("\n" + "="*70)
     print("PART 1: TOPIC-BASED APPROACHES")
     print("="*70 + "\n")
-    
+
     for key, config in TOPIC_CONFIGS.items():
         print(f"{config['name']}:")
         print(f"  Description: {config['description']}")
         coverage, missing = test_topic_coverage(config['topics'], email)
+        paper_count = sum(get_topic_count(topic_id, email) for topic_id in config['topics'])
         results[key] = {
             'approach': 'Topic-based',
             'name': config['name'],
             'coverage': coverage,
             'missing_count': len(missing),
-            'missing_papers': missing
+            'missing_papers': missing,
+            'paper_count': paper_count
         }
-        print()
-    
+        print(f"  Total papers in topics: {paper_count}\n")
+
     # Test keyword-based approaches
     print("\n" + "="*70)
     print("PART 2: KEYWORD-BASED APPROACHES")
     print("="*70 + "\n")
-    
+
     print("Comprehensive Keywords (~230 keywords):")
     coverage, missing = test_keyword_coverage(COMPREHENSIVE_KEYWORDS, email)
+    keyword_papers = sum(get_keyword_count(k, email) for k in COMPREHENSIVE_KEYWORDS)
     results['keywords_comprehensive'] = {
         'approach': 'Keyword-based',
         'name': 'Comprehensive Keywords',
         'coverage': coverage,
         'missing_count': len(missing),
-        'missing_papers': missing
+        'missing_papers': missing,
+        'paper_count': keyword_papers
     }
-    print()
-    
+    print(f"  Total papers for comprehensive keywords: {keyword_papers}\n")
+
     print("Boolean Search (AI AND Safety):")
     coverage, missing = test_boolean_coverage(AI_TERMS, SAFETY_TERMS, email)
+    boolean_papers = get_boolean_count(AI_TERMS, SAFETY_TERMS, email)
     results['keywords_boolean'] = {
         'approach': 'Keyword-based',
         'name': 'Boolean Search',
         'coverage': coverage,
         'missing_count': len(missing),
-        'missing_papers': missing
+        'missing_papers': missing,
+        'paper_count': boolean_papers
     }
-    print()
-    
+    print(f"  Total papers for Boolean search: {boolean_papers}\n")
+
     # Test hybrid approach
     print("\n" + "="*70)
     print("PART 3: HYBRID APPROACH")
     print("="*70 + "\n")
-    
+
     print("Hybrid (Topics + Targeted Keywords):")
     hybrid_coverage, hybrid_details = test_hybrid_coverage(
-        TOPIC_CONFIGS['core_topic_hate_rl']['topics'],
+        TOPIC_CONFIGS['core_hate']['topics'],
         TARGETED_KEYWORDS,
         email
     )
+    topic_papers = sum(get_topic_count(t, email) for t in TOPIC_CONFIGS['core_hate']['topics'])
+    keyword_papers = sum(get_keyword_count(k, email) for k in TARGETED_KEYWORDS)
     results['hybrid'] = {
         'approach': 'Hybrid',
         'name': 'Topics + Targeted Keywords',
@@ -585,51 +793,75 @@ def main():
         'found_by_topics': hybrid_details['found_by_topics'],
         'found_by_keywords': hybrid_details['found_by_keywords'],
         'missing_count': len(hybrid_details['missing']),
-        'missing_papers': hybrid_details['missing']
+        'missing_papers': hybrid_details['missing'],
+        'paper_count': topic_papers + keyword_papers
     }
-    print()
-    
+    print(f"  Total papers: Topics={topic_papers}, Targeted Keywords={keyword_papers}, Combined={topic_papers + keyword_papers}\n")
+
+    # Hybrid: Topics + Boolean (AI × Safety)
+    print("Hybrid: Topics + Boolean (AI × Safety)")
+    topic_papers = sum(get_topic_count(t, email) for t in TOPIC_CONFIGS['core_hate']['topics'])
+    boolean_papers = get_boolean_count(AI_TERMS, SAFETY_TERMS, email)
+
+    hybrid_coverage, hybrid_details = test_topics_boolean_coverage(
+        TOPIC_CONFIGS['core_hate']['topics'],
+        AI_TERMS,
+        SAFETY_TERMS,
+        email
+    )
+
+    results['topics_boolean'] = {
+        'approach': 'Hybrid',
+        'name': 'Topics + Boolean (AI × Safety)',
+        'coverage': hybrid_coverage,
+        'found_by_topics': hybrid_details['found_by_topics'],
+        'found_by_boolean': hybrid_details['found_by_boolean'],
+        'missing_count': len(hybrid_details['missing']),
+        'missing_papers': hybrid_details['missing'],
+        'paper_count': topic_papers + boolean_papers
+    }
+
+    print(f"  Total papers: Topics={topic_papers}, Boolean={boolean_papers}, Combined={topic_papers + boolean_papers}")
+
+
     # Summary table
     print("\n" + "="*70)
     print("SUMMARY")
     print("="*70 + "\n")
-    
-    print(f"{'Approach':<20} {'Name':<30} {'Coverage':>10} {'Missing':>10}")
-    print("-"*70)
+
+    print(f"{'Approach':<20} {'Name':<30} {'Coverage':>10} {'Missing':>10} {'Papers':>10}")
+    print("-"*90)
     for key, result in results.items():
-        print(f"{result['approach']:<20} {result['name']:<30} {result['coverage']:>9.1%} {result['missing_count']:>10}")
-    
+        print(f"{result['approach']:<18} {result['name']:<35} {result['coverage']:>8.1%} {result['missing_count']:>8} {result['paper_count']:>10,}")
+
     # Save results
     with open('validation_results.json', 'w') as f:
         json.dump(results, f, indent=2)
-    
+
     print(f"\n✓ Results saved to validation_results.json")
-    
-    # Recommendation
+
+    # Recommendation / Analysis
     print(f"\n{'='*70}")
     print("ANALYSIS")
     print(f"{'='*70}")
     print(f"""
-Topic-based approaches:
-  • Core only:              {results['core']['coverage']:.1%} coverage
-  • Core + Topic Modeling:  {results['core_topic']['coverage']:.1%} coverage
-  • Core + Topic + H + RL:  {results['core_topic_hate_rl']['coverage']:.1%} coverage
 
-Keyword-based approaches:
-  • Comprehensive keywords: {results['keywords_comprehensive']['coverage']:.1%} coverage
-  • Boolean (AI AND Safety): {results['keywords_boolean']['coverage']:.1%} coverage
-
-Hybrid approach:
-  • Topics + Targeted KW:   {results['hybrid']['coverage']:.1%} coverage
+    Hybrid approach summary:
+    • Topics + Targeted KW coverage: {results['hybrid']['coverage']:.1%}
     - Via topics: {results['hybrid']['found_by_topics']}/{len(VALIDATION_PAPERS)} papers
     - Via keywords: {results['hybrid']['found_by_keywords']}/{len(VALIDATION_PAPERS)} papers
+    - Total papers considered: {results['hybrid']['paper_count']:,}
 
-Key findings:
-  • Keywords achieve higher coverage but require justifying selection
-  • Topics are algorithmic and reproducible
-  • Hybrid balances coverage with reproducibility
+    Other insights:
+    • Topic-based approaches are reproducible and algorithmic
+    • Keyword-based approaches maximize coverage but need careful selection
+    • Hybrid approach balances coverage and reproducibility
     """)
 
+    if input("\nAnalyze missing papers? [y/N]: ").lower() == 'y':
+        for key, result in results.items():
+            print(f"\nAnalyzing missing papers for {result['name']}...")
+            analyze_missing_papers(result['missing_papers'], email)
 
 if __name__ == "__main__":
     main()

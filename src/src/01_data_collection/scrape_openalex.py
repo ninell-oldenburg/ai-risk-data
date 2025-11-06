@@ -16,20 +16,22 @@ TOPIC_IDS = {
     "Ethics & Social Impacts of AI": "T10883",
     "Adversarial Robustness in ML": "T11689",
     "Explainable AI": "T12026",
-    
-    # Extended topics (validated)
-    "Topic Modeling": "T10028",
     "Hate Speech and Cyberbullying Detection": "T12262",
-    "Reinforcement Learning in Robotics": "T10462",
 }
 
-# Add targeted keywords for hybrid approach
-TARGETED_KEYWORDS = [
-    'alignment problem', 'cooperative ai', 'malicious use',
-    'model evaluation', 'extreme risk', 'circuits',
-    'mechanistic interpretability', 'feature visualization',
-    'existential risk', 'benchmark', 'mesa-optimization',
-    'value alignment', 'catastrophic risk'
+# Boolean search terms
+AI_TERMS = [
+    'artificial intelligence', 'machine learning', 'deep learning', 'reward function',
+    'neural network', 'reinforcement learning', 'language model', 'language models',
+    'ai', 'ml', 'llm', 'nlp', 'agi', 'artificial general intelligence',
+]
+
+SAFETY_TERMS = [
+    'safety', 'alignment', 'fairness', 'bias', 'cooperative', 'red teaming',
+    'interpretability', 'explainability', 'robustness', 'human feedback', 'risks',
+    'adversarial', 'ethics', 'governance', 'risk', 'human preference', 'malicious use',
+    'trustworthy', 'responsible', 'cooperation', 'circuits', 'policy', 'governance',
+    'dangers', 'amplification',  'capabilities',
 ]
 
 class AIScholarshipAnalyzer:
@@ -48,10 +50,11 @@ class AIScholarshipAnalyzer:
         Deduplicates automatically.
         """
         print(f"\n{'='*70}")
-        print(f"HYBRID COLLECTION: TOPICS + TARGETED KEYWORDS")
+        print(f"HYBRID COLLECTION: TOPICS + BOOLEAN KEYWORDS SEARCH")
         print(f"{'='*70}")
         print(f"Topics: {list(TOPIC_IDS.keys())}")
-        print(f"Keywords: {TARGETED_KEYWORDS}")
+        print(f"AI Keywords: {AI_TERMS}")
+        print(f"ETHICS / SAFETY Keywords: {SAFETY_TERMS}")
         print(f"Date range: {start_date.date()} to {end_date.date()}")
         print(f"{'='*70}\n")
 
@@ -74,7 +77,7 @@ class AIScholarshipAnalyzer:
         print("STEP 2: COLLECTING VIA TARGETED KEYWORDS")
         print("="*70)
 
-        keyword_papers = self._collect_papers_by_keywords(TARGETED_KEYWORDS, start_date, end_date)
+        keyword_papers = self._collect_papers_by_keywords(AI_TERMS, SAFETY_TERMS, start_date, end_date)
         print(f"\n✓ Collected {len(keyword_papers):,} papers via keywords")
 
         # STEP 3: Merge and deduplicate
@@ -130,32 +133,33 @@ class AIScholarshipAnalyzer:
 
         return all_papers
 
-    def _collect_papers_by_keywords(self, keywords: List[str], 
+    def _collect_papers_by_keywords(self, 
+                                    keywords1: List[str],
+                                    keywords2: List[str], 
                                     start_date: datetime, 
                                     end_date: datetime) -> List[Dict]:
         """
-        Collect papers matching keywords in title/abstract/concepts.
-        Note: OpenAlex doesn't support direct keyword search in filter,
-        so we need to search broadly then filter locally.
+        Collect papers matching (ANY keyword in keywords1) AND (ANY keyword in keywords2).
+        It searches OpenAlex using keywords1 and then locally filters the results using keywords2.
         """
-        print("\n  Searching OpenAlex with keyword filters...")
-        print("  Note: This searches title/abstract for keyword matches")
+        print("\n  Searching OpenAlex with combined keyword filters (A AND B)...")
+        print(f"  A (Searched via OpenAlex): {keywords1}")
+        print(f"  B (Filtered locally): {keywords2}")
         
-        all_papers = []
+        all_papers_raw = []
         seen_ids = set()
         
-        # Search for each keyword phrase
-        for keyword in keywords:
-            print(f"\n  Searching: '{keyword}'...")
+        # --- Step 1: Search OpenAlex using each keyword in the primary set (keywords1) ---
+        for keyword in keywords1:
+            print(f"\n  Searching OpenAlex for papers matching: '{keyword}'...")
             
-            # OpenAlex search endpoint (different from filter)
             url = f"{self.base_url}/works"
             page = 1
             
             while True:
                 params = {
                     'filter': f'publication_year:{start_date.year}-{end_date.year},type:article',
-                    'search': keyword,  # Search in title/abstract
+                    'search': keyword,  # Uses the search endpoint for best relevance
                     'per-page': 200,
                     'page': page,
                     'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
@@ -164,40 +168,45 @@ class AIScholarshipAnalyzer:
                 try:
                     response = self.session.get(url, params=params, timeout=30)
                     response.raise_for_status()
-                    data = response.json()
-                    batch = data.get('results', [])
+                    data = response.get('results', [])
                     
-                    if not batch:
+                    if not data:
                         break
                     
-                    # Add unique papers
-                    for paper in batch:
+                    # Add unique papers from this batch
+                    for paper in data:
                         paper_id = paper.get('id')
                         if paper_id not in seen_ids:
-                            # Verify keyword actually appears in text
+                            # Perform the original local check for the *searched* keyword (optional but good practice)
                             if self._paper_matches_keywords(paper, [keyword]):
-                                all_papers.append(paper)
+                                all_papers_raw.append(paper)
                                 seen_ids.add(paper_id)
                     
-                    # Stop if we've checked enough pages (keywords are targeted, shouldn't be many)
-                    if page >= 5:  # Max 1000 results per keyword
-                        break
-                    
-                    if len(batch) < 200:
+                    # Stop conditions
+                    if page >= 5 or len(data) < 200:
                         break
                     
                     page += 1
                     time.sleep(0.1)
                     
                 except Exception as e:
-                    print(f"    Error: {e}")
+                    print(f"    Error during OpenAlex search for '{keyword}': {e}")
                     break
             
-            print(f"    Found {len([p for p in all_papers if p['id'] in seen_ids])} papers for '{keyword}'")
-            time.sleep(0.5)  # Be extra polite between keyword searches
+            print(f"    Found {len([p for p in all_papers_raw if p.get('id') in seen_ids])} unique papers after searching '{keyword}'")
+            time.sleep(0.5)
         
-        print(f"\n  Total unique papers from keywords: {len(all_papers):,}")
-        return all_papers
+        # --- Step 2: Apply the local "AND" filter using keywords2 ---
+        final_papers = []
+        print(f"\n  Applying local filter: MUST also match ANY keyword in {keywords2}...")
+        
+        for i, paper in enumerate(all_papers_raw):
+            # This checks if the paper matches ANY keyword in the second list
+            if self._paper_matches_keywords(paper, keywords2):
+                final_papers.append(paper)
+        
+        print(f"\n  Total papers matching (A AND B): {len(final_papers):,}")
+        return final_papers
 
 
     def _paper_matches_keywords(self, paper: Dict, keywords: List[str]) -> bool:
@@ -376,7 +385,8 @@ class AIScholarshipAnalyzer:
             },
             'methodology': 'Hybrid: Topics OR Targeted Keywords',
             'topics_used': TOPIC_IDS,
-            'targeted_keywords': TARGETED_KEYWORDS,
+            'ai_keywords': AI_TERMS,
+            'safety_keywords': SAFETY_TERMS,
             'validation_coverage': '~96%',
             'statistics': {
                 'total_papers': total_papers,
