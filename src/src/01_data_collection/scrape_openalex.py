@@ -7,6 +7,7 @@ import pandas as pd
 import glob
 import matplotlib.pyplot as plt
 from collections import Counter
+import json
 
 # At the top, update TOPIC_IDS:
 
@@ -38,119 +39,185 @@ class AIScholarshipAnalyzer:
         self.headers = {'User-Agent': f'mailto:{email}'}
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-
-    """def get_top_concepts_by_topic(self, start_year=2000, end_year=2025, top_n=10):
-        for topic_name, topic_id in TOPIC_IDS.items():
-            print(f"\nFetching papers for topic: {topic_name} ({topic_id})")
-            
-            all_papers = []
-            for year in range(start_year, end_year + 1):
-                # Fetch papers for the year
-                year_counts = self._fetch_year(topic_id, year)
-                
-                # Load the CSVs created for this year
-                for filepath in year_counts.keys():
-                    df = pd.read_csv(filepath)
-                    all_papers.append(df)
-            
-            if not all_papers:
-                print(f"⚠️ No papers found for {topic_name}")
-                continue
-            
-            df_all = pd.concat(all_papers, ignore_index=True)
-            
-            # Flatten all concepts
-            concept_list = []
-            for concepts_str in df_all['concepts'].dropna():
-                concept_list.extend([c.strip() for c in concepts_str.split(';') if c.strip()])
-            
-            counter = Counter(concept_list)
-            top_concepts = counter.most_common(top_n)
-            print(f"Top {top_n} concepts for {topic_name}:")
-            for concept, count in top_concepts:
-                print(f"  {concept}: {count}")
-            
-            # Plot
-            concepts, counts = zip(*top_concepts)
-            plt.figure(figsize=(10,6))
-            plt.barh(concepts[::-1], counts[::-1], color='skyblue')
-            plt.title(f"Top {top_n} Concepts in {topic_name}")
-            plt.xlabel("Frequency")
-            plt.tight_layout()
-            plt.show()"""
         
-    def get_and_save_articles(self, 
-                        start_date: datetime = datetime(2015, 1, 1), 
-                        end_date: datetime = datetime(2025, 6, 30)) -> Dict[str, int]:
+    def get_and_save_articles_hybrid(self, 
+                                start_date: datetime = datetime(2000, 1, 1), 
+                                end_date: datetime = datetime(2025, 6, 30)) -> Dict[str, int]:
         """
-        Fetch ALL papers matching ANY of the topics (OR logic).
-        This implements the validated hybrid approach.
+        Hybrid approach: Collect papers via topics + targeted keywords.
+        Deduplicates automatically.
         """
-        # Build topic filter (OR logic)
-        topic_filter = '|'.join(TOPIC_IDS.values())
-        
         print(f"\n{'='*70}")
-        print(f"COLLECTING PAPERS WITH VALIDATED TOPIC SET")
+        print(f"HYBRID COLLECTION: TOPICS + TARGETED KEYWORDS")
         print(f"{'='*70}")
         print(f"Topics: {list(TOPIC_IDS.keys())}")
+        print(f"Keywords: {TARGETED_KEYWORDS}")
         print(f"Date range: {start_date.date()} to {end_date.date()}")
         print(f"{'='*70}\n")
         
-        total_papers = 0
-        saved_counts = {}
+        # STEP 1: Collect via topics
+        print("\n" + "="*70)
+        print("STEP 1: COLLECTING VIA TOPICS")
+        print("="*70)
         
-        for year in range(start_date.year, end_date.year + 1):
-            print(f"\n{'='*70}")
-            print(f"Processing year {year}...")
-            print(f"{'='*70}")
-            
-            # Check count for this year
-            count = self._get_paper_count_multi_topic(topic_filter, year)
-            print(f"Found {count:,} papers for {year}")
-            
-            if count == 0:
-                continue
-            
-            if count > 10000:
-                print(f"⚠️  Splitting by month...")
-                year_counts = self._fetch_year_by_month_multi_topic(topic_filter, year)
-            else:
-                year_counts = self._fetch_year_multi_topic(topic_filter, year)
-            
-            # Update totals
-            for filepath, file_count in year_counts.items():
-                saved_counts[filepath] = saved_counts.get(filepath, 0) + file_count
-                total_papers += file_count
+        topic_filter = '|'.join(TOPIC_IDS.values())
+        topic_papers = self._collect_all_papers_by_topics(topic_filter, start_date, end_date)
         
-        print(f"\n{'='*70}")
-        print(f"✅ COMPLETE: Retrieved {total_papers:,} papers total")
-        print(f"✅ Saved across {len(saved_counts)} files")
-        print(f"{'='*70}")
+        print(f"\n✓ Collected {len(topic_papers):,} papers via topics")
+        
+        # STEP 2: Collect via keywords
+        print("\n" + "="*70)
+        print("STEP 2: COLLECTING VIA TARGETED KEYWORDS")
+        print("="*70)
+        
+        keyword_papers = self._collect_papers_by_keywords(TARGETED_KEYWORDS, start_date, end_date)
+        
+        print(f"\n✓ Collected {len(keyword_papers):,} papers via keywords")
+        
+        # STEP 3: Merge and deduplicate
+        print("\n" + "="*70)
+        print("STEP 3: MERGING AND DEDUPLICATING")
+        print("="*70)
+        
+        all_papers = self._merge_and_deduplicate(topic_papers, keyword_papers)
+        
+        print(f"\n✓ Total unique papers: {len(all_papers):,}")
+        print(f"  - From topics only: {len(topic_papers):,}")
+        print(f"  - From keywords only: {len(keyword_papers) - len([p for p in keyword_papers if p['id'] not in [tp['id'] for tp in topic_papers]]):,}")
+        print(f"  - Overlap: {len(topic_papers) + len(keyword_papers) - len(all_papers):,}")
+        
+        # STEP 4: Save to files
+        print("\n" + "="*70)
+        print("STEP 4: SAVING TO FILES")
+        print("="*70)
+        
+        saved_counts = self._save_papers_by_month_from_list(all_papers)
+        
+        print(f"\n✅ COMPLETE: Saved {len(all_papers):,} papers across {len(saved_counts)} files")
         
         # Save metadata
-        self._save_collection_metadata(total_papers, saved_counts, start_date, end_date)
+        self._save_collection_metadata_hybrid(len(all_papers), len(topic_papers), 
+                                            len(keyword_papers), saved_counts, 
+                                            start_date, end_date)
         
         return saved_counts
 
-    def _get_paper_count_multi_topic(self, topic_filter: str, year: int) -> int:
-        """Get count of papers for multiple topics (OR logic)"""
-        url = f"{self.base_url}/works"
-        params = {
-            'filter': f'publication_year:{year},type:article,topics.id:{topic_filter}',
-            'per-page': 1
-        }
-        
-        try:
-            response = self.session.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            data = response.json()
-            return data.get('meta', {}).get('count', 0)
-        except Exception as e:
-            print(f"Error getting count for {year}: {e}")
-            return 0
 
-    def _fetch_year_multi_topic(self, topic_filter: str, year: int) -> Dict[str, int]:
-        """Fetch all papers for a year with multiple topics"""
+    def _collect_all_papers_by_topics(self, topic_filter: str, 
+                                  start_date: datetime, 
+                                  end_date: datetime) -> List[Dict]:
+        """Collect all papers matching topics."""
+        all_papers = []
+        
+        for year in range(start_date.year, end_date.year + 1):
+            print(f"\n  Year {year}...")
+            count = self._get_paper_count_multi_topic(topic_filter, year)
+            print(f"    Found {count:,} papers")
+            if count == 0:
+                continue
+            
+            papers_by_month = self._fetch_all_papers_for_year(topic_filter, year)
+            for month_papers in papers_by_month.values():
+                all_papers.extend(month_papers)
+            print(f"    Collected {sum(len(v) for v in papers_by_month.values()):,} papers")
+        
+        return all_papers
+
+    def _collect_papers_by_keywords(self, keywords: List[str], 
+                                    start_date: datetime, 
+                                    end_date: datetime) -> List[Dict]:
+        """
+        Collect papers matching keywords in title/abstract/concepts.
+        Note: OpenAlex doesn't support direct keyword search in filter,
+        so we need to search broadly then filter locally.
+        """
+        print("\n  Searching OpenAlex with keyword filters...")
+        print("  Note: This searches title/abstract for keyword matches")
+        
+        all_papers = []
+        seen_ids = set()
+        
+        # Search for each keyword phrase
+        for keyword in keywords:
+            print(f"\n  Searching: '{keyword}'...")
+            
+            # OpenAlex search endpoint (different from filter)
+            url = f"{self.base_url}/works"
+            page = 1
+            
+            while True:
+                params = {
+                    'filter': f'publication_year:{start_date.year}-{end_date.year},type:article',
+                    'search': keyword,  # Search in title/abstract
+                    'per-page': 200,
+                    'page': page,
+                    'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
+                }
+                
+                try:
+                    response = self.session.get(url, params=params, timeout=30)
+                    response.raise_for_status()
+                    data = response.json()
+                    batch = data.get('results', [])
+                    
+                    if not batch:
+                        break
+                    
+                    # Add unique papers
+                    for paper in batch:
+                        paper_id = paper.get('id')
+                        if paper_id not in seen_ids:
+                            # Verify keyword actually appears in text
+                            if self._paper_matches_keywords(paper, [keyword]):
+                                all_papers.append(paper)
+                                seen_ids.add(paper_id)
+                    
+                    # Stop if we've checked enough pages (keywords are targeted, shouldn't be many)
+                    if page >= 5:  # Max 1000 results per keyword
+                        break
+                    
+                    if len(batch) < 200:
+                        break
+                    
+                    page += 1
+                    time.sleep(0.1)
+                    
+                except Exception as e:
+                    print(f"    Error: {e}")
+                    break
+            
+            print(f"    Found {len([p for p in all_papers if p['id'] in seen_ids])} papers for '{keyword}'")
+            time.sleep(0.5)  # Be extra polite between keyword searches
+        
+        print(f"\n  Total unique papers from keywords: {len(all_papers):,}")
+        return all_papers
+
+
+    def _paper_matches_keywords(self, paper: Dict, keywords: List[str]) -> bool:
+        """Check if paper actually contains any of the keywords."""
+        # Get searchable text
+        title = paper.get('title', '').lower()
+        
+        # Reconstruct abstract
+        abstract_inv = paper.get('abstract_inverted_index', {})
+        abstract = ''
+        if abstract_inv:
+            words = [(pos, word.lower()) for word, positions in abstract_inv.items() 
+                    for pos in positions]
+            words.sort()
+            abstract = ' '.join([w[1] for w in words])
+        
+        # Get concepts
+        concepts = ' '.join([c['display_name'].lower() for c in paper.get('concepts', [])])
+        
+        text = f"{title} {abstract} {concepts}"
+        
+        # Check if ANY keyword matches
+        return any(kw.lower() in text for kw in keywords)
+
+
+    def _fetch_all_papers_for_year(self, topic_filter: str, year: int) -> List[Dict]:
+        """Fetch all papers for a year, handling pagination."""
         papers_by_month = {}
         page = 1
         per_page = 200
@@ -195,260 +262,50 @@ class AIScholarshipAnalyzer:
                 print(f"Error fetching page {page}: {e}")
                 break
         
-        return self._save_papers_by_month(papers_by_month)
+        return papers_by_month
 
-    def _fetch_year_by_month_multi_topic(self, topic_filter: str, year: int) -> Dict[str, int]:
-        """Fetch papers month-by-month for years with >10k papers"""
-        all_saved_counts = {}
+    def _merge_and_deduplicate(self, topic_papers: List[Dict], 
+                            keyword_papers: List[Dict]) -> List[Dict]:
+        """Merge two lists and remove duplicates by OpenAlex ID."""
+        seen_ids = set()
+        merged = []
         
-        for month in range(1, 13):
-            month_str = f"{month:02d}"
-            year_month = f"{year}-{month_str}"
-            
-            count = self._get_month_count_multi_topic(topic_filter, year, month)
-            if count == 0:
-                continue
-            
-            print(f"  {year_month}: {count:,} papers")
-            papers = self._fetch_month_multi_topic(topic_filter, year, month)
-            saved_counts = self._save_papers_by_month({year_month: papers})
-            
-            for filepath, file_count in saved_counts.items():
-                all_saved_counts[filepath] = all_saved_counts.get(filepath, 0) + file_count
-            
-            time.sleep(0.2)
+        # Add all topic papers first
+        for paper in topic_papers:
+            paper_id = paper.get('id')
+            if paper_id not in seen_ids:
+                paper['source'] = 'topic'  # Tag for tracking
+                merged.append(paper)
+                seen_ids.add(paper_id)
         
-        return all_saved_counts
+        # Add keyword papers that aren't duplicates
+        for paper in keyword_papers:
+            paper_id = paper.get('id')
+            if paper_id not in seen_ids:
+                paper['source'] = 'keyword'  # Tag for tracking
+                merged.append(paper)
+                seen_ids.add(paper_id)
+        
+        return merged
 
-    def _get_month_count_multi_topic(self, topic_filter: str, year: int, month: int) -> int:
-        """Get count for a specific month"""
-        url = f"{self.base_url}/works"
-        month_str = f"{month:02d}"
-        params = {
-            'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_filter}',
-            'per-page': 1
-        }
-        
-        try:
-            response = self.session.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            data = response.json()
-            return data.get('meta', {}).get('count', 0)
-        except Exception as e:
-            return 0
 
-    def _fetch_month_multi_topic(self, topic_filter: str, year: int, month: int) -> List[Dict]:
-        """Fetch all papers for a month"""
-        papers = []
-        page = 1
-        per_page = 200
-        month_str = f"{month:02d}"
-        
-        url = f"{self.base_url}/works"
-        
-        while True:
-            params = {
-                'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_filter}',
-                'per-page': per_page,
-                'page': page,
-                'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
-            }
-            
-            try:
-                response = self.session.get(url, params=params, timeout=30)
-                response.raise_for_status()
-                data = response.json()
-                batch = data.get('results', [])
-                
-                if not batch:
-                    break
-                
-                papers.extend(batch)
-                
-                if len(batch) < per_page:
-                    break
-                    
-                page += 1
-                time.sleep(0.1)
-                
-            except Exception as e:
-                break
-        
-        return papers
-
-    def _save_collection_metadata(self, total_papers: int, saved_counts: Dict[str, int],
-                                start_date: datetime, end_date: datetime):
-        """Save metadata about the collection"""
-        metadata = {
-            'collection_date': datetime.now().isoformat(),
-            'date_range': {
-                'start': start_date.isoformat(),
-                'end': end_date.isoformat()
-            },
-            'topics_used': TOPIC_IDS,
-            'targeted_keywords': TARGETED_KEYWORDS,
-            'methodology': 'Hybrid: Topics + Targeted Keywords',
-            'validation_coverage': '~96%',
-            'total_papers': total_papers,
-            'total_files': len(saved_counts),
-        }
-        
-        metadata_dir = "src/raw_data/openalex"
-        os.makedirs(metadata_dir, exist_ok=True)
-        metadata_path = os.path.join(metadata_dir, "collection_metadata.json")
-        
-        with open(metadata_path, 'w') as f:
-            json.dump(metadata, f, indent=2)
-        
-        print(f"\n📋 Metadata saved to {metadata_path}")
-    
-    def _fetch_year(self, topic_id: str, year: int) -> Dict[str, int]:
-        """Fetch all papers for a single year"""
+    def _save_papers_by_month_from_list(self, papers: List[Dict]) -> Dict[str, int]:
+        """Save a list of papers, grouped by month."""
+        # Group papers by month
         papers_by_month = {}
-        page = 1
-        per_page = 200
         
-        url = f"{self.base_url}/works"
-        
-        while True:
-            params = {
-                'filter': f'publication_year:{year},type:article,topics.id:{topic_id}',
-                'per-page': per_page,
-                'page': page,
-                'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,cited_by_api_url,counts_by_year'
-            }
+        for paper in papers:
+            pub_date = paper.get('publication_date')
+            year_month = pub_date[:7] if pub_date and len(pub_date) >= 7 else '2015-01'
             
-            try:
-                response = self.session.get(url, params=params, timeout=30)
-                response.raise_for_status()
-                data = response.json()
-                batch = data.get('results', [])
-                
-                if not batch:
-                    break
-                
-                # Group by month
-                for paper in batch:
-                    pub_date = paper.get('publication_date')
-                    if pub_date and len(pub_date) >= 7:
-                        year_month = pub_date[:7]
-                    else:
-                        year_month = f"{year}-01"
-                    
-                    if year_month not in papers_by_month:
-                        papers_by_month[year_month] = []
-                    papers_by_month[year_month].append(paper)
-                
-                print(f"  Page {page}: {len(batch)} papers retrieved...")
-                
-                if len(batch) < per_page:
-                    break
-                    
-                page += 1
-                time.sleep(0.1)
-                
-            except requests.exceptions.RequestException as e:
-                print(f"Error fetching page {page} for year {year}: {e}")
-                break
+            if year_month not in papers_by_month:
+                papers_by_month[year_month] = []
+            papers_by_month[year_month].append(paper)
         
-        return self._save_papers_by_month(papers_by_month)
-    
-    """
-    def _fetch_year_by_month(self, topic_id: str, year: int, max_month: int = 12) -> Dict[str, int]:
-        #Fetch papers month-by-month for years with >10k papers
-        all_saved_counts = {}
-        
-        for month in range(1, max_month + 1):
-            month_str = f"{month:02d}"
-            year_month = f"{year}-{month_str}"
-            
-            # Check count for this month
-            count = self._get_month_count(topic_id, year, month)
-            print(f"  {year_month}: {count} papers")
-            
-            if count == 0:
-                continue
-            
-            if count > 10000:
-                print(f"    ⚠️  Month {year_month} has {count} papers (>10k). This is unusual!")
-                print(f"    ⚠️  You may need to split by day or filter further.")
-            
-            papers = self._fetch_month(topic_id, year, month)
-            saved_counts = self._save_papers_by_month({year_month: papers})
-            
-            for filepath, file_count in saved_counts.items():
-                all_saved_counts[filepath] = all_saved_counts.get(filepath, 0) + file_count
-            
-            time.sleep(0.2)  # Extra politeness between months
-        
-        return all_saved_counts
-        """
-    
-    """def _get_month_count(self, topic_id: str, year: int, month: int) -> int:
-        #Get count of papers for a specific month
-        url = f"{self.base_url}/works"
-        month_str = f"{month:02d}"
-        params = {
-            'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_id}',
-            'per-page': 1
-        }
-        
-        try:
-            response = self.session.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            data = response.json()
-            return data.get('meta', {}).get('count', 0)
-        except requests.exceptions.RequestException as e:
-            print(f"Error getting count for {year}-{month_str}: {e}")
-            return 0"""
-    
-    """def _fetch_month(self, topic_id: str, year: int, month: int) -> List[Dict]:
-        #Fetch all papers for a single month
-        papers = []
-        page = 1
-        per_page = 200
-        month_str = f"{month:02d}"
-        
-        url = f"{self.base_url}/works"
-        
-        while True:
-            params = {
-                'filter': f'publication_date:{year}-{month_str},type:article,topics.id:{topic_id}',
-                'per-page': per_page,
-                'page': page,
-                'select': 'id,title,publication_year,publication_date,cited_by_count,concepts,authorships,referenced_works'
-            }
-            
-            try:
-                response = self.session.get(url, params=params, timeout=30)
-                response.raise_for_status()
-                data = response.json()
-                batch = data.get('results', [])
-                
-                if not batch:
-                    break
-                
-                papers.extend(batch)
-                
-                if len(batch) < per_page:
-                    break
-                    
-                page += 1
-                time.sleep(0.1)
-                
-            except requests.exceptions.RequestException as e:
-                print(f"Error fetching page {page} for {year}-{month_str}: {e}")
-                break
-        
-        return papers"""
-    
-    def _save_papers_by_month(self, papers_by_month: Dict[str, List[Dict]]) -> Dict[str, int]:
+        # Save each month
         saved_counts = {}
         
-        for year_month, papers in papers_by_month.items():
-            if not papers:
-                continue
-                
+        for year_month, month_papers in papers_by_month.items():
             year = year_month.split('-')[0]
             year_dir = f"src/raw_data/openalex/csv/{year}"
             os.makedirs(year_dir, exist_ok=True)
@@ -456,7 +313,7 @@ class AIScholarshipAnalyzer:
             
             # Flatten papers
             flattened_papers = []
-            for paper in papers:
+            for paper in month_papers:
                 flat_paper = {
                     'id': paper.get('id'),
                     'doi': paper.get('doi'),
@@ -465,6 +322,7 @@ class AIScholarshipAnalyzer:
                     'publication_date': paper.get('publication_date'),
                     'type': paper.get('type'),
                     'cited_by_count': paper.get('cited_by_count'),
+                    'source': paper.get('source', 'topic'),  # Track if from topic or keyword
                     'abstract_inverted_index': str(paper.get('abstract_inverted_index', '')),
                     'num_authors': len(paper.get('authorships', [])),
                     'author_names': '; '.join([
@@ -476,160 +334,79 @@ class AIScholarshipAnalyzer:
                         concept.get('display_name', '') 
                         for concept in paper.get('concepts', [])
                     ]),
-                    'num_topics': len(paper.get('topics', [])), 
+                    'num_topics': len(paper.get('topics', [])),
                     'topics': '; '.join([
                         topic.get('display_name', '') 
                         for topic in paper.get('topics', [])
-                    ]),  # ADD THIS
+                    ]),
+                    'num_keywords': len(paper.get('keywords', [])) if paper.get('keywords') else 0,
+                    'keywords': '; '.join([
+                        kw.get('display_name', '') 
+                        for kw in paper.get('keywords', [])
+                    ]) if paper.get('keywords') else '',
                     'num_references': len(paper.get('referenced_works', [])),
                     'referenced_works': '; '.join(paper.get('referenced_works', [])) if paper.get('referenced_works') else ''
                 }
                 flattened_papers.append(flat_paper)
-
-            df = pd.DataFrame(flattened_papers)
             
-            # Batch fetch ALL DOIs for this month at once
-            #print(f"  Fetching DOIs for {len(df)} papers...")
-            #df['referenced_dois'] = self.batch_fetch_dois_for_month(df['referenced_works'])
-
+            df = pd.DataFrame(flattened_papers)
             df.to_csv(filepath, index=False, encoding='utf-8')
             saved_counts[filepath] = len(df)
-            print(f"✅ Saved {len(df)} papers to {filepath}")
-
+            print(f"  ✓ Saved {len(df):,} papers to {filepath}")
+        
         return saved_counts
 
-    """def batch_fetch_dois_for_month(self, referenced_works_series: pd.Series) -> pd.Series:
-        # Fetch DOIs for all papers in a month efficiently.
-        # Collect all unique work IDs
-        all_work_ids = set()
-        for ref_str in referenced_works_series:
-            if pd.isna(ref_str) or ref_str is None or not str(ref_str).strip():
-                continue
-            works_clean = str(ref_str).replace('[','').replace(']','').replace("'",'').replace('"','')
-            work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
-            all_work_ids.update(work_ids)
-        
-        print(f"  Found {len(all_work_ids)} unique referenced works to fetch DOIs for...")
-        
-        # Fetch DOIs in batches
-        doi_map = self.fetch_dois_batch(list(all_work_ids))
-        
-        # Map back to each paper
-        result = []
-        for ref_str in referenced_works_series:
-            if pd.isna(ref_str) or ref_str is None or not str(ref_str).strip():
-                result.append('')
-                continue
-            
-            works_clean = str(ref_str).replace('[','').replace(']','').replace("'",'').replace('"','')
-            work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
-            dois = [doi_map.get(wid, '') for wid in work_ids]
-            result.append('; '.join(filter(None, dois)))
-        
-        return pd.Series(result)
 
-    def fetch_dois_batch(self, work_ids: List[str]) -> Dict[str, str]:
-        # Fetch DOIs for a list of work IDs with rate limit handling.
-        doi_map = {}
-        batch_size = 50
+    def _save_collection_metadata_hybrid(self, total_papers: int, topic_papers: int,
+                                        keyword_papers: int, saved_counts: Dict[str, int],
+                                        start_date: datetime, end_date: datetime):
+        """Save metadata about the hybrid collection."""
+        metadata = {
+            'collection_date': datetime.now().isoformat(),
+            'date_range': {
+                'start': start_date.isoformat(),
+                'end': end_date.isoformat()
+            },
+            'methodology': 'Hybrid: Topics OR Targeted Keywords',
+            'topics_used': TOPIC_IDS,
+            'targeted_keywords': TARGETED_KEYWORDS,
+            'validation_coverage': '~96%',
+            'statistics': {
+                'total_papers': total_papers,
+                'papers_from_topics': topic_papers,
+                'papers_from_keywords': keyword_papers,
+                'overlap': topic_papers + keyword_papers - total_papers,
+                'keyword_contribution': keyword_papers - (topic_papers + keyword_papers - total_papers)
+            },
+            'total_files': len(saved_counts),
+        }
         
-        for i in range(0, len(work_ids), batch_size):
-            batch = work_ids[i:i+batch_size]
-            
-            for attempt in range(3):
-                try:
-                    filter_string = '|'.join(batch)
-                    url = f"{self.base_url}/works"
-                    params = {
-                        'filter': f'openalex_id:{filter_string}',
-                        'select': 'id,doi',
-                        'per-page': 200
-                    }
-                    response = self.session.get(url, params=params, timeout=30)
-                    response.raise_for_status()
-                    data = response.json()
-                    
-                    for work in data.get('results', []):
-                        work_id = work.get('id', '').split('/')[-1]
-                        doi = work.get('doi', '')
-                        # Only process DOI if it's not None or empty
-                        if doi:
-                            doi = doi.replace('https://doi.org/', '')
-                        doi_map[work_id] = doi
-                    break
-                    
-                except requests.exceptions.HTTPError as e:
-                    if e.response.status_code == 429:
-                        wait_time = (2 ** attempt) * 2
-                        print(f"    Rate limit. Waiting {wait_time}s...")
-                        time.sleep(wait_time)
-                    else:
-                        break
-                except Exception as e:
-                    print(f"    Error: {e}")
-                    break
-            
-            time.sleep(0.5)  # Longer delay between batches
+        metadata_dir = "src/metadata"
+        os.makedirs(metadata_dir, exist_ok=True)
+        metadata_path = os.path.join(metadata_dir, "openalex_collection_metadata.json")
         
-        return doi_map
-    
-    def extract_dois_from_references(self, referenced_works: str) -> str:
-        # Extract DOIs from OpenAlex referenced works.
-        import time
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
         
-        if pd.isna(referenced_works) or not referenced_works.strip():
-            return ''
-        
-        # Clean string and extract work IDs
-        works_clean = referenced_works.replace('[','').replace(']','').replace("'",'').replace('"','')
-        work_ids = [w.strip().split('/')[-1] for w in works_clean.replace(';',',').split(',') if w.strip()]
-        
-        if not work_ids:
-            return ''
-        
-        dois = []
-        batch_size = 50  # OpenAlex batch size
-        
-        for i in range(0, len(work_ids), batch_size):
-            batch = work_ids[i:i+batch_size]
-            try:
-                # Query OpenAlex for this batch
-                filter_string = '|'.join(batch)
-                url = "https://api.openalex.org/works"
-                params = {
-                    'filter': f'openalex_id:{filter_string}',
-                    'select': 'id,doi',
-                    'per-page': 200
-                }
-                response = self.session.get(url, params=params, timeout=30)
-                response.raise_for_status()
-                data = response.json()
-                
-                # Map OpenAlex ID -> DOI
-                doi_map = {}
-                for work in data.get('results', []):
-                    work_id = work.get('id', '').split('/')[-1]
-                    doi = work.get('doi', '')
-                    if doi:
-                        doi = doi.replace('https://doi.org/', '')
-                    doi_map[work_id] = doi
-                
-                # Keep order same as batch
-                batch_dois = [doi_map.get(wid, '') for wid in batch]
-                dois.extend(batch_dois)
-                
-            except Exception as e:
-                print(f"    Warning: Error fetching DOI batch: {e}")
-                # Fill with empty strings for this batch to preserve order
-                dois.extend([''] * len(batch))
-            
-            time.sleep(0.1)  # Polite delay
-        
-        # Return semicolon-separated DOIs
-        return '; '.join(filter(None, dois))"""
+        print(f"\n📋 Metadata saved to {metadata_path}")
 
-# Usage example
+    def _get_paper_count_multi_topic(self, topic_filter: str, year: int) -> int:
+        """Get count of papers for multiple topics (OR logic)"""
+        url = f"{self.base_url}/works"
+        params = {
+            'filter': f'publication_year:{year},type:article,topics.id:{topic_filter}',
+            'per-page': 1
+        }
+        
+        try:
+            response = self.session.get(url, params=params, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            return data.get('meta', {}).get('count', 0)
+        except Exception as e:
+            print(f"Error getting count for {year}: {e}")
+            return 0
+
 if __name__ == "__main__":
-    # Initialize analyzer with your email
-    analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com") 
-    analyzer.get_and_save_articles()
+    analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com")
+    analyzer.get_and_save_articles_hybrid()
