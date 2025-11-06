@@ -40,11 +40,11 @@ class AIScholarshipAnalyzer:
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         
-    def get_and_save_articles_hybrid(self, 
+    def get_and_save_articles(self, 
                                 start_date: datetime = datetime(2000, 1, 1), 
                                 end_date: datetime = datetime(2025, 6, 30)) -> Dict[str, int]:
         """
-        Hybrid approach: Collect papers via topics + targeted keywords.
+        Hybrid approach: Collect papers via topics (split by individual topic IDs) + targeted keywords.
         Deduplicates automatically.
         """
         print(f"\n{'='*70}")
@@ -54,73 +54,80 @@ class AIScholarshipAnalyzer:
         print(f"Keywords: {TARGETED_KEYWORDS}")
         print(f"Date range: {start_date.date()} to {end_date.date()}")
         print(f"{'='*70}\n")
-        
-        # STEP 1: Collect via topics
+
+        # STEP 1: Collect via topics (individually)
         print("\n" + "="*70)
-        print("STEP 1: COLLECTING VIA TOPICS")
+        print("STEP 1: COLLECTING VIA TOPICS (split by topic ID)")
         print("="*70)
-        
-        topic_filter = '|'.join(TOPIC_IDS.values())
-        topic_papers = self._collect_all_papers_by_topics(topic_filter, start_date, end_date)
-        
-        print(f"\n✓ Collected {len(topic_papers):,} papers via topics")
-        
-        # STEP 2: Collect via keywords
+
+        all_topic_papers = []
+        for topic_name, topic_id in TOPIC_IDS.items():
+            print(f"\n▶ Collecting for topic: {topic_name} ({topic_id})")
+            topic_papers = self._collect_all_papers_by_topics(topic_id, start_date, end_date)
+            print(f"✓ {topic_name}: collected {len(topic_papers):,} papers")
+            all_topic_papers.extend(topic_papers)
+
+        print(f"\n✓ Total (raw) collected via topics: {len(all_topic_papers):,}")
+
+        # STEP 2: Collect via targeted keywords
         print("\n" + "="*70)
         print("STEP 2: COLLECTING VIA TARGETED KEYWORDS")
         print("="*70)
-        
+
         keyword_papers = self._collect_papers_by_keywords(TARGETED_KEYWORDS, start_date, end_date)
-        
         print(f"\n✓ Collected {len(keyword_papers):,} papers via keywords")
-        
+
         # STEP 3: Merge and deduplicate
         print("\n" + "="*70)
         print("STEP 3: MERGING AND DEDUPLICATING")
         print("="*70)
-        
-        all_papers = self._merge_and_deduplicate(topic_papers, keyword_papers)
-        
+
+        all_papers = self._merge_and_deduplicate(all_topic_papers, keyword_papers)
+
         print(f"\n✓ Total unique papers: {len(all_papers):,}")
-        print(f"  - From topics only: {len(topic_papers):,}")
-        print(f"  - From keywords only: {len(keyword_papers) - len([p for p in keyword_papers if p['id'] not in [tp['id'] for tp in topic_papers]]):,}")
-        print(f"  - Overlap: {len(topic_papers) + len(keyword_papers) - len(all_papers):,}")
-        
+        print(f"  - From topics only: {len(all_topic_papers):,}")
+        print(f"  - From keywords only: {len(keyword_papers):,}")
+        print(f"  - Overlap: {len(all_topic_papers) + len(keyword_papers) - len(all_papers):,}")
+
         # STEP 4: Save to files
         print("\n" + "="*70)
         print("STEP 4: SAVING TO FILES")
         print("="*70)
-        
+
         saved_counts = self._save_papers_by_month_from_list(all_papers)
-        
+
         print(f"\n✅ COMPLETE: Saved {len(all_papers):,} papers across {len(saved_counts)} files")
-        
+
         # Save metadata
-        self._save_collection_metadata_hybrid(len(all_papers), len(topic_papers), 
-                                            len(keyword_papers), saved_counts, 
-                                            start_date, end_date)
-        
+        self._save_collection_metadata_hybrid(
+            len(all_papers),
+            len(all_topic_papers),
+            len(keyword_papers),
+            saved_counts,
+            start_date,
+            end_date,
+        )
+
         return saved_counts
 
-
-    def _collect_all_papers_by_topics(self, topic_filter: str, 
-                                  start_date: datetime, 
-                                  end_date: datetime) -> List[Dict]:
-        """Collect all papers matching topics."""
+    def _collect_all_papers_by_topics(self, topic_id: str, start_date: datetime, end_date: datetime) -> List[Dict]:
+        """Collect all papers for a single topic ID (split by year)."""
         all_papers = []
-        
+
         for year in range(start_date.year, end_date.year + 1):
-            print(f"\n  Year {year}...")
-            count = self._get_paper_count_multi_topic(topic_filter, year)
+            print(f"\n  Year {year} for topic {topic_id}...")
+            count = self._get_paper_count_multi_topic(topic_id, year)
             print(f"    Found {count:,} papers")
             if count == 0:
                 continue
-            
-            papers_by_month = self._fetch_all_papers_for_year(topic_filter, year)
+
+            # Fetch monthly batches
+            papers_by_month = self._fetch_all_papers_for_year(topic_id, year)
             for month_papers in papers_by_month.values():
                 all_papers.extend(month_papers)
+
             print(f"    Collected {sum(len(v) for v in papers_by_month.values()):,} papers")
-        
+
         return all_papers
 
     def _collect_papers_by_keywords(self, keywords: List[str], 
@@ -357,7 +364,7 @@ class AIScholarshipAnalyzer:
         return saved_counts
 
 
-    def _save_collection_metadata_hybrid(self, total_papers: int, topic_papers: int,
+    def _save_collection_metadata(self, total_papers: int, topic_papers: int,
                                         keyword_papers: int, saved_counts: Dict[str, int],
                                         start_date: datetime, end_date: datetime):
         """Save metadata about the hybrid collection."""
@@ -406,7 +413,25 @@ class AIScholarshipAnalyzer:
         except Exception as e:
             print(f"Error getting count for {year}: {e}")
             return 0
-
+        
+def main():
+    """Run full validation comparison."""
+    print("""
+    ═══════════════════════════════════════════════════════════════
+    SCRAPE OPENALEX PAPERS
+    ═══════════════════════════════════════════════════════════════
+    
+    Please provide your email for OpenAlex API access:
+    """)
+    
+    email = input("Email: ").strip()
+    if not email:
+        print("Email required for OpenAlex API. Exiting.")
+        return
+    
+    analyzer = AIScholarshipAnalyzer(email)
+    analyzer.get_and_save_articles()
+    
 if __name__ == "__main__":
-    analyzer = AIScholarshipAnalyzer("ninelloldenburg@gmail.com")
-    analyzer.get_and_save_articles_hybrid()
+    main()
+    
