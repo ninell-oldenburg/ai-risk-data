@@ -1,6 +1,6 @@
 import os
 import time
-from datetime import datetime
+from datetime import datetime, date
 from typing import List, Dict
 import requests
 import pandas as pd
@@ -66,6 +66,7 @@ class AIScholarshipAnalyzer:
         all_topic_papers = []
         for topic_name, topic_id in TOPIC_IDS.items():
             print(f"\n▶ Collecting for topic: {topic_name} ({topic_id})")
+            # Pass end_date to honor the month/day limit
             topic_papers = self._collect_all_papers_by_topics(topic_id, start_date, end_date)
             print(f"✓ {topic_name}: collected {len(topic_papers):,} papers")
             all_topic_papers.extend(topic_papers)
@@ -77,6 +78,7 @@ class AIScholarshipAnalyzer:
         print("STEP 2: COLLECTING VIA TARGETED KEYWORDS")
         print("="*70)
 
+        # Pass end_date to honor the month/day limit
         keyword_papers = self._collect_papers_by_keywords(AI_TERMS, SAFETY_TERMS, start_date, end_date)
         print(f"\n✓ Collected {len(keyword_papers):,} papers via keywords")
 
@@ -102,7 +104,7 @@ class AIScholarshipAnalyzer:
         print(f"\n✅ COMPLETE: Saved {len(all_papers):,} papers across {len(saved_counts)} files")
 
         # Save metadata
-        self._save_collection_metadata_hybrid(
+        self._save_collection_metadata(
             len(all_papers),
             len(all_topic_papers),
             len(keyword_papers),
@@ -114,18 +116,41 @@ class AIScholarshipAnalyzer:
         return saved_counts
 
     def _collect_all_papers_by_topics(self, topic_id: str, start_date: datetime, end_date: datetime) -> List[Dict]:
-        """Collect all papers for a single topic ID (split by year)."""
+        """Collect all papers for a single topic ID (split by year), respecting full date range."""
         all_papers = []
 
         for year in range(start_date.year, end_date.year + 1):
-            print(f"\n  Year {year} for topic {topic_id}...")
-            count = self._get_paper_count_multi_topic(topic_id, year)
+            
+            # 1. Determine the end date for the current year's API query
+            # If the current year is the end year, use the specified end_date (e.g., 2025-06-30)
+            if year == end_date.year:
+                year_end_date = end_date.date().isoformat()
+            # If the current year is before the end year, use the last day of the current year (e.g., 2024-12-31)
+            else:
+                year_end_date = f"{year}-12-31"
+
+            # 2. Determine the start date for the current year's API query
+            # If the current year is the start year, use the specified start_date (e.g., 2000-01-01)
+            if year == start_date.year:
+                year_start_date = start_date.date().isoformat()
+            # If the current year is after the start year, use the first day of the current year (e.g., 2001-01-01)
+            else:
+                year_start_date = f"{year}-01-01"
+
+            # Skip collecting if the year is entirely outside the range
+            if date.fromisoformat(year_start_date) > end_date.date() or date.fromisoformat(year_end_date) < start_date.date():
+                continue
+
+            print(f"\n  Year {year} for topic {topic_id} (Range: {year_start_date} to {year_end_date})...")
+            
+            # Use the date range filters instead of just publication_year
+            count = self._get_paper_count_multi_topic(topic_id, year_start_date, year_end_date)
             print(f"    Found {count:,} papers")
             if count == 0:
                 continue
 
-            # Fetch monthly batches
-            papers_by_month = self._fetch_all_papers_for_year(topic_id, year)
+            # Fetch monthly batches using the new date range
+            papers_by_month = self._fetch_all_papers_for_year(topic_id, year_start_date, year_end_date)
             for month_papers in papers_by_month.values():
                 all_papers.extend(month_papers)
 
@@ -141,10 +166,16 @@ class AIScholarshipAnalyzer:
         """
         Collect papers matching (ANY keyword in keywords1) AND (ANY keyword in keywords2).
         It searches OpenAlex using keywords1 and then locally filters the results using keywords2.
+        *** FIX 1: Corrected JSON parsing. ***
+        *** FIX 2: Added full date range filter. ***
         """
+        start_date_str = start_date.date().isoformat()
+        end_date_str = end_date.date().isoformat()
+        
         print("\n  Searching OpenAlex with combined keyword filters (A AND B)...")
         print(f"  A (Searched via OpenAlex): {keywords1}")
         print(f"  B (Filtered locally): {keywords2}")
+        print(f"  Date range filter: {start_date_str} to {end_date_str}")
         
         all_papers_raw = []
         seen_ids = set()
@@ -156,9 +187,12 @@ class AIScholarshipAnalyzer:
             url = f"{self.base_url}/works"
             page = 1
             
+            # Construct the date filter using from_publication_date and to_publication_date
+            date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str},type:article'
+            
             while True:
                 params = {
-                    'filter': f'publication_year:{start_date.year}-{end_date.year},type:article',
+                    'filter': date_filter, # Use the full date range filter
                     'search': keyword,  # Uses the search endpoint for best relevance
                     'per-page': 200,
                     'page': page,
@@ -168,7 +202,9 @@ class AIScholarshipAnalyzer:
                 try:
                     response = self.session.get(url, params=params, timeout=30)
                     response.raise_for_status()
-                    data = response.get('results', [])
+                    
+                    # *** FIX 1: Corrected the JSON parsing: response.json().get('results', []) ***
+                    data = response.json().get('results', [])
                     
                     if not data:
                         break
@@ -193,6 +229,7 @@ class AIScholarshipAnalyzer:
                     print(f"    Error during OpenAlex search for '{keyword}': {e}")
                     break
             
+            # The count printed here is based on raw collection before local filtering/deduplication
             print(f"    Found {len([p for p in all_papers_raw if p.get('id') in seen_ids])} unique papers after searching '{keyword}'")
             time.sleep(0.5)
         
@@ -232,17 +269,21 @@ class AIScholarshipAnalyzer:
         return any(kw.lower() in text for kw in keywords)
 
 
-    def _fetch_all_papers_for_year(self, topic_filter: str, year: int) -> List[Dict]:
-        """Fetch all papers for a year, handling pagination."""
+    def _fetch_all_papers_for_year(self, topic_filter: str, start_date_str: str, end_date_str: str) -> List[Dict]:
+        """Fetch all papers for a date range, handling pagination."""
         papers_by_month = {}
         page = 1
         per_page = 200
         
         url = f"{self.base_url}/works"
         
+        # Construct the filter using the date range strings
+        date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str}'
+        
         while True:
             params = {
-                'filter': f'publication_year:{year},type:article,topics.id:{topic_filter}',
+                # Use the full date range filter
+                'filter': f'{date_filter},type:article,topics.id:{topic_filter}',
                 'per-page': per_page,
                 'page': page,
                 'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
@@ -260,7 +301,7 @@ class AIScholarshipAnalyzer:
                 # Group by month
                 for paper in batch:
                     pub_date = paper.get('publication_date')
-                    year_month = pub_date[:7] if pub_date and len(pub_date) >= 7 else f"{year}-01"
+                    year_month = pub_date[:7] if pub_date and len(pub_date) >= 7 else f"{start_date_str[:4]}-01" # Default to year start if date is missing
                     
                     if year_month not in papers_by_month:
                         papers_by_month[year_month] = []
@@ -407,11 +448,15 @@ class AIScholarshipAnalyzer:
         
         print(f"\n📋 Metadata saved to {metadata_path}")
 
-    def _get_paper_count_multi_topic(self, topic_filter: str, year: int) -> int:
-        """Get count of papers for multiple topics (OR logic)"""
+    def _get_paper_count_multi_topic(self, topic_filter: str, start_date_str: str, end_date_str: str) -> int:
+        """Get count of papers for a topic using a full date range filter."""
         url = f"{self.base_url}/works"
+        
+        # Use the from_publication_date and to_publication_date filters
+        date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str}'
+        
         params = {
-            'filter': f'publication_year:{year},type:article,topics.id:{topic_filter}',
+            'filter': f'{date_filter},type:article,topics.id:{topic_filter}',
             'per-page': 1
         }
         
@@ -421,7 +466,7 @@ class AIScholarshipAnalyzer:
             data = response.json()
             return data.get('meta', {}).get('count', 0)
         except Exception as e:
-            print(f"Error getting count for {year}: {e}")
+            print(f"Error getting count for range {start_date_str} to {end_date_str}: {e}")
             return 0
         
 def main():
@@ -444,4 +489,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-    
