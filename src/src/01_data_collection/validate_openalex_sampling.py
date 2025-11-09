@@ -78,7 +78,7 @@ TOPIC_CONFIGS = {
 # KEYWORD CONFIGURATIONS
 # ==============================================================================
 
-# Comprehensive keyword list (230 keywords)
+# Comprehensive keyword list (107 keywords)
 COMPREHENSIVE_KEYWORDS = [
     # Safety & Alignment
     'safety', 'safe', 'alignment', 'aligned', 'value alignment',

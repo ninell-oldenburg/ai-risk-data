@@ -361,34 +361,18 @@ class ExtractLinksAndGender:
                 elif name in self.MALE_USERNAMES:
                     return 'gm'
         
-        # Try username first
-        split_username = self._split_username(str(username))
-        gender = self.nqgmodel.classify(split_username)
-        if gender[0] != '-':
-            return gender[0]
-        
-        # If username didn't work, try chgender on split username parts
-        try:
-            prediction, prob = chgender.guess(split_username)
-            if prob > 0.8: 
-                return self.GENDER_TERMS[prediction]
-        except:
-            pass
-        
-        # If no luck with username, try display name
+        # try display name first as it often contains the real name
         if pd.notna(display_name):
             split_displayname = self._split_username(str(display_name))
             gender = self.nqgmodel.classify(split_displayname)
             if gender[0] != '-':
                 return gender[0]
-            
-            # Try chgender on display name
-            try:
-                prediction, prob = chgender.guess(split_displayname)
-                if prob > 0.8: 
-                    return self.GENDER_TERMS[prediction]
-            except:
-                pass
+
+        # then try username
+        split_username = self._split_username(str(username))
+        gender = self.nqgmodel.classify(split_username)
+        if gender[0] != '-':
+            return gender[0]
         
         return '-'
     

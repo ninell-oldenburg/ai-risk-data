@@ -8,6 +8,8 @@
 src/hidden
 notebooks/
 
+src/src/values.py
+
 __pycache__/
 *.pyc
 *.pyo

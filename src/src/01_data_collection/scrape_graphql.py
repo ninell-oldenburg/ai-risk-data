@@ -105,7 +105,7 @@ class ScrapeLesswrong:
                 print(f"Processing year {next_month.year}...")
                 print(f"{'='*60}")
             
-            variables = {"after": after, "before": before, "limit": 1000}  # 10000 per request
+            variables = {"after": after, "before": before, "limit": 1000}  # 1000 per request
             response = self.session.post(self.url, json={"query": self.query, "variables": variables}, headers=self.headers)
             
             # Check for request errors

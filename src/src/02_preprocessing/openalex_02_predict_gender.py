@@ -52,6 +52,38 @@ class OpenAlexCSVProcessor:
         df.to_csv(output_path, index=False, encoding='utf-8')
         print(f"✅ Saved updated CSV: {output_path}")
     
+    def is_valid_name(self, name: str) -> bool:
+        """
+        Validate that a name meets the criteria:
+        - Has at least two words (first name and last name)
+        - First name is not abbreviated (more than 1 character or not followed by a period)
+        - Does not contain 'et al.'
+        """
+        if not name or pd.isna(name):
+            return False
+        
+        # Strip 'et al.' if present
+        name = name.replace('et al.', '').replace('et al', '').strip()
+        
+        if not name:
+            return False
+        
+        # Split into parts
+        parts = name.split()
+        
+        # Must have at least 2 words (first name and last name)
+        if len(parts) < 2:
+            return False
+        
+        # Check if first name is abbreviated
+        first_name = parts[0]
+        
+        # If first name is a single letter (with or without period), it's abbreviated
+        if len(first_name) <= 2 and (len(first_name) == 1 or first_name.endswith('.')):
+            return False
+        
+        return True
+    
     def extract_first_author_gender(self, paper_id: str, author_names: str) -> str:
         if pd.isna(author_names) or not author_names:
             return '-'
@@ -60,20 +92,42 @@ class OpenAlexCSVProcessor:
         if not authors:
             return '-'
         
-        author_genders = self.nqgmodel.classify(authors)
-        for i, name in enumerate(authors):
-            if author_genders[i] == '-':
-                prediction, prob = chgender.guess(name)
-                if prob > 0.8: 
-                    author_genders[i] = self.GENDER_TERMS[prediction]
+        # Clean and validate authors
+        cleaned_authors = []
+        for author in authors:
+            # Strip 'et al.' from each author name
+            cleaned = author.replace('et al.', '').replace('et al', '').strip()
+            if self.is_valid_name(cleaned):
+                cleaned_authors.append(cleaned)
+            else:
+                # Keep the position but mark as invalid with '-'
+                cleaned_authors.append(None)
         
-        author_genders_readable = ''
-        for i, gender in enumerate(author_genders):
-            author_genders_readable += gender
-            if i+1 == len(author_genders):
-                break
-            author_genders_readable += '; '
-
+        # If no valid authors, return '-'
+        if not any(cleaned_authors):
+            return '-'
+        
+        # Classify only valid names
+        valid_names = [name for name in cleaned_authors if name is not None]
+        author_genders_valid = self.nqgmodel.classify(valid_names)
+        
+        # Map back to original positions
+        author_genders = []
+        valid_idx = 0
+        for cleaned in cleaned_authors:
+            if cleaned is None:
+                author_genders.append('-')
+            else:
+                gender = author_genders_valid[valid_idx]
+                # Try chgender if nqgmodel returned '-'
+                if gender == '-':
+                    prediction, prob = chgender.guess(cleaned)
+                    if prob > 0.8: 
+                        gender = self.GENDER_TERMS[prediction]
+                author_genders.append(gender)
+                valid_idx += 1
+        
+        author_genders_readable = '; '.join(author_genders)
         return author_genders_readable
     
     def generate_summary_report(self) -> pd.DataFrame:
