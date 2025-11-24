@@ -394,7 +394,7 @@ class ExtractLinksAndGender:
 
     def _split_username(self, username: str) -> str:
         """Split username into individual components and return as lowercase string"""
-        # First, replace numbers with spaces (to split words separated by numbers)
+        username = re.sub(r'^md\.\s*', '', username, flags=re.IGNORECASE)
         username = re.sub(r'\d+', ' ', username)
         
         # Then split by common separators (underscore, dash, dot, space)
