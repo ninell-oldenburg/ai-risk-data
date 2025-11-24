@@ -78,9 +78,9 @@ TOPIC_CONFIGS = {
 # KEYWORD CONFIGURATIONS
 # ==============================================================================
 
-# Comprehensive keyword list (107 keywords)
+# Comprehensive keyword list (105 keywords)
 COMPREHENSIVE_KEYWORDS = [
-    # Safety & Alignment
+    # Safety & Alignment 35 terms
     'safety', 'safe', 'alignment', 'aligned', 'value alignment',
     'ai safety', 'safe ai', 'machine ethics', 'beneficial ai',
     'corrigibility', 'corrigible', 'reward hacking', 'wireheading',
@@ -89,14 +89,16 @@ COMPREHENSIVE_KEYWORDS = [
     'preference learning', 'human feedback', 'rlhf',
     'iterated amplification', 'debate', 'recursive reward modeling',
     'cooperative ai', 'cooperation', 'multi-agent', 'coordination',
+    'jailbreak', 'jailbreaking', 'llm safety', 'prompt injection', 'harmlessness',
     
-    # Fairness & Bias
+    # Fairness & Bias 25 terms
     'fairness', 'fair', 'bias', 'biased', 'discrimination',
     'algorithmic fairness', 'algorithmic bias',
     'demographic parity', 'equalized odds', 'disparate impact',
     'counterfactual fairness', 'protected attribute',
     'bias mitigation', 'debiasing', 'trustworthy',
-    'marginalized', 'harms', 'societal impact',
+    'marginalized', 'harms', 'societal impact', 'stochastic parrot',
+    'toxic', 'toxicity', 'hate speech', 'misinformation', 'hallucination', 'helpfulness',
     
     # Interpretability
     'interpretability', 'interpretable', 'explainability', 'explainable',
@@ -117,13 +119,7 @@ COMPREHENSIVE_KEYWORDS = [
     'ai governance', 'ai policy', 'responsible ai',
     'misuse', 'dual use', 'malicious use',
     'model evaluation', 'red teaming',
-    
-    # LLM Safety
-    'llm safety', 'prompt injection', 'jailbreak', 'jailbreaking',
-    'toxic', 'toxicity', 'hate speech', 'misinformation',
-    'hallucination', 'helpfulness', 'harmlessness',
-    'stochastic parrot', 'language model', 'foundation model',
-]
+    ]
 
 # Boolean search terms
 AI_TERMS = [
@@ -151,50 +147,6 @@ TARGETED_KEYWORDS = [
 
 # Validation set - known AI safety papers that SHOULD be captured
 VALIDATION_PAPERS = {
-    # ========================================
-    # TECHNICAL ALIGNMENT (17 papers)
-    # ========================================
-    "10.48550/arxiv.2401.10899": "Concrete Problems in AI Safety (Amodei)",
-    "10.48550/arxiv.1706.03741": "Deep RL from Human Preferences (Christiano)",
-    "10.48550/arxiv.1711.09883": "AI Safety Gridworlds (Leike)",
-    "10.48550/arxiv.1906.01820": "Risks from Learned Optimization (Hubinger)",
-    "10.48550/arxiv.1811.07871": "Scalable agent alignment via reward modeling (Leike)",
-    "10.48550/arxiv.2112.00861": "A General Language Assistant as a Laboratory for Alignment",
-    "10.48550/arxiv.2203.02155": "Training language models to follow instructions with human feedback",
-    "10.48550/arxiv.2204.05862": "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback",
-    "10.48550/arxiv.2212.08073": "Constitutional AI: Harmlessness from AI Feedback",
-    "10.48550/arxiv.1805.00899": "AI Safety via Debate (Irving)",
-    "10.48550/arxiv.1810.08575": "Amplification (Christiano)",
-    "10.48550/arxiv.2209.00626": "The Alignment Problem from a Deep Learning Perspective",
-    "10.1038/d41586-021-01170-0": "Cooperative AI: machines must learn to find common ground",
-    "10.48550/arxiv.2012.08630": "Open Problems in Cooperative AI",
-    "10.18653/v1/2022.acl-long.229": "TruthfulQA: Measuring How Models Mimic Human Falsehoods",
-    "10.18653/v1/2022.emnlp-main.225": "Red Teaming Language Models with Language Models",
-    "10.48550/arxiv.2303.12712": "Sparks of Artificial General Intelligence: Early experiments with GPT-4",
-    
-    # ========================================
-    # INTERPRETABILITY & TRANSPARENCY (8 papers)
-    # ========================================
-    "10.23915/distill.00007": "Feature Visualization (Olah)",
-    "10.23915/distill.00010": "The Building Blocks of Interpretability (Olah)",
-    "10.23915/distill.00024": "Thread: Circuits",
-    "10.48550/arxiv.2211.00593": "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 small",
-    "10.48550/arxiv.1602.04938": "Why Should I Trust You? LIME",
-    "10.48550/arxiv.1705.07874": "A Unified Approach to Interpreting Model Predictions (SHAP)",
-    "10.48550/arxiv.1902.10186": "Attention is not Explanation",
-    "10.48550/arxiv.2202.05262": "Locating and Editing Factual Associations in GPT",
-    
-    # ========================================
-    # ADVERSARIAL ROBUSTNESS (7 papers)
-    # ========================================
-    "10.48550/arxiv.1312.6199": "Intriguing properties of neural networks (Szegedy)",
-    "10.48550/arxiv.1412.6572": "Explaining and Harnessing Adversarial Examples (Goodfellow)",
-    "10.48550/arxiv.1706.06083": "Towards Deep Learning Models Resistant to Adversarial Attacks",
-    "10.48550/arxiv.1801.02774": "Adversarial Spheres",
-    "10.48550/arxiv.2307.15043": "Universal and Transferable Adversarial Attacks on Aligned LLMs",
-    "10.48550/arxiv.1908.07125": "Universal Adversarial Triggers for Attacking and Analyzing NLP",
-    "10.48550/arxiv.2307.02483": "Jailbroken: How Does LLM Safety Training Fail?",
-    
     # ========================================
     # CRITICAL AI ETHICS / FAIRNESS (27 papers)
     # ========================================
@@ -225,15 +177,59 @@ VALIDATION_PAPERS = {
     "10.18653/v1/2021.emnlp-main.98": "Documenting Large Webtext Corpora (C4)",
     "10.48550/arxiv.2211.09110": "Holistic Evaluation of Language Models",
     "10.48550/arxiv.2305.15717": "The False Promise of Imitating Proprietary LLMs",
+
+    # ========================================
+    # TECHNICAL ALIGNMENT (15 papers)
+    # ========================================
+    "10.48550/arxiv.2401.10899": "Concrete Problems in AI Safety (Amodei)",
+    "10.48550/arxiv.1706.03741": "Deep RL from Human Preferences (Christiano)",
+    "10.48550/arxiv.1711.09883": "AI Safety Gridworlds (Leike)",
+    "10.48550/arxiv.1906.01820": "Risks from Learned Optimization (Hubinger)",
+    "10.48550/arxiv.1811.07871": "Scalable agent alignment via reward modeling (Leike)",
+    "10.48550/arxiv.2112.00861": "A General Language Assistant as a Laboratory for Alignment",
+    "10.48550/arxiv.2203.02155": "Training language models to follow instructions with human feedback",
+    "10.48550/arxiv.2204.05862": "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback",
+    "10.48550/arxiv.2212.08073": "Constitutional AI: Harmlessness from AI Feedback",
+    "10.48550/arxiv.1805.00899": "AI Safety via Debate (Irving)",
+    "10.48550/arxiv.1810.08575": "Amplification (Christiano)",
+    "10.48550/arxiv.2209.00626": "The Alignment Problem from a Deep Learning Perspective",
+    "10.18653/v1/2022.acl-long.229": "TruthfulQA: Measuring How Models Mimic Human Falsehoods",
+    "10.18653/v1/2022.emnlp-main.225": "Red Teaming Language Models with Language Models",
+    "10.48550/arxiv.2303.12712": "Sparks of Artificial General Intelligence: Early experiments with GPT-4",
     
     # ========================================
-    # AI GOVERNANCE & POLICY (5 papers)
+    # INTERPRETABILITY & TRANSPARENCY (8 papers)
+    # ========================================
+    "10.23915/distill.00007": "Feature Visualization (Olah)",
+    "10.23915/distill.00010": "The Building Blocks of Interpretability (Olah)",
+    "10.23915/distill.00024": "Thread: Circuits",
+    "10.48550/arxiv.2211.00593": "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 small",
+    "10.48550/arxiv.1602.04938": "Why Should I Trust You? LIME",
+    "10.48550/arxiv.1705.07874": "A Unified Approach to Interpreting Model Predictions (SHAP)",
+    "10.48550/arxiv.1902.10186": "Attention is not Explanation",
+    "10.48550/arxiv.2202.05262": "Locating and Editing Factual Associations in GPT",
+    
+    # ========================================
+    # ADVERSARIAL ROBUSTNESS (7 papers)
+    # ========================================
+    "10.48550/arxiv.1312.6199": "Intriguing properties of neural networks (Szegedy)",
+    "10.48550/arxiv.1412.6572": "Explaining and Harnessing Adversarial Examples (Goodfellow)",
+    "10.48550/arxiv.1706.06083": "Towards Deep Learning Models Resistant to Adversarial Attacks",
+    "10.48550/arxiv.1801.02774": "Adversarial Spheres",
+    "10.48550/arxiv.2307.15043": "Universal and Transferable Adversarial Attacks on Aligned LLMs",
+    "10.48550/arxiv.1908.07125": "Universal Adversarial Triggers for Attacking and Analyzing NLP",
+    "10.48550/arxiv.2307.02483": "Jailbroken: How Does LLM Safety Training Fail?",
+    
+    # ========================================
+    # AI GOVERNANCE & POLICY (7 papers)
     # ========================================
     "10.1007/978-3-030-35746-7_3": "Malicious use of AI (Brundage)",
     "10.1038/s41746-024-01232-3": "Navigating the EU AI Act: implications for regulated digital medical products",
     "10.48550/arxiv.2305.15324": "Model Evaluation for Extreme Risks",
     "10.1007/s43681-024-00624-1": "Democratizing value alignment: from authoritarian to democratic AI ethics",
     "10.1016/j.techsoc.2024.102747": "Balancing the tradeoff between regulation and innovation for artificial intelligence: An analysis of top-down command and control and bottom-up self-regulatory approaches",
+    "10.1038/d41586-021-01170-0": "Cooperative AI: machines must learn to find common ground",
+    "10.48550/arxiv.2012.08630": "Open Problems in Cooperative AI",
     }
 
 # ==============================================================================
