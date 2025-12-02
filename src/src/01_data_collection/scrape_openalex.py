@@ -385,6 +385,7 @@ class AIScholarshipAnalyzer:
                     'author_names': '; '.join([
                         auth.get('author', {}).get('display_name', '') 
                         for auth in paper.get('authorships', [])
+                        if auth.get('author', {}).get('display_name')  # Add this filter
                     ]),
                     'num_concepts': len(paper.get('concepts', [])),
                     'concepts': '; '.join([

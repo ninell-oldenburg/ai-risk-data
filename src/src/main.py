@@ -1,4 +1,3 @@
-import src.scrape_to_json as scrape
 import src.json_to_csv as to_csv
 import src.extract_links_and_gender as lng
 import src.topic_clust as tc
