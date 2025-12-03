@@ -13,7 +13,8 @@ class LesswrongJsonToCsv:
             print("FORUM variable has to be 'lw' or 'af'")
         self.input_base = f"src/raw_data/{self.platform}/json/" 
         self.output_base = f"src/processed_data/{self.platform}/01_cleaned_csv"
-        self.total_posts = 0
+        self.total_posts_original = 0
+        self.total_posts_unique = 0
 
         # near-duplicate detection
         self.deduplicate = deduplicate
@@ -48,7 +49,6 @@ class LesswrongJsonToCsv:
             output_year_folder = os.path.join(self.output_base, str(year))
             os.makedirs(output_year_folder, exist_ok=True)
 
-            subtotal_posts = 0
             for filename in sorted(os.listdir(year_folder)):
                 if not filename.endswith(".json"):
                     continue
@@ -69,6 +69,9 @@ class LesswrongJsonToCsv:
                 columns_to_remove = ['user', 'url']
                 df = df.drop(columns=[col for col in columns_to_remove if col in df.columns])
 
+                original_count = len(df)
+                self.total_posts_original += original_count
+
                 # Near duplicate removal
                 if self.deduplicate and 'title' in df.columns and 'htmlBody' in df.columns:
                     unique_rows = []
@@ -82,7 +85,12 @@ class LesswrongJsonToCsv:
                             self.minhashes[key] = mh
                             unique_rows.append(row)
                     df = pd.DataFrame(unique_rows)
-                    print(f"Deduplicated to {len(df)} unique posts in {filename}")
+                    print(f"🧹 {filename}: reduced {original_count} → {len(df)} unique posts")
+                else:
+                    print(f"✅ {filename}: {len(df)} posts (no deduplication)")
+
+                unique_count = len(df)
+                self.total_posts_unique += unique_count
 
                 if len(df) == 0:
                     continue
@@ -90,12 +98,18 @@ class LesswrongJsonToCsv:
                 csv_filename = filename.replace(".json", ".csv")
                 output_path = os.path.join(output_year_folder, csv_filename)
                 df.to_csv(output_path, index=False, encoding="utf-8")
-                subtotal_posts += len(df)
-                print(f"✅ Saved {output_path} ({len(df)} posts)")
+                print(f"💾 Saved {output_path}")
 
-            self.total_posts += subtotal_posts
-
-        print(f'Total Posts: {self.total_posts}')
+        # Print summary
+        print("\n" + "="*60)
+        print("📊 DEDUPLICATION SUMMARY")
+        print("="*60)
+        print(f"Total posts (original):         {self.total_posts_original:,}")
+        print(f"Total posts (after dedup):      {self.total_posts_unique:,}")
+        print(f"Duplicates removed:             {self.total_posts_original - self.total_posts_unique:,}")
+        if self.total_posts_original > 0:
+            print(f"Retention rate:                 {(self.total_posts_unique/self.total_posts_original*100):.2f}%")
+        print("="*60)
 
 def main(platform):
     transformer = LesswrongJsonToCsv(platform, deduplicate=True)
