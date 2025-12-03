@@ -9,6 +9,8 @@ class OpenAlexDeduplicator:
         os.makedirs(self.output_folder, exist_ok=True)
         self.lsh = MinHashLSH(threshold=threshold, num_perm=128)
         self.minhashes = {}
+        self.total_original = 0
+        self.total_unique = 0
 
     def _get_minhash(self, text):
         m = MinHash(num_perm=128)
@@ -22,6 +24,8 @@ class OpenAlexDeduplicator:
             print(f"⚠️  Skipping {filepath}: missing 'title' column.")
             return None
 
+        self.total_original += len(df)
+        
         unique_rows = []
         for i, row in df.iterrows():
             text = f"{row['title']} {row.get('abstract', '')}"
@@ -33,6 +37,8 @@ class OpenAlexDeduplicator:
                 self.minhashes[key] = mh
                 unique_rows.append(row)
 
+        self.total_unique += len(unique_rows)
+        
         print(f"🧹 {filepath}: reduced {len(df)} → {len(unique_rows)} unique rows")
         return pd.DataFrame(unique_rows)
 
@@ -56,6 +62,16 @@ class OpenAlexDeduplicator:
             if df_unique is not None and not df_unique.empty:
                 df_unique.to_csv(output_path, index=False, encoding="utf-8")
                 print(f"✅ Saved deduplicated file: {output_path}")
+
+        # Print summary
+        print("\n" + "="*60)
+        print("📊 DEDUPLICATION SUMMARY")
+        print("="*60)
+        print(f"Total papers (original):        {self.total_original:,}")
+        print(f"Total papers (after dedup):     {self.total_unique:,}")
+        print(f"Duplicates removed:             {self.total_original - self.total_unique:,}")
+        print(f"Retention rate:                 {(self.total_unique/self.total_original*100):.2f}%")
+        print("="*60)
 
 
 if __name__ == "__main__":

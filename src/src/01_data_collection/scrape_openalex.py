@@ -177,8 +177,8 @@ class AIScholarshipAnalyzer:
                 yield lst[i:i + n]
         
         # Use larger chunks
-        keywords1_chunks = list(chunks(keywords1, 5))  # ~3 chunks
-        keywords2_chunks = list(chunks(keywords2, 5))  # ~6 chunks
+        keywords1_chunks = list(chunks(keywords1, 5))
+        keywords2_chunks = list(chunks(keywords2, 5))
         
         all_papers = []
         seen_ids = set()
@@ -210,10 +210,10 @@ class AIScholarshipAnalyzer:
                     
                     print(f"    {year}...", end=" ")
                     
-                    # Try to collect for the whole year
+                    # Pass FULL keyword lists, not chunks
                     papers_collected, hit_limit = self._collect_for_period(
                         search_query, year_start_date, year_end_date, 
-                        seen_ids, [chunk1, chunk2]
+                        seen_ids, keywords1, keywords2  # Changed this line
                     )
                     
                     all_papers.extend(papers_collected)
@@ -223,7 +223,7 @@ class AIScholarshipAnalyzer:
                         # Year hit limit, need to split by month
                         monthly_papers = self._collect_by_month(
                             search_query, year, year_start_date, year_end_date,
-                            seen_ids, [chunk1, chunk2], start_date, end_date
+                            seen_ids, keywords1, keywords2, start_date, end_date  # Changed this line
                         )
                         all_papers.extend(monthly_papers)
                         print(f"collected {len(monthly_papers)} more")
@@ -237,7 +237,7 @@ class AIScholarshipAnalyzer:
 
 
     def _collect_for_period(self, search_query: str, start_date: str, end_date: str,
-                        seen_ids: set, keyword_chunks: List) -> tuple:
+                        seen_ids: set, all_ai_terms: List[str], all_safety_terms: List[str]) -> tuple:
         """
         Collect papers for a date period. Returns (papers, hit_limit_bool).
         """
@@ -246,15 +246,10 @@ class AIScholarshipAnalyzer:
         url = f"{self.base_url}/works"
         date_filter = f'from_publication_date:{start_date},to_publication_date:{end_date},type:article'
         
-        # Expand chunks to include ALL related terms for validation
-        # Not just the chunk keywords, but ALL AI terms and ALL safety terms
-        all_ai_terms = AI_TERMS  # All 14 AI keywords
-        all_safety_terms = SAFETY_TERMS  # All 26 safety keywords
-        
         while True:
             params = {
-                'filter': date_filter,
-                'search': search_query,
+                'filter': f'{date_filter},title_and_abstract.search:{search_query}',  # Use this instead!
+                # Remove 'search' parameter entirely
                 'per-page': 200,
                 'page': page,
                 'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
@@ -268,19 +263,18 @@ class AIScholarshipAnalyzer:
                 if not data:
                     break
                 
-                # Validate against ALL keywords, not just the chunk
+                # Still validate to ensure both keyword sets are present
                 for paper in data:
                     paper_id = paper.get('id')
                     if paper_id not in seen_ids:
-                        # Check if paper contains ANY AI term AND ANY safety term
+                        # Validate that paper contains at least one term from EACH set
                         if (self._paper_matches_keywords(paper, all_ai_terms) and 
                             self._paper_matches_keywords(paper, all_safety_terms)):
                             papers.append(paper)
                             seen_ids.add(paper_id)
                 
-                # Check if hit 10K limit
                 if page >= 50:
-                    return papers, True  # Hit limit
+                    return papers, True
                 
                 if len(data) < 200:
                     break
@@ -292,11 +286,11 @@ class AIScholarshipAnalyzer:
                 print(f"\n      Error: {e}")
                 break
         
-        return papers, False  # Didn't hit limit
+        return papers, False
 
     def _collect_by_month(self, search_query: str, year: int, 
                         year_start: str, year_end: str,
-                        seen_ids: set, keyword_chunks: List,
+                        seen_ids: set, all_ai_terms: List[str], all_safety_terms: List[str],  # Changed
                         overall_start: datetime, overall_end: datetime) -> List:
         """Collect papers month by month for a year that hit the 10K limit."""
         import calendar
@@ -320,7 +314,8 @@ class AIScholarshipAnalyzer:
                 month_end = overall_end.date().isoformat()
             
             papers, hit_limit = self._collect_for_period(
-                search_query, month_start, month_end, seen_ids, keyword_chunks
+                search_query, month_start, month_end, seen_ids, 
+                all_ai_terms, all_safety_terms  # Changed
             )
             monthly_papers.extend(papers)
             
