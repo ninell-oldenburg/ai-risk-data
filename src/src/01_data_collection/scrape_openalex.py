@@ -4,10 +4,8 @@ from datetime import datetime, date
 from typing import List, Dict
 import requests
 import pandas as pd
-import glob
-import matplotlib.pyplot as plt
-from collections import Counter
 import json
+import re
 
 # At the top, update TOPIC_IDS:
 
@@ -30,7 +28,7 @@ SAFETY_TERMS = [
     'safety', 'alignment', 'fairness', 'bias', 'cooperative', 'red teaming',
     'interpretability', 'explainability', 'robustness', 'human feedback', 'risks',
     'adversarial', 'ethics', 'governance', 'risk', 'human preference', 'malicious use',
-    'trustworthy', 'responsible', 'cooperation', 'circuits', 'policy', 'governance',
+    'trustworthy', 'responsible', 'circuits', 'policy', 'governance',
     'dangers', 'amplification',  'capabilities',
 ]
 
@@ -164,92 +162,177 @@ class AIScholarshipAnalyzer:
                                     start_date: datetime, 
                                     end_date: datetime) -> List[Dict]:
         """
-        Collect papers matching (ANY keyword in keywords1) AND (ANY keyword in keywords2).
-        It searches OpenAlex using keywords1 and then locally filters the results using keywords2.
-        *** FIX 1: Corrected JSON parsing. ***
-        *** FIX 2: Added full date range filter. ***
+        Collect papers with adaptive splitting:
+        1. Try yearly first
+        2. Only split to monthly if year hits 10K limit
         """
         start_date_str = start_date.date().isoformat()
         end_date_str = end_date.date().isoformat()
         
-        print("\n  Searching OpenAlex with combined keyword filters (A AND B)...")
-        print(f"  A (Searched via OpenAlex): {keywords1}")
-        print(f"  B (Filtered locally): {keywords2}")
-        print(f"  Date range filter: {start_date_str} to {end_date_str}")
+        print("\n  Searching with adaptive year/month splitting...")
         
-        all_papers_raw = []
+        # Helper function
+        def chunks(lst, n):
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
+        
+        # Use larger chunks
+        keywords1_chunks = list(chunks(keywords1, 5))  # ~3 chunks
+        keywords2_chunks = list(chunks(keywords2, 5))  # ~6 chunks
+        
+        all_papers = []
         seen_ids = set()
         
-        # --- Step 1: Search OpenAlex using each keyword in the primary set (keywords1) ---
-        for keyword in keywords1:
-            print(f"\n  Searching OpenAlex for papers matching: '{keyword}'...")
-            
-            url = f"{self.base_url}/works"
-            page = 1
-            
-            # Construct the date filter using from_publication_date and to_publication_date
-            date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str},type:article'
-            
-            while True:
-                params = {
-                    'filter': date_filter, # Use the full date range filter
-                    'search': keyword,  # Uses the search endpoint for best relevance
-                    'per-page': 200,
-                    'page': page,
-                    'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
-                }
+        total_combos = len(keywords1_chunks) * len(keywords2_chunks)
+        combo_num = 0
+        
+        for chunk1 in keywords1_chunks:
+            for chunk2 in keywords2_chunks:
+                combo_num += 1
+                query_part1 = " OR ".join(chunk1)
+                query_part2 = " OR ".join(chunk2)
+                search_query = f"({query_part1}) AND ({query_part2})"
                 
-                try:
-                    response = self.session.get(url, params=params, timeout=30)
-                    response.raise_for_status()
+                print(f"\n  Combo {combo_num}/{total_combos}: {len(chunk1)} AI × {len(chunk2)} safety terms")
+                
+                # Try yearly first
+                for year in range(start_date.year, end_date.year + 1):
+                    # Determine year boundaries
+                    if year == end_date.year:
+                        year_end_date = end_date.date().isoformat()
+                    else:
+                        year_end_date = f"{year}-12-31"
                     
-                    # *** FIX 1: Corrected the JSON parsing: response.json().get('results', []) ***
-                    data = response.json().get('results', [])
+                    if year == start_date.year:
+                        year_start_date = start_date.date().isoformat()
+                    else:
+                        year_start_date = f"{year}-01-01"
                     
-                    if not data:
-                        break
+                    print(f"    {year}...", end=" ")
                     
-                    # Add unique papers from this batch
-                    for paper in data:
-                        paper_id = paper.get('id')
-                        if paper_id not in seen_ids:
-                            # Perform the original local check for the *searched* keyword (optional but good practice)
-                            if self._paper_matches_keywords(paper, [keyword]):
-                                all_papers_raw.append(paper)
-                                seen_ids.add(paper_id)
+                    # Try to collect for the whole year
+                    papers_collected, hit_limit = self._collect_for_period(
+                        search_query, year_start_date, year_end_date, 
+                        seen_ids, [chunk1, chunk2]
+                    )
                     
-                    # Stop conditions
-                    if page >= 5 or len(data) < 200:
-                        break
+                    all_papers.extend(papers_collected)
                     
-                    page += 1
-                    time.sleep(0.1)
-                    
-                except Exception as e:
-                    print(f"    Error during OpenAlex search for '{keyword}': {e}")
-                    break
-            
-            # The count printed here is based on raw collection before local filtering/deduplication
-            print(f"    Found {len([p for p in all_papers_raw if p.get('id') in seen_ids])} unique papers after searching '{keyword}'")
-            time.sleep(0.5)
+                    if hit_limit:
+                        print(f"hit 10K! Splitting to months...", end=" ")
+                        # Year hit limit, need to split by month
+                        monthly_papers = self._collect_by_month(
+                            search_query, year, year_start_date, year_end_date,
+                            seen_ids, [chunk1, chunk2], start_date, end_date
+                        )
+                        all_papers.extend(monthly_papers)
+                        print(f"collected {len(monthly_papers)} more")
+                    else:
+                        print(f"{len(papers_collected)} papers")
+                
+                print(f"    Running total: {len(all_papers):,} unique papers")
         
-        # --- Step 2: Apply the local "AND" filter using keywords2 ---
-        final_papers = []
-        print(f"\n  Applying local filter: MUST also match ANY keyword in {keywords2}...")
-        
-        for i, paper in enumerate(all_papers_raw):
-            # This checks if the paper matches ANY keyword in the second list
-            if self._paper_matches_keywords(paper, keywords2):
-                final_papers.append(paper)
-        
-        print(f"\n  Total papers matching (A AND B): {len(final_papers):,}")
-        return final_papers
+        print(f"\n  ✓ Total collected: {len(all_papers):,}")
+        return all_papers
 
+
+    def _collect_for_period(self, search_query: str, start_date: str, end_date: str,
+                        seen_ids: set, keyword_chunks: List) -> tuple:
+        """
+        Collect papers for a date period. Returns (papers, hit_limit_bool).
+        """
+        papers = []
+        page = 1
+        url = f"{self.base_url}/works"
+        date_filter = f'from_publication_date:{start_date},to_publication_date:{end_date},type:article'
+        
+        # Expand chunks to include ALL related terms for validation
+        # Not just the chunk keywords, but ALL AI terms and ALL safety terms
+        all_ai_terms = AI_TERMS  # All 14 AI keywords
+        all_safety_terms = SAFETY_TERMS  # All 26 safety keywords
+        
+        while True:
+            params = {
+                'filter': date_filter,
+                'search': search_query,
+                'per-page': 200,
+                'page': page,
+                'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
+            }
+            
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                data = response.json().get('results', [])
+                
+                if not data:
+                    break
+                
+                # Validate against ALL keywords, not just the chunk
+                for paper in data:
+                    paper_id = paper.get('id')
+                    if paper_id not in seen_ids:
+                        # Check if paper contains ANY AI term AND ANY safety term
+                        if (self._paper_matches_keywords(paper, all_ai_terms) and 
+                            self._paper_matches_keywords(paper, all_safety_terms)):
+                            papers.append(paper)
+                            seen_ids.add(paper_id)
+                
+                # Check if hit 10K limit
+                if page >= 50:
+                    return papers, True  # Hit limit
+                
+                if len(data) < 200:
+                    break
+                
+                page += 1
+                time.sleep(0.05)
+                
+            except Exception as e:
+                print(f"\n      Error: {e}")
+                break
+        
+        return papers, False  # Didn't hit limit
+
+    def _collect_by_month(self, search_query: str, year: int, 
+                        year_start: str, year_end: str,
+                        seen_ids: set, keyword_chunks: List,
+                        overall_start: datetime, overall_end: datetime) -> List:
+        """Collect papers month by month for a year that hit the 10K limit."""
+        import calendar
+        monthly_papers = []
+        
+        for month in range(1, 13):
+            month_start = f"{year}-{month:02d}-01"
+            last_day = calendar.monthrange(year, month)[1]
+            month_end = f"{year}-{month:02d}-{last_day}"
+            
+            # Skip if outside overall range
+            if date.fromisoformat(month_end) < overall_start.date():
+                continue
+            if date.fromisoformat(month_start) > overall_end.date():
+                continue
+            
+            # Adjust for start/end dates
+            if year == overall_start.year and month == overall_start.month:
+                month_start = overall_start.date().isoformat()
+            if year == overall_end.year and month == overall_end.month:
+                month_end = overall_end.date().isoformat()
+            
+            papers, hit_limit = self._collect_for_period(
+                search_query, month_start, month_end, seen_ids, keyword_chunks
+            )
+            monthly_papers.extend(papers)
+            
+            if hit_limit:
+                print(f"\n      ⚠️  Month {month:02d} also hit 10K!")
+        
+        return monthly_papers
 
     def _paper_matches_keywords(self, paper: Dict, keywords: List[str]) -> bool:
         """Check if paper actually contains any of the keywords."""
-        # Get searchable text
-        title = paper.get('title', '').lower()
+        # Get searchable text (handle None values)
+        title = (paper.get('title') or '').lower()
         
         # Reconstruct abstract
         abstract_inv = paper.get('abstract_inverted_index', {})
@@ -260,13 +343,18 @@ class AIScholarshipAnalyzer:
             words.sort()
             abstract = ' '.join([w[1] for w in words])
         
-        # Get concepts
-        concepts = ' '.join([c['display_name'].lower() for c in paper.get('concepts', [])])
+        # Get concepts (handle None values in display_name)
+        concepts = ' '.join([
+            (c.get('display_name') or '').lower() 
+            for c in paper.get('concepts', [])
+            if c.get('display_name')  # Skip concepts with no display_name
+        ])
         
         text = f"{title} {abstract} {concepts}"
         
-        # Check if ANY keyword matches
-        return any(kw.lower() in text for kw in keywords)
+        # Return True if any keyword matches
+        return any(re.search(rf'\b{re.escape(kw.lower())}\b', text) for kw in keywords)
+
 
 
     def _fetch_all_papers_for_year(self, topic_filter: str, start_date_str: str, end_date_str: str) -> List[Dict]:
