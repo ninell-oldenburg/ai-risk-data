@@ -5,7 +5,8 @@
 [![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
 
 ## Abstract
-TBD 
+
+We present a dataset integrating academic literature and online discourse on AI ethics and safety, spanning 2000--2025. The dataset includes 201,481 papers from the academic publication database OpenAlex, 44,792 posts from the rationalist forum LessWrong, of which 28.5% are about AI Ethics and Safety, and 4,224 posts from the AI Alignment Forum, which only contains posts about the target topic. For academic papers, we provide OpenAlex metadata, citation networks, and author information; for forum posts, we provide cleaned text, extracted citations, engagement metrics, and BERTopic-based topic assignments. All entries include inferred author gender (F1=0.944 for forum, 0.977 for OpenAlex authors) to enable demographic analysis, though with noted limitations. Data are structured as nodes and edges, enabling analysis of citation patterns, knowledge flow, and collaboration across venues. Validation against 65 canonical papers achieved 96.7% coverage. The dataset supports longitudinal, bibliometric, and demographic analysis of AI ethics and safety research spanning academic and community venues. All data, code, and documentation are openly available.
 
 ---
 
