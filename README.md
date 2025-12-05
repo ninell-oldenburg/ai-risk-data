@@ -36,9 +36,9 @@ The data set contains three sources:
 All data lies in `data/`, divided in nodes and edges.
 
 ### Time Period
-- LessWrong: 2015-2024
-- Alignment Forum: 2015-2024
-- OpenAlex Works: 2015-2024
+- LessWrong: 2015-2025
+- Alignment Forum: 2015-2025
+- OpenAlex Works: 2015-2025
 
 ### Data Collection
 - LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025

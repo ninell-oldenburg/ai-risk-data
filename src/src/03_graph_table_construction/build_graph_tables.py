@@ -749,12 +749,12 @@ class ForumGraphBuilder:
         # Create nodes
         print("\n[4/7] Creating nodes_posts.csv...")
         nodes_posts = self.create_nodes_posts(forum_df)
-        nodes_posts.to_csv(self.output_dir / 'nodes_posts.csv', index=False)
+        nodes_posts.to_csv(self.output_dir / 'nodes_forum_posts.csv', index=False)
         print(f"  → Saved {len(nodes_posts)} posts")
         
         print("\n[5/7] Creating nodes_authors.csv...")
         nodes_authors = self.create_nodes_authors(forum_df)
-        nodes_authors.to_csv(self.output_dir / 'nodes_authors.csv', index=False)
+        nodes_authors.to_csv(self.output_dir / 'nodes_forum_authors.csv', index=False)
         print(f"  → Saved {len(nodes_authors)} authors")
         
         print("\n[6/7] Creating nodes_openalex_works.csv...")
@@ -772,11 +772,11 @@ class ForumGraphBuilder:
         
         print("  - Extracting post-to-post citations...")
         edges_citations = self.create_edges_post_citations(forum_df)
-        edges_citations.to_csv(self.output_dir / 'edges_post_citations.csv', index=False)
+        edges_citations.to_csv(self.output_dir / 'edges_post_to_post.csv', index=False)
         
         print("  - Extracting post-to-OpenAlex citations...")
         edges_openalex = self.create_edges_post_openalex(forum_df, openalex_df)
-        edges_openalex.to_csv(self.output_dir / 'edges_post_openalex.csv', index=False)
+        edges_openalex.to_csv(self.output_dir / 'edges_post_to_openalex.csv', index=False)
         
         print("  - Extracting OpenAlex authorship edges...")
         edges_authorship = self.create_edges_openalex_authorship(openalex_df)
