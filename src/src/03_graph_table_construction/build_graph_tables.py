@@ -745,6 +745,25 @@ class ForumGraphBuilder:
         # Standardize
         print("\n[3/7] Standardizing column names...")
         forum_df = self.standardize_forum_columns(forum_df)
+
+        print("\n[3b/7] Deduplicating crossposts (preferring Alignment Forum)...")
+        print(f"Before deduplication: {len(forum_df)} posts")
+
+        title_counts = forum_df.groupby('title')['source'].apply(lambda x: set(x))
+        crosspost_titles = title_counts[title_counts.apply(len) > 1].index
+        
+        print(f"Found {len(crosspost_titles)} crossposted titles")
+        
+        # For crossposts: keep AF version; for non-crossposts: keep all
+        is_crosspost = forum_df['title'].isin(crosspost_titles)
+        is_af = forum_df['source'] == 'alignment_forum'
+        
+        # Keep: (crossposts AND AF) OR (not crossposts)
+        keep_mask = (is_crosspost & is_af) | (~is_crosspost)
+        forum_df = forum_df[keep_mask].copy()
+        
+        print(f"After deduplication: {len(forum_df)} posts")
+        print(f"Removed {(~keep_mask).sum()} crosspost duplicates")
         
         # Create nodes
         print("\n[4/7] Creating nodes_posts.csv...")
