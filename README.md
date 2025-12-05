@@ -1,10 +1,10 @@
 # AI Risk Research Network Data
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
 
 ## Abstract
-
 TBD 
 
 ---
@@ -41,21 +41,22 @@ All data lies in `data/`, divided in nodes and edges.
 - OpenAlex Works: 2015-2025
 
 ### Data Collection
-- LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on October 15, 2025
-- OpenAlex data retrieved via [API](https://docs.openalex.org/) on October 15, 2025
+- LessWrong/AF posts scraped via [GraphQL API](https://www.lesswrong.com/graphiql) on December 3rd, 2025
+- OpenAlex data retrieved via [API](https://docs.openalex.org/) on December 3rd, 2025
 - Gender inference performed using [`nomquamgender`](https://github.com/ianvanbuskirk/nomquamgender) (Van Buskirk et al., 2023), [`chgender`](https://pypi.org/project/chgender/) (Zhou, 2016), and manual username mapping
 
 ### Contents
 
 **Node Tables** (N nodes):
-- `data/nodes/nodes_posts.csv` - Forum posts (N=15,234) (~XX MB)
-- `data/nodes/nodes_authors.csv` - Forum users (N=3,421) (~XX MB)
+- `data/nodes/nodes_forum_posts.csv` - Forum posts (N=15,234) (~XX MB)
+- `data/nodes/nodes_forum_authors.csv` - Forum users (N=3,421) (~XX MB)
 - `data/nodes/nodes_openalex_works.csv` - Academic papers (N=8,932) (~XX MB)
 - `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=12,456) (~XX MB)
 
 **Edge Tables** (N edges):
-- `data/edges/edges_post_citations.csv` - Post→Post/Paper citations (N=45,678) (~XX MB)
-- `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=34,567) (~XX MB)
+- `data/edges/edges_post_to_post.csv` - Post→Post citations (N=XXX) (~XX MB)
+- `data/edges/edges_post_to_openalex.csv` - Post→Paper citations (N=XXX)
+- `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=XXX) (~XX MB)
 
 **Total dataset size:** ~XXX MB
 
@@ -63,10 +64,8 @@ All data lies in `data/`, divided in nodes and edges.
 
 Find detailed descriptions in `docs/`, i.e. 
 
-- `docs/methodology.md` - Details about duplicate detection, gender prediction, and link extraction
 - `docs/data_dictionary.csv` - Complete column definitions
 - `docs/data_collection.json` - Collection metadata
-- `docs/processing_log.txt` - Processing history
 
 ---
 
@@ -84,7 +83,7 @@ academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 ```
 
 ## Reproducibility
-To reproduce this dataset from scratch (runs apprx. 2 hours on intel chip):
+To reproduce this dataset from scratch (runs apprx. 5-9 hours on intel chip):
 ```bash
 pip install -r requirements.txt
 python src/src/main.py
@@ -94,9 +93,9 @@ or
 ```bash
 pip install -r requirements.txt
 # Scrape data and save them to src/raw_data/
-python src/src/01_data_collection/scrape_graphql.py lw
-python src/src/01_data_collection/scrape_graphql.py af
-python src/src/01_data_collection/scrape_openalex.py
+python src/src/01_data_collection/graphql_00_scrape.py lw
+python src/src/01_data_collection/graphql_00_scrape.py af
+python src/src/01_data_collection/openalex_00_scrape.py
 
 # Make CSV of JSON and run near dup detection
 python src/src/02_preprocessing/graphql_01_make_csv_wo_dups.py lw
@@ -106,19 +105,16 @@ python src/src/02_preprocessing/graphql_01_make_csv_wo_dups.py af
 python src/src/02_preprocessing/graphql_02_extract_links_predict_gender.py lw
 python src/src/02_preprocessing/graphql_02_extract_links_predict_gender.py af
 
-# Run topic analysis with several options.
-# Additional to the forum (obligatory, lw or af), you can define
-# <TEST (optional)> (bool, whether to run a test to find the optimal # of topics)
-# <OPTIMAL_TOPICS (optional)>, the number of optimal topics if you want to test a specific number
-# (in that case it is recommended to disable the test bool), and
-# <TYPE_CLUSTER (optional)>, which clustering/analysis to run: K-Means or LDA (default)
+# Run topic analysis.
+# The hyperparameters are already defined in src/metadata/config_topic_modeling.json
+# You can also run a sweep yourself by uncommenting the sweep instructions in the code.
 python src/src/02_preprocessing/graphql_03_run_topic_clustering.py lw
 python src/src/02_preprocessing/graphql_03_run_topic_clustering.py af
 
 # Take a break here and look at the topics clusters in 
 # src/metadata/clustering_results/<method_ntopics>_summary.txt 
-# and name the topics accordingly in graphql_04_append_topics_to_csv.py
-# for both lesswrong and alignment forum. Then proceed
+# and name the topics accordingly in: src/metadata/topic_labels.json
+# Then proceed:
 python src/src/02_preprocessing/graphql_04_append_topics_to_csv.py lw
 python src/src/02_preprocessing/graphql_04_append_topics_to_csv.py af
 
@@ -131,8 +127,6 @@ python src/src/02_preprocessing/openalex_02_predict_gender.py
 python src/src/03_graph_construction/build_graph_tables.py
 ```
 
-See `docs/methodology.md` for detailed pipeline documentation.
-
 ---
 
 ## Technical Validation
@@ -143,18 +137,17 @@ We perform duplicate detection on papers and forum posts, gender prediction as b
 
 **Version:** 1.0 
 
-**Last Updated:** October 2025
+**Last Updated:** December 2025
 
 **Citation:** *forthcoming*
 
 ### Contact
-ninelloldenburg@gmail.com
+Anonymized for review.
 
 ---
 
 ## Acknowledgements
-
-TBD
+Anonymized for review.
 
 ---
 
