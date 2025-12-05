@@ -776,8 +776,7 @@ def main(platform, max_posts=None):
         n_neighbors_list=[10,15,25,50],
         min_topic_size_list=[50,100,200,400],
         embedding_model=EMBEDDING_MODEL,
-        max_posts_for_sweep=None,
-        output_dir="sweep_results_run1"
+        max_posts_for_sweep=None
     )
     """
     
