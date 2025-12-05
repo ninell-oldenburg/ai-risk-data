@@ -371,6 +371,59 @@ class ForumGraphBuilder:
         
         return doi_str.strip() if doi_str else None
     
+    def create_edges_openalex_citations(self, openalex_df):
+        """Create edges between OpenAlex works (paper citations)"""
+        if openalex_df.empty or 'referenced_works' not in openalex_df.columns:
+            print("Warning: No referenced_works column in OpenAlex data")
+            return pd.DataFrame(columns=['citing_work_id', 'cited_work_id'])
+        
+        edges = []
+        
+        # Create lookup of all work IDs in our dataset
+        available_work_ids = set(openalex_df['id'].dropna())
+        print(f"Total works in dataset: {len(available_work_ids)}")
+        
+        total_references = 0
+        matched_references = 0
+        
+        for _, row in openalex_df.iterrows():
+            citing_id = row.get('id')
+            if pd.isna(citing_id):
+                continue
+            
+            refs_raw = row.get('referenced_works')
+            if pd.isna(refs_raw) or refs_raw == '':
+                continue
+            
+            # Parse the referenced_works field
+            refs = self.parse_list_field(refs_raw)
+            total_references += len(refs)
+            
+            for cited_id in refs:
+                if not cited_id or pd.isna(cited_id):
+                    continue
+                
+                cited_id = str(cited_id).strip()
+                
+                # Only create edge if cited work is in our dataset
+                if cited_id in available_work_ids:
+                    matched_references += 1
+                    edges.append({
+                        'citing_work_id': citing_id,
+                        'cited_work_id': cited_id
+                    })
+        
+        print(f"Total references found: {total_references}")
+        print(f"References to works in our dataset: {matched_references}")
+        print(f"Match rate: {matched_references/total_references*100:.1f}%")
+        
+        edges_df = pd.DataFrame(edges)
+        if not edges_df.empty:
+            edges_df = edges_df.drop_duplicates()
+        
+        print(f"Found {len(edges_df)} unique OpenAlex-to-OpenAlex citations")
+        return edges_df
+    
     def create_edges_post_citations(self, df):
         """Extract citations between forum posts"""
         edges = []
@@ -775,10 +828,14 @@ class ForumGraphBuilder:
         print("  - Extracting post-to-OpenAlex citations...")
         edges_openalex = self.create_edges_post_openalex(forum_df, openalex_df)
         edges_openalex.to_csv(self.output_dir / 'edges_post_to_openalex.csv', index=False)
-        
+
         print("  - Extracting OpenAlex authorship edges...")
         edges_authorship = self.create_edges_openalex_authorship(openalex_df)
         edges_authorship.to_csv(self.output_dir / 'edges_openalex_authorship.csv', index=False)
+
+        print("  - Extracting OpenAlex-to-OpenAlex citations...")
+        edges_openalex_citations = self.create_edges_openalex_citations(openalex_df)
+        edges_openalex_citations.to_csv(self.output_dir / 'edges_openalex_to_openalex.csv', index=False)
         
         # Summary
         print("\n" + "=" * 60)
@@ -794,6 +851,7 @@ class ForumGraphBuilder:
         print(f"  - edges_post_citations.csv: {len(edges_citations)} rows")
         print(f"  - edges_post_openalex.csv: {len(edges_openalex)} rows")
         print(f"  - edges_openalex_authorship.csv: {len(edges_authorship)} rows")
+        print(f"  - edges_openalex_to_openalex.csv: {len(edges_openalex_citations)} rows")
 
         print(f"Unique post_ids: {forum_df['post_id'].nunique()}")
         print(f"Total rows: {len(forum_df)}")

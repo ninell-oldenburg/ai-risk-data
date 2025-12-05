@@ -49,24 +49,25 @@ All data lies in `data/`, divided in nodes and edges.
 ### Contents
 
 **Node Tables** (N nodes):
-- `data/nodes/nodes_forum_posts.csv` - Forum posts (N=15,234) (~XX MB)
-- `data/nodes/nodes_forum_authors.csv` - Forum users (N=3,421) (~XX MB)
-- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=8,932) (~XX MB)
-- `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=12,456) (~XX MB)
+- `data/nodes/nodes_forum_posts.csv` - Forum posts (N=49,016) (~442,5 MB)
+- `data/nodes/nodes_forum_authors.csv` - Forum users (N=6,198) (~1,3 MB)
+- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=201,481) (~34,5 MB)
+- `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=365,946) (~38,7 MB)
 
 **Edge Tables** (N edges):
-- `data/edges/edges_post_to_post.csv` - Post→Post citations (N=XXX) (~XX MB)
-- `data/edges/edges_post_to_openalex.csv` - Post→Paper citations (N=XXX)
-- `data/edges/edges_openalex_citations.csv` - Paper→Paper (N=XXX) (~XX MB)
+- `data/edges/edges_post_to_post.csv` - Post→Post citations (N=9,415) (~340 KB)
+- `data/edges/edges_post_to_openalex.csv` - Post→Paper citations (N=406) (~31 KB)
+- `data/edges/edges_openalex_authorship.csv` - Author→Paper (N=640,486) (~35,9 MB)
+- `data/edges/edges_openalex_to_openalex.csv` - Paper→Paper (N=581,852) (~38,4 MB)
 
-**Total dataset size:** ~XXX MB
+**Total dataset size:** ~591,6 MB
 
 ### Details
 
 Find detailed descriptions in `docs/`, i.e. 
 
 - `docs/data_dictionary.csv` - Complete column definitions
-- `docs/data_collection.json` - Collection metadata
+- `docs/data_collection.json` - Metadata for the data collection
 
 ---
 
@@ -76,10 +77,10 @@ Find detailed descriptions in `docs/`, i.e.
 ```python
 import pandas as pd
 
-forum_posts = pd.read_csv('data/nodes/nodes_posts.csv')
-forum_authors = pd.read_csv('data/nodes/nodes_authors.csv')
-academic_papers = pd.read_csv('data/nodes/nodes_papers.csv')
-forum_citations = pd.read_csv('data/edges/edges_post_citations.csv')
+forum_posts = pd.read_csv('data/nodes/nodes_forum_posts.csv')
+forum_authors = pd.read_csv('data/nodes/nodes_forum_authors.csv')
+academic_papers = pd.read_csv('data/nodes/nodes_openalex_works.csv')
+forum_citations = pd.read_csv('data/edges/edges_post_to_post.csv')
 academic_citations = pd.read_csv('data/edges/edges_openalex_citations.csv')
 ```
 
