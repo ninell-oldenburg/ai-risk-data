@@ -9,6 +9,7 @@ src/hidden
 notebooks/
 
 src/src/values.py
+src/metadata/graphql_usernames.json
 
 __pycache__/
 *.pyc

@@ -754,7 +754,7 @@ def main(platform, max_posts=None):
     analyzer = EmbeddingTopicModeling(platform)
     EMBEDDING_MODEL = 'all-mpnet-base-v2'
 
-    config_path = "srtc/metadata/config_topic_modeling.json"
+    config_path = "src/metadata/config_topic_modeling.json"
     config = load_config(platform, config_path)
 
     n_neighbors = config.get('n_neighbors', 10)
@@ -770,6 +770,7 @@ def main(platform, max_posts=None):
         print("Failed to load data!")
         return
     
+    # hyperparemeter sweep. uncommment to sweep yourself
     """
     analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
@@ -799,7 +800,8 @@ def main(platform, max_posts=None):
         reduce_outliers=reduce_outliers
     )
     
-    # Optional: reduce topics if too many were discovered
+    # Optional: reduce topics to a specified number 
+    # if too many were discovered
     # analyzer.reduce_topics(nr_topics=20)
     
     analyzer.print_detailed_topics()
@@ -813,9 +815,11 @@ def main(platform, max_posts=None):
 
 if __name__ == "__main__":
     import sys
+
+    print(sys.argv)
     
     if len(sys.argv) < 2:
-        print("USAGE: python bertopic_analyzer.py <FORUM> [MAX_POSTS] [CONFIG_PATH]")
+        print("USAGE: python graphql_03_run_topic_clustering.py <FORUM> [MAX_POSTS] [CONFIG_PATH]")
         print("\nParameters:")
         print("  FORUM: 'lw' or 'af' (required)")
         print("  MAX_POSTS: Limit posts for testing (default: None = all)")
@@ -834,4 +838,4 @@ if __name__ == "__main__":
     max_posts = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] != 'None' else None
     config_path = sys.argv[3] if len(sys.argv) > 3 else "topic_modeling_config.json"
     
-    main(platform, max_posts, config_path)
+    main(platform, max_posts)
