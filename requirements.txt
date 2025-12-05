@@ -7,7 +7,7 @@ hdbscan==0.8.40
 kagglehub==0.3.13
 matplotlib==3.6.3
 nomquamgender==0.1.4
-numpy==2.3.4
+numpy==2.3.5
 pandas==2.3.3
 Requests==2.32.5
 scikit_learn==1.7.2
