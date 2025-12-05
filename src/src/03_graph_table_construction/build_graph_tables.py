@@ -152,14 +152,16 @@ class ForumGraphBuilder:
         }).reset_index()
         
         author_stats.columns = ['author_username', 'post_ids', 'author_display_name', 
-                               'author_gender_inferred', 'sources']
+                            'author_gender_inferred', 'sources']
         
         # Determine primary source
         def get_primary_source(sources):
             if isinstance(sources, list):
                 unique = list(set(sources))
+                # If posted on both forums, classify as alignment_forum
+                # (since AF posts are crossposted to LW automatically)
                 if len(unique) > 1:
-                    return 'both'
+                    return 'alignment_forum'  # CHANGED FROM 'both'
                 return unique[0] if unique else None
             return sources
         
@@ -171,7 +173,7 @@ class ForumGraphBuilder:
         
         # Select final columns
         final_cols = ['author_username', 'author_display_name', 'author_gender_inferred',
-                     'post_count', 'primary_source', 'post_ids']
+                    'post_count', 'primary_source', 'post_ids']
         
         return author_stats[final_cols]
     

@@ -133,7 +133,7 @@ python src/src/03_graph_construction/build_graph_tables.py
 
 ## Technical Validation
 
-We perform duplicate detection on papers and forum posts, gender prediction as briefly described above, and topic analysis using Latent Dirichlet Allocation (Blei, Ng, & Jordan, 2001). Find details on the technical validation in the paper and under `docs/methodology.md`.
+Please see the paper for details on how we validated the data.
 
 ## Metadata
 
