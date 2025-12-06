@@ -130,7 +130,13 @@ class ForumGraphBuilder:
         else:
             posts_df['is_crosspost'] = False
 
-        return posts_df
+        valid_posts = posts_df[
+            posts_df['post_id'].notna() &
+            posts_df['title'].notna() &
+            posts_df['author_username'].notna()  # Must have author
+        ].copy()
+
+        return valid_posts
     
     def create_nodes_authors(self, df):
         """Create the authors node table by aggregating posts"""
@@ -633,11 +639,27 @@ class ForumGraphBuilder:
             return pd.DataFrame(columns=['openalex_id', 'openalex_doi', 'title', 
                                         'publication_year', 'type', 'cited_by_count'])
         
-        works_columns = ['id', 'doi', 'title', 'publication_year', 'type', 'cited_by_count']
+        works_columns = ['id', 'doi', 'title', 'publication_year', 'type', 'cited_by_count', 'author_names']
         available_cols = [col for col in works_columns if col in openalex_df.columns]
         
         works_df = openalex_df[available_cols].copy()
         works_df = works_df.rename(columns={'id': 'openalex_id', 'doi': 'openalex_doi'})
+        
+        # Filter out works with no authors (similar to forum posts)
+        if 'author_names' in works_df.columns:
+            initial_count = len(works_df)
+            works_df = works_df[
+                works_df['author_names'].notna() & 
+                (works_df['author_names'] != '') &
+                (works_df['author_names'] != '[]')
+            ].copy()
+            removed = initial_count - len(works_df)
+            if removed > 0:
+                print(f"Filtered out {removed} OpenAlex works with missing authors")
+        
+        # Drop the author_names column before saving (not needed in works table)
+        if 'author_names' in works_df.columns:
+            works_df = works_df.drop(columns=['author_names'])
         
         return works_df.drop_duplicates(subset=['openalex_id'])
     
