@@ -130,7 +130,25 @@ class ForumGraphBuilder:
         else:
             posts_df['is_crosspost'] = False
         
-        return posts_df
+        print(f"Initial post count: {len(df)}")
+        
+        # Filter out posts missing critical fields
+        valid_posts = posts_df[
+            posts_df['post_id'].notna() &
+            posts_df['title'].notna() &
+            posts_df['author_username'].notna()  # Must have author
+        ].copy()
+        
+        removed = len(df) - len(valid_posts)
+        if removed > 0:
+            print(f"Filtered out {removed} posts with missing critical fields:")
+            print(f"  - Missing post_id: {posts_df['post_id'].isna().sum()}")
+            print(f"  - Missing title: {posts_df['title'].isna().sum()}")
+            print(f"  - Missing author: {posts_df['author_username'].isna().sum()}")
+        
+        print(f"Valid posts: {len(valid_posts)}")
+
+        return valid_posts
     
     def create_nodes_authors(self, df):
         """Create the authors node table by aggregating posts"""
@@ -144,6 +162,8 @@ class ForumGraphBuilder:
             print("Warning: No posts with author information")
             return pd.DataFrame()
         
+        print(df_with_authors.columns)
+        
         author_stats = df_with_authors.groupby('author_username').agg({
             'post_id': lambda x: list(x),
             'author_display_name': 'first',
@@ -152,16 +172,14 @@ class ForumGraphBuilder:
         }).reset_index()
         
         author_stats.columns = ['author_username', 'post_ids', 'author_display_name', 
-                            'author_gender_inferred', 'sources']
+                               'author_gender_inferred', 'sources']
         
         # Determine primary source
         def get_primary_source(sources):
             if isinstance(sources, list):
                 unique = list(set(sources))
-                # If posted on both forums, classify as alignment_forum
-                # (since AF posts are crossposted to LW automatically)
                 if len(unique) > 1:
-                    return 'alignment_forum'  # CHANGED FROM 'both'
+                    return 'alignment_forum'
                 return unique[0] if unique else None
             return sources
         
@@ -173,7 +191,7 @@ class ForumGraphBuilder:
         
         # Select final columns
         final_cols = ['author_username', 'author_display_name', 'author_gender_inferred',
-                    'post_count', 'primary_source', 'post_ids']
+                     'post_count', 'primary_source', 'post_ids']
         
         return author_stats[final_cols]
     
