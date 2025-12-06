@@ -129,26 +129,8 @@ class ForumGraphBuilder:
             posts_df['is_crosspost'] = posts_df['title'].isin(crosspost_titles)
         else:
             posts_df['is_crosspost'] = False
-        
-        print(f"Initial post count: {len(df)}")
-        
-        # Filter out posts missing critical fields
-        valid_posts = posts_df[
-            posts_df['post_id'].notna() &
-            posts_df['title'].notna() &
-            posts_df['author_username'].notna()  # Must have author
-        ].copy()
-        
-        removed = len(df) - len(valid_posts)
-        if removed > 0:
-            print(f"Filtered out {removed} posts with missing critical fields:")
-            print(f"  - Missing post_id: {posts_df['post_id'].isna().sum()}")
-            print(f"  - Missing title: {posts_df['title'].isna().sum()}")
-            print(f"  - Missing author: {posts_df['author_username'].isna().sum()}")
-        
-        print(f"Valid posts: {len(valid_posts)}")
 
-        return valid_posts
+        return posts_df
     
     def create_nodes_authors(self, df):
         """Create the authors node table by aggregating posts"""
@@ -161,9 +143,7 @@ class ForumGraphBuilder:
         if len(df_with_authors) == 0:
             print("Warning: No posts with author information")
             return pd.DataFrame()
-        
-        print(df_with_authors.columns)
-        
+                
         author_stats = df_with_authors.groupby('author_username').agg({
             'post_id': lambda x: list(x),
             'author_display_name': 'first',
