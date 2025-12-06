@@ -6,7 +6,7 @@
 
 ## Abstract
 
-We present a dataset integrating academic literature and online discourse on AI ethics and safety, spanning 2000--2025. The dataset includes 201,481 papers from the academic publication database OpenAlex, 44,792 posts from the rationalist forum LessWrong, of which 28.5% are about AI Ethics and Safety, and 4,224 posts from the AI Alignment Forum, which only contains posts about the target topic. For academic papers, we provide OpenAlex metadata, citation networks, and author information; for forum posts, we provide cleaned text, extracted citations, engagement metrics, and BERTopic-based topic assignments. All entries include inferred author gender (F1=0.944 for forum, 0.977 for OpenAlex authors) to enable demographic analysis, though with noted limitations. Data are structured as nodes and edges, enabling analysis of citation patterns, knowledge flow, and collaboration across venues. Validation against 65 canonical papers achieved 96.7% coverage. The dataset supports longitudinal, bibliometric, and demographic analysis of AI ethics and safety research spanning academic and community venues. All data, code, and documentation are openly available.
+We present a dataset integrating academic literature and online discourse on AI ethics and safety, spanning 2000--2025. The dataset includes 200,060 papers from the academic publication database OpenAlex, and jointly 47,666 from the rationalist forum LessWrong and the AI Alignment Forum. For academic papers, we provide OpenAlex metadata, citation networks, and author information; for forum posts, we provide cleaned text, extracted citations, engagement metrics, and BERTopic-based topic assignments. All entries include inferred author gender (F1=0.944 for forums, 0.977 for OpenAlex authors) to enable demographic analysis, though with noted limitations. Data are structured as nodes and edges, enabling analysis of citation patterns, knowledge flow, and collaboration across venues. Validation against 65 canonical papers achieved 96.7% coverage. The dataset supports longitudinal, bibliometric, and demographic analysis of AI ethics and safety research spanning academic and community venues. All data, code, and documentation are openly available.
 
 ---
 
@@ -49,9 +49,9 @@ All data lies in `data/`, divided in nodes and edges.
 ### Contents
 
 **Node Tables** (N nodes):
-- `data/nodes/nodes_forum_posts.csv` - Forum posts (N=49,016) (~442,5 MB)
-- `data/nodes/nodes_forum_authors.csv` - Forum users (N=6,198) (~1,3 MB)
-- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=201,481) (~34,5 MB)
+- `data/nodes/nodes_forum_posts.csv` - Forum posts (N=47,666) (~438.8 MB)
+- `data/nodes/nodes_forum_authors.csv` - Forum authors (N=6,198) (~1.4 MB)
+- `data/nodes/nodes_openalex_works.csv` - Academic papers (N=200,060) (~34,3 MB)
 - `data/nodes/nodes_openalex_authors.csv` - Academic researchers (N=365,946) (~38,7 MB)
 
 **Edge Tables** (N edges):
@@ -60,7 +60,7 @@ All data lies in `data/`, divided in nodes and edges.
 - `data/edges/edges_openalex_authorship.csv` - Author→Paper (N=640,486) (~35,9 MB)
 - `data/edges/edges_openalex_to_openalex.csv` - Paper→Paper (N=581,852) (~38,4 MB)
 
-**Total dataset size:** ~591,6 MB
+**Total dataset size:** ~513.2 MB
 
 ### Details
 
