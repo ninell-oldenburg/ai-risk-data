@@ -1,24 +1,14 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from pathlib import Path
 import os
 import warnings
-import pickle
 from collections import Counter
 import sys
 import time
 import csv
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pathlib import Path
-import matplotlib.patches as mpatches
 import json
 
-# BERTopic and dependencies
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 from umap import UMAP
@@ -31,46 +21,11 @@ from gensim.models import CoherenceModel
 from gensim.corpora import Dictionary
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-# Nature figure specifications
-# - Single column: 89mm (3.5 inches)
-# - Double column: 183mm (7.2 inches)  
-# - Max height: 247mm (9.7 inches)
-# - Resolution: 300-600 DPI
-# - Fonts: Arial or Helvetica, min 5-7pt final size
-# - Line weights: 0.5-1pt
-
-# Set Nature style
-plt.rcParams.update({
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['Arial', 'Helvetica', 'DejaVu Sans'],
-    'font.size': 7,
-    'axes.labelsize': 7,
-    'axes.titlesize': 8,
-    'xtick.labelsize': 6,
-    'ytick.labelsize': 6,
-    'legend.fontsize': 6,
-    'figure.titlesize': 8,
-    'axes.linewidth': 0.5,
-    'grid.linewidth': 0.5,
-    'lines.linewidth': 1.0,
-    'patch.linewidth': 0.5,
-    'xtick.major.width': 0.5,
-    'ytick.major.width': 0.5,
-    'xtick.minor.width': 0.3,
-    'ytick.minor.width': 0.3,
-})
-
 warnings.filterwarnings('ignore')
 
 class EmbeddingTopicModeling:
     """
     BERTopic-based topic modeling with embeddings
-    
-    Advantages over LDA:
-    - Captures semantic meaning (not just word co-occurrence)
-    - Works better with technical/specialized vocabulary
-    - Automatic topic number selection
-    - Better coherence for modern text
     """
     
     def __init__(self, platform):
@@ -162,14 +117,14 @@ class EmbeddingTopicModeling:
         
         Parameters:
         -----------
-        min_topic_size : int (default 1% of the input posts)
-            Minimum documents per topic - HIGH VALUES = fewer topics
-        n_neighbors : int (default: 15)
-            UMAP n_neighbors - HIGHER = broader, fewer topics (try 25-50)
-        n_components : int (default: 5)
+        min_topic_size : int (default 2% of docs)
+            Minimum documents per topic (higher == fewer topics)
+        n_neighbors : int (default 25)
+            UMAP n_neighbors (higher == broader == fewer topics)
+        n_components : int (default 5)
             UMAP dimensions
-        min_cluster_size : int (default 1% of the input posts)
-            HDBSCAN minimum cluster size - MUST match min_topic_size
+        min_cluster_size : int (default 2% of docs)
+            HDBSCAN minimum cluster size (must match min_topic_size)
         embedding_model : str
             Sentence transformer model
         nr_topics : int or 'auto'
@@ -183,23 +138,21 @@ class EmbeddingTopicModeling:
         print(f"{'='*60}")
 
         docs = [post['text'] for post in self.blog_posts]
-        self.docs = docs  # store for later evaluation
+        self.docs = docs  # store for eval
 
-        # === Auto-adjust cluster size ===
+        # auto adjust for default
         if min_topic_size is None:
             min_topic_size = int(len(docs) * 0.02)  # 2% of corpus, but at least 20
-            print(f"Auto-set min_topic_size to {min_topic_size} (1% of {len(docs)})")
+            print(f"Auto-set min_topic_size to {min_topic_size} (2% of {len(docs)})")
 
         if min_cluster_size is None:
             min_cluster_size = min_topic_size
             print(f"Auto-set min_cluster_size to {min_cluster_size}")
         
-        # 1. Embedding Model
         print(f"\n1. Loading embedding model: {embedding_model}")
         sentence_model = SentenceTransformer(embedding_model)
         
-        # 2. UMAP for dimensionality reduction
-        print(f"2. Configuring UMAP (n_neighbors={n_neighbors}, n_components={n_components})")
+        print(f"\n2. Configuring UMAP (n_neighbors={n_neighbors}, n_components={n_components})")
         umap_model = UMAP(
             n_neighbors=n_neighbors,
             n_components=n_components,
@@ -208,24 +161,17 @@ class EmbeddingTopicModeling:
             random_state=42
         )
         
-        # 3. HDBSCAN for clustering
-        print(f"3. Configuring HDBSCAN (min_cluster_size={min_cluster_size})")
+        print(f"\n3. Configuring HDBSCAN (min_cluster_size={min_cluster_size})")
         hdbscan_model = HDBSCAN(
             min_cluster_size=min_cluster_size,
-            min_samples=max(10, min_cluster_size // 10),  # Scale with cluster size
+            min_samples=max(10, min_cluster_size // 10), # scale with cluster size
             metric='euclidean',
             cluster_selection_method='eom',
             prediction_data=True,
-            cluster_selection_epsilon=0.0  # More aggressive merging
+            cluster_selection_epsilon=0.0
         )
         
-        # 4. Vectorizer - custom stop words for AI/rationality content
-        custom_stop_words = [
-            'think', 'like', 'want', 'know', 'people', 'thing', 'things',
-            'good', 'better', 'make', 'way', 'just', 'really', 'dont',
-            'thats', 'im', 'youre', 'ive', 'lot', 'probably', 'basically'
-        ]
-        
+        print(f"\n4. Initalizing Vectorizer")
         vectorizer_model = CountVectorizer(
             ngram_range=(1, 2),
             stop_words='english',
@@ -233,15 +179,12 @@ class EmbeddingTopicModeling:
             max_df=1.0
         )
         
-        # 5. Representation models for better topic descriptions
-        # KeyBERT-inspired: extract keywords semantically similar to topic
+        print(f"\n5. Representation models for better topic descriptions")
         keybert_model = KeyBERTInspired()
-        
         # MMR: diverse keywords (avoid redundancy)
         mmr_model = MaximalMarginalRelevance(diversity=0.3)
         
-        # 6. Create BERTopic model
-        print(f"4. Creating BERTopic model")
+        print(f"\n6. Creating BERTopic model")
         self.topic_model = BERTopic(
             embedding_model=sentence_model,
             umap_model=umap_model,
@@ -255,18 +198,15 @@ class EmbeddingTopicModeling:
             verbose=verbose
         )
         
-        # 7. Fit model and generate embeddings
-        print(f"\n5. Generating embeddings for {len(docs)} documents...")
+        print(f"\n7. Generating embeddings for {len(docs)} documents...")
         print("   (This may take a few minutes...)")
         
         topics, probs = self.topic_model.fit_transform(docs)
-        
-        # Get embeddings (useful for visualization)
         self.embeddings = sentence_model.encode(docs, show_progress_bar=True)
         
-        # 8. Store results
+        print(f"\n8. Store results")
         topic_info = self.topic_model.get_topic_info()
-        n_topics = len(topic_info) - 1  # Exclude outlier topic (-1)
+        n_topics = len(topic_info) - 1  # exclude outlier topic (-1)
         
         print(f"\n{'='*60}")
         print(f"MODEL TRAINING COMPLETE")
@@ -275,21 +215,18 @@ class EmbeddingTopicModeling:
         print(f"Outliers (topic -1): {sum(t == -1 for t in topics)} documents")
         print(f"Documents with topics: {sum(t != -1 for t in topics)} documents")
         
-        # Optionally reduce outliers
+        # reduce outliers (optional)
         if reduce_outliers and sum(t == -1 for t in topics) > 0:
             print(f"\nReducing outliers...")
             new_topics = self.topic_model.reduce_outliers(docs, topics)
             print(f"  Outliers after reduction: {sum(t == -1 for t in new_topics)}")
             topics = new_topics
-            
-            # Update probabilities
             probs = self.topic_model.probabilities_
         
-        # Calculate reasonable number of topics based on corpus size
-        docs_per_topic = len(docs) // 30  # Aim for ~30 topics
+
         recommended_topics = max(15, min(40, len(docs) // min_cluster_size))
         
-        # Auto-reduce if we have too many topics
+        # auto-reduce if too many topics
         if nr_topics == 'auto':
             if n_topics > 50:
                 target = min(30, recommended_topics)
@@ -311,9 +248,9 @@ class EmbeddingTopicModeling:
             probs = self.topic_model.probabilities_
             
             n_topics = len(self.topic_model.get_topic_info()) - 1
-            print(f"   ✓ Topics after reduction: {n_topics}")
+            print(f"   ✅ Topics after reduction: {n_topics}")
         
-        # Add topic assignments to blog posts
+        # add topic assignments to  posts
         for i, post in enumerate(self.blog_posts):
             post['topic'] = int(topics[i])
             if probs is not None:
@@ -328,10 +265,7 @@ class EmbeddingTopicModeling:
         return topics, probs
     
     def reduce_topics(self, nr_topics):
-        """
-        Reduce number of topics by merging similar ones
-        Useful if automatic detection creates too many topics
-        """
+        """Reduce number of topics by merging similar ones"""
         if self.topic_model is None:
             print("Train model first!")
             return
@@ -341,7 +275,7 @@ class EmbeddingTopicModeling:
         
         self.topic_model.reduce_topics(docs, nr_topics=nr_topics)
         
-        # Update topic assignments
+        # update topic assignments
         new_topics = self.topic_model.topics_
         for i, post in enumerate(self.blog_posts):
             post['topic'] = int(new_topics[i])
@@ -353,23 +287,17 @@ class EmbeddingTopicModeling:
         if self.topic_model is None:
             return None
         
-        topic_info = self.topic_model.get_topic_info()
         topics = [post['topic'] for post in self.blog_posts]
         
         stats = []
         for topic_id in sorted(set(topics)):
-            if topic_id == -1:  # Skip outliers
+            if topic_id == -1:  # skip outliers
                 continue
             
             topic_posts = [p for p in self.blog_posts if p['topic'] == topic_id]
             
-            # Year distribution
             year_dist = Counter([p['year'] for p in topic_posts])
-            
-            # Average probability
             avg_prob = np.mean([p['topic_probability'] for p in topic_posts])
-            
-            # Get top words
             topic_words = self.topic_model.get_topic(topic_id)
             
             stats.append({
@@ -388,7 +316,7 @@ class EmbeddingTopicModeling:
         """Get most representative documents for a topic"""
         topic_posts = [(i, p) for i, p in enumerate(self.blog_posts) if p['topic'] == topic_id]
         
-        # Sort by probability
+        # sort by probability
         topic_posts.sort(key=lambda x: x[1]['topic_probability'], reverse=True)
         
         return [{'title': p['title'], 'prob': p['topic_probability']} 
@@ -401,7 +329,6 @@ class EmbeddingTopicModeling:
         if output_path is None:
             output_path = f"src/metadata/clustering_results/{self.platform}/detailed_topics.txt"
 
-        # Capture printed output
         import io, sys
         buffer = io.StringIO()
         old_stdout = sys.stdout
@@ -414,7 +341,7 @@ class EmbeddingTopicModeling:
 
         content = buffer.getvalue()
         
-        # Make sure folder exists
+        # make sure folder exists
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(content, encoding="utf-8")
@@ -463,7 +390,6 @@ class EmbeddingTopicModeling:
         if output_file is None:
             output_file = f'src/metadata/clustering_results/{self.platform}/bertopic_results.csv'
         
-        # Prepare data
         results_data = []
         for post in self.blog_posts:
             results_data.append({
@@ -476,18 +402,15 @@ class EmbeddingTopicModeling:
                 'file': post['file']
             })
         
-        # Save CSV
         df = pd.DataFrame(results_data)
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
         df.to_csv(output_file, index=False)
         print(f"\nResults saved to {output_file}")
         
-        # Save model
         model_path = output_file.replace('.csv', '_model.pkl')
         self.topic_model.save(model_path)
         print(f"Model saved to {model_path}")
         
-        # Save embeddings
         embeddings_path = output_file.replace('.csv', '_embeddings.npy')
         np.save(embeddings_path, self.embeddings)
         print(f"Embeddings saved to {embeddings_path}")
@@ -508,10 +431,10 @@ class EmbeddingTopicModeling:
                 continue
             words = []
             for item in ws:
-                # Skip if item is not tuple/list
+                # skip if item is not tuple/list
                 if not isinstance(item, (tuple, list)):
                     continue
-                # Take first element if string
+                # take first element if string
                 if len(item) > 0 and isinstance(item[0], str) and item[0].strip():
                     words.append(item[0].strip())
             if words:
@@ -538,8 +461,8 @@ class EmbeddingTopicModeling:
                         n_components=5,
                         embedding_model=None,
                         top_n_words=10,
-                        max_posts_for_sweep=None,  # Changed: use ALL by default
-                        apply_auto_reduction=True,  # NEW: match main logic
+                        max_posts_for_sweep=None,
+                        apply_auto_reduction=True,
                         output_dir="src/hidden/sweep_results"):
         """
         Sweep parameters to find optimal settings.
@@ -551,7 +474,7 @@ class EmbeddingTopicModeling:
         model_name = embedding_model or "all-MiniLM-L6-v2"
         sentence_model = SentenceTransformer(model_name)
 
-        # Use same data as main training (or a large representative subset)
+        # use same data as main training (or a large representative subset)
         docs_all = [p["text"] for p in self.blog_posts]
         if max_posts_for_sweep and len(docs_all) > max_posts_for_sweep:
             print(f"⚠️  Using {max_posts_for_sweep} posts for sweep (out of {len(docs_all)})")
@@ -564,7 +487,7 @@ class EmbeddingTopicModeling:
             for mts in min_topic_size_list:
                 print(f"\n--- SWEEP: n_neighbors={nn}, min_topic_size={mts} ---")
                 
-                # Build same components as main training
+                # build same components as main training
                 umap_model = UMAP(
                     n_neighbors=nn, 
                     n_components=n_components, 
@@ -575,7 +498,7 @@ class EmbeddingTopicModeling:
                 
                 hdbscan_model = HDBSCAN(
                     min_cluster_size=mts, 
-                    min_samples=max(10, mts//10),  # Match main training
+                    min_samples=max(10, mts//10),
                     metric='euclidean',
                     cluster_selection_method='eom',
                     prediction_data=True,
@@ -585,7 +508,7 @@ class EmbeddingTopicModeling:
                 vectorizer_model = CountVectorizer(
                     ngram_range=(1,2), 
                     stop_words='english', 
-                    min_df=1,  # Match main training
+                    min_df=1,
                     max_df=1.0
                 )
                 
@@ -605,17 +528,15 @@ class EmbeddingTopicModeling:
                     verbose=False
                 )
 
-                # Fit model
                 topics, probs = topic_model.fit_transform(docs)
                 
-                # Apply outlier reduction (MATCH MAIN TRAINING)
+                # outlier detection
                 new_topics = topic_model.reduce_outliers(docs, topics)
                 topics = new_topics
                 
-                # Get initial topic count
+                # initial topic count
                 n_topics_initial = len(topic_model.get_topic_info()) - 1
                 
-                # Apply auto-reduction logic if enabled (MATCH MAIN TRAINING)
                 if apply_auto_reduction and n_topics_initial > 50:
                     recommended_topics = max(15, min(40, len(docs) // mts))
                     target = min(30, recommended_topics)
@@ -623,12 +544,11 @@ class EmbeddingTopicModeling:
                     topic_model.reduce_topics(docs, nr_topics=target)
                     topics = topic_model.topics_
                 
-                # Attach to self temporarily
                 old_model = getattr(self, "topic_model", None)
                 self.topic_model = topic_model
                 self.docs = docs
 
-                # Compute final metrics
+                # final metrics
                 num_topics = len(topic_model.get_topic_info()) - 1
                 num_outliers = sum(t == -1 for t in topics)
                 diversity = self.compute_diversity_from_model(top_n_words=top_n_words)
@@ -637,7 +557,6 @@ class EmbeddingTopicModeling:
                 print(f"-> topics: {num_topics}, outliers: {num_outliers}, "
                     f"coherence: {coherence:.3f}, diversity: {diversity:.3f}")
 
-                # Write results
                 header = ['n_neighbors', 'min_topic_size', 'n_topics', 'n_outliers', 
                         'coherence_c_v', 'diversity']
                 if not csv_path.exists():
@@ -650,7 +569,6 @@ class EmbeddingTopicModeling:
                     writer.writerow([nn, mts, num_topics, num_outliers,
                                 round(coherence, 4), round(diversity, 4)])
 
-                # Restore
                 if old_model is not None:
                     self.topic_model = old_model
 
@@ -685,12 +603,10 @@ class EmbeddingTopicModeling:
         )
         topic_coherence = cm.get_coherence()
 
-        # --- 3️⃣ Print results ---
         print(f"Topic Coherence (C_v): {topic_coherence:.3f}")
         print(f"Topic Diversity: {topic_diversity:.3f}")
         print("-" * 80)
 
-        # Store for reuse in summaries
         self.topic_coherence = topic_coherence
         self.topic_diversity = topic_diversity
 
@@ -707,7 +623,6 @@ def load_config(platform, config_path="src/metadata/config_topic_modeling.json")
     Returns:
         dict: Configuration parameters for the specified platform
     """
-    # Map short codes to full names
     platform_map = {
         'lw': 'lesswrong',
         'af': 'alignment_forum'
@@ -715,7 +630,6 @@ def load_config(platform, config_path="src/metadata/config_topic_modeling.json")
     
     platform_key = platform_map.get(platform, platform)
     
-    # Load config
     if not os.path.exists(config_path):
         print(f"⚠️  Config file not found: {config_path}")
         print("Using default parameters...")
@@ -730,7 +644,7 @@ def load_config(platform, config_path="src/metadata/config_topic_modeling.json")
         return None
     
     platform_config = config[platform_key]
-    print(f"\n✓ Loaded configuration for {platform_key}:")
+    print(f"\n✅ Loaded configuration for {platform_key}:")
     for key, value in platform_config.items():
         print(f"  - {key}: {value}")
     
@@ -763,14 +677,13 @@ def main(platform, max_posts=None):
     n_components = config.get('n_components', 5)
     nr_topics = config.get('nr_topics', 'auto')
     reduce_outliers = config.get('reduce_outliers', True)
-    embedding_model = config.get('embedding_model', 'all-mpnet-base-v2')
+    embedding_model = config.get('embedding_model', EMBEDDING_MODEL)
     
-    # Load data
     if not analyzer.load_csv_files(max_posts=max_posts):
         print("Failed to load data!")
         return
     
-    # hyperparemeter sweep. uncommment to sweep yourself
+    # hyperparemeter sweep; uncommment to sweep yourself
     """
     analyzer.sweep_parameters(
         n_neighbors_list=[10,15,25,50],
@@ -799,8 +712,7 @@ def main(platform, max_posts=None):
         reduce_outliers=reduce_outliers
     )
     
-    # Optional: reduce topics to a specified number 
-    # if too many were discovered
+    # Optional: reduce topics to a specified number if too many were discovered
     # analyzer.reduce_topics(nr_topics=20)
     
     analyzer.print_detailed_topics()

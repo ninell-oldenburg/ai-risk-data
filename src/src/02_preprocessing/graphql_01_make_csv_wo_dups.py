@@ -100,7 +100,6 @@ class LesswrongJsonToCsv:
                 df.to_csv(output_path, index=False, encoding="utf-8")
                 print(f"💾 Saved {output_path}")
 
-        # Print summary
         print("\n" + "="*60)
         print("📊 DEDUPLICATION SUMMARY")
         print("="*60)

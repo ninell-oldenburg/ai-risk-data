@@ -11,13 +11,13 @@ class TopicsToCsv:
             with open(json_path, 'r') as f:
                 all_labels = json.load(f)
             
-            # Get labels for current platform
+            # get labels for current platform
             if forum not in all_labels:
                 raise ValueError(f"Platform '{forum}' not found in topic_labels.json")
             
             platform_labels = all_labels[forum]
             
-            # Convert string keys to integers
+            # string keys to integers
             return {int(k): v for k, v in platform_labels.items()}
         
         except FileNotFoundError:
@@ -54,11 +54,7 @@ class TopicsToCsv:
                 print(f"\nProcessing {file_path}...")
 
                 try:
-                    # just the filename and build correct path
-                    filename = os.path.basename(file_path)  # gets just "2025-01.csv"
                     correct_file_path = f'{file_path.split()[0]}'
-
-                    # original file with correct path
                     df = pd.read_csv(correct_file_path)
                     original_count = len(df)
 

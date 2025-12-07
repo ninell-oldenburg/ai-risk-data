@@ -63,7 +63,6 @@ class OpenAlexDeduplicator:
                 df_unique.to_csv(output_path, index=False, encoding="utf-8")
                 print(f"✅ Saved deduplicated file: {output_path}")
 
-        # Print summary
         print("\n" + "="*60)
         print("📊 DEDUPLICATION SUMMARY")
         print("="*60)

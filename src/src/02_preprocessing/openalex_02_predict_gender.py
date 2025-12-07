@@ -1,13 +1,8 @@
 import pandas as pd
 import os
 import glob
-from typing import List
 import nomquamgender as nqg
-import time
-import requests
-import importlib
 import chgender
-from collections import Counter
 
 class OpenAlexCSVProcessor:
     def __init__(self):
@@ -41,7 +36,7 @@ class OpenAlexCSVProcessor:
         print(f"  Loaded {len(df)} papers")
 
         df['author_genders'] = df.apply(
-            lambda row: self.extract_first_author_gender(row['id'], row['author_names']), 
+            lambda row: self.extract_first_author_gender(row['author_names']), 
             axis=1
         )
         
@@ -54,7 +49,7 @@ class OpenAlexCSVProcessor:
     
     def is_valid_name(self, name: str) -> bool:
         """
-        Validate that a name meets the criteria:
+        Validate that a name:
         - Has at least two words (first name and last name)
         - First name is not abbreviated (more than 1 character or not followed by a period)
         - Does not contain 'et al.'
@@ -62,29 +57,25 @@ class OpenAlexCSVProcessor:
         if not name or pd.isna(name):
             return False
         
-        # Strip 'et al.' if present
         name = name.replace('et al.', '').replace('et al', '').strip()
         
         if not name:
             return False
         
-        # Split into parts
         parts = name.split()
         
-        # Must have at least 2 words (first name and last name)
-        if len(parts) < 2:
+        if len(parts) < 2: # at least two parts
             return False
         
-        # Check if first name is abbreviated
         first_name = parts[0]
         
-        # If first name is a single letter (with or without period), it's abbreviated
+        # first name is not single letter
         if len(first_name) <= 2 and (len(first_name) == 1 or first_name.endswith('.')):
             return False
         
         return True
     
-    def extract_first_author_gender(self, paper_id: str, author_names: str) -> str:
+    def extract_first_author_gender(self, author_names: str) -> str:
         if pd.isna(author_names) or not author_names:
             return '-'
         
@@ -92,26 +83,22 @@ class OpenAlexCSVProcessor:
         if not authors:
             return '-'
         
-        # Clean and validate authors
         cleaned_authors = []
         for author in authors:
-            # Strip 'et al.' from each author name
             cleaned = author.replace('et al.', '').replace('et al', '').strip()
             if self.is_valid_name(cleaned):
                 cleaned_authors.append(cleaned)
             else:
-                # Keep the position but mark as invalid with '-'
-                cleaned_authors.append(None)
+                cleaned_authors.append(None) # keep position but mark
         
-        # If no valid authors, return '-'
         if not any(cleaned_authors):
             return '-'
         
-        # Classify only valid names
+        # classify valid names
         valid_names = [name for name in cleaned_authors if name is not None]
         author_genders_valid = self.nqgmodel.classify(valid_names)
         
-        # Map back to original positions
+        # map back to original positions
         author_genders = []
         valid_idx = 0
         for cleaned in cleaned_authors:
@@ -119,7 +106,7 @@ class OpenAlexCSVProcessor:
                 author_genders.append('-')
             else:
                 gender = author_genders_valid[valid_idx]
-                # Try chgender if nqgmodel returned '-'
+                # try chgender if nomauqmgender returned unknown
                 if gender == '-':
                     prediction, prob = chgender.guess(cleaned)
                     if prob > 0.8: 
@@ -175,15 +162,11 @@ class OpenAlexCSVProcessor:
         
         return pd.DataFrame(summary_data)
 
-# Usage example
 if __name__ == "__main__":
-    # Initialize processor
     processor = OpenAlexCSVProcessor()
     
-    # Process all CSV files
     processor.process_all_csvs()
     
-    # Generate summary report
     print("\n" + "="*60)
     print("SUMMARY REPORT")
     print("="*60)
