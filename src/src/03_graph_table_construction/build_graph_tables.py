@@ -40,7 +40,7 @@ class ForumGraphBuilder:
                 print(f"Warning: {forum_path} does not exist, skipping {forum}")
                 continue
             
-            # Find all CSV files recursively
+            # find all CSV files recursively
             csv_files = list(forum_path.rglob('*.csv'))
             
             for csv_file in sorted(csv_files):
@@ -101,7 +101,7 @@ class ForumGraphBuilder:
         
         df = df.rename(columns=column_mapping)
         
-        # Add missing columns with defaults
+        # add missing columns with defaults
         if 'doi' not in df.columns:
             df['doi'] = None
         if 'openalex_id' not in df.columns:
@@ -118,11 +118,11 @@ class ForumGraphBuilder:
             'openalex_id', 'author_username', 'page_url', 'slug'
         ]
         
-        # Select only columns that exist
+        # select only columns that exist
         available_cols = [col for col in columns if col in df.columns]
         posts_df = df[available_cols].copy()
         
-        # Detect crossposts (same title appearing in both lw and af)
+        # detect crossposts
         if 'title' in posts_df.columns and 'source' in posts_df.columns:
             title_sources = posts_df.groupby('title')['source'].apply(lambda x: set(x))
             crosspost_titles = title_sources[title_sources.apply(len) > 1].index
@@ -133,7 +133,7 @@ class ForumGraphBuilder:
         valid_posts = posts_df[
             posts_df['post_id'].notna() &
             posts_df['title'].notna() &
-            posts_df['author_username'].notna()  # Must have author
+            posts_df['author_username'].notna() # must have author
         ].copy()
 
         return valid_posts
@@ -160,7 +160,6 @@ class ForumGraphBuilder:
         author_stats.columns = ['author_username', 'post_ids', 'author_display_name', 
                                'author_gender_inferred', 'sources']
         
-        # Determine primary source
         def get_primary_source(sources):
             if isinstance(sources, list):
                 unique = list(set(sources))
@@ -172,10 +171,10 @@ class ForumGraphBuilder:
         author_stats['primary_source'] = author_stats['sources'].apply(get_primary_source)
         author_stats['post_count'] = author_stats['post_ids'].apply(len)
         
-        # Convert post_ids to JSON string
+        # post_ids to JSON string
         author_stats['post_ids'] = author_stats['post_ids'].apply(json.dumps)
         
-        # Select final columns
+        # final columns
         final_cols = ['author_username', 'author_display_name', 'author_gender_inferred',
                      'post_count', 'primary_source', 'post_ids']
         
@@ -192,39 +191,35 @@ class ForumGraphBuilder:
         if isinstance(field, str):
             field = field.strip()
             
-            # Try JSON parsing first
+            # JSON parsing first
             if field.startswith('['):
                 try:
                     return json.loads(field)
                 except:
                     pass
             
-            # Try ast.literal_eval for Python list strings
             try:
-                parsed = ast.literal_eval(field)
+                parsed = ast.literal_eval(field) # for Python list strings
                 if isinstance(parsed, list):
                     return parsed
             except:
                 pass
             
-            # Handle semicolon-separated strings (common in your data)
+            # semicolon-separated strings
             if ';' in field:
                 return [item.strip() for item in field.split(';') if item.strip()]
             
-            # Single item
+            # single item
             return [field]
         
         return []
     
-    # In extract_forum_post_id, add this check:
     def extract_forum_post_id(self, url):
         """Extract post ID from a forum URL"""
         if not isinstance(url, str):
             return None
-        
-        original_url = url  # Save for debugging
-        
-        # Sequences format: /s/{sequence_id}/p/{post_id}
+                
+        # sequences format: /s/{sequence_id}/p/{post_id}
         sequences = re.search(r'/s/[^/]+/p/([^/\?#]+)', url)
         if sequences:
             result = sequences.group(1)
@@ -232,7 +227,7 @@ class ForumGraphBuilder:
                 print(f"  [extract] Matched sequences: {result}")
             return result
         
-        # New format: extract post_id
+        # new format: extract post_id
         new_format = re.search(r'/posts/([^/\?#]+)', url)
         if new_format:
             result = new_format.group(1)
@@ -240,7 +235,7 @@ class ForumGraphBuilder:
                 print(f"  [extract] Matched new format: {result}")
             return result
         
-        # Discussion format: /r/discussion/lw/XX/slug
+        # siscussion format: /r/discussion/lw/XX/slug
         discussion = re.search(r'/r/discussion/lw/[^/]+/([^/\?#]+)', url)
         if discussion:
             slug = discussion.group(1).rstrip('/')
@@ -249,7 +244,7 @@ class ForumGraphBuilder:
                 print(f"  [extract] Matched discussion: {slug}")
             return slug
         
-        # Old LW format: /lw/XX/slug
+        # old LW format: /lw/XX/slug
         old_format = re.search(r'/lw/[^/]+/([^/\?#]+)', url)
         if old_format:
             slug = old_format.group(1).rstrip('/')
@@ -267,11 +262,11 @@ class ForumGraphBuilder:
         if not isinstance(url, str):
             return False
         
-        # Accept both lesswrong and lesserwrong
+        # accept lesswrong and lesserwrong
         if not re.search(r'(lesserwrong|lesswrong|alignmentforum)\.(com|org)', url, re.IGNORECASE):
             return False
         
-        # Exclude non-post patterns first
+        # exclude non-post patterns first
         exclude_patterns = [
             r'wiki\.lesswrong',
             r'/user/',
@@ -283,21 +278,21 @@ class ForumGraphBuilder:
             r'/message/',
             r'google\.(com|ie)/url',
             r'%20',
-            r'/r/[^/]+-drafts/',  # Exclude personal draft sections
+            r'/r/[^/]+-drafts/',
         ]
         
         for pattern in exclude_patterns:
             if re.search(pattern, url, re.IGNORECASE):
                 return False
         
-        # Include post formats
+        # include post formats
         if re.search(r'/s/[^/]+/p/', url):
             return True
         if re.search(r'/posts/', url):
             return True
         if re.search(r'/r/discussion/lw/', url):
             return True
-        if re.search(r'/lw/[^/]+/[^/]+', url):  # Old format with slug
+        if re.search(r'/lw/[^/]+/[^/]+', url):  # old format with slug
             return True
         
         return False
@@ -307,75 +302,164 @@ class ForumGraphBuilder:
         if not isinstance(url, str):
             return None
         
-        # Pattern that matches DOIs starting with 10.
-        # More permissive about what comes after the slash
         doi_patterns = [
             r'doi\.org/(10\.\d+/[^\s\?#<>"]+)',
             r'dx\.doi\.org/(10\.\d+/[^\s\?#<>"]+)',
             r'doi:\s*(10\.\d+/[^\s<>"]+)',
-            r'\b(10\.\d{4,9}/[^\s;<>"]+)',  # Bare DOI in text
+            r'\b(10\.\d{4,9}/[^\s;<>"]+)',
         ]
         
         for pattern in doi_patterns:
             match = re.search(pattern, url, re.IGNORECASE)
             if match:
                 doi = match.group(1).strip()
-                # Clean up trailing punctuation that's not part of DOI
                 doi = re.sub(r'[.,;)\]]+$', '', doi)
                 return doi
         return None
 
     def normalize_doi(self, doi):
         """
-        Comprehensive DOI normalization for matching.
-        Handles all edge cases discovered during testing.
+        Comprehensive DOI cleaning for matching.
+        Handles all the weird edge cases we've found.
         """
         if not doi or pd.isna(doi):
             return None
         
-        doi_str = str(doi).lower().strip()
+        doi = str(doi).strip()
         
-        # Remove common prefixes
-        doi_str = doi_str.replace('https://doi.org/', '')
-        doi_str = doi_str.replace('http://doi.org/', '')
-        doi_str = doi_str.replace('https://dx.doi.org/', '')
-        doi_str = doi_str.replace('http://dx.doi.org/', '')
-        doi_str = doi_str.replace('doi:', '')
+        # 1. remove URL prefixes
+        doi = doi.replace('https://doi.org/', '')
+        doi = doi.replace('http://doi.org/', '')
+        doi = doi.replace('https://dx.doi.org/', '')
+        doi = doi.replace('http://dx.doi.org/', '')
+        doi = doi.replace('doi:', '')
+
+        # 2. remove fragments and query parameters
+        if '#' in doi:
+            doi = doi.split('#')[0]
+        if '?' in doi:
+            doi = doi.split('?')[0]
         
-        # Remove URL fragments (e.g., #page-1, #.u14eh_ldvjm)
-        doi_str = re.sub(r'#.*$', '', doi_str)
+        # 3. remove HTML entities and special characters
+        doi = doi.replace('&amp;', '').replace('&amp', '')
+        # normalize en-dashes and em-dashes to regular hyphens
+        doi = doi.replace('–', '-').replace('—', '-')
+        doi = re.sub(r'%[0-9a-f]{2}', '', doi, flags=re.IGNORECASE)  # URL-encoded chars
+        # incomplete parenthetical patterns
+        doi = re.sub(r'\(\d{2}\)$', '', doi)
+        doi = re.sub(r'[†‌—]', '', doi)  # special unicode
+        doi = re.sub(r'&type=.*$', '', doi)
+        doi = re.sub(r'&.*$', '', doi)
+        # sequences of dashes (en-dash, em-dash, regular dash)
+        doi = re.sub(r'\.?[-—–]{2,}$', '', doi)
+        # trailing spaces
+        doi = doi.strip()
+        # zero-width and other invisible unicode characters
+        doi = re.sub(r'[\u200b-\u200f\u202a-\u202e\u2060\ufeff]', '', doi)
         
-        # Remove query parameters (e.g., ?uid=...)
-        if '?' in doi_str:
-            doi_str = doi_str.split('?')[0]
+        # 4. remove file extensions and path suffixes
+        doi = re.sub(r'\.pdf.*$', '', doi)
+        doi = re.sub(r'\.(full\.pdf|pdf\.full).*$', '', doi)
+        doi = re.sub(r'/abstract$', '', doi)
+        doi = re.sub(r'/pdf$', '', doi)
+        doi = re.sub(r'/epdf$', '', doi)
+        doi = re.sub(r'/full$', '', doi)
+        doi = re.sub(r'/issuetoc$', '', doi)
+        doi = re.sub(r'/full/html$', '', doi)
+        doi = re.sub(r'/meta$', '', doi)
+        doi = re.sub(r'/tables/\d+$', '', doi)
+        doi = re.sub(r'/suppl_file/.*$', '', doi)
+        doi = re.sub(r'/full\.pdf$', '', doi)
         
-        # Remove &amp; and other HTML entities
-        doi_str = doi_str.replace('&amp;', '').replace('&amp', '')
+        # 5. remove version indicators
+        doi = re.sub(r'v\d+\.full.*$', '', doi)  # v1.full.pdf etc
+        doi = re.sub(r'v\d+\.full$', '', doi)    # v1.full
+        doi = re.sub(r'v\d+$', '', doi)          # v1
         
-        # Remove common path suffixes
-        doi_str = re.sub(r'/abstract$', '', doi_str)
-        doi_str = re.sub(r'/full$', '', doi_str)
-        doi_str = re.sub(r'/pdf$', '', doi_str)
-        doi_str = re.sub(r'/epdf$', '', doi_str)
-        doi_str = re.sub(r'/issuetoc$', '', doi_str)
+        # 6. remove bracket and parenthesis artifacts
+        doi = re.sub(r'\[[^\]]*$', '', doi)  # incomplete brackets
+        doi = re.sub(r'\([^)]*$', '', doi)   # incomplete parentheses
+        if doi.endswith('('):
+            doi = doi[:-1]
         
-        # Remove version indicators (v1.full, v2.full, etc.)
-        doi_str = re.sub(r'v\d+\.full$', '', doi_str)
+        # 7. remove duplicate acprof, acrefore, acref segments
+        if '/acrefore/' in doi or '/acref/' in doi:
+            match = re.match(r'(10\.1093/acr(?:efore|ef)/\d+(?:\.\d+)*)', doi)
+            if match:
+                doi = match.group(1)
         
-        # Remove weird caret suffixes (.^node, .^b, .^f, etc.)
-        doi_str = re.sub(r'\.\^[a-z]+$', '', doi_str, flags=re.IGNORECASE)
+        # 8. remove caret suffixes
+        doi = re.sub(r'\.\^.*$', '', doi)
+        doi = re.sub(r'\^.*$', '', doi)
         
-        # Remove bracket artifacts and anything after them
-        doi_str = re.sub(r'\[[^\]]*$', '', doi_str)
+        # 9. remove trailing text patterns
+        # multiple hyphenated words
+        doi = re.sub(r'/[a-z]+-[a-z]+-[a-z]+-.*$', '', doi, flags=re.IGNORECASE)
+        # single hyphenated fragment
+        doi = re.sub(r'/[a-z]+-[a-z]+-?$', '', doi, flags=re.IGNORECASE)
+        # word suffixes (gödel, kraft, etc.)
+        doi = re.sub(r'\.?[a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿłćśźżğ]{4,}$', '', doi, flags=re.IGNORECASE)
+        # text concatenated after digit endings (no separator)
+        doi = re.sub(r'(\d)[a-z]{4,}(-[a-z]+)*$', r'\1', doi, flags=re.IGNORECASE)
+        # trailing lone hyphens
+        doi = doi.rstrip('-')
+        # footnote markers
+        doi = re.sub(r'\.footnotes\*\d+$', '', doi)
+        # possessive markers and contractions at the end
+        doi = re.sub(r"(what's|that's|it's|what’s|that’s|it’s|[a-z]+'s?)$", '', doi, flags=re.IGNORECASE)
+        # .cross- and similar suffix patterns
+        doi = re.sub(r'\.cross-$', '', doi)
+        # 2-3 letter word fragments at the end (but not legitimate suffixes like .x or .e1234)
+        doi = re.sub(r'\.([a-z]{2,3})$', lambda m: '' if not any(c.isdigit() for c in m.group(1)) else m.group(0), doi, flags=re.IGNORECASE)
+        # article title paths (pattern: /numbers/long-title-text)
+        doi = re.sub(r'/\d+/[a-z][a-z-]+-[a-z-]+$', '', doi, flags=re.IGNORECASE)
+        # 2-3 letter author initials concatenated after numbers
+        doi = re.sub(r'(\d)([a-z]{2,3})$', r'\1', doi, flags=re.IGNORECASE)
         
-        # Remove trailing parentheses that look incomplete
-        if doi_str.endswith('('):
-            doi_str = doi_str[:-1]
+        # 10. clean last segment after final slash
+        parts = doi.split('/')
+        if len(parts) >= 2:
+            last_part = parts[-1]
+            last_part = re.sub(r'[a-z]{3,}$', '', last_part, flags=re.IGNORECASE)
+            parts[-1] = last_part
+            doi = '/'.join(parts)
         
-        # Remove trailing punctuation
-        doi_str = re.sub(r'[.,;:!?\)]+$', '', doi_str)
+        # 11. remove trailing special characters
+        doi = re.sub(r'[\.&]+$', '', doi)  # ampersands and periods
+        # trailing underscores (multiple)
+        doi = re.sub(r'_+$', '', doi)
+        # /full one more time before final cleanup
+        doi = re.sub(r'/full$', '', doi)
+        doi = doi.rstrip("/.,;:!?_+'\"‘")
         
-        return doi_str.strip() if doi_str else None
+        # 12. final version check
+        doi = re.sub(r'v\d+$', '', doi)
+        doi = re.sub(r'/full$', '', doi)
+        doi = re.sub(r'v\d+\.full$', '', doi)
+        
+        # 13. lowercase
+        doi = doi.lower()
+        
+        # 14. validate completeness
+        if doi.endswith('-'):
+            return None
+        
+        if '/' in doi:
+            parts = doi.split('/')
+            if len(parts[-1]) < 2:
+                return None
+            
+        # filter out DOIs that are just the prefix
+        if '/' not in doi or doi.split('/')[-1] == '':
+            return None
+        
+        # filter out DOIs where the last part looks incomplete
+        if '/' in doi:
+            last_part = doi.split('/')[-1]
+            if len(last_part) <= 2 or last_part.endswith('-'):
+                return None
+        
+        return doi.strip() if doi else None
     
     def create_edges_openalex_citations(self, openalex_df):
         """Create edges between OpenAlex works (paper citations)"""
@@ -385,7 +469,7 @@ class ForumGraphBuilder:
         
         edges = []
         
-        # Create lookup of all work IDs in our dataset
+        # create lookup of all work IDs in our dataset
         available_work_ids = set(openalex_df['id'].dropna())
         print(f"Total works in dataset: {len(available_work_ids)}")
         
@@ -401,7 +485,7 @@ class ForumGraphBuilder:
             if pd.isna(refs_raw) or refs_raw == '':
                 continue
             
-            # Parse the referenced_works field
+            # parse the referenced_works field
             refs = self.parse_list_field(refs_raw)
             total_references += len(refs)
             
@@ -411,7 +495,7 @@ class ForumGraphBuilder:
                 
                 cited_id = str(cited_id).strip()
                 
-                # Only create edge if cited work is in our dataset
+                # only create edge if cited work is in our dataset
                 if cited_id in available_work_ids:
                     matched_references += 1
                     edges.append({
@@ -438,7 +522,7 @@ class ForumGraphBuilder:
             print("Warning: No extracted_links column found")
             return pd.DataFrame(columns=['citing_post_id', 'cited_post_id'])
         
-        # Create TWO lookups: by post_id AND by slug
+        # create 2 lookups: by post_id and by slug
         postid_lookup = {}
         slug_lookup = {}
         
@@ -454,7 +538,7 @@ class ForumGraphBuilder:
         
         print(f"Built lookups: {len(postid_lookup)} post_ids, {len(slug_lookup)} slugs")
         
-        # Track for debugging
+        # track for debugging
         total_links = 0
         forum_links = 0
         matched_by_postid = 0
@@ -485,10 +569,10 @@ class ForumGraphBuilder:
                 forum_links += 1
                 cited_id = None
                 
-                # Extract FIRST
+                # extract first
                 post_id_or_slug = self.extract_forum_post_id(link)
                 
-                # Then do matching
+                # then do matching
                 if post_id_or_slug:
                     if post_id_or_slug in postid_lookup:
                         cited_id = postid_lookup[post_id_or_slug]
@@ -497,7 +581,7 @@ class ForumGraphBuilder:
                         cited_id = slug_lookup[post_id_or_slug]
                         matched_by_slug += 1
                 else:
-                    # Save some samples of unmatched links for debugging
+                    # save some samples of unmatched links for debugging
                     if len(unmatched_samples) < 10:
                         unmatched_samples.append(link)
                 
@@ -530,7 +614,6 @@ class ForumGraphBuilder:
             print("Warning: No OpenAlex data to match against")
             return pd.DataFrame(columns=['citing_post_id', 'openalex_id', 'openalex_doi'])
         
-        # Check for DOI columns
         has_extracted_dois = 'extracted_dois' in forum_df.columns
         has_extracted_links = 'extracted_links' in forum_df.columns
         
@@ -538,7 +621,6 @@ class ForumGraphBuilder:
             print("Warning: No extracted_dois or extracted_links column found")
             return pd.DataFrame(columns=['citing_post_id', 'openalex_id', 'openalex_doi'])
         
-        # Create DOI lookup from OpenAlex data
         doi_lookup = {}
         for _, row in openalex_df.iterrows():
             doi = self.normalize_doi(row.get('doi'))
@@ -551,19 +633,19 @@ class ForumGraphBuilder:
         sample_dois = list(doi_lookup.keys())[:5]
         print(f"Sample OpenAlex DOIs: {sample_dois}")
         
-        # Track stats
+        # track stats
         total_dois_found = 0
         matched_dois = 0
         dois_extracted_from_column = 0
         dois_extracted_from_links = 0
         sample_unmatched_dois = []
         
-        # Extract citations
+        # extract citations
         for _, row in forum_df.iterrows():
             citing_id = row['post_id']
             dois = []
             
-            # Try extracted_dois first
+            # try extracted_dois first
             if has_extracted_dois:
                 dois_str = row.get('extracted_dois')
                 if pd.notna(dois_str) and dois_str != '' and dois_str != '[]':
@@ -578,7 +660,7 @@ class ForumGraphBuilder:
                     dois.extend(dois_from_col)
                     dois_extracted_from_column += len(dois_from_col)
             
-            # If no DOIs found, try extracting from links
+            # try extracting from links
             if not dois and has_extracted_links:
                 links_str = row.get('extracted_links')
                 if pd.notna(links_str) and links_str != '':
@@ -596,7 +678,7 @@ class ForumGraphBuilder:
             
             total_dois_found += len(dois)
             
-            # Match DOIs against OpenAlex
+            # match DOIs against OpenAlex
             for doi in dois:
                 if not doi:
                     continue
@@ -611,7 +693,7 @@ class ForumGraphBuilder:
                         'openalex_doi': doi_clean
                     })
                 else:
-                    # Track unmatched
+                    # track unmatched
                     if len(sample_unmatched_dois) < 10 and doi_clean:
                         sample_unmatched_dois.append((doi, doi_clean))
         
@@ -645,7 +727,7 @@ class ForumGraphBuilder:
         works_df = openalex_df[available_cols].copy()
         works_df = works_df.rename(columns={'id': 'openalex_id', 'doi': 'openalex_doi'})
         
-        # Filter out works with no authors (similar to forum posts)
+        # filter out works with no authors
         if 'author_names' in works_df.columns:
             initial_count = len(works_df)
             works_df = works_df[
@@ -657,7 +739,7 @@ class ForumGraphBuilder:
             if removed > 0:
                 print(f"Filtered out {removed} OpenAlex works with missing authors")
         
-        # Drop the author_names column before saving (not needed in works table)
+        # drop author_names column before saving
         if 'author_names' in works_df.columns:
             works_df = works_df.drop(columns=['author_names'])
         
@@ -685,17 +767,17 @@ class ForumGraphBuilder:
             if pd.isna(work_id):
                 continue
             
-            # Parse author names - handle both string and list formats
+            # parse author names - handle both string and list formats
             author_names_raw = row.get('author_names')
             if pd.isna(author_names_raw) or author_names_raw == '':
                 continue
             
-            # Try parsing as list first, then fall back to single string
+            # try parsing as list first, then fall back to single string
             author_names = self.parse_list_field(author_names_raw)
-            if not author_names:  # If parsing failed, treat as single author
+            if not author_names:
                 author_names = [str(author_names_raw).strip()]
             
-            # Same for genders
+            # same for genders
             author_genders_raw = row.get('author_genders')
             author_genders = []
             if pd.notna(author_genders_raw) and author_genders_raw != '':
@@ -703,7 +785,7 @@ class ForumGraphBuilder:
                 if not author_genders:  # If parsing failed, treat as single gender
                     author_genders = [str(author_genders_raw).strip()]
             
-            # Process each author
+            # process each author
             for idx, author_name in enumerate(author_names):
                 if not author_name or pd.isna(author_name) or author_name == '':
                     continue
@@ -711,16 +793,14 @@ class ForumGraphBuilder:
                 author_id = str(author_name).strip()
                 authors_dict[author_id]['work_ids'].append(work_id)
                 
-                # Store gender if available
+                # store gender if available
                 if idx < len(author_genders):
                     gender = author_genders[idx]
                     if gender and not pd.isna(gender) and gender != '':
                         authors_dict[author_id]['genders'].append(gender)
         
-        # Convert to DataFrame
         authors_data = []
         for author_id, info in authors_dict.items():
-            # Use most common gender
             gender = None
             if info['genders']:
                 gender = max(set(info['genders']), key=info['genders'].count)
@@ -737,7 +817,6 @@ class ForumGraphBuilder:
         print(f"Extracted {len(authors_df)} unique OpenAlex authors")
         return authors_df
     
-    # Add this to your create_edges_openalex_authorship function to debug:
     def create_edges_openalex_authorship(self, openalex_df):
         """Create edges between OpenAlex authors and works"""
         if openalex_df.empty or 'author_names' not in openalex_df.columns:
@@ -759,7 +838,7 @@ class ForumGraphBuilder:
                 works_with_no_authors += 1
                 continue
             
-            # Try parsing as list, fall back to single string
+            # try parsing as list, fall back to single string
             author_names = self.parse_list_field(author_names_raw)
             if not author_names:
                 author_names = [str(author_names_raw).strip()]
@@ -770,7 +849,7 @@ class ForumGraphBuilder:
                 
                 author_id = str(author_name).strip()
                 
-                # Determine position
+                # determine position
                 if len(author_names) == 1:
                     position = 'sole'
                 elif idx == 0:
@@ -819,7 +898,7 @@ class ForumGraphBuilder:
         print("\n[3/7] Standardizing column names...")
         forum_df = self.standardize_forum_columns(forum_df)
         
-        # Create nodes
+        # nodes
         print("\n[4/7] Creating nodes_posts.csv...")
         nodes_posts = self.create_nodes_posts(forum_df)
         nodes_posts.to_csv(self.output_dir / 'nodes_forum_posts.csv', index=False)
@@ -840,7 +919,7 @@ class ForumGraphBuilder:
         nodes_openalex_authors.to_csv(self.output_dir / 'nodes_openalex_authors.csv', index=False)
         print(f"  → Saved {len(nodes_openalex_authors)} OpenAlex authors")
         
-        # Create edges
+        # edges
         print("\n[7/7] Creating edge tables...")
         
         print("  - Extracting post-to-post citations...")
@@ -859,7 +938,6 @@ class ForumGraphBuilder:
         edges_openalex_citations = self.create_edges_openalex_citations(openalex_df)
         edges_openalex_citations.to_csv(self.output_dir / 'edges_openalex_to_openalex.csv', index=False)
         
-        # Summary
         print("\n" + "=" * 60)
         print("Pipeline Complete!")
         print("=" * 60)
