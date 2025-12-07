@@ -7,17 +7,17 @@ import pandas as pd
 import json
 import re
 
-# At the top, update TOPIC_IDS:
+# ==========================================
+#             SEARCH CONFIGS
+# ==========================================
 
 TOPIC_IDS = {
-    # Core topics
     "Ethics & Social Impacts of AI": "T10883",
     "Adversarial Robustness in ML": "T11689",
     "Explainable AI": "T12026",
     "Hate Speech and Cyberbullying Detection": "T12262",
 }
 
-# Boolean search terms
 AI_TERMS = [
     'artificial intelligence', 'machine learning', 'deep learning', 'reward function',
     'neural network', 'reinforcement learning', 'language model', 'language models',
@@ -56,7 +56,6 @@ class AIScholarshipAnalyzer:
         print(f"Date range: {start_date.date()} to {end_date.date()}")
         print(f"{'='*70}\n")
 
-        # STEP 1: Collect via topics (individually)
         print("\n" + "="*70)
         print("STEP 1: COLLECTING VIA TOPICS (split by topic ID)")
         print("="*70)
@@ -69,30 +68,26 @@ class AIScholarshipAnalyzer:
             print(f"✓ {topic_name}: collected {len(topic_papers):,} papers")
             all_topic_papers.extend(topic_papers)
 
-        print(f"\n✓ Total (raw) collected via topics: {len(all_topic_papers):,}")
+        print(f"\n✅ Total (raw) collected via topics: {len(all_topic_papers):,}")
 
-        # STEP 2: Collect via targeted keywords
         print("\n" + "="*70)
-        print("STEP 2: COLLECTING VIA TARGETED KEYWORDS")
+        print("STEP 2: COLLECTING VIA BOOLEAN KEYWORDS")
         print("="*70)
 
-        # Pass end_date to honor the month/day limit
         keyword_papers = self._collect_papers_by_keywords(AI_TERMS, SAFETY_TERMS, start_date, end_date)
-        print(f"\n✓ Collected {len(keyword_papers):,} papers via keywords")
+        print(f"\n✅ Collected {len(keyword_papers):,} papers via keywords")
 
-        # STEP 3: Merge and deduplicate
         print("\n" + "="*70)
         print("STEP 3: MERGING AND DEDUPLICATING")
         print("="*70)
 
         all_papers = self._merge_and_deduplicate(all_topic_papers, keyword_papers)
 
-        print(f"\n✓ Total unique papers: {len(all_papers):,}")
+        print(f"\n✅ Total unique papers: {len(all_papers):,}")
         print(f"  - From topics only: {len(all_topic_papers):,}")
         print(f"  - From keywords only: {len(keyword_papers):,}")
         print(f"  - Overlap: {len(all_topic_papers) + len(keyword_papers) - len(all_papers):,}")
 
-        # STEP 4: Save to files
         print("\n" + "="*70)
         print("STEP 4: SAVING TO FILES")
         print("="*70)
@@ -119,40 +114,32 @@ class AIScholarshipAnalyzer:
 
         for year in range(start_date.year, end_date.year + 1):
             
-            # 1. Determine the end date for the current year's API query
-            # If the current year is the end year, use the specified end_date (e.g., 2025-06-30)
             if year == end_date.year:
                 year_end_date = end_date.date().isoformat()
-            # If the current year is before the end year, use the last day of the current year (e.g., 2024-12-31)
             else:
                 year_end_date = f"{year}-12-31"
 
-            # 2. Determine the start date for the current year's API query
-            # If the current year is the start year, use the specified start_date (e.g., 2000-01-01)
             if year == start_date.year:
                 year_start_date = start_date.date().isoformat()
-            # If the current year is after the start year, use the first day of the current year (e.g., 2001-01-01)
             else:
                 year_start_date = f"{year}-01-01"
 
-            # Skip collecting if the year is entirely outside the range
             if date.fromisoformat(year_start_date) > end_date.date() or date.fromisoformat(year_end_date) < start_date.date():
                 continue
 
             print(f"\n  Year {year} for topic {topic_id} (Range: {year_start_date} to {year_end_date})...")
             
-            # Use the date range filters instead of just publication_year
             count = self._get_paper_count_multi_topic(topic_id, year_start_date, year_end_date)
             print(f"    Found {count:,} papers")
             if count == 0:
                 continue
 
-            # Fetch monthly batches using the new date range
+            # monthly batches
             papers_by_month = self._fetch_all_papers_for_year(topic_id, year_start_date, year_end_date)
             for month_papers in papers_by_month.values():
                 all_papers.extend(month_papers)
 
-            print(f"    Collected {sum(len(v) for v in papers_by_month.values()):,} papers")
+            print(f"✅ Collected {sum(len(v) for v in papers_by_month.values()):,} papers")
 
         return all_papers
 
@@ -171,12 +158,11 @@ class AIScholarshipAnalyzer:
         
         print("\n  Searching with adaptive year/month splitting...")
         
-        # Helper function
+        # helper
         def chunks(lst, n):
             for i in range(0, len(lst), n):
                 yield lst[i:i + n]
         
-        # Use larger chunks
         keywords1_chunks = list(chunks(keywords1, 5))
         keywords2_chunks = list(chunks(keywords2, 5))
         
@@ -195,9 +181,8 @@ class AIScholarshipAnalyzer:
                 
                 print(f"\n  Combo {combo_num}/{total_combos}: {len(chunk1)} AI × {len(chunk2)} safety terms")
                 
-                # Try yearly first
+                # yearly 
                 for year in range(start_date.year, end_date.year + 1):
-                    # Determine year boundaries
                     if year == end_date.year:
                         year_end_date = end_date.date().isoformat()
                     else:
@@ -210,20 +195,19 @@ class AIScholarshipAnalyzer:
                     
                     print(f"    {year}...", end=" ")
                     
-                    # Pass FULL keyword lists, not chunks
                     papers_collected, hit_limit = self._collect_for_period(
                         search_query, year_start_date, year_end_date, 
-                        seen_ids, keywords1, keywords2  # Changed this line
+                        seen_ids, keywords1, keywords2
                     )
                     
                     all_papers.extend(papers_collected)
                     
                     if hit_limit:
                         print(f"hit 10K! Splitting to months...", end=" ")
-                        # Year hit limit, need to split by month
+                        # split by month
                         monthly_papers = self._collect_by_month(
-                            search_query, year, year_start_date, year_end_date,
-                            seen_ids, keywords1, keywords2, start_date, end_date  # Changed this line
+                            search_query, year,
+                            seen_ids, keywords1, keywords2, start_date, end_date
                         )
                         all_papers.extend(monthly_papers)
                         print(f"collected {len(monthly_papers)} more")
@@ -232,7 +216,7 @@ class AIScholarshipAnalyzer:
                 
                 print(f"    Running total: {len(all_papers):,} unique papers")
         
-        print(f"\n  ✓ Total collected: {len(all_papers):,}")
+        print(f"\n✅ Total collected: {len(all_papers):,}")
         return all_papers
 
 
@@ -248,8 +232,7 @@ class AIScholarshipAnalyzer:
         
         while True:
             params = {
-                'filter': f'{date_filter},title_and_abstract.search:{search_query}',  # Use this instead!
-                # Remove 'search' parameter entirely
+                'filter': f'{date_filter},title_and_abstract.search:{search_query}',
                 'per-page': 200,
                 'page': page,
                 'select': 'id,doi,title,publication_year,publication_date,type,cited_by_count,concepts,authorships,topics,referenced_works,abstract_inverted_index,keywords'
@@ -262,17 +245,13 @@ class AIScholarshipAnalyzer:
                 
                 if not data:
                     break
-                
-                # Still validate to ensure both keyword sets are present
+
                 for paper in data:
                     paper_id = paper.get('id')
-                    if paper_id not in seen_ids:
-                        # Validate that paper contains at least one term from EACH set
-                        if (self._paper_matches_keywords(paper, all_ai_terms) and 
-                            self._paper_matches_keywords(paper, all_safety_terms)):
-                            papers.append(paper)
-                            seen_ids.add(paper_id)
-                
+                    if paper_id and paper_id not in seen_ids:
+                        papers.append(paper)
+                        seen_ids.add(paper_id)
+                    
                 if page >= 50:
                     return papers, True
                 
@@ -289,8 +268,7 @@ class AIScholarshipAnalyzer:
         return papers, False
 
     def _collect_by_month(self, search_query: str, year: int, 
-                        year_start: str, year_end: str,
-                        seen_ids: set, all_ai_terms: List[str], all_safety_terms: List[str],  # Changed
+                        seen_ids: set, all_ai_terms: List[str], all_safety_terms: List[str],
                         overall_start: datetime, overall_end: datetime) -> List:
         """Collect papers month by month for a year that hit the 10K limit."""
         import calendar
@@ -301,13 +279,11 @@ class AIScholarshipAnalyzer:
             last_day = calendar.monthrange(year, month)[1]
             month_end = f"{year}-{month:02d}-{last_day}"
             
-            # Skip if outside overall range
             if date.fromisoformat(month_end) < overall_start.date():
                 continue
             if date.fromisoformat(month_start) > overall_end.date():
                 continue
             
-            # Adjust for start/end dates
             if year == overall_start.year and month == overall_start.month:
                 month_start = overall_start.date().isoformat()
             if year == overall_end.year and month == overall_end.month:
@@ -315,7 +291,7 @@ class AIScholarshipAnalyzer:
             
             papers, hit_limit = self._collect_for_period(
                 search_query, month_start, month_end, seen_ids, 
-                all_ai_terms, all_safety_terms  # Changed
+                all_ai_terms, all_safety_terms
             )
             monthly_papers.extend(papers)
             
@@ -323,34 +299,6 @@ class AIScholarshipAnalyzer:
                 print(f"\n      ⚠️  Month {month:02d} also hit 10K!")
         
         return monthly_papers
-
-    def _paper_matches_keywords(self, paper: Dict, keywords: List[str]) -> bool:
-        """Check if paper actually contains any of the keywords."""
-        # Get searchable text (handle None values)
-        title = (paper.get('title') or '').lower()
-        
-        # Reconstruct abstract
-        abstract_inv = paper.get('abstract_inverted_index', {})
-        abstract = ''
-        if abstract_inv:
-            words = [(pos, word.lower()) for word, positions in abstract_inv.items() 
-                    for pos in positions]
-            words.sort()
-            abstract = ' '.join([w[1] for w in words])
-        
-        # Get concepts (handle None values in display_name)
-        concepts = ' '.join([
-            (c.get('display_name') or '').lower() 
-            for c in paper.get('concepts', [])
-            if c.get('display_name')  # Skip concepts with no display_name
-        ])
-        
-        text = f"{title} {abstract} {concepts}"
-        
-        # Return True if any keyword matches
-        return any(re.search(rf'\b{re.escape(kw.lower())}\b', text) for kw in keywords)
-
-
 
     def _fetch_all_papers_for_year(self, topic_filter: str, start_date_str: str, end_date_str: str) -> List[Dict]:
         """Fetch all papers for a date range, handling pagination."""
@@ -360,7 +308,6 @@ class AIScholarshipAnalyzer:
         
         url = f"{self.base_url}/works"
         
-        # Construct the filter using the date range strings
         date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str}'
         
         while True:
@@ -381,11 +328,10 @@ class AIScholarshipAnalyzer:
                 if not batch:
                     break
                 
-                # Group by month
+                # group by month
                 for paper in batch:
                     pub_date = paper.get('publication_date')
-                    year_month = pub_date[:7] if pub_date and len(pub_date) >= 7 else f"{start_date_str[:4]}-01" # Default to year start if date is missing
-                    
+                    year_month = pub_date[:7] if pub_date and len(pub_date) >= 7 else f"{start_date_str[:4]}-01"
                     if year_month not in papers_by_month:
                         papers_by_month[year_month] = []
                     papers_by_month[year_month].append(paper)
@@ -410,19 +356,19 @@ class AIScholarshipAnalyzer:
         seen_ids = set()
         merged = []
         
-        # Add all topic papers first
+        # all topic papers first
         for paper in topic_papers:
             paper_id = paper.get('id')
             if paper_id not in seen_ids:
-                paper['source'] = 'topic'  # Tag for tracking
+                paper['source'] = 'topic'
                 merged.append(paper)
                 seen_ids.add(paper_id)
         
-        # Add keyword papers that aren't duplicates
+        # keyword papers that aren't duplicates
         for paper in keyword_papers:
             paper_id = paper.get('id')
             if paper_id not in seen_ids:
-                paper['source'] = 'keyword'  # Tag for tracking
+                paper['source'] = 'keyword'
                 merged.append(paper)
                 seen_ids.add(paper_id)
         
@@ -431,7 +377,7 @@ class AIScholarshipAnalyzer:
 
     def _save_papers_by_month_from_list(self, papers: List[Dict]) -> Dict[str, int]:
         """Save a list of papers, grouped by month."""
-        # Group papers by month
+        # group by month
         papers_by_month = {}
         
         for paper in papers:
@@ -442,7 +388,7 @@ class AIScholarshipAnalyzer:
                 papers_by_month[year_month] = []
             papers_by_month[year_month].append(paper)
         
-        # Save each month
+        # save each month
         saved_counts = {}
         
         for year_month, month_papers in papers_by_month.items():
@@ -451,7 +397,7 @@ class AIScholarshipAnalyzer:
             os.makedirs(year_dir, exist_ok=True)
             filepath = os.path.join(year_dir, f"{year_month}.csv")
             
-            # Flatten papers
+            # flatten papers
             flattened_papers = []
             for paper in month_papers:
                 flat_paper = {
@@ -462,13 +408,13 @@ class AIScholarshipAnalyzer:
                     'publication_date': paper.get('publication_date'),
                     'type': paper.get('type'),
                     'cited_by_count': paper.get('cited_by_count'),
-                    'source': paper.get('source', 'topic'),  # Track if from topic or keyword
+                    'source': paper.get('source', 'topic'),
                     'abstract_inverted_index': str(paper.get('abstract_inverted_index', '')),
                     'num_authors': len(paper.get('authorships', [])),
                     'author_names': '; '.join([
                         auth.get('author', {}).get('display_name', '') 
                         for auth in paper.get('authorships', [])
-                        if auth.get('author', {}).get('display_name')  # Add this filter
+                        if auth.get('author', {}).get('display_name')
                     ]),
                     'num_concepts': len(paper.get('concepts', [])),
                     'concepts': '; '.join([
@@ -508,7 +454,7 @@ class AIScholarshipAnalyzer:
                 'start': start_date.isoformat(),
                 'end': end_date.isoformat()
             },
-            'methodology': 'Hybrid: Topics OR Targeted Keywords',
+            'methodology': 'Hybrid: Topics OR Boolean Keywords',
             'topics_used': TOPIC_IDS,
             'ai_keywords': AI_TERMS,
             'safety_keywords': SAFETY_TERMS,
@@ -536,7 +482,6 @@ class AIScholarshipAnalyzer:
         """Get count of papers for a topic using a full date range filter."""
         url = f"{self.base_url}/works"
         
-        # Use the from_publication_date and to_publication_date filters
         date_filter = f'from_publication_date:{start_date_str},to_publication_date:{end_date_str}'
         
         params = {

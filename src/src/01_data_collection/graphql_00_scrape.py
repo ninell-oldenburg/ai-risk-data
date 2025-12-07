@@ -105,10 +105,10 @@ class ScrapeLesswrong:
                 print(f"Processing year {next_month.year}...")
                 print(f"{'='*60}")
             
-            variables = {"after": after, "before": before, "limit": 1000}  # 1000 per request
+            variables = {"after": after, "before": before, "limit": 1000}  # max 1000 per request
             response = self.session.post(self.url, json={"query": self.query, "variables": variables}, headers=self.headers)
             
-            # Check for request errors
+            # request errors
             if response.status_code != 200:
                 print(f"Error: HTTP {response.status_code} for {start_date.strftime('%Y-%m')}")
                 start_date = next_month
@@ -118,11 +118,10 @@ class ScrapeLesswrong:
             results = data.get("data", {}).get("posts", {}).get("results", [])
             n_posts += len(results)
             
-            # Create directory structure if it doesn't exist
+            # Create directory if it doesn't exist
             year_dir = f"src/raw_data/{self.platform}/json/{start_date.year}"
             os.makedirs(year_dir, exist_ok=True)
             
-            # Save JSON for this month
             filename = f"{start_date.year}-{start_date.month:02}.json"
             filepath = os.path.join(year_dir, filename)
 
@@ -133,8 +132,7 @@ class ScrapeLesswrong:
 
             print(f"✅ Saved {len(results)} posts to {filepath}")
 
-            # small delay to avoid rate limiting
-            time.sleep(1)
+            time.sleep(1) # be nice to the API
 
             last_month = start_date
             start_date = next_month

@@ -27,7 +27,6 @@ TOPIC_CONFIGS = {
         'description': 'Ethics & Social Impacts, Adversarial Robustness, Explainable AI'
     },
     
-    # High-value individual topics
     'core_topic': {
         'name': 'Core + Topic Modeling',
         'topics': ['T10883', 'T11689', 'T12026', 'T10028'],
@@ -48,8 +47,6 @@ TOPIC_CONFIGS = {
         'topics': ['T10883', 'T11689', 'T12026', 'T10462'],
         'description': 'Core + RL in Robotics'
     },
-    
-    # Low-value topics (to show why excluded)
     'core_game': {
         'name': 'Core + Game Theory',
         'topics': ['T10883', 'T11689', 'T12026', 'T11252'],
@@ -60,8 +57,6 @@ TOPIC_CONFIGS = {
         'topics': ['T10883', 'T11689', 'T12026', 'T12002'],
         'description': 'Core + Computability & Logic'
     },
-    
-    # Combinations
     'core_topic_nlp': {
         'name': 'Core + Topic + NLP',
         'topics': ['T10883', 'T11689', 'T12026', 'T10028', 'T10181'],
@@ -78,7 +73,7 @@ TOPIC_CONFIGS = {
 # KEYWORD CONFIGURATIONS
 # ==============================================================================
 
-# Comprehensive keyword list (105 keywords)
+# (105 keywords)
 COMPREHENSIVE_KEYWORDS = [
     # Safety & Alignment 35 terms
     'safety', 'safe', 'alignment', 'aligned', 'value alignment',
@@ -132,7 +127,7 @@ SAFETY_TERMS = [
     'safety', 'alignment', 'fairness', 'bias', 'cooperative', 'red teaming',
     'interpretability', 'explainability', 'robustness', 'human feedback', 'risks',
     'adversarial', 'ethics', 'governance', 'risk', 'human preference', 'malicious use',
-    'trustworthy', 'responsible', 'cooperation', 'circuits', 'policy', 'governance',
+    'trustworthy', 'responsible', 'circuits', 'policy', 'governance',
     'dangers', 'amplification',  'capabilities',
 ]
 
@@ -145,7 +140,7 @@ TARGETED_KEYWORDS = [
     'value alignment', 'catastrophic risk', 'artificial general intelligence'
 ]
 
-# Validation set - known AI safety papers that SHOULD be captured
+# Validation set
 VALIDATION_PAPERS = {
     # ========================================
     # CRITICAL AI ETHICS / FAIRNESS (27 papers)
@@ -259,9 +254,9 @@ def get_keyword_count(keyword, email):
     endpoint = "https://api.openalex.org/works"
 
     params = {
-        'search': keyword,  # searches title, abstract, etc.
+        'search': keyword,
         'mailto': email,
-        'per-page': 1       # only need the count
+        'per-page': 1
     }
 
     response = requests.get(endpoint, params=params)
@@ -281,7 +276,7 @@ def get_boolean_count(terms1, terms2, email):
     params = {
         'search': query,
         'mailto': email,
-        'per-page': 1  # we only need the meta count
+        'per-page': 1
     }
 
     response = requests.get("https://api.openalex.org/works", params=params)
@@ -316,7 +311,6 @@ def test_topic_coverage(topic_ids: List[str], email: str = "your-email@example.c
         try:
             response = session.get(url, timeout=10)
             if response.status_code == 404:
-                # Paper not in OpenAlex -> exclude from denominator
                 continue
 
             response.raise_for_status()
@@ -389,7 +383,6 @@ def test_keyword_coverage(keywords: List[str], email: str = "your-email@example.
 
             text = f"{title} {abstract} {concepts}"
 
-            # keyword matching (substring). If you want stricter matching, switch to regex word boundaries.
             if any(kw.lower() in text for kw in keywords):
                 found += 1
             else:
@@ -520,11 +513,11 @@ def test_hybrid_coverage(topic_ids: List[str], keywords: List[str],
                 with open(cache_file, 'w') as cf:
                     json.dump(paper, cf)
             
-            # Check topics
+            # check topics
             paper_topics = [t['id'].split('/')[-1] for t in paper.get('topics', [])]
             has_topic = any(tid in paper_topics for tid in topic_ids)
             
-            # Check keywords
+            # check keywords
             title = paper.get('title', '').lower()
             abstract_inv = paper.get('abstract_inverted_index', {})
             abstract = ''
@@ -536,7 +529,7 @@ def test_hybrid_coverage(topic_ids: List[str], keywords: List[str],
             text = f"{title} {abstract} {concepts}"
             has_keyword = any(kw in text for kw in keywords)
             
-            # Classify
+            # classify
             if has_topic:
                 found_by_topics += 1
             elif has_keyword:
@@ -599,11 +592,11 @@ def test_topics_boolean_coverage(topic_ids: List[str],
             paper = response.json()
             effective_total += 1
 
-            # --- topic check ---
+            # check topics
             paper_topics = [t['id'].split('/')[-1] for t in paper.get('topics', [])]
             has_topic = any(tid in paper_topics for tid in topic_ids)
 
-            # --- boolean check ---
+            # check boolean
             title = paper.get('title', '').lower()
             abstract_inv = paper.get('abstract_inverted_index', {})
             abstract = ''
@@ -618,7 +611,7 @@ def test_topics_boolean_coverage(topic_ids: List[str],
             has_safety = any(re.search(rf'\b{re.escape(term)}\b', text) for term in safety_terms)
             has_boolean = has_ai and has_safety
 
-            # --- classification ---
+            # classify
             if has_topic:
                 found_by_topics += 1
             elif has_boolean:
@@ -718,7 +711,7 @@ def main():
 
     results = {}
 
-    # Test topic-based approaches
+    # topic-based approaches
     print("\n" + "="*70)
     print("PART 1: TOPIC-BASED APPROACHES")
     print("="*70 + "\n")
@@ -738,7 +731,7 @@ def main():
         }
         print(f"  Total papers in topics: {paper_count}\n")
 
-    # Test keyword-based approaches
+    # keyword-based approaches
     print("\n" + "="*70)
     print("PART 2: KEYWORD-BASED APPROACHES")
     print("="*70 + "\n")
@@ -769,7 +762,7 @@ def main():
     }
     print(f"  Total papers for Boolean search: {boolean_papers}\n")
 
-    # Test hybrid approach
+    # hybrid approach
     print("\n" + "="*70)
     print("PART 3: HYBRID APPROACH")
     print("="*70 + "\n")
@@ -794,7 +787,7 @@ def main():
     }
     print(f"  Total papers: Topics={topic_papers}, Targeted Keywords={keyword_papers}, Combined={topic_papers + keyword_papers}\n")
 
-    # Hybrid: Topics + Boolean (AI × Safety)
+    # topics + boolean
     print("Hybrid: Topics + Boolean (AI × Safety)")
     topic_papers = sum(get_topic_count(t, email) for t in TOPIC_CONFIGS['core_hate']['topics'])
     boolean_papers = get_boolean_count(AI_TERMS, SAFETY_TERMS, email)
@@ -819,8 +812,7 @@ def main():
 
     print(f"  Total papers: Topics={topic_papers}, Boolean={boolean_papers}, Combined={topic_papers + boolean_papers}")
 
-
-    # Summary table
+    # summary
     print("\n" + "="*70)
     print("SUMMARY")
     print("="*70 + "\n")
@@ -830,13 +822,13 @@ def main():
     for key, result in results.items():
         print(f"{result['approach']:<18} {result['name']:<35} {result['coverage']:>8.1%} {result['missing_count']:>8} {result['paper_count']:>10,}")
 
-    # Save results
-    with open('validation_results.json', 'w') as f:
+    # save results
+    with open('src/metadata/validation_results.json', 'w') as f:
         json.dump(results, f, indent=2)
 
-    print(f"\n✓ Results saved to validation_results.json")
+    print(f"\n✅ Results saved to src/metadata/validation_results.json")
 
-    # Recommendation / Analysis
+    # analysis
     print(f"\n{'='*70}")
     print("ANALYSIS")
     print(f"{'='*70}")
